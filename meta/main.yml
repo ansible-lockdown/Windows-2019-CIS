@@ -1,0 +1,22 @@
+---
+galaxy_info:
+    author: "Ryan Speelman"
+    description: "Ansible role to apply Windows Server 2019 CIS Benchmark"
+    company: "MindPoint Group"
+    license: MIT
+    min_ansible_version: 2.6
+
+    platforms:
+        - name: Windows Server
+          versions:
+              - 2019
+
+    galaxy_tags:
+        - system
+        - security
+        - stig
+        - hardening
+        - microsoft
+        - windows
+
+    dependencies: []

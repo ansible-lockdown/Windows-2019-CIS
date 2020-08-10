@@ -1,0 +1,452 @@
+---
+section01_patch: yes
+section02_patch: yes
+section17_patch: yes
+section18_patch: yes
+section19_patch: yes
+
+min_ansible_version: "2.6"
+
+# We've defined complexity-high to mean that we cannot automatically remediate
+# the rule in question.  In the future this might mean that the remediation
+# may fail in some cases.
+complexity_high: no
+
+# Show "changed" for complex items not remediated per complexity-high setting
+# to make them stand out.  "changed" items on a second run of the role would
+# indicate items requiring manual review.
+audit_complex: yes
+
+# We've defined disruption-high to indicate items that are likely to cause
+# disruption in a normal workflow.  These items can be remediated automatically
+# but are disabled by default to avoid disruption.
+disruption_high: no
+
+# Show "changed" for disruptive items not remediated per disruption-high
+# setting to make them stand out.
+audit_disruptive: yes
+
+skip_for_travis: false
+
+workaround_for_disa_benchmark: true
+workaround_for_ssg_benchmark: true
+
+# tweak role to run in a non-privileged container
+system_is_container: no
+
+#set to false to skip tasks that either have not been developed or cannot be automated
+is_implemented: false
+
+#set to false to skip long running tasks
+long_running: false
+
+
+# These variables correspond with the STIG IDs defined in the STIG and allows you to enable/disable specific rules.
+# PLEASE NOTE: These work in coordination with the cat1, cat2, cat3 group variables. You must enable an entire group
+# in order for the variables below to take effect.
+
+# section01
+rule_1_1_1: true
+rule_1_1_2: true
+rule_1_1_3: true
+rule_1_1_4: true
+rule_1_1_5: true
+rule_1_1_6: true
+rule_1_2_1: true
+rule_1_2_2: true
+rule_1_2_3: true
+
+# section02
+rule_2_2_1: true
+rule_2_2_2: true
+rule_2_2_3: true
+rule_2_2_4: true
+rule_2_2_5: true
+rule_2_2_6: true
+rule_2_2_7: true
+rule_2_2_8: true
+rule_2_2_9: true
+rule_2_2_10: true
+rule_2_2_11: true
+rule_2_2_12: true
+rule_2_2_13: true
+rule_2_2_14: true
+rule_2_2_15: true
+rule_2_2_16: true
+rule_2_2_17: true
+rule_2_2_18: true
+rule_2_2_19: true
+rule_2_2_20: true
+rule_2_2_21: true
+rule_2_2_22: true
+rule_2_2_23: true
+rule_2_2_24: true
+rule_2_2_25: true
+rule_2_2_26: true
+rule_2_2_27: true
+rule_2_2_28: true
+rule_2_2_29: true
+rule_2_2_30: true
+rule_2_2_31: true
+rule_2_2_32: true
+rule_2_2_33: true
+rule_2_2_34: true
+rule_2_2_35: true
+rule_2_2_36: true
+rule_2_2_37: true
+rule_2_2_38: true
+rule_2_2_39: true
+rule_2_2_40: true
+rule_2_2_41: true
+rule_2_2_42: true
+rule_2_2_43: true
+rule_2_2_44: true
+rule_2_2_45: true
+rule_2_2_46: true
+rule_2_2_47: true
+rule_2_2_48: true
+rule_2_3_1_1: true
+rule_2_3_1_2: true
+rule_2_3_1_3: true
+rule_2_3_1_4: true
+rule_2_3_1_5: true
+rule_2_3_1_6: true
+rule_2_3_2_1: true
+rule_2_3_2_2: true
+rule_2_3_4_1: true
+rule_2_3_4_2: true
+rule_2_3_5_1: true
+rule_2_3_5_2: true
+rule_2_3_5_3: true
+rule_2_3_6_1: true
+rule_2_3_6_2: true
+rule_2_3_6_3: true
+rule_2_3_6_4: true
+rule_2_3_6_5: true
+rule_2_3_6_6: true
+rule_2_3_7_1: true
+rule_2_3_7_2: true
+rule_2_3_7_3: true
+rule_2_3_7_4: true
+rule_2_3_7_5: true
+rule_2_3_7_6: true
+rule_2_3_7_7: true
+rule_2_3_7_8: true
+rule_2_3_7_9: true
+rule_2_3_8_1: true
+rule_2_3_8_2: true
+rule_2_3_8_3: true
+rule_2_3_9_1: true
+rule_2_3_9_2: true
+rule_2_3_9_3: true
+rule_2_3_9_4: true
+rule_2_3_9_5: true
+rule_2_3_10_1: true
+rule_2_3_10_2: true
+rule_2_3_10_3: true
+rule_2_3_10_4: true
+rule_2_3_10_5: true
+rule_2_3_10_6: true
+rule_2_3_10_7: true
+rule_2_3_10_8: true
+rule_2_3_10_9: true
+rule_2_3_10_10: true
+rule_2_3_10_11: true
+rule_2_3_10_12: true
+rule_2_3_10_13: true
+rule_2_3_11_1: true
+rule_2_3_11_2: true
+rule_2_3_11_3: true
+rule_2_3_11_4: true
+rule_2_3_11_5: true
+rule_2_3_11_6: true
+rule_2_3_11_7: true
+rule_2_3_11_8: true
+rule_2_3_11_9: true
+rule_2_3_11_10: true
+rule_2_3_13_1: true
+rule_2_3_15_1: true
+rule_2_3_15_2: true
+rule_2_3_17_1: true
+rule_2_3_17_2: true
+rule_2_3_17_3: true
+rule_2_3_17_4: true
+rule_2_3_17_5: true
+rule_2_3_17_6: true
+rule_2_3_17_7: true
+rule_2_3_17_8: true
+
+# section17
+rule_17_1_1: true
+rule_17_2_1: true
+rule_17_2_2: true
+rule_17_2_3: true
+rule_17_2_4: true
+rule_17_2_5: true
+rule_17_2_6: true
+rule_17_3_1: true
+rule_17_3_2: true
+rule_17_4_1: true
+rule_17_4_2: true
+rule_17_5_1: true
+rule_17_5_2: true
+rule_17_5_3: true
+rule_17_5_4: true
+rule_17_5_5: true
+rule_17_5_6: true
+rule_17_6_1: true
+rule_17_6_2: true
+rule_17_6_3: true
+rule_17_6_4: true
+rule_17_7_1: true
+rule_17_7_2: true
+rule_17_7_3: true
+rule_17_7_4: true
+rule_17_7_5: true
+rule_17_8_1: true
+rule_17_9_1: true
+rule_17_9_2: true
+rule_17_9_3: true
+rule_17_9_4: true
+rule_17_9_5: true
+
+# section18
+rule_18_1_1_1: true
+rule_18_1_1_2: true
+rule_18_1_2_2: true
+rule_18_1_3: true
+rule_18_2_1: true
+rule_18_2_2: true
+rule_18_2_3: true
+rule_18_2_4: true
+rule_18_2_5: true
+rule_18_2_6: true
+rule_18_3_1: true
+rule_18_3_2: true
+rule_18_3_3: true
+rule_18_3_4: true
+rule_18_3_5: true
+rule_18_3_6: true
+rule_18_4_1: true
+rule_18_4_2: true
+rule_18_4_3: true
+rule_18_4_4: true
+rule_18_4_5: true
+rule_18_4_6: true
+rule_18_4_7: true
+rule_18_4_8: true
+rule_18_4_9: true
+rule_18_4_10: true
+rule_18_4_11: true
+rule_18_4_12: true
+rule_18_5_4_1: true
+rule_18_5_4_2: true
+rule_18_5_5_1: true
+rule_18_5_8_1: true
+rule_18_5_9_1: true
+rule_18_5_9_2: true
+rule_18_5_10_2: true
+rule_18_5_11_2: true
+rule_18_5_11_3: true
+rule_18_5_11_4: true
+rule_18_5_14_1: true
+rule_18_5_19_2_1: true
+rule_18_5_20_1: true
+rule_18_5_20_2: true
+rule_18_5_21_1: true
+rule_18_5_21_2: true
+rule_18_7_1_1: true
+rule_18_8_3_1: true
+rule_18_8_4_1: true
+rule_18_8_4_2: true
+rule_18_8_5_1: true
+rule_18_8_5_2: true
+rule_18_8_5_3: true
+rule_18_8_5_4: true
+rule_18_8_5_5: true
+rule_18_8_5_6: true
+rule_18_8_5_7: true
+rule_18_8_14_1: true
+rule_18_8_21_2: true
+rule_18_8_21_3: true
+rule_18_8_21_4: true
+rule_18_8_21_5: true
+rule_18_8_22_1_1: true
+rule_18_8_22_1_2: true
+rule_18_8_22_1_3: true
+rule_18_8_22_1_4: true
+rule_18_8_22_1_5: true
+rule_18_8_22_1_6: true
+rule_18_8_22_1_7: true
+rule_18_8_22_1_8: true
+rule_18_8_22_1_9: true
+rule_18_8_22_1_10: true
+rule_18_8_22_1_11: true
+rule_18_8_22_1_12: true
+rule_18_8_22_1_13: true
+rule_18_8_25_1: true
+rule_18_8_26_1: true
+rule_18_8_27_1: true
+rule_18_8_28_1: true
+rule_18_8_28_2: true
+rule_18_8_28_3: true
+rule_18_8_28_4: true
+rule_18_8_28_5: true
+rule_18_8_28_6: true
+rule_18_8_28_7: true
+rule_18_8_31_1: true
+rule_18_8_31_2: true
+rule_18_8_34_6_1: true
+rule_18_8_34_6_2: true
+rule_18_8_34_6_3: true
+rule_18_8_34_6_4: true
+rule_18_8_36_1: true
+rule_18_8_36_2: true
+rule_18_8_37_1: true
+rule_18_8_37_2: true
+rule_18_8_45_1: true
+rule_18_8_45_5_1: true
+rule_18_8_45_11_1: true
+rule_18_8_47_1: true
+rule_18_8_50_1_1: true
+rule_18_8_50_1_2: true
+rule_18_9_4_1: true
+rule_18_9_6_1: true
+rule_18_9_8_1: true
+rule_18_9_8_2: true
+rule_18_9_8_3: true
+rule_18_9_10_1_1: true
+rule_18_9_12_1: true
+rule_18_9_13_1: true
+rule_18_9_14_1: true
+rule_18_9_15_1: true
+rule_18_9_15_2: true
+rule_18_9_16_1: true
+rule_18_9_16_2: true
+rule_18_9_16_3: true
+rule_18_9_16_4: true
+rule_18_9_26_1_1: true
+rule_18_9_26_1_2: true
+rule_18_9_26_2_1: true
+rule_18_9_26_2_2: true
+rule_18_9_26_3_1: true
+rule_18_9_26_3_2: true
+rule_18_9_26_4_1: true
+rule_18_9_26_4_2: true
+rule_18_9_30_2: true
+rule_18_9_30_3: true
+rule_18_9_30_4: true
+rule_18_9_39_2: true
+rule_18_9_43_1: true
+rule_18_9_44_1: true
+rule_18_9_52_1: true
+rule_18_9_59_2_2: true
+rule_18_9_59_3_2_1: true
+rule_18_9_59_3_3_1: true
+rule_18_9_59_3_3_2: true
+rule_18_9_59_3_3_3: true
+rule_18_9_59_3_3_4: true
+rule_18_9_59_3_9_1: true
+rule_18_9_59_3_9_2: true
+rule_18_9_59_3_9_3: true
+rule_18_9_59_3_9_4: true
+rule_18_9_59_3_9_5: true
+rule_18_9_59_3_10_1: true
+rule_18_9_59_3_10_2: true
+rule_18_9_59_3_11_1: true
+rule_18_9_59_3_11_2: true
+rule_18_9_60_1: true
+rule_18_9_61_2: true
+rule_18_9_61_3: true
+rule_18_9_66_1: true
+rule_18_9_77_3_1: true
+rule_18_9_77_3_2: true
+rule_18_9_77_7_1: true
+rule_18_9_77_9_1: true
+rule_18_9_77_10_1: true
+rule_18_9_77_10_2: true
+rule_18_9_77_13_1_1: true
+rule_18_9_77_13_1_2: true
+rule_18_9_77_13_3_1: true
+rule_18_9_77_14: true
+rule_18_9_77_15: true
+rule_18_9_80_1_1: true
+rule_18_9_84_1: true
+rule_18_9_84_2: true
+rule_18_9_85_1: true
+rule_18_9_85_2: true
+rule_18_9_85_3: true
+rule_18_9_86_1: true
+rule_18_9_95_1: true
+rule_18_9_95_2: true
+rule_18_9_97_1_1: true
+rule_18_9_97_1_2: true
+rule_18_9_97_1_3: true
+rule_18_9_97_2_1: true
+rule_18_9_97_2_2: true
+rule_18_9_97_2_3: true
+rule_18_9_97_2_4: true
+rule_18_9_98_1: true
+rule_18_9_99_2_1: true
+rule_18_9_102_1_1: true
+rule_18_9_102_1_2: true
+rule_18_9_102_1_3: true
+rule_18_9_102_2: true
+rule_18_9_102_3: true
+rule_18_9_102_4: true
+
+# section19
+rule_19_1_3_1: true
+rule_19_1_3_2: true
+rule_19_1_3_3: true
+rule_19_1_3_4: true
+rule_19_5_1_1: true
+rule_19_6_6_1_1: true
+rule_19_7_4_1: true
+rule_19_7_4_2: true
+rule_19_7_7_1: true
+rule_19_7_7_2: true
+rule_19_7_7_3: true
+rule_19_7_7_4: true
+rule_19_7_26_1: true
+rule_19_7_41_1: true
+rule_19_7_45_2_1: true
+
+
+# This SID is the same for standalone, member, domain controller for 'Administrators' group
+sedebugprivilege: "*S-1-5-32-544"
+
+pass_age: 60
+
+lockoutduration: 15
+lockoutbadcount: 3
+resetlockoutcount: 15
+passwordhistorysize: 24
+maximumpasswordage: 60
+minimumpasswordage: 1
+minimumpasswordlength: 14
+
+newadministratorname: renamedadmin
+newguestname: renamedguest
+
+legalnoticetext: |
+    You are accessing a U.S. Government (USG) Information System (IS) that is provided for USG-authorized use only.
+
+    By using this IS (which includes any device attached to this IS), you consent to the following conditions:
+
+    -The USG routinely intercepts and monitors communications on this IS for purposes including, but not limited to, penetration testing, COMSEC monitoring, network operations and defense, personnel misconduct (PM), law enforcement (LE), and counterintelligence (CI) investigations.
+
+    -At any time, the USG may inspect and seize data stored on this IS.
+
+    -Communications using, or data stored on, this IS are not private, are subject to routine monitoring, interception, and search, and may be disclosed or used for any USG-authorized purpose.
+
+    -This IS includes security measures (e.g., authentication and access controls) to protect USG interests--not for your personal benefit or privacy.
+
+    -Notwithstanding the above, using this IS does not constitute consent to PM, LE or CI investigative searching or monitoring of the content of privileged communications, or work product, related to personal representation or services by attorneys, psychotherapists, or clergy, and their assistants. Such communications and work product are private and confidential. See User Agreement for details.
+
+app_maxsize: 32768
+sec_maxsize: 196608
+sys_maxsize: 32768
+
+
+legalnoticecaption: "DoD Notice and Consent Banner"

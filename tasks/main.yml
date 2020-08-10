@@ -1,0 +1,61 @@
+---
+
+- name: Gather distribution info
+  setup:
+      gather_subset: distribution,!all,!min
+  when:
+      - ansible_distribution is not defined
+  tags:
+      - always
+
+- name: Check OS version and family
+  assert:
+      that:
+          - ansible_os_family == 'Windows'
+          - ansible_distribution | regex_search('(Microsoft Windows Server 2019)')
+      success_msg: "{{ ansible_distribution }} {{ ansible_distribution_major_version }} is the detected operating system."
+      fail_msg: "This role can only be run against Windows Server 2019 Editions. {{ ansible_distribution }} {{ ansible_distribution_major_version }} is not supported."
+  tags:
+      - always
+
+- name: Check ansible version
+  assert:
+      that: ansible_version.full is version_compare(min_ansible_version, '>=')
+      msg: You must use Ansible {{ min_ansible_version }} or greater
+  tags:
+      - always
+
+# - name: Include the preliminary tasks
+#   include_tasks: prelim.yml
+#   tags:
+#       - prelim_tasks
+
+- name: Execute the section 1 tasks
+  import_tasks: section01.yml
+  when: section01_patch | bool
+  tags:
+      - section01
+
+- name: Execute the section 2 tasks
+  import_tasks: section02.yml
+  when: section02_patch | bool
+  tags:
+      - section02
+
+- name: Execute the section 17 tasks
+  import_tasks: section17.yml
+  when: section17_patch | bool
+  tags:
+      - section17
+
+- name: Execute the section 18 tasks
+  import_tasks: section18.yml
+  when: section18_patch | bool
+  tags:
+      - section18
+
+- name: Execute the section 19 tasks
+  import_tasks: section19.yml
+  when: section19_patch | bool
+  tags:
+      - section19
