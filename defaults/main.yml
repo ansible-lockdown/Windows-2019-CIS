@@ -41,7 +41,7 @@ is_implemented: false
 #set to false to skip long running tasks
 long_running: false
 
-win_skip_for_test: true
+win_skip_for_test: false
 
 # These variables correspond with the STIG IDs defined in the STIG and allows you to enable/disable specific rules.
 # PLEASE NOTE: These work in coordination with the cat1, cat2, cat3 group variables. You must enable an entire group
