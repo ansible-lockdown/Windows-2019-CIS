@@ -41,6 +41,7 @@ is_implemented: false
 #set to false to skip long running tasks
 long_running: false
 
+win_skip_for_test: true
 
 # These variables correspond with the STIG IDs defined in the STIG and allows you to enable/disable specific rules.
 # PLEASE NOTE: These work in coordination with the cat1, cat2, cat3 group variables. You must enable an entire group
@@ -176,6 +177,34 @@ rule_2_3_17_5: true
 rule_2_3_17_6: true
 rule_2_3_17_7: true
 rule_2_3_17_8: true
+
+# section09
+rule_9_1_1: true
+rule_9_1_2: true
+rule_9_1_3: true
+rule_9_1_4: true
+rule_9_1_5: true
+rule_9_1_6: true
+rule_9_1_7: true
+rule_9_1_8: true
+rule_9_2_1: true
+rule_9_2_2: true
+rule_9_2_3: true
+rule_9_2_4: true
+rule_9_2_5: true
+rule_9_2_6: true
+rule_9_2_7: true
+rule_9_2_8: true
+rule_9_3_1: true
+rule_9_3_2: true
+rule_9_3_3: true
+rule_9_3_4: true
+rule_9_3_5: true
+rule_9_3_6: true
+rule_9_3_7: true
+rule_9_3_8: true
+rule_9_3_9: true
+rule_9_3_10: true
 
 # section17
 rule_17_1_1: true
@@ -451,3 +480,33 @@ sys_maxsize: 32768
 
 
 legalnoticecaption: "DoD Notice and Consent Banner"
+
+# 9.1.5
+# domain_firewall_log_path is the path to the domain firewall log files. The control suggests %SystemRoot%\System32\logfiles\firewall\domainfw.log
+# This is a variable to give some leway on where to store these log files
+domain_firewall_log_path: '%SystemRoot%\System32\logfiles\firewall\domainfw.log'
+
+# 9.1.6
+# domain_firewall_log_size is the size of the log file generated
+# To conform to CIS standards the value should be 16,384 or greater. Value is in KB
+domain_firewall_log_size: 16,384
+
+# 9.2.5
+# private_firewall_log_path is the path to the private firewall log files. The control suggests %SystemRoot%\System32\logfiles\firewall\privatefw.log
+# This is a variable to give some leway on where to store these log files
+private_firewall_log_path: '%SystemRoot%\System32\logfiles\firewall\privatefw.log'
+
+# 9.2.6
+# private_firewall_log_size is the size of the log file
+# To conform to CIS stadnards the value should be 16,384 or greater. Value is in KB
+private_firewall_log_size: 16,384
+
+# 9.3.7
+# public_firewall_log_path is the path to the public firewall log file. The control suggests %SystemRoot%\System32\logfiles\firewall\publicfw.log
+# This is a variable to give some leway on where to store these log files
+public_firewall_log_path: '%SystemRoot%\System32\logfiles\firewall\publicfw.log'
+
+# 9.3.8
+# public_firewall_log_size is the size of the log file
+# To conform to CIS stadnards the value should be 16,384 or greater. Value is in KB
+public_firewall_log_size: 16,384

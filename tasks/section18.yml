@@ -2405,7 +2405,9 @@
     name: AllowBasic
     data: 0
     type: dword
-  when: rule_18_9_97_1_1
+  when:
+    - rule_18_9_97_1_1
+    - not win_skip_for_test
   tags:
     - level1
     - level2
@@ -2418,7 +2420,9 @@
     name: AllowUnencryptedTraffic
     data: 0
     type: dword
-  when: rule_18_9_97_1_2
+  when:
+    - rule_18_9_97_1_2
+    - not win_skip_for_test
   tags:
     - level1
     - level2
@@ -2444,7 +2448,9 @@
     name: AllowBasic
     data: 0
     type: dword
-  when: rule_18_9_97_2_1
+  when:
+    - rule_18_9_97_2_1
+    - not win_skip_for_test
   tags:
     - level1
     - level2
@@ -2460,7 +2466,7 @@
     type: dword
   when:
     - rule_18_9_97_2_2
-    - is_implemented
+    - not win_skip_for_test
   tags:
     - level2
     - rule_18.9.97.2.2
@@ -2472,7 +2478,9 @@
     name: AllowUnencryptedTraffic
     data: 0
     type: dword
-  when: rule_18_9_97_2_3
+  when:
+    - rule_18_9_97_2_3
+    - not win_skip_for_test
   tags:
     - level1
     - level2
@@ -2501,7 +2509,7 @@
     type: dword
   when:
     - rule_18_9_98_1
-    - is_implemented
+    - not win_skip_for_test
   tags:
     - level2
     - rule_18.9.98.1
