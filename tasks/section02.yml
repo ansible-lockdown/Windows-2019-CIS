@@ -666,7 +666,9 @@
     section: System Access
     key: newadministratorname
     value: GeorgeSharp
-  when: rule_2_3_1_5
+  when:
+    - rule_2_3_1_5
+    - not win_skip_for_test
   tags:
     - level1
     - level2
