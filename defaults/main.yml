@@ -208,6 +208,8 @@ rule_9_3_10: true
 
 # section17
 rule_17_1_1: true
+rule_17_1_2: true
+rule_17_1_3: true
 rule_17_2_1: true
 rule_17_2_2: true
 rule_17_2_3: true
