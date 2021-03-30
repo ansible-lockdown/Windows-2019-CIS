@@ -2,7 +2,7 @@
 - name: "SCORED | 2.2.1 | PATCH | L1 Ensure Access Credential Manager as a trusted caller is set to No One"
   win_user_right:
     name: SeTrustedCredManAccessPrivilege
-    users:
+    users: []
     action: set
   when: rule_2_2_1
   tags:
@@ -28,7 +28,7 @@
 - name: "SCORED | 2.2.4 | PATCH | L1 Ensure Act as part of the operating system is set to No One"
   win_user_right:
     name: SeTcbPrivilege
-    users:
+    users: []
     action: set
   when: rule_2_2_4
   tags:
@@ -148,7 +148,7 @@
 - name: "SCORED | 2.2.14 | PATCH | L1 Ensure Create a token object is set to No One"
   win_user_right:
     name: SeCreateTokenPrivilege
-    users:
+    users: []
     action: set
   when: rule_2_2_14
   tags:
@@ -176,7 +176,7 @@
 - name: "SCORED | 2.2.16 | PATCH | L1 Ensure Create permanent shared objects is set to No One"
   win_user_right:
     name: SeCreatePermanentPrivilege
-    users:
+    users: []
     action: set
   when: rule_2_2_16
   tags:
@@ -342,7 +342,7 @@
 - name: "SCORED | 2.2.28 | PATCH | L1 Ensure Enable computer and user accounts to be trusted for delegation is set to No One MS only"
   win_user_right:
     name: SeEnableDelegationPrivilege
-    users: 
+    users: []
     action: set
   when:
     - rule_2_2_28
@@ -445,7 +445,7 @@
 - name: "SCORED | 2.2.35 | PATCH | L1 Ensure Lock pages in memory is set to No One"
   win_user_right:
     name: SeLockMemoryPrivilege
-    users:
+    users: []
     action: set
   when: rule_2_2_35
   tags:
@@ -482,7 +482,7 @@
 - name: "SCORED | 2.2.39 | PATCH | L1 Ensure Modify an object label is set to No One"
   win_user_right:
     name: SeReLabelPrivilege
-    users:
+    users: []
     action: set
   when: rule_2_2_39
   tags:
