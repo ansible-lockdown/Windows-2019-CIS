@@ -257,6 +257,7 @@ rule_18_3_3: true
 rule_18_3_4: true
 rule_18_3_5: true
 rule_18_3_6: true
+rule_18_3_7: true
 rule_18_4_1: true
 rule_18_4_2: true
 rule_18_4_3: true
@@ -510,3 +511,8 @@ public_firewall_log_path: '%SystemRoot%\System32\logfiles\firewall\publicfw.log'
 # public_firewall_log_size is the size of the log file
 # To conform to CIS stadnards the value should be 16,384 or greater. Value is in KB
 public_firewall_log_size: 16,384
+
+# 18.3.6
+# netbt_nodetype is the node type value in HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\NetBT\Parameters:NodeType
+# Options are B-node value of 1, P-node value of 2, M-node value of 4, H-node value of 8. P-node is the recommended setting from CIS
+netbt_nodetype: 2

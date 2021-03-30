@@ -343,19 +343,33 @@
     - rule_18.3.5
     - patch
 
-- name: "SCORED | 18.3.6 | PATCH | L1 Ensure WDigest Authentication is set to Disabled"
+- name: "SCORED | 18.3.6 | PATCH | L1 Ensure 'NetBT NodeType configuration' is set to 'Enabled: P-node recommended'"
+  win_regedit:
+      path: HKLM:\SYSTEM\CurrentControlSet\Services\NetBT\Parameters
+      state: present
+      name: NodeType
+      value: "{{ netbt_nodetype }}"
+      datatype: dword
+  when: rule_18_3_6
+  tags:
+    - level1
+    - rule_18.3.6
+    - patch
+
+- name: "SCORED | 18.3.7 | PATCH | L1 Ensure WDigest Authentication is set to Disabled"
   win_regedit:
       path: HKLM:\SYSTEM\CurrentControlSet\Control\SecurityProviders\Wdigest
       state: present
       value: UseLogonCredential
       data: 0
       datatype: dword
-  when: rule_18_3_6
+  when: rule_18_3_7
   tags:
     - level1
     - level2
-    - rule_18.3.6
+    - rule_18.3.7
     - patch
+
 
 - name: "SCORED | 18.4.1 | PATCH | L1 Ensure MSS AutoAdminLogon Enable Automatic Logon not recommended is set to Disabled"
   win_regedit:
