@@ -2,12 +2,13 @@
 - name: "SCORED | 2.2.1 | PATCH | L1 Ensure Access Credential Manager as a trusted caller is set to No One"
   win_user_right:
     name: SeTrustedCredManAccessPrivilege
-    users:
+    users: []
     action: set
-  when: rule_2_2_1
+  when:
+    - rule_2_2_1
   tags:
-    - level1
-    - level2
+    - level1-domaincontroller
+    - level1-memberserver
     - rule_2.2.1
     - patch
 
@@ -21,6 +22,8 @@
   when:
     - rule_2_2_2 or rule_2_2_3
   tags:
+    - level1-domaincontroller
+    - level1-memberserver
     - rule_2.2.2
     - rule_2.2.3
     - patch
@@ -28,12 +31,13 @@
 - name: "SCORED | 2.2.4 | PATCH | L1 Ensure Act as part of the operating system is set to No One"
   win_user_right:
     name: SeTcbPrivilege
-    users:
+    users: []
     action: set
-  when: rule_2_2_4
+  when:
+    - rule_2_2_4
   tags:
-    - level1
-    - level2
+    - level1-domaincontroller
+    - level1-memberserver
     - rule_2.2.4
     - patch
 
@@ -46,6 +50,7 @@
     - rule_2_2_5
     - ansible_windows_domain_role == "Primary domain controller"
   tags:
+    - level1-domaincontroller
     - rule_2.2.5
     - patch
 
@@ -57,10 +62,11 @@
     - Local Service
     - Network Service
     action: set
-  when: rule_2_2_6
+  when:
+    - rule_2_2_6
   tags:
-    - level1
-    - level2
+    - level1-domaincontroller
+    - level1-memberserver
     - rule_2.2.6
     - patch
 
@@ -70,10 +76,11 @@
     users:
     - Administrators
     action: set
-  when: rule_2_2_7
+  when:
+    - rule_2_2_7
   tags:
-    - level1
-    - level2
+    - level1-domaincontroller
+    - level1-memberserver
     - rule_2.2.7
     - patch
 
@@ -87,6 +94,8 @@
   when:
     - rule_2_2_8 or rule_2_2_9
   tags:
+    - level1-domaincontroller
+    - level1-memberserver
     - rule_2.2.8
     - rule_2.2.9
     - patch
@@ -97,10 +106,11 @@
     users:
     - Administrators
     action: set
-  when: rule_2_2_10
+  when:
+    - rule_2_2_10
   tags:
-    - level1
-    - level2
+    - level1-domaincontroller
+    - level1-memberserver
     - rule_2.2.10
     - patch
 
@@ -111,10 +121,11 @@
     - Administrators
     - Local Service
     action: set
-  when: rule_2_2_11
+  when:
+    - rule_2_2_11
   tags:
-    - level1
-    - level2
+    - level1-domaincontroller
+    - level1-memberserver
     - rule_2.2.11
     - patch
 
@@ -125,10 +136,11 @@
     - Administrators
     - Local Service
     action: set
-  when: rule_2_2_12
+  when:
+    - rule_2_2_12
   tags:
-    - level1
-    - level2
+    - level1-domaincontroller
+    - level1-memberserver
     - rule_2.2.12
     - patch
 
@@ -138,22 +150,24 @@
     users:
     - Administrators
     action: set
-  when: rule_2_2_13
+  when:
+    - rule_2_2_13
   tags:
-    - level1
-    - level2
+    - level1-domaincontroller
+    - level1-memberserver
     - rule_2.2.13
     - patch
 
 - name: "SCORED | 2.2.14 | PATCH | L1 Ensure Create a token object is set to No One"
   win_user_right:
     name: SeCreateTokenPrivilege
-    users:
+    users: []
     action: set
-  when: rule_2_2_14
+  when:
+    - rule_2_2_14
   tags:
-    - level1
-    - level2
+    - level1-domaincontroller
+    - level1-memberserver
     - rule_2.2.14
     - patch
 
@@ -166,22 +180,24 @@
     - Network Service
     - Service
     action: set
-  when: rule_2_2_15
+  when:
+    - rule_2_2_15
   tags:
-    - level1
-    - level2
+    - level1-domaincontroller
+    - level1-memberserver
     - rule_2.2.15
     - patch
 
 - name: "SCORED | 2.2.16 | PATCH | L1 Ensure Create permanent shared objects is set to No One"
   win_user_right:
     name: SeCreatePermanentPrivilege
-    users:
+    users: []
     action: set
-  when: rule_2_2_16
+  when:
+    - rule_2_2_16
   tags:
-    - level1
-    - level2
+    - level1-domaincontroller
+    - level1-memberserver
     - rule_2.2.16
     - patch
 
@@ -195,6 +211,7 @@
     - rule_2_2_17
     - ansible_windows_domain_role == "Primary domain controller"
   tags:
+    - level1-domaincontroller
     - rule_2.2.17
     - patch
 
@@ -209,8 +226,7 @@
     - rule_2_2_18
     - ansible_windows_domain_role == "Member server"
   tags:
-    - level1
-    - level2
+    - level1-memberserver
     - rule_2.2.18
     - patch
 
@@ -220,10 +236,11 @@
     users:
     - Administrators
     action: set
-  when: rule_2_2_19
+  when:
+    - rule_2_2_19
   tags:
-    - level1
-    - level2
+    - level1-domaincontroller
+    - level1-memberserver
     - rule_2.2.19
     - patch
 
@@ -238,6 +255,7 @@
     - rule_2_2_20
     - ansible_windows_domain_role == "Primary domain controller"
   tags:
+    - level1-domaincontroller
     - rule_2.2.20
     - patch
 
@@ -253,8 +271,7 @@
     - rule_2_2_21
     - ansible_windows_domain_member
   tags:
-    - level1
-    - level2
+    - level1-memberserver
     - rule_2.2.21
     - patch
 
@@ -264,10 +281,11 @@
     users:
     - Guests
     action: set
-  when: rule_2_2_22
+  when:
+    - rule_2_2_22
   tags:
-    - level1
-    - level2
+    - level1-domaincontroller
+    - level1-memberserver
     - rule_2.2.22
     - patch
 
@@ -277,10 +295,11 @@
     users:
     - Guests
     action: set
-  when: rule_2_2_23
+  when:
+    - rule_2_2_23
   tags:
-    - level1
-    - level2
+    - level1-domaincontroller
+    - level1-memberserver
     - rule_2.2.23
     - patch
 
@@ -290,10 +309,11 @@
       users:
       - Guests
       action: set
-  when: rule_2_2_24
+  when:
+    - rule_2_2_24
   tags:
-    - level1
-    - level2
+    - level1-domaincontroller
+    - level1-memberserver
     - rule_2.2.24
     - patch
 
@@ -308,6 +328,7 @@
     - rule_2_2_25
     - ansible_windows_domain_role == "Primary domain controller"
   tags:
+    - level1-domaincontroller
     - rule_2.2.25
     - patch
 
@@ -322,8 +343,7 @@
     - rule_2_2_26
     - ansible_windows_domain_member
   tags:
-    - level1
-    - level2
+    - level1-memberserver
     - rule_2.2.26
     - patch
 
@@ -336,20 +356,20 @@
     - rule_2_2_27
     - ansible_windows_domain_role == "Primary domain controller"
   tags:
+    - level1-domaincontroller
     - rule_2.2.27
     - patch
 
 - name: "SCORED | 2.2.28 | PATCH | L1 Ensure Enable computer and user accounts to be trusted for delegation is set to No One MS only"
   win_user_right:
     name: SeEnableDelegationPrivilege
-    users: 
+    users: []
     action: set
   when:
     - rule_2_2_28
     - ansible_windows_domain_member
   tags:
-    - level1
-    - level2
+    - level1-memberserver
     - rule_2.2.28
     - patch
 
@@ -359,10 +379,11 @@
       users:
       - Administrators
       action: set
-  when: rule_2_2_29
+  when:
+    - rule_2_2_29
   tags:
-    - level1
-    - level2
+    - level1-domaincontroller
+    - level1-memberserver
     - rule_2.2.29
     - patch
 
@@ -373,10 +394,11 @@
     - Local Service
     - Network Service
     action: set
-  when: rule_2_2_30
+  when:
+    - rule_2_2_30
   tags:
-    - level1
-    - level2
+    - level1-domaincontroller
+    - level1-memberserver
     - rule_2.2.30
     - patch
 
@@ -393,6 +415,7 @@
     - rule_2_2_31
     - ansible_windows_domain_role == "Primary domain controller"
   tags:
+    - level1-domaincontroller
     - rule_2.2.31
     - patch
 
@@ -410,8 +433,7 @@
     - rule_2_2_32
     - ansible_windows_domain_member
   tags:
-    - level1
-    - level2
+    - level1-memberserver
     - rule_2.2.32
     - patch
 
@@ -422,10 +444,11 @@
     - Administrators
     - Window Manager\Window Manager Group
     action: set
-  when: rule_2_2_33
+  when:
+    - rule_2_2_33
   tags:
-    - level1
-    - level2
+    - level1-domaincontroller
+    - level1-memberserver
     - rule_2.2.33
     - patch
 
@@ -435,22 +458,24 @@
     users:
     - Administrators
     action: set
-  when: rule_2_2_34
+  when:
+    - rule_2_2_34
   tags:
-    - level1
-    - level2
+    - level1-domaincontroller
+    - level1-memberserver
     - rule_2.2.34
     - patch
 
 - name: "SCORED | 2.2.35 | PATCH | L1 Ensure Lock pages in memory is set to No One"
   win_user_right:
     name: SeLockMemoryPrivilege
-    users:
+    users: []
     action: set
-  when: rule_2_2_35
+  when:
+    - rule_2_2_35
   tags:
-    - level1
-    - level2
+    - level1-domaincontroller
+    - level1-memberserver
     - rule_2.2.35
     - patch
 
@@ -463,6 +488,7 @@
     - rule_2_2_36
     - ansible_windows_domain_role == "Primary domain controller"
   tags:
+    - level2-domaincontroller
     - rule_2.2.36
     - patch
 
@@ -475,6 +501,8 @@
   when:
     - rule_2_2_37 or rule_2_2_38
   tags:
+    - level1-domaincontroller
+    - level1-memberserver
     - rule_2.2.37
     - rule_2.2.38
     - patch
@@ -482,12 +510,13 @@
 - name: "SCORED | 2.2.39 | PATCH | L1 Ensure Modify an object label is set to No One"
   win_user_right:
     name: SeReLabelPrivilege
-    users:
+    users: []
     action: set
-  when: rule_2_2_39
+  when:
+    - rule_2_2_39
   tags:
-    - level1
-    - level2
+    - level1-domaincontroller
+    - level1-memberserver
     - rule_2.2.39
     - patch
 
@@ -497,10 +526,11 @@
     users:
     - Administrators
     action: set
-  when: rule_2_2_40
+  when:
+    - rule_2_2_40
   tags:
-    - level1
-    - level2
+    - level1-domaincontroller
+    - level1-memberserver
     - rule_2.2.40
     - patch
 
@@ -510,10 +540,11 @@
     users:
     - Administrators
     action: set
-  when: rule_2_2_41
+  when:
+    - rule_2_2_41
   tags:
-    - level1
-    - level2
+    - level1-domaincontroller
+    - level1-memberserver
     - rule_2.2.41
     - patch
 
@@ -523,10 +554,11 @@
     users:
     - Administrators
     action: set
-  when: rule_2_2_42
+  when:
+    - rule_2_2_42
   tags:
-    - level1
-    - level2
+    - level1-domaincontroller
+    - level1-memberserver
     - rule_2.2.42
     - patch
 
@@ -537,10 +569,11 @@
     - Administrators
     - NT SERVICE\WdiServiceHost
     action: set
-  when: rule_2_2_43
+  when:
+    - rule_2_2_43
   tags:
-    - level1
-    - level2
+    - level1-domaincontroller
+    - level1-memberserver
     - rule_2.2.43
     - patch
 
@@ -551,10 +584,11 @@
     - LOCAL SERVICE
     - NETWORK SERVICE
     action: set
-  when: rule_2_2_44
+  when:
+    - rule_2_2_44
   tags:
-    - level1
-    - level2
+    - level1-domaincontroller
+    - level1-memberserver
     - rule_2.2.44
     - patch
 
@@ -564,10 +598,11 @@
     users:
     - Administrators
     action: set
-  when: rule_2_2_45
+  when:
+    - rule_2_2_45
   tags:
-    - level1
-    - level2
+    - level1-domaincontroller
+    - level1-memberserver
     - rule_2.2.45
     - patch
 
@@ -577,10 +612,11 @@
     users:
     - Administrators
     action: set
-  when: rule_2_2_46
+  when:
+    - rule_2_2_46
   tags:
-    - level1
-    - level2
+    - level1-domaincontroller
+    - level1-memberserver
     - rule_2.2.46
     - patch
 
@@ -593,6 +629,7 @@
     - rule_2_2_47
     - ansible_windows_domain_role == "Primary domain controller"
   tags:
+    - level1-domaincontroller
     - rule_2.2.47
     - patch
 
@@ -602,10 +639,11 @@
     users:
     - Administrators
     action: set
-  when: rule_2_2_48
+  when:
+    - rule_2_2_48
   tags:
-    - level1
-    - level2
+    - level1-domaincontroller
+    - level1-memberserver
     - rule_2.2.48
     - patch
 
@@ -618,8 +656,7 @@
     - rule_2_3_1_1
     - not ansible_windows_domain_role == "Primary domain controller"
   tags:
-    - level1
-    - level2
+    - level1-memberserver
     - rule_2.3.1.1
     - patch
 
@@ -629,10 +666,11 @@
     name: NoConnectedUser
     data: 3
     type: dword
-  when: rule_2_3_1_2
+  when:
+    - rule_2_3_1_2
   tags:
-    - level1
-    - level2
+    - level1-domaincontroller
+    - level1-memberserver
     - rule_2.3.1.2
     - patch
 
@@ -641,10 +679,10 @@
     section: System Access
     key: EnableGuestAccount
     value: 0
-  when: rule_2_3_1_3
+  when:
+    - rule_2_3_1_3
   tags:
-    - level1
-    - level2
+    - level1-memberserver
     - rule_2.3.1.3
     - patch
 
@@ -654,10 +692,11 @@
     name: LimitBlankPasswordUse
     data: 1
     type: dword
-  when: rule_2_3_1_4
+  when:
+    - rule_2_3_1_4
   tags:
-    - level1
-    - level2
+    - level1-domaincontroller
+    - level1-memberserver
     - rule_2.3.1.4
     - patch
 
@@ -670,8 +709,8 @@
     - rule_2_3_1_5
     - not win_skip_for_test
   tags:
-    - level1
-    - level2
+    - level1-domaincontroller
+    - level1-memberserver
     - rule_2.3.1.5
     - patch
 
@@ -680,10 +719,11 @@
     section: System Access
     key: NewGuestName
     value: BobCooper
-  when: rule_2_3_1_6
+  when:
+    - rule_2_3_1_6
   tags:
-    - level1
-    - level2
+    - level1-domaincontroller
+    - level1-memberservers
     - rule_2.3.1.6
     - patch
 
@@ -693,10 +733,11 @@
     name: SCENoApplyLegacyAuditPolicy
     data: 1
     type: dword
-  when: rule_2_3_2_1
+  when:
+    - rule_2_3_2_1
   tags:
-    - level1
-    - level2
+    - level1-domaincontroller
+    - level1-memberserver
     - rule_2.3.2.1
     - patch
 
@@ -706,10 +747,11 @@
     name: CrashOnAuditFail
     data: 0
     type: dword
-  when: rule_2_3_2_2
+  when:
+    - rule_2_3_2_2
   tags:
-    - level1
-    - level2
+    - level1-domaincontroller
+    - level1-memberserver
     - rule_2.3.2.2
     - patch
 
@@ -719,10 +761,11 @@
     name: AllocateDASD
     data: 0
     type: string
-  when: rule_2_3_4_1
+  when:
+    - rule_2_3_4_1
   tags:
-    - level1
-    - level2
+    - level1-domaincontroller
+    - level1-memberserver
     - rule_2.3.4.1
     - patch
 
@@ -732,10 +775,11 @@
     name: AddPrinterDrivers
     data: 1
     type: dword
-  when: rule_2_3_4_2
+  when:
+    - rule_2_3_4_2
   tags:
-    - level1
-    - level2
+    - level1-domaincontroller
+    - level1-memberserver
     - rule_2.3.4.2
     - patch
 
@@ -749,6 +793,7 @@
     - rule_2_3_5_1
     - ansible_windows_domain_role == "Primary domain controller"
   tags:
+    - level1-domaincontroller
     - rule_2.3.5.1
     - patch
 
@@ -762,6 +807,7 @@
     - rule_2_3_5_2
     - ansible_windows_domain_role == "Primary domain controller"
   tags:
+    - level1-domaincontroller
     - rule_2.3.5.2
     - patch
 
@@ -775,6 +821,7 @@
     - rule_2_3_5_3
     - ansible_windows_domain_role == "Primary domain controller"
   tags:
+    - level1-domaincontroller
     - rule_2.3.5.3
     - patch
 
@@ -788,8 +835,8 @@
     - rule_2_3_6_1
     - not ansible_windows_domain_role == "Primary domain controller"
   tags:
-    - level1
-    - level2
+    - level1-domaincontroller
+    - level1-memberserver
     - rule_2.3.6.1
     - patch
 
@@ -803,8 +850,8 @@
     - rule_2_3_6_2
     - not ansible_windows_domain_role == "Primary domain controller"
   tags:
-    - level1
-    - level2
+    - level1-domaincontroller
+    - level1-memberserver
     - rule_2.3.6.2
     - patch
 
@@ -818,8 +865,8 @@
     - rule_2_3_6_3
     - not ansible_windows_domain_role == "Primary domain controller"
   tags:
-    - level1
-    - level2
+    - level1-domaincontroller
+    - level1-memberserver
     - rule_2.3.6.3
     - patch
 
@@ -833,8 +880,8 @@
     - rule_2_3_6_4
     - not ansible_windows_domain_role == "Primary domain controller"
   tags:
-    - level1
-    - level2
+    - level1-domaincontroller
+    - level1-memberserver
     - rule_2.3.6.4
     - patch
 
@@ -848,8 +895,8 @@
     - rule_2_3_6_5
     - not ansible_windows_domain_role == "Primary domain controller"
   tags:
-    - level1
-    - level2
+    - level1-domaincontroller
+    - level1-memberserver
     - rule_2.3.6.5
     - patch
 
@@ -863,8 +910,8 @@
     - rule_2_3_6_6
     - not ansible_windows_domain_role == "Primary domain controller"
   tags:
-    - level1
-    - level2
+    - level1-domaincontroller
+    - level1-memberserver
     - rule_2.3.6.6
     - patch
 
@@ -874,10 +921,11 @@
     name: DisableCAD
     data: 0
     type: dword
-  when: rule_2_3_7_1
+  when:
+    - rule_2_3_7_1
   tags:
-    - level1
-    - level2
+    - level1-domaincontroller
+    - level1-memberserver
     - rule_2.3.7.1
     - patch
 
@@ -887,10 +935,11 @@
     name: DontDisplayLastUserName
     data: 1
     type: dword
-  when: rule_2_3_7_2
+  when:
+    - rule_2_3_7_2
   tags:
-    - level1
-    - level2
+    - level1-domaincontroller
+    - level1-memberserver
     - rule_2.3.7.2
     - patch
 
@@ -900,10 +949,11 @@
     name: InactivityTimeoutSecs
     data: 900
     type: dword
-  when: rule_2_3_7_3
+  when:
+    - rule_2_3_7_3
   tags:
-    - level1
-    - level2
+    - level1-domaincontroller
+    - level1-memberserver
     - rule_2.3.7.3
     - patch
 
@@ -913,10 +963,11 @@
     name: LegalNoticeText
     data: "{{ legalnoticetext }}"
     type: string
-  when: rule_2_3_7_4
+  when:
+    - rule_2_3_7_4
   tags:
-    - level1
-    - level2
+    - level1-domaincontroller
+    - level1-memberserver
     - rule_2.3.7.4
     - patch
 
@@ -926,10 +977,11 @@
     name: LegalNoticeCaption
     data: "{{ legalnoticecaption }}"
     type: string
-  when: rule_2_3_7_5
+  when:
+    - rule_2_3_7_5
   tags:
-    - level1
-    - level2
+    - level1-domaincontroller
+    - level1-memberserver
     - rule_2.3.7.5
     - patch
 
@@ -939,9 +991,10 @@
     name: cachedlogonscount
     data: 1
     type: string
-  when: rule_2_3_7_6
+  when:
+    - rule_2_3_7_6
   tags:
-    - level2
+    - level2-memberserver
     - rule_2.3.7.6
     - patch
 
@@ -951,10 +1004,11 @@
     name: PasswordExpiryWarning
     data: 14
     type: dword
-  when: rule_2_3_7_7
+  when:
+    - rule_2_3_7_7
   tags:
-    - level1
-    - level2
+    - level1-domaincontroller
+    - level1-memberserver
     - rule_2.3.7.7
     - patch
 
@@ -968,8 +1022,7 @@
     - rule_2_3_7_8
     - ansible_windows_domain_role == "Member server"
   tags:
-    - level1
-    - level2
+    - level1-memberserver
     - rule_2.3.7.8
     - patch
 
@@ -979,10 +1032,11 @@
     name: scremoveoption
     data: 1
     type: string
-  when: rule_2_3_7_9
+  when:
+    - rule_2_3_7_9
   tags:
-    - level1
-    - level2
+    - level1-domaincontroller
+    - level1-memberserver
     - rule_2.3.7.9
     - patch
 
@@ -992,10 +1046,11 @@
     name: RequireSecuritySignature
     data: 1
     type: dword
-  when: rule_2_3_8_1
+  when:
+    - rule_2_3_8_1
   tags:
-    - level1
-    - level2
+    - level1-domaincontroller
+    - level1-memberserver
     - rule_2.3.8.1
     - patch
 
@@ -1005,10 +1060,11 @@
     name: EnableSecuritySignature
     data: 1
     type: dword
-  when: rule_2_3_8_2
+  when:
+    - rule_2_3_8_2
   tags:
-    - level1
-    - level2
+    - level1-domaincontroller
+    - level1-memberserver
     - rule_2.3.8.2
     - patch
 
@@ -1018,10 +1074,11 @@
     name: EnablePlainTextPassword
     data: 0
     type: dword
-  when: rule_2_3_8_3
+  when:
+    - rule_2_3_8_3
   tags:
-    - level1
-    - level2
+    - level1-domaincontroller
+    - level1-memberserver
     - rule_2.3.8.3
     - patch
 
@@ -1031,10 +1088,11 @@
     name: autodisconnect
     data: 15
     type: dword
-  when: rule_2_3_9_1
+  when:
+    - rule_2_3_9_1
   tags:
-    - level1
-    - level2
+    - level1-domaincontroller
+    - level1-memberserver
     - rule_2.3.9.1
     - patch
 
@@ -1044,10 +1102,11 @@
     name: requiresecuritysignature
     data: 1
     type: dword
-  when: rule_2_3_9_2
+  when:
+    - rule_2_3_9_2
   tags:
-    - level1
-    - level2
+    - level1-domaincontroller
+    - level1-memberserver
     - rule_2.3.9.2
     - patch
 
@@ -1057,10 +1116,11 @@
     name: enablesecuritysignature
     data: 1
     type: dword
-  when: rule_2_3_9_3
+  when:
+    - rule_2_3_9_3
   tags:
-    - level1
-    - level2
+    - level1-domaincontroller
+    - level1-memberserver
     - rule_2.3.9.3
     - patch
 
@@ -1070,10 +1130,11 @@
     name: enableforcedlogoff
     data: 1
     type: dword
-  when: rule_2_3_9_4
+  when:
+    - rule_2_3_9_4
   tags:
-    - level1
-    - level2
+    - level1-domaincontroller
+    - level1-memberserver
     - rule_2.3.9.4
     - patch
 
@@ -1087,8 +1148,7 @@
     - rule_2_3_9_5
     - ansible_windows_domain_role == "Member server"
   tags:
-    - level1
-    - level2
+    - level1-memberserver
     - rule_2.3.9.5
     - patch
 
@@ -1097,10 +1157,11 @@
     section: System Access
     key: LSAAnonymousNameLookup
     value: 0
-  when: rule_2_3_10_1
+  when:
+    - rule_2_3_10_1
   tags:
-    - level1
-    - level2
+    - level1-domaincontroller
+    - level1-memberserver
     - rule_2.3.10.1
     - patch
 
@@ -1114,8 +1175,7 @@
     - rule_2_3_10_2
     - ansible_windows_domain_role == "Member server"
   tags:
-    - level1
-    - level2
+    - level1-memberserver
     - rule_2.3.10.2
     - patch
 
@@ -1129,8 +1189,7 @@
     - rule_2_3_10_3
     - ansible_windows_domain_role == "Member server"
   tags:
-    - level1
-    - level2
+    - level1-memberserver
     - rule_2.3.10.3
     - patch
 
@@ -1140,9 +1199,11 @@
     name: DisableDomainCreds
     data: 1
     type: dword
-  when: rule_2_3_10_4
+  when:
+    - rule_2_3_10_4
   tags:
-    - level2
+    - level2-domaincontroller
+    - level2-memberserver
     - rule_2.3.10.4
     - patch
 
@@ -1152,10 +1213,11 @@
     name: EveryoneIncludesAnonymous
     data: 0
     type: dword
-  when: rule_2_3_10_5
+  when:
+    - rule_2_3_10_5
   tags:
-    - level1
-    - level2
+    - level1-domaincontroller
+    - level1-memberserver
     - rule_2.3.10.5
     - patch
 
@@ -1169,6 +1231,7 @@
     - rule_2_3_10_6
     - ansible_windows_domain_role == "Primary domain controller"
   tags:
+    - level1-domaincontroller
     - rule_2.3.10.6
     - patch
 
@@ -1182,8 +1245,7 @@
     - rule_2_3_10_7
     - ansible_windows_domain_role == "Member server"
   tags:
-    - level1
-    - level2
+    - level1-memberserver
     - rule_2.3.10.7
     - patch
 
@@ -1193,10 +1255,11 @@
     name: "Machine"
     data: ['System\CurrentControlSet\Control\ProductOptions', 'System\CurrentControlSet\Control\Server Applications', 'Software\Microsoft\Windows NT\CurrentVersion']
     type: multistring
-  when: rule_2_3_10_8
+  when:
+    - rule_2_3_10_8
   tags:
-    - level1
-    - level2
+    - level1-domaincontroller
+    - level1-memberserver
     - rule_2.3.10.8
     - patch
 
@@ -1206,10 +1269,11 @@
     name: "Machine"
     data: ['System\CurrentControlSet\Control\Print\Printers', 'System\CurrentControlSet\Services\Eventlog', 'Software\Microsoft\OLAP Server', 'Software\Microsoft\Windows NT\CurrentVersion\Print', 'Software\Microsoft\Windows NT\CurrentVersion\Windows', 'System\CurrentControlSet\Control\ContentIndex', 'System\CurrentControlSet\Control\Terminal Server', 'System\CurrentControlSet\Control\Terminal Server\UserConfig', 'System\CurrentControlSet\Control\Terminal Server\DefaultUserConfiguration', 'Software\Microsoft\Windows NT\CurrentVersion\Perflib', 'System\CurrentControlSet\Services\WINS', 'System\CurrentControlSet\Services\CertSvc']
     type: multistring
-  when: rule_2_3_10_9
+  when:
+    - rule_2_3_10_9
   tags:
-    - level1
-    - level2
+    - level1-domaincontroller
+    - level1-memberserver
     - rule_2.3.10.9
     - patch
 
@@ -1219,10 +1283,11 @@
     name: RestrictNullSessAccess
     data: 1
     type: dword
-  when: rule_2_3_10_10
+  when:
+    - rule_2_3_10_10
   tags:
-    - level1
-    - level2
+    - level1-domaincontroller
+    - level1-memberserver
     - rule_2.3.10.10
     - patch
 
@@ -1232,10 +1297,10 @@
     name: RestrictRemoteSAM
     data: "O:BAG:BAD:(A;;RC;;;BA)"
     type: string
-  when: rule_2_3_10_11
+  when:
+    - rule_2_3_10_11
   tags:
-    - level1
-    - level2
+    - level1-memberserver
     - rule_2.3.10.11
     - patch
 
@@ -1245,10 +1310,11 @@
     name: NullSessionShares
     data: ""
     type: multistring
-  when: rule_2_3_10_12
+  when:
+    - rule_2_3_10_12
   tags:
-    - level1
-    - level2
+    - level1-domaincontroller
+    - level1-memberserver
     - rule_2.3.10.12
     - patch
 
@@ -1258,10 +1324,11 @@
     name: ForceGuest
     data: 0
     type: dword
-  when: rule_2_3_10_13
+  when:
+    - rule_2_3_10_13
   tags:
-    - level1
-    - level2
+    - level1-domaincontroller
+    - level1-memberserver
     - rule_2.3.10.13
     - patch
 
@@ -1271,10 +1338,11 @@
     name: UseMachineId
     data: 1
     type: dword
-  when: rule_2_3_11_1
+  when:
+    - rule_2_3_11_1
   tags:
-    - level1
-    - level2
+    - level1-domaincontroller
+    - level1-memberserver
     - rule_2.3.11.1
     - patch
 
@@ -1284,10 +1352,11 @@
     name: allownullsessionfallback
     data: 0
     type: dword
-  when: rule_2_3_11_2
+  when:
+    - rule_2_3_11_2
   tags:
-    - level1
-    - level2
+    - level1-domaincontroller
+    - level1-memberserver
     - rule_2.3.11.2
     - patch
 
@@ -1297,10 +1366,11 @@
     name: AllowOnlineID
     data: 0
     type: dword
-  when: rule_2_3_11_3
+  when:
+    - rule_2_3_11_3
   tags:
-    - level1
-    - level2
+    - level1-domaincontroller
+    - level1-memberserver
     - rule_2.3.11.3
     - patch
 
@@ -1310,10 +1380,11 @@
     name: SupportedEncryptionTypes
     data: 2147483644
     type: dword
-  when: rule_2_3_11_4
+  when:
+    - rule_2_3_11_4
   tags:
-    - level1
-    - level2
+    - level1-domaincontroller
+    - level1-memberserver
     - rule_2.3.11.4
     - patch
 
@@ -1323,10 +1394,11 @@
     name: NoLMHash
     data: 1
     type: dword
-  when: rule_2_3_11_5
+  when:
+    - rule_2_3_11_5
   tags:
-    - level1
-    - level2
+    - level1-domaincontroller
+    - level1-memberserver
     - rule_2.3.11.5
     - patch
 
@@ -1336,10 +1408,11 @@
     name: EnableForcedLogOff
     data: 1
     type: dword
-  when: rule_2_3_11_6
+  when:
+    - rule_2_3_11_6
   tags:
-    - level1
-    - level2
+    - level1-domaincontroller
+    - level1-memberserver
     - rule_2.3.11.6
     - patch
 
@@ -1349,10 +1422,11 @@
     name: LMCompatibilityLevel
     data: 5
     type: dword
-  when: rule_2_3_11_7
+  when:
+    - rule_2_3_11_7
   tags:
-    - level1
-    - level2
+    - level1-domaincontroller
+    - level1-memberserver
     - rule_2.3.11.7
     - patch
 
@@ -1362,10 +1436,11 @@
     name: LDAPClientIntegrity
     data: 1
     type: dword
-  when: rule_2_3_11_8
+  when:
+    - rule_2_3_11_8
   tags:
-    - level1
-    - level2
+    - level1-domaincontroller
+    - level1-memberserver
     - rule_2.3.11.8
     - patch
 
@@ -1375,10 +1450,11 @@
     name: NTLMMinClientSec
     data: 537395200
     type: dword
-  when: rule_2_3_11_9
+  when:
+    - rule_2_3_11_9
   tags:
-    - level1
-    - level2
+    - level1-domaincontroller
+    - level1-memberserver
     - rule_2.3.11.9
     - patch
 
@@ -1388,10 +1464,11 @@
     name: NTLMMinServerSec
     data: 537395200
     type: dword
-  when: rule_2_3_11_10
+  when:
+    - rule_2_3_11_10
   tags:
-    - level1
-    - level2
+    - level1-domaincontroller
+    - level1-memberserver
     - rule_2.3.11.10
     - patch
 
@@ -1401,10 +1478,11 @@
     name: ShutdownWithoutLogon
     data: 0
     type: dword
-  when: rule_2_3_13_1
+  when:
+    - rule_2_3_13_1
   tags:
-    - level1
-    - level2
+    - level1-domaincontroller
+    - level1-memberserver
     - rule_2.3.13.1
     - patch
 
@@ -1414,10 +1492,11 @@
     name: ObCaseInsensitive
     data: 1
     type: dword
-  when: rule_2_3_15_1
+  when:
+    - rule_2_3_15_1
   tags:
-    - level1
-    - level2
+    - level1-domaincontroller
+    - level1-memberserver
     - rule_2.3.15.1
     - patch
 
@@ -1427,10 +1506,11 @@
     name: ProtectionMode
     data: 1
     type: dword
-  when: rule_2_3_15_2
+  when:
+    - rule_2_3_15_2
   tags:
-    - level1
-    - level2
+    - level1-domaincontroller
+    - level1-memberserver
     - rule_2.3.15.2
     - patch
 
@@ -1440,10 +1520,11 @@
     name: FilterAdministratorToken
     data: 1
     type: dword
-  when: rule_2_3_17_1
+  when:
+    - rule_2_3_17_1
   tags:
-    - level1
-    - level2
+    - level1-domaincontroller
+    - level1-memberserver
     - rule_2.3.17.1
     - patch
 
@@ -1453,10 +1534,11 @@
     name: ConsentPromptBehaviorAdmin
     data: 2
     type: dword
-  when: rule_2_3_17_2
+  when:
+    - rule_2_3_17_2
   tags:
-    - level1
-    - level2
+    - level1-domaincontroller
+    - level1-memberserver
     - rule_2.3.17.2
     - patch
 
@@ -1466,10 +1548,11 @@
     name: ConsentPromptBehaviorUser
     data: 0
     type: dword
-  when: rule_2_3_17_3
+  when:
+    - rule_2_3_17_3
   tags:
-    - level1
-    - level2
+    - level1-domaincontroller
+    - level1-memberserver
     - rule_2.3.17.3
     - patch
 
@@ -1479,10 +1562,11 @@
     name: EnableInstallerDetection
     data: 1
     type: dword
-  when: rule_2_3_17_4
+  when:
+    - rule_2_3_17_4
   tags:
-    - level1
-    - level2
+    - level1-domaincontroller
+    - level1-memberserver
     - rule_2.3.17.4
     - patch
 
@@ -1492,10 +1576,11 @@
     name: EnableSecureUIAPaths
     data: 1
     type: dword
-  when: rule_2_3_17_5
+  when:
+    - rule_2_3_17_5
   tags:
-    - level1
-    - level2
+    - level1-domaincontroller
+    - level1-memberserver
     - rule_2.3.17.5
     - patch
 
@@ -1505,10 +1590,11 @@
     name: EnableLUA
     data: 1
     type: dword
-  when: rule_2_3_17_6
+  when:
+    - rule_2_3_17_6
   tags:
-    - level1
-    - level2
+    - level1-domaincontroller
+    - level1-memberserver
     - rule_2.3.17.6
     - patch
 
@@ -1518,10 +1604,11 @@
     name: PromptOnSecureDesktop
     data: 1
     type: dword
-  when: rule_2_3_17_7
+  when:
+    - rule_2_3_17_7
   tags:
-    - level1
-    - level2
+    - level1-domaincontroller
+    - level1-memberserver
     - rule_2.3.17.7
     - patch
 
@@ -1531,10 +1618,11 @@
     name: EnableVirtualization
     data: 1
     type: dword
-  when: rule_2_3_17_8
+  when:
+    - rule_2_3_17_8
   tags:
-    - level1
-    - level2
+    - level1-domaincontroller
+    - level1-memberserver
     - rule_2.3.17.8
     - patch
 

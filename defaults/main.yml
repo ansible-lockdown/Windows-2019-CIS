@@ -208,6 +208,8 @@ rule_9_3_10: true
 
 # section17
 rule_17_1_1: true
+rule_17_1_2: true
+rule_17_1_3: true
 rule_17_2_1: true
 rule_17_2_2: true
 rule_17_2_3: true
@@ -257,6 +259,7 @@ rule_18_3_3: true
 rule_18_3_4: true
 rule_18_3_5: true
 rule_18_3_6: true
+rule_18_3_7: true
 rule_18_4_1: true
 rule_18_4_2: true
 rule_18_4_3: true
@@ -334,12 +337,12 @@ rule_18_8_36_1: true
 rule_18_8_36_2: true
 rule_18_8_37_1: true
 rule_18_8_37_2: true
-rule_18_8_45_1: true
 rule_18_8_45_5_1: true
-rule_18_8_45_11_1: true
-rule_18_8_47_1: true
-rule_18_8_50_1_1: true
-rule_18_8_50_1_2: true
+rule_18_8_47_5_1: true
+rule_18_8_47_11_1: true
+rule_18_8_49_1: true
+rule_18_8_52_1_1: true
+rule_18_8_52_1_2: true
 rule_18_9_4_1: true
 rule_18_9_6_1: true
 rule_18_9_8_1: true
@@ -510,3 +513,8 @@ public_firewall_log_path: '%SystemRoot%\System32\logfiles\firewall\publicfw.log'
 # public_firewall_log_size is the size of the log file
 # To conform to CIS stadnards the value should be 16,384 or greater. Value is in KB
 public_firewall_log_size: 16,384
+
+# 18.3.6
+# netbt_nodetype is the node type value in HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\NetBT\Parameters:NodeType
+# Options are B-node value of 1, P-node value of 2, M-node value of 4, H-node value of 8. P-node is the recommended setting from CIS
+netbt_nodetype: 2
