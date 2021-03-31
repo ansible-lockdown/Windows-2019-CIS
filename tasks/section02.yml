@@ -310,7 +310,7 @@
       - Guests
       action: set
   when:
-    - srule_2_2_24
+    - rule_2_2_24
   tags:
     - level1-domaincontroller
     - level1-memberserver
