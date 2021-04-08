@@ -1807,7 +1807,7 @@
 
 - name: "SCORED | 18.9.26.3.1 | PATCH | L1 Ensure Setup Control Event Log behavior when the log file reaches its maximum size is set to Disabled"
   win_regedit:
-    path: HKLM:\Software\Policies\Microsoft\Windows\Eventlog\Application
+    path: HKLM:\Software\Policies\Microsoft\Windows\Eventlog\Setup
     name: Retention
     data: 0
     type: string
