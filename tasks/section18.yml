@@ -271,8 +271,8 @@
   win_regedit:
       path: HKLM:\SYSTEM\CurrentControlSet\Services\NetBT\Parameters
       state: present
-      name: NodeType
-      value: "{{ netbt_nodetype }}"
+      value: NodeType
+      data: "{{ netbt_nodetype }}"
       datatype: dword
   when:
     - rule_18_3_6
