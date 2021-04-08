@@ -237,7 +237,7 @@
   win_regedit:
       path: HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\kernel
       name: DisableExceptionChainValidation
-      data: 1
+      data: 0
       type: dword
       state: present
   when:
