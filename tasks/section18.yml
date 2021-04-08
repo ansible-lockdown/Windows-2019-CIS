@@ -745,7 +745,7 @@
   win_regedit:
     path: HKLM:\Software\Policies\Microsoft\Windows\Wcmsvc\Grouppolicy
     name: fMinimizeConnections
-    data: 1
+    data: 3
     type: dword
   when:
     - rule_18_5_21_1
