@@ -1378,7 +1378,7 @@
   win_regedit:
     path: HKLM:\Software\Microsoft\Windows\Currentversion\Policies\System\Kerberos\Parameters
     name: SupportedEncryptionTypes
-    data: 2147483644
+    data: 2147483640
     type: dword
   when:
     - rule_2_3_11_4
