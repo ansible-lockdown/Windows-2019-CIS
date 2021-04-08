@@ -2516,7 +2516,7 @@
   win_regedit:
     path: HKLM:\Software\Policies\Microsoft\Windows\Powershell\Transcription
     name: EnableTranscripting
-    data: 1
+    data: 0
     type: dword
   when:
     - rule_18_9_95_2
