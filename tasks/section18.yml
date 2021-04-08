@@ -1754,7 +1754,7 @@
     path: HKLM:\Software\Policies\Microsoft\Windows\EventLog\Application
     name: Retention
     data: 0
-    type: dword
+    type: string
   when:
     - rule_18_9_26_1_1
   tags:
