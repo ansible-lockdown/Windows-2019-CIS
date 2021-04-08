@@ -2352,7 +2352,7 @@
 - name: "SCORED | 18.9.77.13.3.1 | PATCH | L1 Ensure Prevent users and apps from accessing dangerous websites is set to Enabled Block"
   win_regedit:
     path: HKLM:\Software\Policies\Microsoft\Windows Defender\Windows Defender Exploit Guard\Network Protection
-    name: ExploitGuard_ASR_Rules
+    name: EnableNetworkProtection
     data: 1
     type: dword
   when:
