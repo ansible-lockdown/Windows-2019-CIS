@@ -43,7 +43,7 @@
   win_regedit:
     path: HKLM:\SOFTWARE\Policies\Microsoft\WindowsFirewall\DomainProfile
     name: DisableNotifications
-    data: 0
+    data: 1
     type: dword
   when:
     - rule_9_1_4
@@ -154,7 +154,7 @@
   win_regedit:
     path: HKLM:\SOFTWARE\Policies\Microsoft\WindowsFirewall\PrivateProfile
     name: DisableNotifications
-    data: 0
+    data: 1
     type: dword
   when:
     - rule_9_2_4
@@ -265,7 +265,7 @@
   win_regedit:
     path: HKLM:\SOFTWARE\Policies\Microsoft\WindowsFirewall\PublicProfile
     name: DisableNotifications
-    data: 0
+    data: 1
     type: dword
   when:
     - rule_9_3_4
