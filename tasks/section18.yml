@@ -237,7 +237,7 @@
   win_regedit:
       path: HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\kernel
       name: DisableExceptionChainValidation
-      data: 1
+      data: 0
       type: dword
       state: present
   when:
@@ -271,8 +271,8 @@
   win_regedit:
       path: HKLM:\SYSTEM\CurrentControlSet\Services\NetBT\Parameters
       state: present
-      name: NodeType
-      value: "{{ netbt_nodetype }}"
+      value: NodeType
+      data: "{{ netbt_nodetype }}"
       datatype: dword
   when:
     - rule_18_3_6
@@ -745,7 +745,7 @@
   win_regedit:
     path: HKLM:\Software\Policies\Microsoft\Windows\Wcmsvc\Grouppolicy
     name: fMinimizeConnections
-    data: 1
+    data: 3
     type: dword
   when:
     - rule_18_5_21_1
@@ -1754,7 +1754,7 @@
     path: HKLM:\Software\Policies\Microsoft\Windows\EventLog\Application
     name: Retention
     data: 0
-    type: dword
+    type: string
   when:
     - rule_18_9_26_1_1
   tags:
@@ -1807,7 +1807,7 @@
 
 - name: "SCORED | 18.9.26.3.1 | PATCH | L1 Ensure Setup Control Event Log behavior when the log file reaches its maximum size is set to Disabled"
   win_regedit:
-    path: HKLM:\Software\Policies\Microsoft\Windows\Eventlog\Application
+    path: HKLM:\Software\Policies\Microsoft\Windows\Eventlog\Setup
     name: Retention
     data: 0
     type: string
@@ -2352,7 +2352,7 @@
 - name: "SCORED | 18.9.77.13.3.1 | PATCH | L1 Ensure Prevent users and apps from accessing dangerous websites is set to Enabled Block"
   win_regedit:
     path: HKLM:\Software\Policies\Microsoft\Windows Defender\Windows Defender Exploit Guard\Network Protection
-    name: ExploitGuard_ASR_Rules
+    name: EnableNetworkProtection
     data: 1
     type: dword
   when:
@@ -2502,7 +2502,7 @@
   win_regedit:
     path: HKLM:\Software\Policies\Microsoft\Windows\Powershell\Scriptblocklogging
     name: EnableScriptBlockLogging
-    data: 1
+    data: 0
     type: dword
   when:
     - rule_18_9_95_1
@@ -2516,7 +2516,7 @@
   win_regedit:
     path: HKLM:\Software\Policies\Microsoft\Windows\Powershell\Transcription
     name: EnableTranscripting
-    data: 1
+    data: 0
     type: dword
   when:
     - rule_18_9_95_2

@@ -278,7 +278,7 @@
         register: rule_17_5_1_audit
 
       - name: "SCORED | 17.5.1 | PATCH | L1 Ensure Audit Account Lockout is set to include Failure"
-        win_shell: AuditPol /set /subcategory:"Account Lockout" /success:enable
+        win_shell: AuditPol /set /subcategory:"Account Lockout" /failure:enable
         when: "'Failure' not in rule_17_5_1_audit.stdout"
   when:
     - rule_17_5_1

@@ -143,14 +143,14 @@
       win_regedit:
           path: HKU:\.DEFAULT\Software\Microsoft\Windows\CurrentVersion\Policies\Attachments
           name: SaveZoneInformation
-          data: 3
+          data: 2
           type: dword
 
     - name: "SCORED | 19.7.4.1 | PATCH | L1 Ensure Do not preserve zone information in file attachments is set to Disabled"
       win_regedit:
           path: HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies\Attachments
           name: SaveZoneInformation
-          data: 3
+          data: 2
           type: dword
   when:
     - rule_19_7_4_1
