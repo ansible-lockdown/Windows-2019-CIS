@@ -445,7 +445,12 @@ rule_19_7_26_1: true
 rule_19_7_41_1: true
 rule_19_7_45_2_1: true
 
+
 # Section 2 Variables
+
+# 2.2.18
+# is_hyperv_installed is Hyper-V installed
+is_hyperv_installed: false
 
 # 2.3.1.5
 # win19cis_admin_username is the name the administrator account will be renamed to
