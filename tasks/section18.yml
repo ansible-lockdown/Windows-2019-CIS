@@ -2150,8 +2150,8 @@
   when:
     - rule_18_9_59_3_11_1
   tags:
-    - level2-domaincontroller
-    - level2-memberserver
+    - level1-domaincontroller
+    - level1-memberserver
     - rule_18.9.59.3.11.1
     - patch
 
