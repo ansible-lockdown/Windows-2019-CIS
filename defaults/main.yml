@@ -445,6 +445,15 @@ rule_19_7_26_1: true
 rule_19_7_41_1: true
 rule_19_7_45_2_1: true
 
+# Section 2 Variables
+
+# 2.3.1.5
+# win19cis_admin_username is the name the administrator account will be renamed to
+win19cis_admin_username: admin
+
+# 2.3.1.6
+# win19cis_guest_username is the name the guest account will be renamed to
+win19cis_guest_username: guest
 
 # This SID is the same for standalone, member, domain controller for 'Administrators' group
 sedebugprivilege: "*S-1-5-32-544"

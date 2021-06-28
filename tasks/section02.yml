@@ -704,7 +704,7 @@
   win_security_policy:
     section: System Access
     key: newadministratorname
-    value: GeorgeSharp
+    value: "{{ win19cis_admin_username }}"
   when:
     - rule_2_3_1_5
     - not win_skip_for_test
@@ -718,7 +718,7 @@
   win_security_policy:
     section: System Access
     key: NewGuestName
-    value: BobCooper
+    value: "{{ win19cis_guest_username }}"
   when:
     - rule_2_3_1_6
   tags:
