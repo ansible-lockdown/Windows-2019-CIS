@@ -623,7 +623,7 @@
 - name: "SCORED | 2.2.47 | PATCH | L1 Ensure Synchronize directory service data is set to No One DC only"
   win_user_right:
     name: SeSyncAgentPrivilege
-    users:
+    users: []
     action: set
   when:
     - rule_2_2_47
