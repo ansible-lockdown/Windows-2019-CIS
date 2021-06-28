@@ -28,17 +28,12 @@
     - patch
 
 - name: "SCORED | 18.1.2.2 | PATCH | L1 Ensure Allow users to enable online speech recognition services is set to Disabled"
-  block:
-      - name: "SCORED | 18.1.2.2 | AUDIT | L1 Ensure Allow users to enable online speech recognition services is set to Disabled"
-        command: "echo true"
-        changed_when: false
-        failed_when: false
-        register: rule_18_1_2_2_audit
-
-      - name: "SCORED | 18.1.2.2 | PATCH | L1 Ensure Allow users to enable online speech recognition services is set to Disabled"
-        command: "echo true"
+  win_regedit:
+      path: HKLM:\Software\Policies\Microsoft\InputPersonalization
+      name: "AllowInputPersonalization"
+      data: "0"
+      type: dword
   when:
-    - is_implemented
     - rule_18_1_2_2
   tags:
     - level1-domaincontroller
