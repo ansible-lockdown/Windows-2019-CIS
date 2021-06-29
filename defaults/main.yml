@@ -528,7 +528,19 @@ public_firewall_log_path: '%SystemRoot%\System32\logfiles\firewall\publicfw.log'
 # To conform to CIS stadnards the value should be 16,384 or greater. Value is in KB
 public_firewall_log_size: 16,384
 
+# Control 18.2.5
+# laps_passwordlength is the LAPS tool password length.
+# To conform to CIS standards please use a min value of 15 and max value of 127
+laps_passwordlength: 15
+
+# Control 18.2.6
+# laps_passwordagedays is the LAPS tool password age in days
+# To conform to CIS standards please use a max value of 30
+laps_passwordagedays: 30
+
 # 18.3.6
 # netbt_nodetype is the node type value in HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\NetBT\Parameters:NodeType
 # Options are B-node value of 1, P-node value of 2, M-node value of 4, H-node value of 8. P-node is the recommended setting from CIS
 netbt_nodetype: 2
+
+

@@ -98,57 +98,42 @@
       - patch
 
 - name: "SCORED | 18.2.4 | PATCH | L1 Ensure Password Settings Password Complexity is set to Enabled Large letters  small letters  numbers  special characters MS only"
-  block:
-      - name: "SCORED | 18.2.4 | AUDIT | L1 Ensure Password Settings Password Complexity is set to Enabled Large letters  small letters  numbers  special characters MS only"
-        command: "echo true"
-        changed_when: false
-        failed_when: false
-        register: rule_18_2_4_audit
-
-      - name: "SCORED | 18.2.4 | PATCH | L1 Ensure Password Settings Password Complexity is set to Enabled Large letters  small letters  numbers  special characters MS only"
-        command: "echo true"
+  win_regedit:
+      path: HKLM:\SOFTWARE\Policies\Microsoft Services\AdmPwd
+      name: PasswordComplexity
+      data: 4
+      type: dword
   when:
-      - is_implemented
       - rule_18_2_4
-      - not ansible_windows_domain_role == "Primary domain controller"
+      - ansible_windows_domain_role == "Member Server"
   tags:
       - level1-memberserver
       - rule_18.2.4
       - patch
 
 - name: "SCORED | 18.2.5 | PATCH | L1 Ensure Password Settings Password Length is set to Enabled 15 or more MS only"
-  block:
-      - name: "SCORED | 18.2.5 | AUDIT | L1 Ensure Password Settings Password Length is set to Enabled 15 or more MS only"
-        command: "echo true"
-        changed_when: false
-        failed_when: false
-        register: rule_18_2_5_audit
-
-      - name: "SCORED | 18.2.5 | PATCH | L1 Ensure Password Settings Password Length is set to Enabled 15 or more MS only"
-        command: "echo true"
+  win_regedit:
+      path: HKLM:\SOFTWARE\Policies\Microsoft Services\AdmPwd
+      name: PasswordLength
+      data: "{{ laps_passwordlength }}"
+      type: dword
   when:
-      - is_implemented
       - rule_18_2_5
-      - not ansible_windows_domain_role == "Primary domain controller"
+      - ansible_windows_domain_role == "Member Server"
   tags:
       - level1-memberserver
       - rule_18.2.5
       - patch
 
 - name: "SCORED | 18.2.6 | PATCH | L1 Ensure Password Settings Password Age Days is set to Enabled 30 or fewer MS only"
-  block:
-      - name: "SCORED | 18.2.6 | AUDIT | L1 Ensure Password Settings Password Age Days is set to Enabled 30 or fewer MS only"
-        command: "echo true"
-        changed_when: false
-        failed_when: false
-        register: rule_18_3_6_audit
-
-      - name: "SCORED | 18.2.6 | PATCH | L1 Ensure Password Settings Password Age Days is set to Enabled 30 or fewer MS only"
-        command: "echo true"
+  win_regedit:
+      path: HKLM:\SOFTWARE\Policies\Microsoft Services\AdmPwd
+      name: PasswordAgeDays
+      data: "{{ laps_passwordagedays }}"
+      type: dword
   when:
-      - is_implemented
       - rule_18_2_6
-      - not ansible_windows_domain_role == "Primary domain controller"
+      - ansible_windows_domain_role == "Memmber Server"
   tags:
       - level1-memberserver
       - rule_18.2.6
