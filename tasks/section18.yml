@@ -199,17 +199,12 @@
       - patch
 
 - name: "SCORED | 18.3.5 | PATCH | L1 Ensure Extended Protection for LDAP Authentication Domain Controllers only is set to Enabled Enabled always recommended DC Only"
-  block:
-      - name: "SCORED | 18.3.5 | AUDIT | L1 Ensure Extended Protection for LDAP Authentication Domain Controllers only is set to Enabled Enabled always recommended DC Only"
-        command: "echo true"
-        changed_when: false
-        failed_when: false
-        register: rule_18_3_5_audit
-
-      - name: "SCORED | 18.3.5 | PATCH | L1 Ensure Extended Protection for LDAP Authentication Domain Controllers only is set to Enabled Enabled always recommended DC Only"
-        command: "echo true"
+  win_regedit:
+      path: HKLM:\SYSTEM\CurrentControlSet\Services\NTDS\Parameters
+      name: LdapEnforceChannelBinding
+      data: 1
+      type: dword
   when:
-      - is_implemented
       - rule_18_3_5
       - ansible_windows_domain_role == "Primary domain controller"
   tags:
