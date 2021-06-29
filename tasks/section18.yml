@@ -154,17 +154,12 @@
       - patch
 
 - name: "SCORED | 18.3.2 | PATCH | L1 Ensure Configure SMB v1 client driver is set to Enabled Disable driver recommended"
-  block:
-      - name: "SCORED | 18.3.2 | AUDIT | L1 Ensure Configure SMB v1 client driver is set to Enabled Disable driver recommended"
-        command: "echo true"
-        changed_when: false
-        failed_when: false
-        register: rule_18_3_2_audit
-
-      - name: "SCORED | 18.3.2 | PATCH | L1 Ensure Configure SMB v1 client driver is set to Enabled Disable driver recommended"
-        command: "echo true"
+  win_regedit:
+      path: HKLM:\SYSTEM\CurrentControlSet\Services\mrxsmb10
+      name: Start
+      data: 4
+      type: dword
   when:
-      - is_implemented
       - rule_18_3_2
   tags:
       - level1-domaincontroller
