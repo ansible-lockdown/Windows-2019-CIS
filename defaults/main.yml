@@ -35,10 +35,10 @@ workaround_for_ssg_benchmark: true
 # tweak role to run in a non-privileged container
 system_is_container: no
 
-#set to false to skip tasks that either have not been developed or cannot be automated
+# set to false to skip tasks that either have not been developed or cannot be automated
 is_implemented: false
 
-#set to false to skip long running tasks
+# set to false to skip long running tasks
 long_running: false
 
 win_skip_for_test: false
@@ -446,6 +446,20 @@ rule_19_7_41_1: true
 rule_19_7_45_2_1: true
 
 
+# Section 2 Variables
+
+# 2.2.18
+# is_hyperv_installed is Hyper-V installed
+is_hyperv_installed: false
+
+# 2.3.1.5
+# win19cis_admin_username is the name the administrator account will be renamed to
+win19cis_admin_username: adminchangethis
+
+# 2.3.1.6
+# win19cis_guest_username is the name the guest account will be renamed to
+win19cis_guest_username: guestchangethis
+
 # This SID is the same for standalone, member, domain controller for 'Administrators' group
 sedebugprivilege: "*S-1-5-32-544"
 
@@ -514,7 +528,19 @@ public_firewall_log_path: '%SystemRoot%\System32\logfiles\firewall\publicfw.log'
 # To conform to CIS stadnards the value should be 16,384 or greater. Value is in KB
 public_firewall_log_size: 16,384
 
+# Control 18.2.5
+# laps_passwordlength is the LAPS tool password length.
+# To conform to CIS standards please use a min value of 15 and max value of 127
+laps_passwordlength: 15
+
+# Control 18.2.6
+# laps_passwordagedays is the LAPS tool password age in days
+# To conform to CIS standards please use a max value of 30
+laps_passwordagedays: 30
+
 # 18.3.6
 # netbt_nodetype is the node type value in HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\NetBT\Parameters:NodeType
 # Options are B-node value of 1, P-node value of 2, M-node value of 4, H-node value of 8. P-node is the recommended setting from CIS
 netbt_nodetype: 2
+
+
