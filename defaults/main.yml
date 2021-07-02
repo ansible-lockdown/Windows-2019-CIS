@@ -542,5 +542,3 @@ laps_passwordagedays: 30
 # netbt_nodetype is the node type value in HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\NetBT\Parameters:NodeType
 # Options are B-node value of 1, P-node value of 2, M-node value of 4, H-node value of 8. P-node is the recommended setting from CIS
 netbt_nodetype: 2
-
-
