@@ -453,9 +453,7 @@
 - name: "SCORED | 2.2.33 | PATCH | L1 Ensure Increase scheduling priority is set to Administrators Window ManagerWindow Manager Group"
   win_user_right:
       name: SeIncreaseBasePriorityPrivilege
-      users:
-          - Administrators
-          - Window Manager\Window Manager Group
+      users: "{{ increase_scheduling_priority_users }}"
       action: set
   when:
       - rule_2_2_33

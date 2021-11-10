@@ -25,6 +25,16 @@
   tags:
       - always
 
+- name: Get Windows installation type
+  win_reg_stat:
+    path: HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion
+    name: InstallationType
+  register: get_windows_installation_type
+
+- name: Set Windows installation type
+  set_fact:
+    windows_installation_type: "{{ get_windows_installation_type.value | default('') }}"
+
 # - name: Include the preliminary tasks
 #   include_tasks: prelim.yml
 #   tags:
