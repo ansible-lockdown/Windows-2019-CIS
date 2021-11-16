@@ -536,8 +536,8 @@
   when:
       - rule_18_5_10_2
   tags:
-      - level1-domaincontroller
-      - level1-memberserver
+      - level2-domaincontroller
+      - level2-memberserver
       - rule_18.5.10.2
       - patch
 
