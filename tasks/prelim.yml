@@ -19,8 +19,6 @@
             win2019cis_is_domain_member: true
         when: 
             - ansible_windows_domain_role == 'Member server'
-  when:
-      - run_audit
 
 - name: Get Windows installation type
   win_reg_stat:
