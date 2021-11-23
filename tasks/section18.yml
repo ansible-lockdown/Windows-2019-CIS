@@ -1576,18 +1576,32 @@
       - rule_18.9.12.1
       - patch
 
-- name: "18.9.13.1 | PATCH | L1 | Ensure Turn off Microsoft consumer experiences is set to Enabled"
+- name: "18.9.13.1 | PATCH | L2 | Ensure Turn off Microsoft consumer experiences is set to Enabled"
+  win_regedit:
+      path: HKLM:\Software\Policies\Microsoft\Windows\Cloudcontent
+      name: DisableCloudOptimizedContent
+      data: 1
+      type: dword
+  when:
+      - rule_18_9_13_1
+  tags:
+      - level2-domaincontroller
+      - level2-memberserver
+      - rule_18.9.13.1
+      - patch
+
+- name: "18.9.13.2 | PATCH | L1 | Ensure Turn off Microsoft consumer experiences is set to Enabled"
   win_regedit:
       path: HKLM:\Software\Policies\Microsoft\Windows\Cloudcontent
       name: DisableWindowsConsumerFeatures
       data: 1
       type: dword
   when:
-      - rule_18_9_13_1
+      - rule_18_9_13_2
   tags:
       - level1-domaincontroller
       - level1-memberserver
-      - rule_18.9.13.1
+      - rule_18.9.13.2
       - patch
 
 - name: "18.9.14.1 | PATCH | L1 | Ensure Require pin for pairing is set to Enabled First Time OR Enabled Always"
