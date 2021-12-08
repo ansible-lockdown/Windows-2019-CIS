@@ -1194,7 +1194,8 @@
       type: dword
   when:
       - rule_2_3_9_5
-      - ansible_windows_domain_role == "Member server"
+      - ansible_windows_domain_role == "Member server" or
+        ansible_windows_domain_role == "Stand-alone server"
   tags:
       - level1-memberserver
       - rule_2.3.9.5
@@ -1315,7 +1316,7 @@
   win_regedit:
       path: HKLM:\System\Currentcontrolset\Control\Securepipeservers\Winreg\Allowedpaths
       name: "Machine"
-      data: ['System\CurrentControlSet\Control\Print\Printers', 'System\CurrentControlSet\Services\Eventlog', 'Software\Microsoft\OLAP Server', 'Software\Microsoft\Windows NT\CurrentVersion\Print', 'Software\Microsoft\Windows NT\CurrentVersion\Windows', 'System\CurrentControlSet\Control\ContentIndex', 'System\CurrentControlSet\Control\Terminal Server', 'System\CurrentControlSet\Control\Terminal Server\UserConfig', 'System\CurrentControlSet\Control\Terminal Server\DefaultUserConfiguration', 'Software\Microsoft\Windows NT\CurrentVersion\Perflib', 'System\CurrentControlSet\Services\WINS', 'System\CurrentControlSet\Services\CertSvc']
+      data: ['System\CurrentControlSet\Control\Print\Printers', 'System\CurrentControlSet\Services\Eventlog', 'Software\Microsoft\OLAP Server', 'Software\Microsoft\Windows NT\CurrentVersion\Print', 'Software\Microsoft\Windows NT\CurrentVersion\Windows', 'System\CurrentControlSet\Control\ContentIndex', 'System\CurrentControlSet\Control\Terminal Server', 'System\CurrentControlSet\Control\Terminal Server\UserConfig', 'System\CurrentControlSet\Control\Terminal Server\DefaultUserConfiguration', 'Software\Microsoft\Windows NT\CurrentVersion\Perflib', 'System\CurrentControlSet\Services\WINS', 'System\CurrentControlSet\Services\CertSvc', 'System\CurrentControlSet\Services\SysmonLog']
       type: multistring
   when:
       - rule_2_3_10_9
