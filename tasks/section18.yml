@@ -1926,6 +1926,34 @@
       - rule_18.9.45.3.2
       - patch
 
+- name: "18.9.45.5.1 | PATCH | (L2) Ensure 'Enable file hash computation feature' is set to 'Enabled'"
+  win_regedit:
+      path: HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender\MpEngine
+      name: EnableFileHashComputation
+      data: 1
+      type: dword
+  when:
+      - rule_18_9_45_5_1
+  tags:
+      - level2-domaincontroller
+      - level2-memberserver
+      - rule_18.9.45.5.1
+      - patch
+
+- name: "18.9.45.8.1 | PATCH | (L1) Ensure 'Scan all downloaded files and attachments' is set to 'Enabled'"
+  win_regedit:
+      path: HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender\Real-Time Protection
+      name: DisableIOAVProtection
+      data: 0
+      type: dword
+  when:
+      - rule_18_9_45_8_1
+  tags:
+      - level1-domaincontroller
+      - level1-memberserver
+      - rule_18.9.45.8.1
+      - patch
+
 - name: "18.9.45.8.3 | PATCH | L1 | Ensure Turn on behavior monitoring is set to Enabled"
   win_regedit:
       path: HKLM:\Software\Policies\Microsoft\Windows Defender\Real-Time Protection
@@ -1972,6 +2000,7 @@
       - be9ba2d9-53ea-4cdc-84e5-9b1eeee46550
       - d3e037e1-3eb8-44c8-a917-57927947596d
       - d4f940ab-401b-4efc-aadc-ad5f3c50688a
+      - e6db77e5-3df2-4cf1-b95a-636979351e5b
   when:
       - rule_18_9_45_4_1_2
   tags:
@@ -1991,7 +2020,21 @@
   tags:
       - level1-domaincontroller
       - level1-memberserver
-      - rule_18.9.45_4.3.1
+      - rule_18.9.45.4.3.1
+      - patch
+
+- name: "18.9.45.8.2 | PATCH | Ensure 'Turn off real-time protection' is set to 'Disabled'"
+  win_regedit:
+      path: HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender\Real-Time Protection
+      name: DisableRealtimeMonitoring
+      data: 1
+      datatype: dword
+  when:
+      - rule_18_9_45_8_2
+  tags:
+      - level1-domaincontroller
+      - level1-memberserver
+      - rule_18.9.45.8.2
       - patch
 
 - name: "18.9.45.10.1 | PATCH | L2 | Ensure Configure Watson events is set to Disabled"
