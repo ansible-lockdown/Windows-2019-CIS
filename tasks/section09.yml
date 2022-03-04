@@ -1,8 +1,10 @@
 ---
 - name: "9.1.1 | PATCH | L1 |  Ensure 'Windows Firewall: Domain: Firewall state' is set to 'On (recommended)'"
-  win_firewall:
-      state: enabled
-      profile: Domain
+  win_regedit:
+      path: HKLM:\Software\Policies\Microsoft\Windowsfirewall\Domainprofile
+      name: EnableFirewall
+      data: 1
+      type: dword
   when:
       - rule_9_1_1
   tags:
@@ -111,9 +113,11 @@
       - patch
 
 - name: "9.2.1 | PATCH | L1 |  Ensure 'Windows Firewall: Private: Firewall state' is set to 'On (recommended)'"
-  win_firewall:
-      state: enabled
-      profile: Private
+  win_regedit:
+      path: HKLM:SOFTWARE\Policies\Microsoft\WindowsFirewall\PrivateProfile
+      name: EnableFirewall
+      data: 1
+      type: dword
   when:
       - rule_9_2_1
   tags:
@@ -222,9 +226,11 @@
       - patch
 
 - name: "9.3.1 | PATCH | L1 |  Ensure 'Windows Firewall: Public: Firewall state' is set to 'On (recommended)'"
-  win_firewall:
-      state: enabled
-      profile: Public
+  win_regedit:
+      path: HKLM:SOFTWARE\Policies\Microsoft\WindowsFirewall\PublicProfile
+      name: EnableFirewall
+      data: 1
+      type: dword
   when:
       - rule_9_3_1
   tags:

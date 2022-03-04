@@ -388,8 +388,8 @@
   when:
       - rule_18_4_11
   tags:
-      - level1-domaincontroller
-      - level1-memberserver
+      - level2-domaincontroller
+      - level2-memberserver
       - rule_18.4.11
       - patch
 
@@ -420,8 +420,8 @@
       - rule_18_5_4_1
       - not ansible_windows_domain_role == "Primary domain controller"
   tags:
-      - level2-domaincontroller
-      - level2-memberserver
+      - level1-domaincontroller
+      - level1-memberserver
       - rule_18.5.4.1
       - patch
 
@@ -952,8 +952,8 @@
   when:
       - rule_18_8_22_1_2
   tags:
-      - level1-domaincontroller
-      - level1-memberserver
+      - level2-domaincontroller
+      - level2-memberserver
       - rule_18.8.22.1.2
       - patch
 
