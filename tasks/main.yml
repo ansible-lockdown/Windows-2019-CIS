@@ -25,10 +25,10 @@
   tags:
       - always
 
-# - name: Include the preliminary tasks
-#   include_tasks: prelim.yml
-#   tags:
-#       - prelim_tasks
+- name: Include the preliminary tasks
+  include_tasks: prelim.yml
+  tags:
+      - prelim_tasks
 
 - name: Execute the section 1 tasks
   import_tasks: section01.yml

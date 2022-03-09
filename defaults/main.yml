@@ -120,6 +120,8 @@ rule_2_3_4_2: true
 rule_2_3_5_1: true
 rule_2_3_5_2: true
 rule_2_3_5_3: true
+rule_2_3_5_4: true
+rule_2_3_5_5: true
 rule_2_3_6_1: true
 rule_2_3_6_2: true
 rule_2_3_6_3: true
@@ -351,6 +353,7 @@ rule_18_9_8_3: true
 rule_18_9_10_1_1: true
 rule_18_9_12_1: true
 rule_18_9_13_1: true
+rule_18_9_13_2: true
 rule_18_9_14_1: true
 rule_18_9_15_1: true
 rule_18_9_15_2: true
@@ -369,40 +372,43 @@ rule_18_9_26_4_2: true
 rule_18_9_30_2: true
 rule_18_9_30_3: true
 rule_18_9_30_4: true
-rule_18_9_39_2: true
+rule_18_9_39_1: true
 rule_18_9_43_1: true
 rule_18_9_44_1: true
-rule_18_9_52_1: true
-rule_18_9_59_2_2: true
-rule_18_9_59_3_2_1: true
-rule_18_9_59_3_3_1: true
-rule_18_9_59_3_3_2: true
-rule_18_9_59_3_3_3: true
-rule_18_9_59_3_3_4: true
-rule_18_9_59_3_9_1: true
-rule_18_9_59_3_9_2: true
-rule_18_9_59_3_9_3: true
-rule_18_9_59_3_9_4: true
-rule_18_9_59_3_9_5: true
-rule_18_9_59_3_10_1: true
-rule_18_9_59_3_10_2: true
-rule_18_9_59_3_11_1: true
-rule_18_9_59_3_11_2: true
-rule_18_9_60_1: true
-rule_18_9_61_2: true
-rule_18_9_61_3: true
-rule_18_9_66_1: true
-rule_18_9_77_3_1: true
-rule_18_9_77_3_2: true
-rule_18_9_77_7_1: true
-rule_18_9_77_9_1: true
-rule_18_9_77_10_1: true
-rule_18_9_77_10_2: true
-rule_18_9_77_13_1_1: true
-rule_18_9_77_13_1_2: true
-rule_18_9_77_13_3_1: true
-rule_18_9_77_14: true
-rule_18_9_77_15: true
+rule_18_9_45_3_1: true
+rule_18_9_45_3_2: true
+rule_18_9_45_4_1_1: true
+rule_18_9_45_4_1_2: true
+rule_18_9_45_4_3_1: true
+rule_18_9_45_5_1: true
+rule_18_9_45_8_1: true
+rule_18_9_45_8_2: true
+rule_18_9_45_8_3: true
+rule_18_9_45_10_1: true
+rule_18_9_45_11_1: true
+rule_18_9_45_11_2: true
+rule_18_9_45_14: true
+rule_18_9_45_15: true
+rule_18_9_55_1: true
+rule_18_9_62_2_2: true
+rule_18_9_62_3_2_1: true
+rule_18_9_62_3_3_1: true
+rule_18_9_62_3_3_2: true
+rule_18_9_62_3_3_3: true
+rule_18_9_62_3_3_4: true
+rule_18_9_62_3_9_1: true
+rule_18_9_62_3_9_2: true
+rule_18_9_62_3_9_3: true
+rule_18_9_62_3_9_4: true
+rule_18_9_62_3_9_5: true
+rule_18_9_62_3_10_1: true
+rule_18_9_62_3_10_2: true
+rule_18_9_62_3_11_1: true
+rule_18_9_62_3_11_2: true
+rule_18_9_63_1: true
+rule_18_9_64_2: true
+rule_18_9_64_3: true
+rule_18_9_69_1: true
 rule_18_9_80_1_1: true
 rule_18_9_84_1: true
 rule_18_9_84_2: true
@@ -437,14 +443,13 @@ rule_19_5_1_1: true
 rule_19_6_6_1_1: true
 rule_19_7_4_1: true
 rule_19_7_4_2: true
-rule_19_7_7_1: true
-rule_19_7_7_2: true
-rule_19_7_7_3: true
-rule_19_7_7_4: true
-rule_19_7_26_1: true
-rule_19_7_41_1: true
-rule_19_7_45_2_1: true
-
+rule_19_7_8_1: true
+rule_19_7_8_2: true
+rule_19_7_8_3: true
+rule_19_7_8_4: true
+rule_19_7_28_1: true
+rule_19_7_43_1: true
+rule_19_7_47_2_1: true
 
 # Section 2 Variables
 
@@ -497,6 +502,13 @@ sys_maxsize: 32768
 
 
 legalnoticecaption: "DoD Notice and Consent Banner"
+
+# 2.2.33
+# Window Manager\Window Manager Group only exists on non Core installations
+# windows_installation_type should be 'Server Core' for Core installations
+# This is a variable to determine if Windows Manager should be included in this step
+increase_scheduling_priority_users: '{{ ["Administrators"] if (windows_installation_type=="Server Core") else (["Administrators","Window Manager\Window Manager Group"]) }}'
+
 
 # 9.1.5
 # domain_firewall_log_path is the path to the domain firewall log files. The control suggests %SystemRoot%\System32\logfiles\firewall\domainfw.log
