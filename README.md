@@ -11,7 +11,7 @@ This role **will make changes to the system** that could break things. This is n
 This role was developed against a clean install of the Operating System. If you are implimenting to an existing system please review this role for any site specific changes that are needed.
 
 To use release version please point to main branch
-Based on [Windows Server 2019 CIS v1.1.0 01-14-2020](https://downloads.cisecurity.org/#/).
+Based on [Windows Server 2019 CIS v1.2.1 05-08-2021](https://downloads.cisecurity.org/#/).
 
 Documentation
 -------------
