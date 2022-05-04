@@ -334,7 +334,7 @@
 
       - name: " 17.5.4 | PATCH | L1 | Ensure Audit Logon is set to Success and Failure | Success"
         win_shell: AuditPol /set /subcategory:"Logon" /success:enable
-        when: "'Failure' not in rule_17_5_4_audit.stdout"
+        when: "'Success' not in rule_17_5_4_audit.stdout"
 
       - name: " 17.5.4 | PATCH | L1 | Ensure Audit Logon is set to Success and Failure | Failure"
         win_shell: AuditPol /set /subcategory:"Logon" /failure:enable
