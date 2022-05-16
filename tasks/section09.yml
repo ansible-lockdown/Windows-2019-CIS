@@ -114,7 +114,7 @@
 
 - name: "9.2.1 | PATCH | L1 |  Ensure 'Windows Firewall: Private: Firewall state' is set to 'On (recommended)'"
   win_regedit:
-      path: HKLM:SOFTWARE\Policies\Microsoft\WindowsFirewall\PrivateProfile
+      path: HKLM:\SOFTWARE\Policies\Microsoft\WindowsFirewall\PrivateProfile
       name: EnableFirewall
       data: 1
       type: dword
