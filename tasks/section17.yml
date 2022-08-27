@@ -514,6 +514,7 @@
         win_shell: AuditPol /get /subcategory:"Authentication Policy Change" -r | ConvertFrom-Csv | Select-Object -expand "Inclusion Setting"
         changed_when: false
         failed_when: false
+        check_mode: false
         register: rule_17_7_2_audit
 
       - name: " 17.7.2 | PATCH | L1 | Ensure Audit Authentication Policy Change is set to include Success"
