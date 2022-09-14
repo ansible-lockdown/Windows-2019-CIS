@@ -133,7 +133,7 @@
       type: dword
   when:
       - rule_18_2_6
-      - ansible_windows_domain_role == "Memmber Server"
+      - ansible_windows_domain_role == "Member Server"
   tags:
       - level1-memberserver
       - rule_18.2.6
