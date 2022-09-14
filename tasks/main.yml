@@ -1,5 +1,4 @@
 ---
-
 - name: Gather distribution info
   setup:
       gather_subset: distribution,!all,!min
