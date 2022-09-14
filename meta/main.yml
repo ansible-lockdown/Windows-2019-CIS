@@ -20,4 +20,6 @@ galaxy_info:
         - microsoft
         - windows
 
-    dependencies: []
+    dependencies:
+        - ansible.windows
+        - community.windows
