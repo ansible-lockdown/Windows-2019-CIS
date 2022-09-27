@@ -133,7 +133,7 @@
       type: dword
   when:
       - rule_18_2_6
-      - ansible_windows_domain_role == "Memmber Server"
+      - ansible_windows_domain_role == "Member Server"
   tags:
       - level1-memberserver
       - rule_18.2.6
@@ -1027,7 +1027,7 @@
       - rule_18.8.22.1.7
       - patch
 
-- name: "SCORED |18.8.22.1.8 | PATCH | L2 | Ensure Turn off Search Companion content file updates is set to Enabled"
+- name: "SCORED | 18.8.22.1.8 | PATCH | L2 | Ensure Turn off Search Companion content file updates is set to Enabled"
   win_regedit:
       path: HKLM:\Software\Policies\Microsoft\Searchcompanion
       name: DisableContentFileUpdates
