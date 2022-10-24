@@ -509,11 +509,17 @@ sedebugprivilege: "*S-1-5-32-544"
 
 pass_age: 60
 
-lockoutduration: 15
-lockoutbadcount: 3
+# 1.2.2
+# lockoutbadcount must be 5 or few, but not 0 (zero)
+lockoutbadcount: 5
+
 resetlockoutcount: 15
 passwordhistorysize: 24
-maximumpasswordage: 60
+
+# 1.1.2
+# maximumpasswordage must be 365 or fewer, but not 0 (zero)
+maximumpasswordage: 365
+
 minimumpasswordage: 1
 minimumpasswordlength: 14
 

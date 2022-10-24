@@ -276,6 +276,21 @@
       - rule_19.7.8.4
       - patch
 
+- name: "19.7.8.5 | PATCH | Ensure Turn off Spotlight collection on Desktop is set to Enabled"
+  win_regedit:
+      path: HKCU:\SOFTWARE\Policies\Microsoft\Windows\CloudContent
+      name: DisableSpotlightCollectionOnDesktop
+      data: 1
+      type: dword
+  when:
+      - rule_19_7_8_5
+  tags:
+      - level1-domaincontroller
+      - level1-memberserver
+      - rule_19.7.8.4
+      - patch
+      - spotlight
+
 - name: "19.7.28.1 | PATCH | L1 | Ensure Prevent users from sharing files within their profile. is set to Enabled"
   block:
       - name: "19.7.28.1 | PATCH | L1 | Ensure Prevent users from sharing files within their profile. is set to Enabled"
