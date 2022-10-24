@@ -13,6 +13,8 @@
       - level1-memberserver
       - rule_9.1.1
       - patch
+      - firewall
+      - domain
 
 - name: "9.1.2 | PATCH | Ensure 'Windows Firewall: Domain: Inbound connections' is set to 'Block (default)'"
   win_regedit:
@@ -27,6 +29,8 @@
       - level1-memberserver
       - rule_9.1.2
       - patch
+      - firewall
+      - domain
 
 - name: "9.1.3 | PATCH | Ensure 'Windows Firewall: Domain: Outbound connections' is set to 'Allow (default)'"
   win_regedit:
@@ -41,6 +45,8 @@
       - level1-memberserver
       - rule_9.1.3
       - patch
+      - firewall
+      - domain
 
 - name: "9.1.4 | PATCH | Ensure 'Windows Firewall: Domain: Settings: Display a notification' is set to 'No'"
   win_regedit:
@@ -55,6 +61,8 @@
       - level1-memberserver
       - rule_9.1.4
       - patch
+      - firewall
+      - domain
 
 # title has slashes switched
 - name: "9.1.5 | PATCH | Ensure 'Windows Firewall: Domain: Logging: Name' is set to '%SystemRoot%/System32/logfiles/firewall/domainfw.log'"
@@ -70,6 +78,8 @@
       - level1-memberserver
       - rule_9.1.5
       - patch
+      - firewall
+      - domain
 
 - name: "9.1.6 | PATCH | Ensure 'Windows Firewall: Domain: Logging: Size limit (KB)' is set to '16,384 KB or greater'"
   win_regedit:
@@ -84,6 +94,8 @@
       - level1-memberserver
       - rule_9.1.6
       - patch
+      - firewall
+      - domain
 
 - name: "9.1.7 | PATCH | Ensure 'Windows Firewall: Domain: Logging: Log dropped packets' is set to 'Yes'"
   win_regedit:
@@ -98,6 +110,8 @@
       - level1-memberserver
       - rule_9.1.7
       - patch
+      - firewall
+      - domain
 
 - name: "9.1.8 | PATCH | Ensure 'Windows Firewall: Domain: Logging: Log successful connections' is set to 'Yes'"
   win_regedit:
@@ -112,6 +126,8 @@
       - level1-memberserver
       - rule_9.1.7
       - patch
+      - firewall
+      - domain
 
 - name: "9.2.1 | PATCH | Ensure 'Windows Firewall: Private: Firewall state' is set to 'On (recommended)'"
   win_regedit:
@@ -126,6 +142,8 @@
       - level1-memberserver
       - rule_9.2.1
       - patch
+      - firewall
+      - private
 
 - name: "9.2.2 | PATCH | Ensure 'Windows Firewall: Private: Inbound connections' is set to 'Block (default)'"
   win_regedit:
@@ -140,6 +158,8 @@
       - level1-memberserver
       - rule_9.2.2
       - patch
+      - firewall
+      - private
 
 - name: "9.2.3 | PATCH | Ensure 'Windows Firewall: Private: Outbound connections' is set to 'Allow (default)'"
   win_regedit:
@@ -154,6 +174,8 @@
       - level1-memberserver
       - rule_9.2.3
       - patch
+      - firewall
+      - private
 
 - name: "9.2.4 | PATCH | Ensure 'Windows Firewall: Private: Settings: Display a notification' is set to 'No'"
   win_regedit:
@@ -168,6 +190,8 @@
       - level1-memberserver
       - rule_9.2.4
       - patch
+      - firewall
+      - private
 
 # title has slashes switched
 - name: "9.2.5 | PATCH | Ensure 'Windows Firewall: Private: Logging: Name' is set to '%SystemRoot%/System32/logfiles/firewall/privatefw.log'"
@@ -183,6 +207,8 @@
       - level1-memberserver
       - rule_9.2.5
       - patch
+      - firewall
+      - private
 
 - name: "9.2.6 | PATCH | Ensure 'Windows Firewall: Private: Logging: Size limit (KB)' is set to '16,384 KB or greater'"
   win_regedit:
@@ -197,6 +223,8 @@
       - level1-memberserver
       - rule_9.2.6
       - patch
+      - firewall
+      - private
 
 - name: "9.2.7 | PATCH | Ensure 'Windows Firewall: Private: Logging: Log dropped packets' is set to 'Yes'"
   win_regedit:
@@ -211,6 +239,8 @@
       - level1-memberserver
       - rule_9.2.7
       - patch
+      - firewall
+      - private
 
 - name: "9.2.8 | PATCH | Ensure 'Windows Firewall: Private: Logging: Log successful connections' is set to 'Yes'"
   win_regedit:
@@ -225,6 +255,8 @@
       - level1-memberserver
       - rule_9.2.8
       - patch
+      - firewall
+      - private
 
 - name: "9.3.1 | PATCH | Ensure 'Windows Firewall: Public: Firewall state' is set to 'On (recommended)'"
   win_regedit:
@@ -239,6 +271,8 @@
       - level1-memberserver
       - rule_9.3.1
       - patch
+      - firewall
+      - public
 
 - name: "9.3.2 | PATCH | Ensure 'Windows Firewall: Public: Inbound connections' is set to 'Block (default)'"
   win_regedit:
@@ -253,6 +287,8 @@
       - level1-memberserver
       - rule_9.3.2
       - patch
+      - firewall
+      - public
 
 - name: "9.3.3 | PATCH | Ensure 'Windows Firewall: Public: Outbound connections' is set to 'Allow (default)'"
   win_regedit:
@@ -267,6 +303,8 @@
       - level1-memberserver
       - rule_9.3.3
       - patch
+      - firewall
+      - public
 
 - name: "9.3.4 | PATCH | Ensure 'Windows Firewall: Public: Settings: Display a notification' is set to 'No'"
   win_regedit:
@@ -281,6 +319,8 @@
       - level1-memberserver
       - rule_9.3.4
       - patch
+      - firewall
+      - public
 
 - name: "9.3.5 | PATCH | Ensure 'Windows Firewall: Public: Settings: Apply local firewall rules' is set to 'No'"
   win_regedit:
@@ -296,6 +336,8 @@
       - level1-memberserver
       - rule_9.3.5
       - patch
+      - firewall
+      - public
 
 - name: "9.3.6 | PATCH | Ensure 'Windows Firewall: Public: Settings: Apply local connection security rules' is set to 'No'"
   win_regedit:
@@ -310,6 +352,8 @@
       - level1-memberserver
       - rule_9.3.6
       - patch
+      - firewall
+      - public
 
 # title has slashes switched
 - name: "9.3.7 | PATCH | Ensure 'Windows Firewall: Public: Logging: Name' is set to '%SystemRoot%/System32/logfiles/firewall/publicfw.log'"
@@ -325,6 +369,8 @@
       - level1-memberserver
       - rule_9.3.7
       - patch
+      - firewall
+      - public
 
 - name: "9.3.8 | PATCH | Ensure 'Windows Firewall: Public: Logging: Size limit (KB)' is set to '16,384 KB or greater'"
   win_regedit:
@@ -339,6 +385,8 @@
       - level1-memberserver
       - rule_9.3.8
       - patch
+      - firewall
+      - public
 
 - name: "9.3.9 | PATCH | Ensure 'Windows Firewall: Public: Logging: Log dropped packets' is set to 'Yes'"
   win_regedit:
@@ -353,6 +401,8 @@
       - level1-memberserver
       - rule_9.3.9
       - patch
+      - firewall
+      - public
 
 - name: "9.3.10 | PATCH | Ensure 'Windows Firewall: Public: Logging: Log successful connections' is set to 'Yes'"
   win_regedit:
@@ -367,3 +417,5 @@
       - level1-memberserver
       - rule_9.3.10
       - patch
+      - firewall
+      - public

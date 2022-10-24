@@ -12,6 +12,7 @@
       - level1-memberserver
       - rule_2.2.1
       - patch
+      - userrights
 
 - name: "2.2.2 & 2.2.3 | PATCH | Ensure Access this computer from the network is set to Administrators Authenticated Users ENTERPRISE DOMAIN CONTROLLERS DC only"
   win_user_right:
@@ -29,6 +30,7 @@
       - rule_2.2.2
       - rule_2.2.3
       - patch
+      - userrights
 
 - name: "2.2.4 | PATCH | Ensure Act as part of the operating system is set to No One"
   win_user_right:
@@ -42,6 +44,7 @@
       - level1-memberserver
       - rule_2.2.4
       - patch
+      - userrights
 
 - name: "2.2.5 | PATCH | Ensure Add workstations to domain is set to Administrators DC only"
   win_user_right:
@@ -55,6 +58,7 @@
       - level1-domaincontroller
       - rule_2.2.5
       - patch
+      - userrights
 
 - name: "2.2.6 | PATCH | Ensure Adjust memory quotas for a process is set to Administrators LOCAL SERVICE NETWORK SERVICE"
   win_user_right:
@@ -71,6 +75,7 @@
       - level1-memberserver
       - rule_2.2.6
       - patch
+      - userrights
 
 - name: "2.2.7 | PATCH | Ensure Allow log on locally is set to Administrators"
   win_user_right:
@@ -85,6 +90,7 @@
       - level1-memberserver
       - rule_2.2.7
       - patch
+      - userrights
 
 - name: "2.2.8 & 2.2.9 | PATCH | Ensure Allow log on through Remote Desktop Services is set to Administrators DC only"
   win_user_right:
@@ -102,6 +108,7 @@
       - rule_2.2.8
       - rule_2.2.9
       - patch
+      - userrights
 
 - name: "2.2.10 | PATCH | Ensure Back up files and directories is set to Administrators"
   win_user_right:
@@ -116,6 +123,7 @@
       - level1-memberserver
       - rule_2.2.10
       - patch
+      - userrights
 
 - name: "2.2.11 | PATCH | Ensure Change the system time is set to Administrators LOCAL SERVICE"
   win_user_right:
@@ -146,6 +154,7 @@
       - level1-memberserver
       - rule_2.2.12
       - patch
+      - userrights
 
 - name: "2.2.13 | PATCH | Ensure Create a pagefile is set to Administrators"
   win_user_right:
@@ -160,6 +169,7 @@
       - level1-memberserver
       - rule_2.2.13
       - patch
+      - userrights
 
 - name: "2.2.14 | PATCH | Ensure Create a token object is set to No One"
   win_user_right:
@@ -173,6 +183,7 @@
       - level1-memberserver
       - rule_2.2.14
       - patch
+      - userrights
 
 - name: "2.2.15 | PATCH | Ensure Create global objects is set to Administrators LOCAL SERVICE NETWORK SERVICE SERVICE"
   win_user_right:
@@ -190,6 +201,7 @@
       - level1-memberserver
       - rule_2.2.15
       - patch
+      - userrights
 
 - name: "2.2.16 | PATCH | Ensure Create permanent shared objects is set to No One"
   win_user_right:
@@ -203,6 +215,7 @@
       - level1-memberserver
       - rule_2.2.16
       - patch
+      - userrights
 
 - name: "2.2.17 | PATCH | Ensure Create symbolic links is set to Administrators DC only"
   win_user_right:
@@ -217,6 +230,7 @@
       - level1-domaincontroller
       - rule_2.2.17
       - patch
+      - userrights
 
 - name: "2.2.18 | PATCH | Ensure Create symbolic links is set to Administrators NT VIRTUAL MACHINEVirtual Machines MS only"
   block:
@@ -243,6 +257,7 @@
       - level1-memberserver
       - rule_2.2.18
       - patch
+      - userrights
 
 - name: "2.2.19 | PATCH | Ensure Debug programs is set to Administrators"
   win_user_right:
@@ -257,6 +272,7 @@
       - level1-memberserver
       - rule_2.2.19
       - patch
+      - userrights
 
 # Limiting hardening to only include the Guests group, since Local Account access will still be needed for non-domain-joined nodes
 - name: "2.2.20 | PATCH | Ensure Deny access to this computer from the network to include Guests DC only"
@@ -272,6 +288,7 @@
       - level1-domaincontroller
       - rule_2.2.20
       - patch
+      - userrights
 
 - name: "2.2.21 | PATCH | Ensure Deny access to this computer from the network to include Guests Local account and member of Administrators group MS only"
   win_user_right:
@@ -288,6 +305,7 @@
       - level1-memberserver
       - rule_2.2.21
       - patch
+      - userrights
 
 - name: "2.2.22 | PATCH | Ensure Deny log on as a batch job to include Guests"
   win_user_right:
@@ -302,6 +320,7 @@
       - level1-memberserver
       - rule_2.2.22
       - patch
+      - userrights
 
 - name: "2.2.23 | PATCH | Ensure Deny log on as a service to include Guests"
   win_user_right:
@@ -316,6 +335,7 @@
       - level1-memberserver
       - rule_2.2.23
       - patch
+      - userrights
 
 - name: "2.2.24 | PATCH | Ensure Deny log on locally to include Guests"
   win_user_right:
@@ -330,6 +350,7 @@
       - level1-memberserver
       - rule_2.2.24
       - patch
+      - userrights
 
 - name: "2.2.25 | PATCH | Ensure Deny log on through Remote Desktop Services to include Guests DC only"
   win_user_right:
@@ -345,6 +366,7 @@
       - level1-domaincontroller
       - rule_2.2.25
       - patch
+      - guest
 
 - name: "2.2.26 | PATCH | Ensure Deny log on through Remote Desktop Services is set to Guests Local account MS only"
   win_user_right:
@@ -360,6 +382,7 @@
       - level1-memberserver
       - rule_2.2.26
       - patch
+      - guest
 
 - name: "2.2.27 | PATCH | Ensure Enable computer and user accounts to be trusted for delegation is set to Administrators DC only"
   win_user_right:
@@ -374,6 +397,8 @@
       - level1-domaincontroller
       - rule_2.2.27
       - patch
+      - userrights
+      - administrators
 
 - name: "2.2.28 | PATCH | Ensure Enable computer and user accounts to be trusted for delegation is set to No One MS only"
   win_user_right:
@@ -387,6 +412,7 @@
       - level1-memberserver
       - rule_2.2.28
       - patch
+      - userrights
 
 - name: "2.2.29 | PATCH | Ensure Force shutdown from a remote system is set to Administrators"
   win_user_right:
@@ -401,6 +427,8 @@
       - level1-memberserver
       - rule_2.2.29
       - patch
+      - userrights
+      - administrators
 
 - name: "2.2.30 | PATCH | Ensure Generate security audits is set to LOCAL SERVICE NETWORK SERVICE"
   win_user_right:
@@ -416,6 +444,8 @@
       - level1-memberserver
       - rule_2.2.30
       - patch
+      - userrights
+      - services
 
 - name: "2.2.31 | PATCH | Ensure Impersonate a client after authentication is set to Administrators LOCAL SERVICE NETWORK SERVICE SERVICE DC only"
   win_user_right:
@@ -433,6 +463,9 @@
       - level1-domaincontroller
       - rule_2.2.31
       - patch
+      - userrights
+      - services
+      - administrators
 
 - name: "2.2.32 | PATCH | Ensure Impersonate a client after authentication is set to Administrators LOCAL SERVICE NETWORK SERVICE SERVICE and when the Web Server IIS Role with Web Services Role Service is installed IIS IUSRS MS only"
   win_user_right:
@@ -451,6 +484,9 @@
       - level1-memberserver
       - rule_2.2.32
       - patch
+      - userrights
+      - administrators
+      - services
 
 - name: "2.2.33 | PATCH | Ensure Increase scheduling priority is set to Administrators Window ManagerWindow Manager Group"
   win_user_right:
@@ -464,6 +500,7 @@
       - level1-memberserver
       - rule_2.2.33
       - patch
+      - userrights
 
 - name: "2.2.34 | PATCH | Ensure Load and unload device drivers is set to Administrators"
   win_user_right:
@@ -478,6 +515,7 @@
       - level1-memberserver
       - rule_2.2.34
       - patch
+      - userrights
 
 - name: "2.2.35 | PATCH | Ensure Lock pages in memory is set to No One"
   win_user_right:
@@ -491,8 +529,9 @@
       - level1-memberserver
       - rule_2.2.35
       - patch
+      - userrights
 
-- name: "2.2.36 | PATCH | L2 | Ensure Log on as a batch job is set to Administrators DC Only"
+- name: "2.2.36 | PATCH | Ensure Log on as a batch job is set to Administrators DC Only"
   win_user_right:
       name: SeBatchLogonRight
       users: Administrators
@@ -504,6 +543,8 @@
       - level2-domaincontroller
       - rule_2.2.36
       - patch
+      - userrights
+      - administrators
 
 - name: "2.2.37 & 2.2.38 | PATCH | Ensure Manage auditing and security log is set to Administrators and when Exchange is running in the environment Exchange Servers DC only"
   win_user_right:
@@ -520,6 +561,8 @@
       - rule_2.2.37
       - rule_2.2.38
       - patch
+      - userrights
+      - administrators
 
 - name: "2.2.39 | PATCH | Ensure Modify an object label is set to No One"
   win_user_right:
@@ -533,6 +576,7 @@
       - level1-memberserver
       - rule_2.2.39
       - patch
+      - userrights
 
 - name: "2.2.40 | PATCH | Ensure Modify firmware environment values is set to Administrators"
   win_user_right:
@@ -547,6 +591,8 @@
       - level1-memberserver
       - rule_2.2.40
       - patch
+      - userrights
+      - administrators
 
 - name: "2.2.41 | PATCH | Ensure Perform volume maintenance tasks is set to Administrators"
   win_user_right:
@@ -561,6 +607,8 @@
       - level1-memberserver
       - rule_2.2.41
       - patch
+      - userrights
+      - administrators
 
 - name: "2.2.42 | PATCH | Ensure Profile single process is set to Administrators"
   win_user_right:
@@ -575,6 +623,8 @@
       - level1-memberserver
       - rule_2.2.42
       - patch
+      - userrights
+      - administrators
 
 - name: "2.2.43 | PATCH | Ensure Profile system performance is set to Administrators NT SERVICEWdiServiceHost"
   win_user_right:
@@ -590,6 +640,9 @@
       - level1-memberserver
       - rule_2.2.43
       - patch
+      - userrights
+      - administrator
+      - service
 
 - name: "2.2.44 | PATCH | Ensure Replace a process level token is set to LOCAL SERVICE NETWORK SERVICE"
   win_user_right:
@@ -605,6 +658,8 @@
       - level1-memberserver
       - rule_2.2.44
       - patch
+      - userrights
+      - service
 
 - name: "2.2.45 | PATCH | Ensure Restore files and directories is set to Administrators"
   win_user_right:
@@ -619,6 +674,8 @@
       - level1-memberserver
       - rule_2.2.45
       - patch
+      - userright
+      - administrator
 
 - name: "2.2.46 | PATCH | Ensure Shut down the system is set to Administrators"
   win_user_right:
@@ -633,6 +690,8 @@
       - level1-memberserver
       - rule_2.2.46
       - patch
+      - userright
+      - administrator
 
 - name: "2.2.47 | PATCH | Ensure Synchronize directory service data is set to No One DC only"
   win_user_right:
@@ -646,6 +705,7 @@
       - level1-domaincontroller
       - rule_2.2.47
       - patch
+      - userright
 
 - name: "2.2.48 | PATCH | Ensure Take ownership of files or other objects is set to Administrators"
   win_user_right:
@@ -660,6 +720,8 @@
       - level1-memberserver
       - rule_2.2.48
       - patch
+      - userright
+      - administrator
 
 - name: "2.3.1.1 | PATCH | Ensure Accounts Administrator account status is set to Disabled MS only"
   win_security_policy:
@@ -674,6 +736,7 @@
       - level1-memberserver
       - rule_2.3.1.1
       - patch
+      - securitypolicy
 
 - name: "2.3.1.2 | PATCH | Ensure Accounts Block Microsoft accounts is set to Users cant add or log on with Microsoft accounts"
   win_regedit:
@@ -688,6 +751,7 @@
       - level1-memberserver
       - rule_2.3.1.2
       - patch
+      - securitypolicy
 
 - name: "2.3.1.3 | PATCH | Ensure Accounts Guest account status is set to Disabled MS only"
   win_security_policy:
@@ -700,6 +764,7 @@
       - level1-memberserver
       - rule_2.3.1.3
       - patch
+      - securitypolicy
 
 - name: "2.3.1.4 | PATCH | Ensure Accounts Limit local account use of blank passwords to console logon only is set to Enabled"
   win_regedit:
@@ -714,6 +779,7 @@
       - level1-memberserver
       - rule_2.3.1.4
       - patch
+      - account
 
 - name: "2.3.1.5 | PATCH | Configure Accounts Rename administrator account"
   win_security_policy:
@@ -728,6 +794,7 @@
       - level1-memberserver
       - rule_2.3.1.5
       - patch
+      - securitypolicy
 
 - name: "2.3.1.6 | PATCH | Configure Accounts Rename guest account"
   win_security_policy:
@@ -741,6 +808,7 @@
       - level1-memberservers
       - rule_2.3.1.6
       - patch
+      - securitypolicy
 
 - name: "2.3.2.1 | PATCH | Ensure Audit Force audit policy subcategory settings Windows Vista or later to override audit policy category settings is set to Enabled"
   win_regedit:
@@ -755,6 +823,7 @@
       - level1-memberserver
       - rule_2.3.2.1
       - patch
+      - auditpolicy
 
 - name: "2.3.2.2 | PATCH | Ensure Audit Shut down system immediately if unable to log security audits is set to Disabled"
   win_regedit:
@@ -769,6 +838,7 @@
       - level1-memberserver
       - rule_2.3.2.2
       - patch
+      - auditpolicy
 
 - name: "2.3.4.1 | PATCH | Ensure Devices Allowed to format and eject removable media is set to Administrators"
   win_regedit:
@@ -783,6 +853,7 @@
       - level1-memberserver
       - rule_2.3.4.1
       - patch
+      - devices
 
 - name: "2.3.4.2 | PATCH | Ensure Devices Prevent users from installing printer drivers is set to Enabled"
   win_regedit:
@@ -797,6 +868,7 @@
       - level1-memberserver
       - rule_2.3.4.2
       - patch
+      - devices
 
 - name: "2.3.5.1 | PATCH | Ensure Domain controller Allow server operators to schedule tasks is set to Disabled DC only"
   win_regedit:
@@ -812,6 +884,7 @@
       - level1-domaincontroller
       - rule_2.3.5.1
       - patch
+      - scheduledtasks
 
 - name: "2.3.5.2 | PATCH | Ensure Domain controller Allow vulnerable Netlogon secure channel connections' is set to 'Not Configured DC only"
   win_regedit:
@@ -827,6 +900,7 @@
       - level1-domaincontroller
       - rule_2.3.5.2
       - patch
+      - logon
 
 - name: "2.3.5.3 | PATCH | Ensure Domain controller LDAP server channel binding token requirements' is set to 'Always' DC only"
   win_regedit:
@@ -842,6 +916,7 @@
       - level1-domaincontroller
       - rule_2.3.5.3
       - patch
+      - ladp
 
 - name: "2.3.5.4 | PATCH | Ensure Domain controller LDAP server signing requirements is set to Require signing DC only"
   win_regedit:
@@ -856,6 +931,7 @@
       - level1-domaincontroller
       - rule_2.3.5.4
       - patch
+      - ladp
 
 - name: "2.3.5.5 | PATCH | Ensure Domain controller Refuse machine account password changes is set to Disabled DC only"
   win_regedit:
@@ -871,6 +947,7 @@
       - level1-domaincontroller
       - rule_2.3.5.5
       - patch
+      - account
 
 - name: "2.3.6.1 | PATCH | Ensure Domain member Digitally encrypt or sign secure channel data always is set to Enabled"
   win_regedit:
@@ -887,6 +964,7 @@
       - level1-memberserver
       - rule_2.3.6.1
       - patch
+      - encryption
 
 - name: "2.3.6.2 | PATCH | Ensure Domain member Digitally encrypt secure channel data when possible is set to Enabled"
   win_regedit:
@@ -903,6 +981,7 @@
       - level1-memberserver
       - rule_2.3.6.2
       - patch
+      - encryption
 
 - name: "2.3.6.3 | PATCH | Ensure Domain member Digitally sign secure channel data when possible is set to Enabled"
   win_regedit:
@@ -918,6 +997,7 @@
       - level1-memberserver
       - rule_2.3.6.3
       - patch
+      - logon
 
 - name: "2.3.6.4 | PATCH | Ensure Domain member Disable machine account password changes is set to Disabled"
   win_regedit:
@@ -933,6 +1013,7 @@
       - level1-memberserver
       - rule_2.3.6.4
       - patch
+      - logon
 
 - name: "2.3.6.5 | PATCH | Ensure Domain member Maximum machine account password age is set to 30 or fewer days but not 0"
   win_regedit:
@@ -948,6 +1029,7 @@
       - level1-memberserver
       - rule_2.3.6.5
       - patch
+      - account
 
 - name: "2.3.6.6 | PATCH | Ensure Domain member Require strong Windows 2000 or later session key is set to Enabled"
   win_regedit:
@@ -963,6 +1045,7 @@
       - level1-memberserver
       - rule_2.3.6.6
       - patch
+      - logon
 
 - name: "2.3.7.1 | PATCH | Ensure Interactive logon Do not require CTRLALTDEL is set to Disabled"
   win_regedit:
@@ -977,6 +1060,7 @@
       - level1-memberserver
       - rule_2.3.7.1
       - patch
+      - logon
 
 - name: "2.3.7.2 | PATCH | Ensure Interactive logon Dont display last signed-in is set to Enabled"
   win_regedit:
@@ -991,6 +1075,7 @@
       - level1-memberserver
       - rule_2.3.7.2
       - patch
+      - logon
 
 - name: "2.3.7.3 | PATCH | Ensure Interactive logon Machine inactivity limit is set to 900 or fewer seconds but not 0"
   win_regedit:
@@ -1005,6 +1090,7 @@
       - level1-memberserver
       - rule_2.3.7.3
       - patch
+      - logon
 
 - name: "2.3.7.4 | PATCH | Configure Interactive logon Message text for users attempting to log on"
   win_regedit:
@@ -1019,6 +1105,7 @@
       - level1-memberserver
       - rule_2.3.7.4
       - patch
+      - logon
 
 - name: "2.3.7.5 | PATCH | Configure Interactive logon Message title for users attempting to log on"
   win_regedit:
@@ -1033,8 +1120,9 @@
       - level1-memberserver
       - rule_2.3.7.5
       - patch
+      - logon
 
-- name: "2.3.7.6 | PATCH | L2 | Ensure Interactive logon Number of previous logons to cache in case domain controller is not available is set to 4 or fewer logons MS only"
+- name: "2.3.7.6 | PATCH | Ensure Interactive logon Number of previous logons to cache in case domain controller is not available is set to 4 or fewer logons MS only"
   win_regedit:
       path: HKLM:\Software\Microsoft\Windows Nt\Currentversion\Winlogon
       name: cachedlogonscount
@@ -1046,6 +1134,7 @@
       - level2-memberserver
       - rule_2.3.7.6
       - patch
+      - logon
 
 - name: "2.3.7.7 | PATCH | Ensure Interactive logon Prompt user to change password before expiration is set to between 5 and 14 days"
   win_regedit:
@@ -1060,6 +1149,7 @@
       - level1-memberserver
       - rule_2.3.7.7
       - patch
+      - logon
 
 - name: "2.3.7.8 | PATCH | Ensure Interactive logon Require Domain Controller Authentication to unlock workstation is set to Enabled MS only"
   win_regedit:
@@ -1074,6 +1164,7 @@
       - level1-memberserver
       - rule_2.3.7.8
       - patch
+      - logon
 
 - name: "2.3.7.9 | PATCH | Ensure Interactive logon Smart card removal behavior is set to Lock Workstation or higher"
   win_regedit:
@@ -1088,6 +1179,7 @@
       - level1-memberserver
       - rule_2.3.7.9
       - patch
+      - logon
 
 - name: "2.3.8.1 | PATCH | Ensure Microsoft network client Digitally sign communications always is set to Enabled"
   win_regedit:
@@ -1102,6 +1194,7 @@
       - level1-memberserver
       - rule_2.3.8.1
       - patch
+      - logon
 
 - name: "2.3.8.2 | PATCH | Ensure Microsoft network client Digitally sign communications if server agrees is set to Enabled"
   win_regedit:
@@ -1116,6 +1209,7 @@
       - level1-memberserver
       - rule_2.3.8.2
       - patch
+      - logon
 
 - name: "2.3.8.3 | PATCH | Ensure Microsoft network client Send unencrypted password to third-party SMB servers is set to Disabled"
   win_regedit:
@@ -1130,6 +1224,7 @@
       - level1-memberserver
       - rule_2.3.8.3
       - patch
+      - encryption
 
 - name: "2.3.9.1 | PATCH | Ensure Microsoft network server Amount of idle time required before suspending session is set to 15 or fewer minutes"
   win_regedit:
@@ -1144,6 +1239,7 @@
       - level1-memberserver
       - rule_2.3.9.1
       - patch
+      - account
 
 - name: "2.3.9.2 | PATCH | Ensure Microsoft network server Digitally sign communications always is set to Enabled"
   win_regedit:
@@ -1158,6 +1254,7 @@
       - level1-memberserver
       - rule_2.3.9.2
       - patch
+      - account
 
 - name: "2.3.9.3 | PATCH | Ensure Microsoft network server Digitally sign communications if client agrees is set to Enabled"
   win_regedit:
@@ -1172,6 +1269,7 @@
       - level1-memberserver
       - rule_2.3.9.3
       - patch
+      - account
 
 - name: "2.3.9.4 | PATCH | Ensure Microsoft network server Disconnect clients when logon hours expire is set to Enabled"
   win_regedit:
@@ -1186,6 +1284,7 @@
       - level1-memberserver
       - rule_2.3.9.4
       - patch
+      - account
 
 - name: "2.3.9.5 | PATCH | Ensure Microsoft network server Server SPN target name validation level is set to Accept if provided by client or higher MS only"
   win_regedit:
@@ -1201,6 +1300,7 @@
       - level1-memberserver
       - rule_2.3.9.5
       - patch
+      - account
 
 - name: "2.3.10.1 | PATCH | Ensure Network access Allow anonymous SIDName translation is set to Disabled"
   win_security_policy:
@@ -1214,6 +1314,7 @@
       - level1-memberserver
       - rule_2.3.10.1
       - patch
+      - securitypolicy
 
 - name: "2.3.10.2 | PATCH | Ensure Network access Do not allow anonymous enumeration of SAM accounts is set to Enabled MS only"
   win_regedit:
@@ -1228,6 +1329,7 @@
       - level1-memberserver
       - rule_2.3.10.2
       - patch
+      - sam
 
 - name: "2.3.10.3 | PATCH | Ensure Network access Do not allow anonymous enumeration of SAM accounts and shares is set to Enabled MS only"
   win_regedit:
@@ -1242,8 +1344,9 @@
       - level1-memberserver
       - rule_2.3.10.3
       - patch
+      - sam
 
-- name: "2.3.10.4 | PATCH | L2 | Ensure Network access Do not allow storage of passwords and credentials for network authentication is set to Enabled"
+- name: "2.3.10.4 | PATCH | Ensure Network access Do not allow storage of passwords and credentials for network authentication is set to Enabled"
   win_regedit:
       path: HKLM:\System\Currentcontrolset\Control\Lsa
       name: DisableDomainCreds
@@ -1256,6 +1359,7 @@
       - level2-memberserver
       - rule_2.3.10.4
       - patch
+      - accounts
 
 - name: "2.3.10.5 | PATCH | Ensure Network access Let Everyone permissions apply to anonymous users is set to Disabled"
   win_regedit:
@@ -1270,6 +1374,7 @@
       - level1-memberserver
       - rule_2.3.10.5
       - patch
+      - accounts
 
 - name: "2.3.10.6 | PATCH | Configure Network access Named Pipes that can be accessed anonymously DC only"
   win_regedit:
@@ -1284,6 +1389,7 @@
       - level1-domaincontroller
       - rule_2.3.10.6
       - patch
+      - namedpipes
 
 - name: "2.3.10.7 | PATCH | Configure Network access Named Pipes that can be accessed anonymously MS only"
   win_regedit:
@@ -1298,6 +1404,7 @@
       - level1-memberserver
       - rule_2.3.10.7
       - patch
+      - namedpipes
 
 - name: "2.3.10.8 | PATCH | Configure Network access Remotely accessible registry paths"
   win_regedit:
@@ -1340,6 +1447,7 @@
       - level1-memberserver
       - rule_2.3.10.10
       - patch
+      - namedpipes
 
 - name: "2.3.10.11 | PATCH | Ensure Network access Restrict clients allowed to make remote calls to SAM is set to Administrators Remote Access Allow MS only"
   win_regedit:
@@ -1353,6 +1461,7 @@
       - level1-memberserver
       - rule_2.3.10.11
       - patch
+      - sam
 
 - name: "2.3.10.12 | PATCH | Ensure Network access Shares that can be accessed anonymously is set to None"
   win_regedit:
@@ -1367,6 +1476,7 @@
       - level1-memberserver
       - rule_2.3.10.12
       - patch
+      - shares
 
 - name: "2.3.10.13 | PATCH | Ensure Network access Sharing and security model for local accounts is set to Classic - local users authenticate as themselves"
   win_regedit:
@@ -1381,6 +1491,7 @@
       - level1-memberserver
       - rule_2.3.10.13
       - patch
+      - guest
 
 - name: "2.3.11.1 | PATCH | Ensure Network security Allow Local System to use computer identity for NTLM is set to Enabled"
   win_regedit:
@@ -1395,6 +1506,7 @@
       - level1-memberserver
       - rule_2.3.11.1
       - patch
+      - ntlm
 
 - name: "2.3.11.2 | PATCH | Ensure Network security Allow LocalSystem NULL session fallback is set to Disabled"
   win_regedit:
@@ -1409,6 +1521,7 @@
       - level1-memberserver
       - rule_2.3.11.2
       - patch
+      - localsystem
 
 - name: "2.3.11.3 | PATCH | Ensure Network Security Allow PKU2U authentication requests to this computer to use online identities is set to Disabled"
   win_regedit:
@@ -1423,6 +1536,7 @@
       - level1-memberserver
       - rule_2.3.11.3
       - patch
+      - authentication
 
 - name: "2.3.11.4 | PATCH | Ensure Network security Configure encryption types allowed for Kerberos is set to AES128 HMAC SHA1 AES256 HMAC SHA1 Future encryption types"
   win_regedit:
@@ -1437,6 +1551,7 @@
       - level1-memberserver
       - rule_2.3.11.4
       - patch
+      - encryption
 
 - name: "2.3.11.5 | PATCH | Ensure Network security Do not store LAN Manager hash value on next password change is set to Enabled"
   win_regedit:
@@ -1451,6 +1566,7 @@
       - level1-memberserver
       - rule_2.3.11.5
       - patch
+      - network
 
 - name: "2.3.11.6 | PATCH | Ensure Network security Force logoff when logon hours expire is set to Enabled"
   win_regedit:
@@ -1465,6 +1581,7 @@
       - level1-memberserver
       - rule_2.3.11.6
       - patch
+      - network
 
 - name: "2.3.11.7 | PATCH | Ensure Network security LAN Manager authentication level is set to Send NTLMv2 response only. Refuse LM  NTLM"
   win_regedit:
@@ -1479,6 +1596,7 @@
       - level1-memberserver
       - rule_2.3.11.7
       - patch
+      - network
 
 - name: "2.3.11.8 | PATCH | Ensure Network security LDAP client signing requirements is set to Negotiate signing or higher"
   win_regedit:
@@ -1493,6 +1611,7 @@
       - level1-memberserver
       - rule_2.3.11.8
       - patch
+      - ladp
 
 - name: "2.3.11.9 | PATCH | Ensure Network security Minimum session security for NTLM SSP based including secure RPC clients is set to Require NTLMv2 session security Require 128-bit encryption"
   win_regedit:
@@ -1507,6 +1626,7 @@
       - level1-memberserver
       - rule_2.3.11.9
       - patch
+      - ntlm
 
 - name: "2.3.11.10 | PATCH | Ensure Network security Minimum session security for NTLM SSP based including secure RPC servers is set to Require NTLMv2 session security Require 128-bit encryption"
   win_regedit:
@@ -1521,6 +1641,7 @@
       - level1-memberserver
       - rule_2.3.11.10
       - patch
+      - ntlm
 
 - name: "2.3.13.1 | PATCH | Ensure Shutdown Allow system to be shut down without having to log on is set to Disabled"
   win_regedit:
@@ -1535,6 +1656,8 @@
       - level1-memberserver
       - rule_2.3.13.1
       - patch
+      - system
+      - shutdown
 
 - name: "2.3.15.1 | PATCH | Ensure System objects Require case insensitivity for non-Windows subsystems is set to Enabled"
   win_regedit:
@@ -1577,6 +1700,7 @@
       - level1-memberserver
       - rule_2.3.17.1
       - patch
+      - uac
 
 - name: "2.3.17.2 | PATCH | Ensure User Account Control Behavior of the elevation prompt for administrators in Admin Approval Mode is set to Prompt for consent on the secure desktop"
   win_regedit:
@@ -1591,6 +1715,7 @@
       - level1-memberserver
       - rule_2.3.17.2
       - patch
+      - uac
 
 - name: "2.3.17.3 | PATCH | Ensure User Account Control Behavior of the elevation prompt for standard users is set to Automatically deny elevation requests"
   win_regedit:
@@ -1605,6 +1730,7 @@
       - level1-memberserver
       - rule_2.3.17.3
       - patch
+      - uac
 
 - name: "2.3.17.4 | PATCH | Ensure User Account Control Detect application installations and prompt for elevation is set to Enabled"
   win_regedit:
@@ -1619,6 +1745,7 @@
       - level1-memberserver
       - rule_2.3.17.4
       - patch
+      - uac
 
 - name: "2.3.17.5 | PATCH | Ensure User Account Control Only elevate UIAccess applications that are installed in secure locations is set to Enabled"
   win_regedit:
@@ -1633,6 +1760,7 @@
       - level1-memberserver
       - rule_2.3.17.5
       - patch
+      - uac
 
 - name: "2.3.17.6 | PATCH | Ensure User Account Control Run all administrators in Admin Approval Mode is set to Enabled"
   win_regedit:
@@ -1647,6 +1775,7 @@
       - level1-memberserver
       - rule_2.3.17.6
       - patch
+      - uac
 
 - name: "2.3.17.7 | PATCH | Ensure User Account Control Switch to the secure desktop when prompting for elevation is set to Enabled"
   win_regedit:
@@ -1661,6 +1790,7 @@
       - level1-memberserver
       - rule_2.3.17.7
       - patch
+      - uac
 
 - name: "2.3.17.8 | PATCH | Ensure User Account Control Virtualize file and registry write failures to per-user locations is set to Enabled"
   win_regedit:
@@ -1675,3 +1805,4 @@
       - level1-memberserver
       - rule_2.3.17.8
       - patch
+      - uac
