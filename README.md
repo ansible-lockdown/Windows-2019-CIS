@@ -1,20 +1,26 @@
-Windows Server 2019 CIS
-=========
+# Windows Server 2019 CIS
+
 ![Release](https://img.shields.io/github/v/release/ansible-lockdown/Windows-2019-CIS?style=plastic)
 
-Configure a Windows Server 2019 system to be CIS compliant. All findings will be audited by default. Non-disruptive Section 1, Section 2, Section 9, Section 17, Section 18, and Section 19 findings will be corrected by default.
+Configure a Windows Server 2019 system to be [CIS](https://downloads.cisecurity.org/#/) compliant. 
 
-Caution(s)
--------
+ Based on [CIS Microsoft Windows Server 2019 Benchmark v1.3.0 - 03-18-2022](https://learn.cisecurity.org/l/799323/2022-03-15/rshpk)
+
+ ## Join us
+
+ On our [Discord Server](https://discord.gg/JFxpSgPFEJ) to ask questions, discuss features, or just chat with other Ansible-Lockdown users
+
+ ## Caution(s)
+
 This role **will make changes to the system** that could break things. This is not an auditing tool but rather a remediation tool to be used after an audit has been conducted.
 
-This role was developed against a clean install of the Operating System. If you are implimenting to an existing system please review this role for any site specific changes that are needed.
+This role was developed against a clean install of the Operating System. If you are implementing to an existing system please review this role for any site specific changes that are needed.
 
 To use release version please point to main branch
-Based on [Windows Server 2019 CIS v1.2.1 05-08-2021](https://downloads.cisecurity.org/#/).
+Based on [Windows Server 2019 CIS v1.3.0 03-18-2022](https://downloads.cisecurity.org/#/).
 
-Documentation
--------------
+## Documentation
+
 [Getting Started](https://www.lockdownenterprise.com/docs/getting-started-with-lockdown)<br>
 [Customizing Roles](https://www.lockdownenterprise.com/docs/customizing-lockdown-enterprise)<br>
 [Per-Host Configuration](https://www.lockdownenterprise.com/docs/per-host-lockdown-enterprise-configuration)<br>
@@ -22,8 +28,8 @@ Documentation
 [Wiki](https://github.com/ansible-lockdown/Windows-2019-CIS/wiki)<br>
 [Repo GitHub Page](https://ansible-lockdown.github.io/Windows-2019-CIS/)<br>
 
-Requirements
-------------
+## Requirements
+
 **General:**
 - Basic knowledge of Ansible, below are some links to the Ansible documentation to help get started if you are unfamiliar with Ansible
   - [Main Ansible documentation page](https://docs.ansible.com)
