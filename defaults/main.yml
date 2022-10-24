@@ -1,10 +1,34 @@
 ---
-section01_patch: yes
-section02_patch: yes
-section09_patch: yes
-section17_patch: yes
-section18_patch: yes
-section19_patch: yes
+
+# Section 1 Account Policies
+# 1.1.x Password Policy, 1.2.x Account Lockout Policy
+section01_patch: true
+
+# Section 2 Local Policies
+# 2.2.x User Rights Assignment, 2.3.x Security Options
+section02_patch: true
+
+# Section 5 System Services
+# 5.x Printers
+section05_patch: true
+
+# Section 9 Windows Defender Firewall with Advanced Security (formerly Windows Firewall with Advanced Security)
+# 9.1.x Domain Profile, 9.2.x Private Profile, 9.3.x Public Profile
+section09_patch: true
+
+# Section 17 Advanced Audit Policy Configuration
+# 17.1.x Account Logon, 17.2.x Account Management, 17.3.x Detailed Tracking, 17.4.x DS Access, 17.5.x Logon/Logoff
+# 17.6.x Object Access, 17.7.x Policy Change, 17.8.x Privilege Use, 17.9.x System
+section17_patch: true
+
+# Section 18 Administrative Templates (Computer)
+# 18.1.x Control Panel, 18.2.x LAPS, 18.3.x MS Security Guide, 18.4.x MSS (Legacy), 18.5.x Network, 18.6.x Printers
+# 18.7.x Start Menu and Taskbar, 18.8.x System, 18.9.x Windows Components
+section18_patch: true
+
+# Section 19 Administrative Templates (User)
+# 19.1.x Control Panel, 19.5.x Start Menu and Taskbar, 19.6.x System, 19.7.x Windows Components
+section19_patch: true
 
 min_ansible_version: "2.6"
 
@@ -180,6 +204,10 @@ rule_2_3_17_6: true
 rule_2_3_17_7: true
 rule_2_3_17_8: true
 
+# section 5
+rule_5_1: true
+rule_5_2: true
+
 # section09
 rule_9_1_1: true
 rule_9_1_2: true
@@ -290,6 +318,9 @@ rule_18_5_20_1: true
 rule_18_5_20_2: true
 rule_18_5_21_1: true
 rule_18_5_21_2: true
+rule_18_6_1: true
+rule_18_6_2: true
+rule_18_6_3: true
 rule_18_7_1_1: true
 rule_18_8_3_1: true
 rule_18_8_4_1: true
@@ -301,6 +332,7 @@ rule_18_8_5_4: true
 rule_18_8_5_5: true
 rule_18_8_5_6: true
 rule_18_8_5_7: true
+rule_18_8_7_2: true
 rule_18_8_14_1: true
 rule_18_8_21_2: true
 rule_18_8_21_3: true
@@ -339,6 +371,7 @@ rule_18_8_36_1: true
 rule_18_8_36_2: true
 rule_18_8_37_1: true
 rule_18_8_37_2: true
+rule_18_8_40_1: true
 rule_18_8_45_5_1: true
 rule_18_8_47_5_1: true
 rule_18_8_47_11_1: true
@@ -353,14 +386,18 @@ rule_18_9_8_3: true
 rule_18_9_10_1_1: true
 rule_18_9_12_1: true
 rule_18_9_13_1: true
-rule_18_9_13_2: true
 rule_18_9_14_1: true
+rule_18_9_14_2: true
 rule_18_9_15_1: true
 rule_18_9_15_2: true
-rule_18_9_16_1: true
-rule_18_9_16_2: true
-rule_18_9_16_3: true
-rule_18_9_16_4: true
+rule_18_9_17_1: true
+rule_18_9_17_2: true
+rule_18_9_17_3: true
+rule_18_9_17_4: true
+rule_18_9_17_5: true
+rule_18_9_17_6: true
+rule_18_9_17_7: true
+rule_18_9_17_8: true
 rule_18_9_26_1_1: true
 rule_18_9_26_1_2: true
 rule_18_9_26_2_1: true
@@ -381,14 +418,15 @@ rule_18_9_45_4_1_1: true
 rule_18_9_45_4_1_2: true
 rule_18_9_45_4_3_1: true
 rule_18_9_45_5_1: true
-rule_18_9_45_8_1: true
-rule_18_9_45_8_2: true
-rule_18_9_45_8_3: true
 rule_18_9_45_10_1: true
 rule_18_9_45_11_1: true
 rule_18_9_45_11_2: true
 rule_18_9_45_14: true
 rule_18_9_45_15: true
+rule_18_9_47_9_1: true
+rule_18_9_47_9_2: true
+rule_18_9_47_9_3: true
+rule_18_9_47_9_4: true
 rule_18_9_55_1: true
 rule_18_9_62_2_2: true
 rule_18_9_62_3_2_1: true
@@ -416,8 +454,6 @@ rule_18_9_85_1: true
 rule_18_9_85_2: true
 rule_18_9_85_3: true
 rule_18_9_86_1: true
-rule_18_9_95_1: true
-rule_18_9_95_2: true
 rule_18_9_97_1_1: true
 rule_18_9_97_1_2: true
 rule_18_9_97_1_3: true
@@ -427,12 +463,14 @@ rule_18_9_97_2_3: true
 rule_18_9_97_2_4: true
 rule_18_9_98_1: true
 rule_18_9_99_2_1: true
-rule_18_9_102_1_1: true
-rule_18_9_102_1_2: true
-rule_18_9_102_1_3: true
-rule_18_9_102_2: true
-rule_18_9_102_3: true
-rule_18_9_102_4: true
+rule_18_9_100_1: true
+rule_18_9_100_2: true
+rule_18_9_108_1_1: true
+rule_18_9_108_2_1: true
+rule_18_9_108_2_2: true
+rule_18_9_108_4_1: true
+rule_18_9_108_4_2: true
+rule_18_9_108_4_3: true
 
 # section19
 rule_19_1_3_1: true
@@ -447,6 +485,7 @@ rule_19_7_8_1: true
 rule_19_7_8_2: true
 rule_19_7_8_3: true
 rule_19_7_8_4: true
+rule_19_7_8_5: true
 rule_19_7_28_1: true
 rule_19_7_43_1: true
 rule_19_7_47_2_1: true
