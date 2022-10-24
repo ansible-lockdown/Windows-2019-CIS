@@ -1,5 +1,6 @@
 ---
-- name: "18.1.1.1 | PATCH | L1 | Ensure Prevent enabling lock screen camera is set to Enabled"
+
+- name: "18.1.1.1 | PATCH | Ensure Prevent enabling lock screen camera is set to Enabled"
   win_regedit:
       path: HKLM:\Software\Policies\Microsoft\Windows\Personalization
       name: NoLockScreenCamera
@@ -13,7 +14,7 @@
       - rule_18.1.1.1
       - patch
 
-- name: "18.1.1.2 | PATCH | L1 | Ensure Prevent enabling lock screen slide show is set to Enabled"
+- name: "18.1.1.2 | PATCH | Ensure Prevent enabling lock screen slide show is set to Enabled"
   win_regedit:
       path: HKLM:\Software\Policies\Microsoft\Windows\Personalization
       name: NoLockScreenSlideshow
@@ -27,7 +28,7 @@
       - rule_18.1.1.2
       - patch
 
-- name: "18.1.2.2 | PATCH | L1 | Ensure Allow users to enable online speech recognition services is set to Disabled"
+- name: "18.1.2.2 | PATCH | Ensure Allow users to enable online speech recognition services is set to Disabled"
   win_regedit:
       path: HKLM:\Software\Policies\Microsoft\InputPersonalization
       name: "AllowInputPersonalization"
@@ -55,7 +56,7 @@
       - rule_18.1.3
       - patch
 
-- name: "18.2.1 | PATCH | L1 | Ensure LAPS AdmPwd GPO Extension  CSE is installed MS only"
+- name: "18.2.1 | PATCH | Ensure LAPS AdmPwd GPO Extension  CSE is installed MS only"
   win_regedit:
       path: HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon\GPExtensions\{D76B9641-3288-4f75-942D-087DE603E3EA}
       name: DllName
@@ -69,7 +70,7 @@
       - rule_18.2.1
       - patch
 
-- name: "18.2.2 | PATCH | L1 | Ensure Do not allow password expiration time longer than required by policy is set to Enabled MS only"
+- name: "18.2.2 | PATCH | Ensure Do not allow password expiration time longer than required by policy is set to Enabled MS only"
   win_regedit:
       path: HKLM:\SOFTWARE\Policies\Microsoft Services\AdmPwd
       name: PwdExpirationProtectionEnabled
@@ -83,7 +84,7 @@
       - rule_18.2.2
       - patch
 
-- name: "18.2.3 | PATCH | L1 | Ensure Enable Local Admin Password Management is set to Enabled MS only"
+- name: "18.2.3 | PATCH | Ensure Enable Local Admin Password Management is set to Enabled MS only"
   win_regedit:
       path: HKLM:\SOFTWARE\Policies\Microsoft Services\AdmPwd
       name: AdmPwdEnabled
@@ -97,7 +98,7 @@
       - rule_18.2.3
       - patch
 
-- name: "18.2.4 | PATCH | L1 | Ensure Password Settings Password Complexity is set to Enabled Large letters  small letters  numbers  special characters MS only"
+- name: "18.2.4 | PATCH | Ensure Password Settings Password Complexity is set to Enabled Large letters  small letters  numbers  special characters MS only"
   win_regedit:
       path: HKLM:\SOFTWARE\Policies\Microsoft Services\AdmPwd
       name: PasswordComplexity
@@ -111,7 +112,7 @@
       - rule_18.2.4
       - patch
 
-- name: "18.2.5 | PATCH | L1 | Ensure Password Settings Password Length is set to Enabled 15 or more MS only"
+- name: "18.2.5 | PATCH | Ensure Password Settings Password Length is set to Enabled 15 or more MS only"
   win_regedit:
       path: HKLM:\SOFTWARE\Policies\Microsoft Services\AdmPwd
       name: PasswordLength
@@ -125,7 +126,7 @@
       - rule_18.2.5
       - patch
 
-- name: "18.2.6 | PATCH | L1 | Ensure Password Settings Password Age Days is set to Enabled 30 or fewer MS only"
+- name: "18.2.6 | PATCH | Ensure Password Settings Password Age Days is set to Enabled 30 or fewer MS only"
   win_regedit:
       path: HKLM:\SOFTWARE\Policies\Microsoft Services\AdmPwd
       name: PasswordAgeDays
@@ -139,7 +140,7 @@
       - rule_18.2.6
       - patch
 
-- name: "18.3.1 | PATCH | L1 | Ensure Apply UAC restrictions to local accounts on network logons is set to Enabled MS only"
+- name: "18.3.1 | PATCH | Ensure Apply UAC restrictions to local accounts on network logons is set to Enabled MS only"
   win_regedit:
       path: HKLM:\Software\Microsoft\Windows\Currentversion\Policies\System
       name: LocalAccountTokenFilterPolicy
@@ -153,7 +154,7 @@
       - rule_18.3.1
       - patch
 
-- name: "18.3.2 | PATCH | L1 | Ensure Configure SMB v1 client driver is set to Enabled Disable driver recommended"
+- name: "18.3.2 | PATCH | Ensure Configure SMB v1 client driver is set to Enabled Disable driver recommended"
   win_regedit:
       path: HKLM:\SYSTEM\CurrentControlSet\Services\mrxsmb10
       name: Start
@@ -167,7 +168,7 @@
       - rule_18.3.2
       - patch
 
-- name: "18.3.3 | PATCH | L1 | Ensure Configure SMB v1 server is set to Disabled"
+- name: "18.3.3 | PATCH | Ensure Configure SMB v1 server is set to Disabled"
   win_regedit:
       path: HKLM:\SYSTEM\CurrentControlSet\Services\LanmanServer\Parameters
       name: SMB1
@@ -183,7 +184,7 @@
       - rule_18.3.3
       - patch
 
-- name: "18.3.4 | PATCH | L1 | Ensure Enable Structured Exception Handling Overwrite Protection SEHOP is set to Enabled"
+- name: "18.3.4 | PATCH | Ensure Enable Structured Exception Handling Overwrite Protection SEHOP is set to Enabled"
   win_regedit:
       path: HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\kernel
       name: DisableExceptionChainValidation
@@ -198,7 +199,7 @@
       - rule_18.3.4
       - patch
 
-- name: "18.3.5 | PATCH | L1 | Ensure 'NetBT NodeType configuration' is set to 'Enabled: P-node recommended'"
+- name: "18.3.5 | PATCH | Ensure 'NetBT NodeType configuration' is set to 'Enabled: P-node recommended'"
   win_regedit:
       path: HKLM:\SYSTEM\CurrentControlSet\Services\NetBT\Parameters
       state: present
@@ -213,7 +214,7 @@
       - rule_18.3.5
       - patch
 
-- name: "18.3.6 | PATCH | L1 | Ensure WDigest Authentication is set to Disabled"
+- name: "18.3.6 | PATCH | Ensure WDigest Authentication is set to Disabled"
   win_regedit:
       path: HKLM:\SYSTEM\CurrentControlSet\Control\SecurityProviders\Wdigest
       state: present
@@ -230,7 +231,7 @@
 
 ##  18.4.x
 
-- name: "18.4.1 | PATCH | L1 | Ensure MSS AutoAdminLogon Enable Automatic Logon not recommended is set to Disabled"
+- name: "18.4.1 | PATCH | Ensure MSS AutoAdminLogon Enable Automatic Logon not recommended is set to Disabled"
   win_regedit:
       path: HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon
       state: present
@@ -245,7 +246,7 @@
       - rule_18.4.1
       - patch
 
-- name: "18.4.2 | PATCH | L1 | Ensure MSS DisableIPSourceRouting IPv6 IP source routing protection level protects against packet spoofing is set to Enabled Highest protection source routing is completely disabled"
+- name: "18.4.2 | PATCH | Ensure MSS DisableIPSourceRouting IPv6 IP source routing protection level protects against packet spoofing is set to Enabled Highest protection source routing is completely disabled"
   win_regedit:
       path: HKLM:\SYSTEM\CurrentControlSet\Services\Tcpip6\Parameters
       state: present
@@ -260,7 +261,7 @@
       - rule_18.4.2
       - patch
 
-- name: "18.4.3 | PATCH | L1 | Ensure MSS DisableIPSourceRouting IP source routing protection level protects against packet spoofing is set to Enabled Highest protection source routing is completely disabled"
+- name: "18.4.3 | PATCH | Ensure MSS DisableIPSourceRouting IP source routing protection level protects against packet spoofing is set to Enabled Highest protection source routing is completely disabled"
   win_regedit:
       path: HKLM:\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters
       state: present
@@ -275,7 +276,7 @@
       - rule_18.4.3
       - patch
 
-- name: "18.4.4 | PATCH | L1 | Ensure MSS EnableICMPRedirect Allow ICMP redirects to override OSPF generated routes is set to Disabled"
+- name: "18.4.4 | PATCH | Ensure MSS EnableICMPRedirect Allow ICMP redirects to override OSPF generated routes is set to Disabled"
   win_regedit:
       path: HKLM:\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters
       state: present
@@ -305,7 +306,7 @@
       - rule_18.4.5
       - patch
 
-- name: "18.4.6 | PATCH | L1 | Ensure MSS NoNameReleaseOnDemand Allow the computer to ignore NetBIOS name release requests except from WINS servers is set to Enabled"
+- name: "18.4.6 | PATCH | Ensure MSS NoNameReleaseOnDemand Allow the computer to ignore NetBIOS name release requests except from WINS servers is set to Enabled"
   win_regedit:
       path: HKLM:\System\Currentcontrolset\Services\Netbt\Parameters
       state: present
@@ -335,7 +336,7 @@
       - rule_18.4.7
       - patch
 
-- name: "18.4.8 | PATCH | L1 | Ensure MSS SafeDllSearchMode Enable Safe DLL search mode recommended is set to Enabled"
+- name: "18.4.8 | PATCH | Ensure MSS SafeDllSearchMode Enable Safe DLL search mode recommended is set to Enabled"
   win_regedit:
       path: HKLM:\System\Currentcontrolset\Control\Session Manager
       name: SafeDllSearchMode
@@ -350,7 +351,7 @@
       - rule_18.4.8
       - patch
 
-- name: "18.4.9 | PATCH | L1 | Ensure MSS ScreenSaverGracePeriod The time in seconds before the screen saver grace period expires 0 recommended is set to Enabled 5 or fewer seconds"
+- name: "18.4.9 | PATCH | Ensure MSS ScreenSaverGracePeriod The time in seconds before the screen saver grace period expires 0 recommended is set to Enabled 5 or fewer seconds"
   win_regedit:
       path: HKLM:\Software\Microsoft\Windows Nt\Currentversion\Winlogon
       name: ScreenSaverGracePeriod
@@ -393,7 +394,7 @@
       - rule_18.4.11
       - patch
 
-- name: "18.4.12 | PATCH | L1 | Ensure MSS WarningLevel Percentage threshold for the security event log at which the system will generate a warning is set to Enabled 90 or less"
+- name: "18.4.12 | PATCH | Ensure MSS WarningLevel Percentage threshold for the security event log at which the system will generate a warning is set to Enabled 90 or less"
   win_regedit:
       path: HKLM:\System\Currentcontrolset\Services\Eventlog\Security
       name: WarningLevel
@@ -410,7 +411,7 @@
 
 #  18.5.4.x
 
-- name: "18.5.4.1 | PATCH | L1 | Ensure Turn off multicast name resolution is set to Enabled MS Only"
+- name: "18.5.4.1 | PATCH | Ensure Turn off multicast name resolution is set to Enabled MS Only"
   win_regedit:
       path: HKLM:\Software\Policies\Microsoft\Windows NT\DNSClient
       name: EnableMulticast
@@ -439,7 +440,7 @@
       - rule_18.5.5.1
       - patch
 
-- name: "18.5.8.1 | PATCH | L1 | Ensure Enable insecure guest logons is set to Disabled"
+- name: "18.5.8.1 | PATCH | Ensure Enable insecure guest logons is set to Disabled"
   win_regedit:
       path: HKLM:\Software\Policies\Microsoft\Windows\Lanmanworkstation
       name: AllowInsecureGuestAuth
@@ -541,7 +542,7 @@
       - rule_18.5.10.2
       - patch
 
-- name: "18.5.11.2 | PATCH | L1 | Ensure Prohibit installation and configuration of Network Bridge on your DNS domain network is set to Enabled"
+- name: "18.5.11.2 | PATCH | Ensure Prohibit installation and configuration of Network Bridge on your DNS domain network is set to Enabled"
   win_regedit:
       path: HKLM:\Software\Policies\Microsoft\Windows\Network Connections
       name: NC_AllowNetBridge_NLA
@@ -555,7 +556,7 @@
       - rule_18.5.11.2
       - patch
 
-- name: "18.5.11.3 | PATCH | L1 | Ensure Prohibit use of Internet Connection Sharing on your DNS domain network is set to Enabled"
+- name: "18.5.11.3 | PATCH | Ensure Prohibit use of Internet Connection Sharing on your DNS domain network is set to Enabled"
   win_regedit:
       path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\Network Connections
       name: NC_ShowSharedAccessUI
@@ -569,7 +570,7 @@
       - rule_18.5.11.3
       - patch
 
-- name: "18.5.11.4 | PATCH | L1 | Ensure Require domain users to elevate when setting a networks location is set to Enabled"
+- name: "18.5.11.4 | PATCH | Ensure Require domain users to elevate when setting a networks location is set to Enabled"
   win_regedit:
       path: HKLM:\Software\Policies\Microsoft\Windows\Network Connections
       name: NC_StdDomainUserSetLocation
@@ -583,16 +584,16 @@
       - rule_18.5.11.4
       - patch
 
-- name: "18.5.14.1 | PATCH | L1 | Ensure Hardened UNC Paths is set to Enabled with Require Mutual Authentication and Require Integrity set for all NETLOGON and SYSVOL shares"
+- name: "18.5.14.1 | PATCH | Ensure Hardened UNC Paths is set to Enabled with Require Mutual Authentication and Require Integrity set for all NETLOGON and SYSVOL shares"
   block:
-      - name: "18.5.14.1 | PATCH | L1 | Ensure Hardened UNC Paths is set to Enabled with Require Mutual Authentication and Require Integrity set for all NETLOGON shares"
+      - name: "18.5.14.1 | PATCH | Ensure Hardened UNC Paths is set to Enabled with Require Mutual Authentication and Require Integrity set for all NETLOGON shares"
         win_regedit:
             path: HKLM:\Software\Policies\Microsoft\Windows\Networkprovider\Hardenedpaths
             name: "\\\\*\\NETLOGON"
             data: "RequireMutualAuthentication=1, RequireIntegrity=1"
             type: string
 
-      - name: "18.5.14.1 | PATCH | L1 | Ensure Hardened UNC Paths is set to Enabled with Require Mutual Authentication and Require Integrity set for all SYSVOL shares"
+      - name: "18.5.14.1 | PATCH | Ensure Hardened UNC Paths is set to Enabled with Require Mutual Authentication and Require Integrity set for all SYSVOL shares"
         win_regedit:
             path: HKLM:\Software\Policies\Microsoft\Windows\Networkprovider\Hardenedpaths
             name: "\\\\*\\SYSVOL"
@@ -678,7 +679,7 @@
       - rule_18.5.20.2
       - patch
 
-- name: "18.5.21.1 | PATCH | L1 | Ensure Minimize the number of simultaneous connections to the Internet or a Windows Domain is set to Enabled"
+- name: "18.5.21.1 | PATCH | Ensure Minimize the number of simultaneous connections to the Internet or a Windows Domain is set to Enabled"
   win_regedit:
       path: HKLM:\Software\Policies\Microsoft\Windows\Wcmsvc\Grouppolicy
       name: fMinimizeConnections
@@ -720,7 +721,7 @@
       - rule_18.7.1.1
       - patch
 
-- name: "18.8.3.1 | PATCH | L1 | Ensure Include command line in process creation events is set to Disabled"
+- name: "18.8.3.1 | PATCH | Ensure Include command line in process creation events is set to Disabled"
   win_regedit:
       path: HKLM:\Software\Microsoft\Windows\Currentversion\Policies\System\Audit
       name: ProcessCreationIncludeCmdLine_Enabled
@@ -734,7 +735,7 @@
       - rule_18.8.3.1
       - patch
 
-- name: "18.8.4.1 | PATCH | L1 | Ensure Encryption Oracle Remediation is set to Enabled Force Updated Clients"
+- name: "18.8.4.1 | PATCH | Ensure Encryption Oracle Remediation is set to Enabled Force Updated Clients"
   win_regedit:
       path: HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\CredSSP\Parameters
       name: AllowEncryptionOracle
@@ -748,7 +749,7 @@
       - rule_18.8.4.1
       - patch
 
-- name: "18.8.4.2 | PATCH | L1 | Ensure Remote host allows delegation of non-exportable credentials is set to Enabled"
+- name: "18.8.4.2 | PATCH | Ensure Remote host allows delegation of non-exportable credentials is set to Enabled"
   win_regedit:
       path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\CredentialsDelegation
       name: AllowProtectedCreds
@@ -860,7 +861,7 @@
       - rule_18.8.5.7
       - patch
 
-- name: "18.8.14.1 | PATCH | L1 | Ensure Boot-Start Driver Initialization Policy is set to Enabled Good unknown and bad but critical"
+- name: "18.8.14.1 | PATCH | Ensure Boot-Start Driver Initialization Policy is set to Enabled Good unknown and bad but critical"
   win_regedit:
       path: HKLM:\System\Currentcontrolset\Policies\Earlylaunch
       name: DriverLoadPolicy
@@ -874,7 +875,7 @@
       - rule_18.8.14.1
       - patch
 
-- name: "18.8.21.2 | PATCH | L1 | Ensure Configure registry policy processing Do not apply during periodic background processing is set to Enabled FALSE"
+- name: "18.8.21.2 | PATCH | Ensure Configure registry policy processing Do not apply during periodic background processing is set to Enabled FALSE"
   win_regedit:
       path: HKLM:\Software\Policies\Microsoft\Windows\Group Policy\{35378Eac-683F-11D2-A89A-00C04Fbbcfa2}
       name: NoBackgroundPolicy
@@ -888,7 +889,7 @@
       - rule_18.8.21.2
       - patch
 
-- name: "18.8.21.3 | PATCH | L1 | Ensure Configure registry policy processing Process even if the Group Policy objects have not changed is set to Enabled TRUE"
+- name: "18.8.21.3 | PATCH | Ensure Configure registry policy processing Process even if the Group Policy objects have not changed is set to Enabled TRUE"
   win_regedit:
       path: HKLM:\Software\Policies\Microsoft\Windows\Group Policy\{35378Eac-683F-11D2-A89A-00C04Fbbcfa2}
       name: NoGPOListChanges
@@ -902,7 +903,7 @@
       - rule_18.8.21.3
       - patch
 
-- name: "18.8.21.4 | PATCH | L1 | Ensure Continue experiences on this device is set to Disabled"
+- name: "18.8.21.4 | PATCH | Ensure Continue experiences on this device is set to Disabled"
   win_regedit:
       path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\System
       name: EnableCdp
@@ -916,7 +917,7 @@
       - rule_18.8.21.4
       - patch
 
-- name: "18.8.21.5 | PATCH | L1 | Ensure Turn off background refresh of Group Policy is set to Disabled"
+- name: "18.8.21.5 | PATCH | Ensure Turn off background refresh of Group Policy is set to Disabled"
   win_regedit:
       path: HKLM:\Software\Microsoft\Windows\Currentversion\Policies\System\DisableBkGndGroupPolicy
       state: absent
@@ -929,7 +930,7 @@
       - rule_18.8.21.5
       - patch
 
-- name: "18.8.22.1.1 | PATCH | L1 | Ensure Turn off downloading of print drivers over HTTP is set to Enabled"
+- name: "18.8.22.1.1 | PATCH | Ensure Turn off downloading of print drivers over HTTP is set to Enabled"
   win_regedit:
       path: HKLM:\Software\Policies\Microsoft\Windows Nt\Printers
       name: DisableWebPnPDownload
@@ -985,7 +986,7 @@
       - rule_18.8.22.1.4
       - patch
 
-- name: "18.8.22.1.5 | PATCH | L1 | Ensure Turn off Internet download for Web publishing and online ordering wizards is set to Enabled"
+- name: "18.8.22.1.5 | PATCH | Ensure Turn off Internet download for Web publishing and online ordering wizards is set to Enabled"
   win_regedit:
       path: HKLM:\Software\Microsoft\Windows\Currentversion\Policies\Explorer
       name: NoWebServices
@@ -1143,7 +1144,7 @@
       - rule_18.8.25.1
       - patch
 
-- name: "18.8.26.1 | PATCH | L1 | Ensure Enumeration policy for external devices incompatible with Kernel DMA Protection is set to Enabled Block All"
+- name: "18.8.26.1 | PATCH | Ensure Enumeration policy for external devices incompatible with Kernel DMA Protection is set to Enabled Block All"
   win_regedit:
       path: HKLM:\Software\Policies\Microsoft\Windows\Kernel DMA Protection
       name: DeviceEnumerationPolicy
@@ -1171,7 +1172,7 @@
       - rule_18.8.27.1
       - patch
 
-- name: "18.8.28.1 | PATCH | L1 | Ensure Block user from showing account details on sign-in is set to Enabled"
+- name: "18.8.28.1 | PATCH | Ensure Block user from showing account details on sign-in is set to Enabled"
   win_regedit:
       path: HKLM:\Software\Policies\Microsoft\Windows\System
       name: BlockUserFromShowingAccountDetailsOnSignin
@@ -1185,7 +1186,7 @@
       - rule_18.8.28.1
       - patch
 
-- name: "18.8.28.2 | PATCH | L1 | Ensure Do not display network selection UI is set to Enabled"
+- name: "18.8.28.2 | PATCH | Ensure Do not display network selection UI is set to Enabled"
   win_regedit:
       path: HKLM:\Software\Policies\Microsoft\Windows\System
       name: DontDisplayNetworkSelectionUI
@@ -1199,7 +1200,7 @@
       - rule_18.8.28.2
       - patch
 
-- name: "18.8.28.3 | PATCH | L1 | Ensure Do not enumerate connected users on domain-joined computers is set to Enabled"
+- name: "18.8.28.3 | PATCH | Ensure Do not enumerate connected users on domain-joined computers is set to Enabled"
   win_regedit:
       path: HKLM:\Software\Policies\Microsoft\Windows\System
       name: DontEnumerateConnectedUsers
@@ -1213,7 +1214,7 @@
       - rule_18.8.28.3
       - patch
 
-- name: "18.8.28.4 | PATCH | L1 | Ensure Enumerate local users on domain-joined computers is set to Disabled MS only"
+- name: "18.8.28.4 | PATCH | Ensure Enumerate local users on domain-joined computers is set to Disabled MS only"
   win_regedit:
       path: HKLM:\Software\Policies\Microsoft\Windows\System
       name: EnumerateLocalUsers
@@ -1226,7 +1227,7 @@
       - rule_18.8.28.4
       - patch
 
-- name: "18.8.28.5 | PATCH | L1 | Ensure Turn off app notifications on the lock screen is set to Enabled"
+- name: "18.8.28.5 | PATCH | Ensure Turn off app notifications on the lock screen is set to Enabled"
   win_regedit:
       path: HKLM:\Software\Policies\Microsoft\Windows\System
       name: DisableLockScreenAppNotifications
@@ -1240,7 +1241,7 @@
       - rule_18.8.28.5
       - patch
 
-- name: "18.8.28.6 | PATCH | L1 | Ensure Turn off picture password sign-in is set to Enabled"
+- name: "18.8.28.6 | PATCH | Ensure Turn off picture password sign-in is set to Enabled"
   win_regedit:
       path: HKLM:\Software\Policies\Microsoft\Windows\System
       name: BlockDomainPicturePassword
@@ -1254,7 +1255,7 @@
       - rule_18.8.28.6
       - patch
 
-- name: "18.8.28.7 | PATCH | L1 | Ensure Turn on convenience PIN sign-in is set to Disabled"
+- name: "18.8.28.7 | PATCH | Ensure Turn on convenience PIN sign-in is set to Disabled"
   win_regedit:
       path: HKLM:\Software\Policies\Microsoft\Windows\System
       name: AllowDomainPINLogon
@@ -1324,7 +1325,7 @@
       - rule_18.8.34.6.2
       - patch
 
-- name: "18.8.34.6.3 | PATCH | L1 | Ensure Require a password when a computer wakes on battery is set to Enabled"
+- name: "18.8.34.6.3 | PATCH | Ensure Require a password when a computer wakes on battery is set to Enabled"
   win_regedit:
       path: HKLM:\SOFTWARE\Policies\Microsoft\Power\PowerSettings\0e796bdb-100d-47d6-a2d5-f7d2daa51f51
       name: DCSettingIndex
@@ -1338,7 +1339,7 @@
       - rule_18.8.34.6.3
       - patch
 
-- name: "18.8.34.6.4 | PATCH | L1 | Ensure Require a password when a computer wakes plugged in is set to Enabled"
+- name: "18.8.34.6.4 | PATCH | Ensure Require a password when a computer wakes plugged in is set to Enabled"
   win_regedit:
       path: HKLM:\SOFTWARE\Policies\Microsoft\Power\PowerSettings\0e796bdb-100d-47d6-a2d5-f7d2daa51f51
       name: ACSettingIndex
@@ -1352,7 +1353,7 @@
       - rule_18.8.34.6.4
       - patch
 
-- name: "18.8.36.1 | PATCH | L1 | Ensure Configure Offer Remote Assistance is set to Disabled"
+- name: "18.8.36.1 | PATCH | Ensure Configure Offer Remote Assistance is set to Disabled"
   win_regedit:
       path: HKLM:\Software\Policies\Microsoft\Windows Nt\Terminal Services
       name: fAllowUnsolicited
@@ -1366,7 +1367,7 @@
       - rule_18.8.36.1
       - patch
 
-- name: "18.8.36.2 | PATCH | L1 | Ensure Configure Solicited Remote Assistance is set to Disabled"
+- name: "18.8.36.2 | PATCH | Ensure Configure Solicited Remote Assistance is set to Disabled"
   win_regedit:
       path: HKLM:\Software\Policies\Microsoft\Windows Nt\Terminal Services
       name: fAllowToGetHelp
@@ -1380,7 +1381,7 @@
       - rule_18.8.36.2
       - patch
 
-- name: "18.8.37.1 | PATCH | L1 | Ensure Enable RPC Endpoint Mapper Client Authentication is set to Enabled MS only"
+- name: "18.8.37.1 | PATCH | Ensure Enable RPC Endpoint Mapper Client Authentication is set to Enabled MS only"
   win_regedit:
       path: HKLM:\Software\Policies\Microsoft\Windows Nt\Rpc
       name: EnableAuthEpResolution
@@ -1492,7 +1493,7 @@
       - rule_18.9.4.1
       - patch
 
-- name: "18.9.6.1 | PATCH | L1 | Ensure Allow Microsoft accounts to be optional is set to Enabled"
+- name: "18.9.6.1 | PATCH | Ensure Allow Microsoft accounts to be optional is set to Enabled"
   win_regedit:
       path: HKLM:\Software\Microsoft\Windows\Currentversion\Policies\System
       name: MSAOptional
@@ -1506,7 +1507,7 @@
       - rule_18.9.6.1
       - patch
 
-- name: "18.9.8.1 | PATCH | L1 | Ensure Disallow Autoplay for non-volume devices is set to Enabled"
+- name: "18.9.8.1 | PATCH | Ensure Disallow Autoplay for non-volume devices is set to Enabled"
   win_regedit:
       path: HKLM:\Software\Policies\Microsoft\Windows\Explorer
       name: NoAutoplayfornonVolume
@@ -1520,7 +1521,7 @@
       - rule_18.9.8.1
       - patch
 
-- name: "18.9.8.2 | PATCH | L1 | Ensure Set the default behavior for AutoRun is set to Enabled Do not execute any autorun commands"
+- name: "18.9.8.2 | PATCH | Ensure Set the default behavior for AutoRun is set to Enabled Do not execute any autorun commands"
   win_regedit:
       path: HKLM:\Software\Microsoft\Windows\Currentversion\Policies\Explorer
       name: NoAutorun
@@ -1534,7 +1535,7 @@
       - rule_18.9.8.2
       - patch
 
-- name: "18.9.8.3 | PATCH | L1 | Ensure Turn off Autoplay is set to Enabled All drives"
+- name: "18.9.8.3 | PATCH | Ensure Turn off Autoplay is set to Enabled All drives"
   win_regedit:
       path: HKLM:\Software\Microsoft\Windows\Currentversion\Policies\Explorer
       name: NoDriveTypeAutoRun
@@ -1548,7 +1549,7 @@
       - rule_18.9.8.3
       - patch
 
-- name: "18.9.10.1.1 | PATCH | L1 | Ensure Configure enhanced anti-spoofing is set to Enabled"
+- name: "18.9.10.1.1 | PATCH | Ensure Configure enhanced anti-spoofing is set to Enabled"
   win_regedit:
       path: HKLM:\Software\Policies\Microsoft\Biometrics\Facialfeatures
       name: EnhancedAntiSpoofing
@@ -1590,7 +1591,7 @@
       - rule_18.9.13.1
       - patch
 
-- name: "18.9.13.2 | PATCH | L1 | Ensure Turn off Microsoft consumer experiences is set to Enabled"
+- name: "18.9.13.2 | PATCH | Ensure Turn off Microsoft consumer experiences is set to Enabled"
   win_regedit:
       path: HKLM:\Software\Policies\Microsoft\Windows\Cloudcontent
       name: DisableWindowsConsumerFeatures
@@ -1604,7 +1605,7 @@
       - rule_18.9.13.2
       - patch
 
-- name: "18.9.14.1 | PATCH | L1 | Ensure Require pin for pairing is set to Enabled First Time OR Enabled Always"
+- name: "18.9.14.1 | PATCH | Ensure Require pin for pairing is set to Enabled First Time OR Enabled Always"
   win_regedit:
       path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\Connect
       name: RequirePinForPairing
@@ -1618,7 +1619,7 @@
       - rule_18.9.14.1
       - patch
 
-- name: "18.9.15.1 | PATCH | L1 | Ensure Do not display the password reveal button is set to Enabled"
+- name: "18.9.15.1 | PATCH | Ensure Do not display the password reveal button is set to Enabled"
   win_regedit:
       path: HKLM:\Software\Policies\Microsoft\Windows\Credui
       name: DisablePasswordReveal
@@ -1632,7 +1633,7 @@
       - rule_18.9.15.1
       - patch
 
-- name: "18.9.15.2 | PATCH | L1 | Ensure Enumerate administrator accounts on elevation is set to Disabled"
+- name: "18.9.15.2 | PATCH | Ensure Enumerate administrator accounts on elevation is set to Disabled"
   win_regedit:
       path: HKLM:\Software\Microsoft\Windows\Currentversion\Policies\Credui
       name: EnumerateAdministrators
@@ -1646,7 +1647,7 @@
       - rule_18.9.15.2
       - patch
 
-- name: "18.9.16.1 | PATCH | L1 | Ensure Allow Telemetry is set to Enabled 0 - Security Enterprise Only or Enabled 1 - Basic"
+- name: "18.9.16.1 | PATCH | Ensure Allow Telemetry is set to Enabled 0 - Security Enterprise Only or Enabled 1 - Basic"
   win_regedit:
       path: HKLM:\Software\Policies\Microsoft\Windows\Datacollection
       name: AllowTelemetry
@@ -1674,7 +1675,7 @@
       - rule_18.9.16.2
       - patch
 
-- name: "18.9.16.3 | PATCH | L1 | Ensure Do not show feedback notifications is set to Enabled"
+- name: "18.9.16.3 | PATCH | Ensure Do not show feedback notifications is set to Enabled"
   win_regedit:
       path: HKLM:\Software\Policies\Microsoft\Windows\Datacollection
       name: DoNotShowFeedbackNotifications
@@ -1688,7 +1689,7 @@
       - rule_18.9.16.3
       - patch
 
-- name: "18.9.16.4 | PATCH | L1 | Ensure Toggle user control over Insider builds is set to Disabled"
+- name: "18.9.16.4 | PATCH | Ensure Toggle user control over Insider builds is set to Disabled"
   win_regedit:
       path: HKLM:\Software\Policies\Microsoft\Windows\Previewbuilds
       name: AllowBuildPreview
@@ -1702,7 +1703,7 @@
       - rule_18.9.16.4
       - patch
 
-- name: "18.9.26.1.1 | PATCH | L1 | Ensure Application Control Event Log behavior when the log file reaches its maximum size is set to Disabled"
+- name: "18.9.26.1.1 | PATCH | Ensure Application Control Event Log behavior when the log file reaches its maximum size is set to Disabled"
   win_regedit:
       path: HKLM:\Software\Policies\Microsoft\Windows\EventLog\Application
       name: Retention
@@ -1716,7 +1717,7 @@
       - rule_18.9.26.1.1
       - patch
 
-- name: "18.9.26.1.2 | PATCH | L1 | Ensure Application Specify the maximum log file size KB is set to Enabled 32768 or greater"
+- name: "18.9.26.1.2 | PATCH | Ensure Application Specify the maximum log file size KB is set to Enabled 32768 or greater"
   win_regedit:
       path: HKLM:\Software\Policies\Microsoft\Windows\Eventlog\Application
       name: MaxSize
@@ -1730,7 +1731,7 @@
       - rule_18.9.26.1.2
       - patch
 
-- name: "18.9.26.2.1 | PATCH | L1 | Ensure Security Control Event Log behavior when the log file reaches its maximum size is set to Disabled"
+- name: "18.9.26.2.1 | PATCH | Ensure Security Control Event Log behavior when the log file reaches its maximum size is set to Disabled"
   win_regedit:
       path: HKLM:\Software\Policies\Microsoft\Windows\Eventlog\Security
       name: Retention
@@ -1744,7 +1745,7 @@
       - rule_18.9.26.2.1
       - patch
 
-- name: "18.9.26.2.2 | PATCH | L1 | Ensure Security Specify the maximum log file size KB is set to Enabled 196608 or greater"
+- name: "18.9.26.2.2 | PATCH | Ensure Security Specify the maximum log file size KB is set to Enabled 196608 or greater"
   win_regedit:
       path: HKLM:\Software\Policies\Microsoft\Windows\Eventlog\Security
       name: MaxSize
@@ -1758,7 +1759,7 @@
       - rule_18.9.26.2.2
       - patch
 
-- name: "18.9.26.3.1 | PATCH | L1 | Ensure Setup Control Event Log behavior when the log file reaches its maximum size is set to Disabled"
+- name: "18.9.26.3.1 | PATCH | Ensure Setup Control Event Log behavior when the log file reaches its maximum size is set to Disabled"
   win_regedit:
       path: HKLM:\Software\Policies\Microsoft\Windows\Eventlog\Setup
       name: Retention
@@ -1772,7 +1773,7 @@
       - rule_18.9.26.3.1
       - patch
 
-- name: "18.9.26.3.2 | PATCH | L1 | Ensure Setup Specify the maximum log file size KB is set to Enabled 32768 or greater"
+- name: "18.9.26.3.2 | PATCH | Ensure Setup Specify the maximum log file size KB is set to Enabled 32768 or greater"
   win_regedit:
       path: HKLM:\Software\Policies\Microsoft\Windows\Eventlog\Setup
       name: MaxSize
@@ -1786,7 +1787,7 @@
       - rule_18.9.26.3.2
       - patch
 
-- name: "18.9.26.4.1 | PATCH | L1 | Ensure System Control Event Log behavior when the log file reaches its maximum size is set to Disabled"
+- name: "18.9.26.4.1 | PATCH | Ensure System Control Event Log behavior when the log file reaches its maximum size is set to Disabled"
   win_regedit:
       path: HKLM:\Software\Policies\Microsoft\Windows\Eventlog\System
       name: Retention
@@ -1800,7 +1801,7 @@
       - rule_18.9.26.4.1
       - patch
 
-- name: "18.9.26.4.2 | PATCH | L1 | Ensure System Specify the maximum log file size KB is set to Enabled 32768 or greater"
+- name: "18.9.26.4.2 | PATCH | Ensure System Specify the maximum log file size KB is set to Enabled 32768 or greater"
   win_regedit:
       path: HKLM:\Software\Policies\Microsoft\Windows\Eventlog\System
       name: MaxSize
@@ -1814,7 +1815,7 @@
       - rule_18.9.26.4.2
       - patch
 
-- name: "18.9.30.2 | PATCH | L1 | Ensure Turn off Data Execution Prevention for Explorer is set to Disabled"
+- name: "18.9.30.2 | PATCH | Ensure Turn off Data Execution Prevention for Explorer is set to Disabled"
   win_regedit:
       path: HKLM:\Software\Policies\Microsoft\Windows\Explorer
       name: NoDataExecutionPrevention
@@ -1828,7 +1829,7 @@
       - rule_18.9.30.2
       - patch
 
-- name: "18.9.30.3 | PATCH | L1 | Ensure Turn off heap termination on corruption is set to Disabled"
+- name: "18.9.30.3 | PATCH | Ensure Turn off heap termination on corruption is set to Disabled"
   win_regedit:
       path: HKLM:\Software\Policies\Microsoft\Windows\Explorer
       name: NoHeapTerminationOnCorruption
@@ -1842,7 +1843,7 @@
       - rule_18.9.30.3
       - patch
 
-- name: "18.9.30.4 | PATCH | L1 | Ensure Turn off shell protocol protected mode is set to Disabled"
+- name: "18.9.30.4 | PATCH | Ensure Turn off shell protocol protected mode is set to Disabled"
   win_regedit:
       path: HKLM:\Software\Microsoft\Windows\Currentversion\Policies\Explorer
       name: PreXPSP2ShellProtocolBehavior
@@ -1884,7 +1885,7 @@
       - rule_18.9.43.1
       - patch
 
-- name: "18.9.44.1 | PATCH | L1 | Ensure Block all consumer Microsoft account user authentication is set to Enabled"
+- name: "18.9.44.1 | PATCH | Ensure Block all consumer Microsoft account user authentication is set to Enabled"
   win_regedit:
       path: HKLM:\Software\Policies\Microsoft\MicrosoftAccount
       name: DisableUserAuth
@@ -1898,7 +1899,7 @@
       - rule_18.9.44.1
       - patch
 
-- name: "18.9.45.3.1 | PATCH | L1 | Ensure Configure local setting override for reporting to Microsoft MAPS is set to Disabled"
+- name: "18.9.45.3.1 | PATCH | Ensure Configure local setting override for reporting to Microsoft MAPS is set to Disabled"
   win_regedit:
       path: HKLM:\Software\Policies\Microsoft\Windows Defender\Spynet
       name: LocalSettingOverrideSpynetReporting
@@ -1954,7 +1955,7 @@
       - rule_18.9.45.8.1
       - patch
 
-- name: "18.9.45.8.3 | PATCH | L1 | Ensure Turn on behavior monitoring is set to Enabled"
+- name: "18.9.45.8.3 | PATCH | Ensure Turn on behavior monitoring is set to Enabled"
   win_regedit:
       path: HKLM:\Software\Policies\Microsoft\Windows Defender\Real-Time Protection
       name: DisableBehaviorMonitoring
@@ -1968,7 +1969,7 @@
       - rule_18.9.45.8.3
       - patch
 
-- name: "18.9.45.4.1.1 | PATCH | L1 | Ensure Configure Attack Surface Reduction rules is set to Enabled"
+- name: "18.9.45.4.1.1 | PATCH | Ensure Configure Attack Surface Reduction rules is set to Enabled"
   win_regedit:
       path: HKLM:\Software\Policies\Microsoft\Windows Defender\Windows Defender Exploit Guard\ASR
       name: ExploitGuard_ASR_Rules
@@ -1982,7 +1983,7 @@
       - rule_18.9.45.4.1.1
       - patch
 
-- name: "18.9.45.4.1.2 | PATCH | L1 | Ensure Configure Attack Surface Reduction rules Set the state for each ASR rule is configured"
+- name: "18.9.45.4.1.2 | PATCH | Ensure Configure Attack Surface Reduction rules Set the state for each ASR rule is configured"
   win_regedit:
       path: HKLM:\Software\Policies\Microsoft\Windows Defender\Windows Defender Exploit Guard\ASR\Rules
       name: "{{ item }}"
@@ -2009,7 +2010,7 @@
       - rule_18.9.45.4.1.2
       - patch
 
-- name: "18.9.45.4.3.1 | PATCH | L1 | Ensure Prevent users and apps from accessing dangerous websites is set to Enabled Block"
+- name: "18.9.45.4.3.1 | PATCH | Ensure Prevent users and apps from accessing dangerous websites is set to Enabled Block"
   win_regedit:
       path: HKLM:\Software\Policies\Microsoft\Windows Defender\Windows Defender Exploit Guard\Network Protection
       name: EnableNetworkProtection
@@ -2051,7 +2052,7 @@
       - rule_18.9.77.9.1
       - patch
 
-- name: "18.9.45.11.1 | PATCH | L1 | Ensure Scan removable drives is set to Enabled"
+- name: "18.9.45.11.1 | PATCH | Ensure Scan removable drives is set to Enabled"
   win_regedit:
       path: HKLM:\Software\Policies\Microsoft\Windows Defender\Scan
       name: DisableRemovableDriveScanning
@@ -2065,7 +2066,7 @@
       - rule_18.9.45.11.1
       - patch
 
-- name: "18.9.45.11.2 | PATCH | L1 | Ensure Turn on e-mail scanning is set to Enabled"
+- name: "18.9.45.11.2 | PATCH | Ensure Turn on e-mail scanning is set to Enabled"
   win_regedit:
       path: HKLM:\Software\Policies\Microsoft\Windows Defender\Scan
       name: DisableEmailScanning
@@ -2079,7 +2080,7 @@
       - rule_18.9.45.11.2
       - patch
 
-- name: "18.9.45.14 | PATCH | L1 | Ensure Configure detection for potentially unwanted applications is set to Enabled Block"
+- name: "18.9.45.14 | PATCH | Ensure Configure detection for potentially unwanted applications is set to Enabled Block"
   win_regedit:
       path: HKLM:\Software\Policies\Microsoft\Windows Defender
       name: PUAProtection
@@ -2093,7 +2094,7 @@
       - rule_18.9.45.14
       - patch
 
-- name: "18.9.45.15 | PATCH | L1 | Ensure Turn off Windows Defender AntiVirus is set to Disabled"
+- name: "18.9.45.15 | PATCH | Ensure Turn off Windows Defender AntiVirus is set to Disabled"
   win_regedit:
       path: HKLM:\Software\Policies\Microsoft\Windows Defender
       name: DisableAntiSpyware
@@ -2107,7 +2108,7 @@
       - rule_18.9.45.15
       - patch
 
-- name: "18.9.55.1 | PATCH | L1 | Ensure Prevent the usage of OneDrive for file storage is set to Enabled"
+- name: "18.9.55.1 | PATCH | Ensure Prevent the usage of OneDrive for file storage is set to Enabled"
   win_regedit:
       path: HKLM:\Software\Policies\Microsoft\Windows\Onedrive
       name: DisableFileSyncNGSC
@@ -2121,7 +2122,7 @@
       - rule_18.9.55.1
       - patch
 
-- name: "18.9.62.2.2 | PATCH | L1 | Ensure Do not allow passwords to be saved is set to Enabled"
+- name: "18.9.62.2.2 | PATCH | Ensure Do not allow passwords to be saved is set to Enabled"
   win_regedit:
       path: HKLM:\Software\Policies\Microsoft\Windows Nt\Terminal Services
       name: DisablePasswordSaving
@@ -2163,7 +2164,7 @@
       - rule_18.9.62.3.3.1
       - patch
 
-- name: "18.9.62.3.3.2 | PATCH | L1 | Ensure Do not allow drive redirection is set to Enabled"
+- name: "18.9.62.3.3.2 | PATCH | Ensure Do not allow drive redirection is set to Enabled"
   win_regedit:
       path: HKLM:\Software\Policies\Microsoft\Windows Nt\Terminal Services
       name: fDisableCdm
@@ -2205,7 +2206,7 @@
       - rule_18.9.62.3.3.4
       - patch
 
-- name: "18.9.62.3.9.1 | PATCH | L1 | Ensure Always prompt for password upon connection is set to Enabled"
+- name: "18.9.62.3.9.1 | PATCH | Ensure Always prompt for password upon connection is set to Enabled"
   win_regedit:
       path: HKLM:\Software\Policies\Microsoft\Windows Nt\Terminal Services
       name: fPromptForPassword
@@ -2219,7 +2220,7 @@
       - rule_18.9.62.3.9.1
       - patch
 
-- name: "18.9.62.3.9.2 | PATCH | L1 | Ensure Require secure RPC communication is set to Enabled"
+- name: "18.9.62.3.9.2 | PATCH | Ensure Require secure RPC communication is set to Enabled"
   win_regedit:
       path: HKLM:\Software\Policies\Microsoft\Windows Nt\Terminal Services
       name: fEncryptRPCTraffic
@@ -2233,7 +2234,7 @@
       - rule_18.9.59.3.9.2
       - patch
 
-- name: "18.9.62.3.9.3 | PATCH | L1 | Ensure Require use of specific security layer for remote RDP connections is set to Enabled SSL"
+- name: "18.9.62.3.9.3 | PATCH | Ensure Require use of specific security layer for remote RDP connections is set to Enabled SSL"
   win_regedit:
       path: HKLM:\Software\Policies\Microsoft\Windows Nt\Terminal Services
       name: SecurityLayer
@@ -2247,7 +2248,7 @@
       - rule_18.9.62.3.9.3
       - patch
 
-- name: "18.9.62.3.9.4 | PATCH | L1 | Ensure Require user authentication for remote connections by using Network Level Authentication is set to Enabled"
+- name: "18.9.62.3.9.4 | PATCH | Ensure Require user authentication for remote connections by using Network Level Authentication is set to Enabled"
   win_regedit:
       path: HKLM:\Software\Policies\Microsoft\Windows Nt\Terminal Services
       name: UserAuthentication
@@ -2261,7 +2262,7 @@
       - rule_18.9.62.3.9.4
       - patch
 
-- name: "18.9.62.3.9.5 | PATCH | L1 | Ensure Set client connection encryption level is set to Enabled High Level"
+- name: "18.9.62.3.9.5 | PATCH | Ensure Set client connection encryption level is set to Enabled High Level"
   win_regedit:
       path: HKLM:\Software\Policies\Microsoft\Windows Nt\Terminal Services
       name: MinEncryptionLevel
@@ -2303,7 +2304,7 @@
       - rule_18.9.62.3.10.2
       - patch
 
-- name: "18.9.62.3.11.1 | PATCH | L1 | Ensure Do not delete temp folders upon exit is set to Disabled"
+- name: "18.9.62.3.11.1 | PATCH | Ensure Do not delete temp folders upon exit is set to Disabled"
   win_regedit:
       path: HKLM:\Software\Policies\Microsoft\Windows Nt\Terminal Services
       name: DeleteTempDirsOnExit
@@ -2317,7 +2318,7 @@
       - rule_18.9.59.3.11.1
       - patch
 
-- name: "18.9.62.3.11.2 | PATCH | L1 | Ensure Do not use temporary folders per session is set to Disabled"
+- name: "18.9.62.3.11.2 | PATCH | Ensure Do not use temporary folders per session is set to Disabled"
   win_regedit:
       path: HKLM:\Software\Policies\Microsoft\Windows Nt\Terminal Services
       name: PerSessionTempDir
@@ -2331,7 +2332,7 @@
       - rule_18.9.62.3.11.2
       - patch
 
-- name: "18.9.63.1 | PATCH | L1 | Ensure Prevent downloading of enclosures is set to Enabled"
+- name: "18.9.63.1 | PATCH | Ensure Prevent downloading of enclosures is set to Enabled"
   win_regedit:
       path: HKLM:\Software\Policies\Microsoft\Internet Explorer\Feeds
       name: DisableEnclosureDownload
@@ -2359,7 +2360,7 @@
       - rule_18.9.64.2
       - patch
 
-- name: "18.9.64.3 | PATCH | L1 | Ensure Allow indexing of encrypted files is set to Disabled"
+- name: "18.9.64.3 | PATCH | Ensure Allow indexing of encrypted files is set to Disabled"
   win_regedit:
       path: HKLM:\Software\Policies\Microsoft\Windows\Windows Search
       name: AllowIndexingEncryptedStoresOrItems
@@ -2387,16 +2388,16 @@
       - rule_18.9.66.1
       - patch
 
-- name: "18.9.80.1.1 | PATCH | L1 | Ensure Configure Windows Defender SmartScreen is set to Enabled Warn and prevent bypass"
+- name: "18.9.80.1.1 | PATCH | Ensure Configure Windows Defender SmartScreen is set to Enabled Warn and prevent bypass"
   block:
-      - name: "18.9.80.1.1 | PATCH | L1 | Ensure Configure Windows Defender SmartScreen is set to Enabled Warn and prevent bypass | EnableSmartScreen"
+      - name: "18.9.80.1.1 | PATCH | Ensure Configure Windows Defender SmartScreen is set to Enabled Warn and prevent bypass | EnableSmartScreen"
         win_regedit:
             path: HKLM:\Software\Policies\Microsoft\Windows\System
             name: EnableSmartScreen
             data: 1
             type: dword
 
-      - name: "18.9.80.1.1 | PATCH | L1 | Ensure Configure Windows Defender SmartScreen is set to Enabled Warn and prevent bypass | ShellSmartScreenLevel"
+      - name: "18.9.80.1.1 | PATCH | Ensure Configure Windows Defender SmartScreen is set to Enabled Warn and prevent bypass | ShellSmartScreenLevel"
         win_regedit:
             path: HKLM:\Software\Policies\Microsoft\Windows\System
             name: ShellSmartScreenLevel
@@ -2424,7 +2425,7 @@
       - rule_18.9.84.1
       - patch
 
-- name: "18.9.84.2 | PATCH | L1 | Ensure Allow Windows Ink Workspace is set to Enabled On but disallow access above lock OR Disabled but not Enabled On"
+- name: "18.9.84.2 | PATCH | Ensure Allow Windows Ink Workspace is set to Enabled On but disallow access above lock OR Disabled but not Enabled On"
   win_regedit:
       path: HKLM:\SOFTWARE\Policies\Microsoft\WindowsInkWorkspace
       name: AllowWindowsInkWorkspace
@@ -2438,7 +2439,7 @@
       - rule_18.9.84.2
       - patch
 
-- name: "18.9.85.1 | PATCH | L1 | Ensure Allow user control over installs is set to Disabled"
+- name: "18.9.85.1 | PATCH | Ensure Allow user control over installs is set to Disabled"
   win_regedit:
       path: HKLM:\Software\Policies\Microsoft\Windows\Installer
       name: EnableUserControl
@@ -2452,7 +2453,7 @@
       - rule_18.9.85.1
       - patch
 
-- name: "18.9.85.2 | PATCH | L1 | Ensure Always install with elevated privileges is set to Disabled"
+- name: "18.9.85.2 | PATCH | Ensure Always install with elevated privileges is set to Disabled"
   win_regedit:
       path: HKLM:\Software\Policies\Microsoft\Windows\Installer
       name: AlwaysInstallElevated
@@ -2480,7 +2481,7 @@
       - rule_18.9.85.3
       - patch
 
-- name: "18.9.86.1 | PATCH | L1 | Ensure Sign-in last interactive user automatically after a system-initiated restart is set to Disabled"
+- name: "18.9.86.1 | PATCH | Ensure Sign-in last interactive user automatically after a system-initiated restart is set to Disabled"
   win_regedit:
       path: HKLM:\Software\Microsoft\Windows\Currentversion\Policies\System
       name: DisableAutomaticRestartSignOn
@@ -2494,7 +2495,7 @@
       - rule_18.9.86.1
       - patch
 
-- name: "18.9.95.1 | PATCH | L1 | Ensure Turn on PowerShell Script Block Logging is set to Disabled"
+- name: "18.9.95.1 | PATCH | Ensure Turn on PowerShell Script Block Logging is set to Disabled"
   win_regedit:
       path: HKLM:\Software\Policies\Microsoft\Windows\Powershell\Scriptblocklogging
       name: EnableScriptBlockLogging
@@ -2508,7 +2509,7 @@
       - rule_18.9.95.1
       - patch
 
-- name: "18.9.95.2 | PATCH | L1 | Ensure Turn on PowerShell Transcription is set to Disabled"
+- name: "18.9.95.2 | PATCH | Ensure Turn on PowerShell Transcription is set to Disabled"
   win_regedit:
       path: HKLM:\Software\Policies\Microsoft\Windows\Powershell\Transcription
       name: EnableTranscripting
@@ -2522,7 +2523,7 @@
       - rule_18.9.95.2
       - patch
 
-- name: "18.9.97.1.1 | PATCH | L1 | Ensure Allow Basic authentication is set to Disabled"
+- name: "18.9.97.1.1 | PATCH | Ensure Allow Basic authentication is set to Disabled"
   win_regedit:
       path: HKLM:\Software\Policies\Microsoft\Windows\Winrm\Client
       name: AllowBasic
@@ -2537,7 +2538,7 @@
       - rule_18.9.97.1.1
       - patch
 
-- name: "18.9.97.1.2 | PATCH | L1 | Ensure Allow unencrypted traffic is set to Disabled"
+- name: "18.9.97.1.2 | PATCH | Ensure Allow unencrypted traffic is set to Disabled"
   win_regedit:
       path: HKLM:\Software\Policies\Microsoft\Windows\Winrm\Client
       name: AllowUnencryptedTraffic
@@ -2552,7 +2553,7 @@
       - rule_18.9.97.1.2
       - patch
 
-- name: "18.9.97.1.3 | PATCH | L1 | Ensure Disallow Digest authentication is set to Enabled"
+- name: "18.9.97.1.3 | PATCH | Ensure Disallow Digest authentication is set to Enabled"
   win_regedit:
       path: HKLM:\Software\Policies\Microsoft\Windows\Winrm\Client
       name: AllowDigest
@@ -2566,7 +2567,7 @@
       - rule_18.9.97.1.3
       - patch
 
-- name: "18.9.97.2.1 | PATCH | L1 | Ensure Allow Basic authentication is set to Disabled"
+- name: "18.9.97.2.1 | PATCH | Ensure Allow Basic authentication is set to Disabled"
   win_regedit:
       path: HKLM:\Software\Policies\Microsoft\Windows\Winrm\Service
       name: AllowBasic
@@ -2597,7 +2598,7 @@
       - rule_18.9.97.2.2
       - patch
 
-- name: "18.9.97.2.3 | PATCH | L1 | Ensure Allow unencrypted traffic is set to Disabled"
+- name: "18.9.97.2.3 | PATCH | Ensure Allow unencrypted traffic is set to Disabled"
   win_regedit:
       path: HKLM:\Software\Policies\Microsoft\Windows\Winrm\Service
       name: AllowUnencryptedTraffic
@@ -2612,7 +2613,7 @@
       - rule_18.9.97.2.3
       - patch
 
-- name: "18.9.97.2.4 | PATCH | L1 | Ensure Disallow WinRM from storing RunAs credentials is set to Enabled"
+- name: "18.9.97.2.4 | PATCH | Ensure Disallow WinRM from storing RunAs credentials is set to Enabled"
   win_regedit:
       path: HKLM:\Software\Policies\Microsoft\Windows\Winrm\Service
       name: DisableRunAs
@@ -2642,7 +2643,7 @@
       - rule_18.9.98.1
       - patch
 
-- name: "18.9.99.2.1 | PATCH | L1 | Ensure Prevent users from modifying settings is set to Enabled"
+- name: "18.9.99.2.1 | PATCH | Ensure Prevent users from modifying settings is set to Enabled"
   win_regedit:
       path: HKLM:\Software\Policies\Microsoft\Windows Defender Security Center\App and Browser protection
       name: DisallowExploitProtectionOverride
@@ -2656,16 +2657,16 @@
       - rule_18.9.99.2.1
       - patch
 
-- name: "18.9.102.1.1 | PATCH | L1 | Ensure Manage preview builds is set to Enabled Disable preview builds"
+- name: "18.9.102.1.1 | PATCH | Ensure Manage preview builds is set to Enabled Disable preview builds"
   block:
-      - name: "18.9.102.1.1 | PATCH | L1 | Ensure Manage preview builds is set to Enabled Disable preview builds | ManagePreviewBuilds"
+      - name: "18.9.102.1.1 | PATCH | Ensure Manage preview builds is set to Enabled Disable preview builds | ManagePreviewBuilds"
         win_regedit:
             path: HKLM:\Software\Policies\Microsoft\Windows\WindowsUpdate
             name: ManagePreviewBuilds
             data: 1
             type: dword
 
-      - name: "18.9.102.1.1 | PATCH | L1 | Ensure Manage preview builds is set to Enabled Disable preview builds | ManagePreviewBuilds"
+      - name: "18.9.102.1.1 | PATCH | Ensure Manage preview builds is set to Enabled Disable preview builds | ManagePreviewBuilds"
         win_regedit:
             path: HKLM:\Software\Policies\Microsoft\Windows\WindowsUpdate
             name: ManagePreviewBuildsPolicyValue
@@ -2679,23 +2680,23 @@
       - rule_18.9.102.1.1
       - patch
 
-- name: "18.9.102.1.2 | PATCH | L1 | Ensure Select when Preview Builds and Feature Updates are received is set to Enabled Semi-Annual Channel 180 or more days"
+- name: "18.9.102.1.2 | PATCH | Ensure Select when Preview Builds and Feature Updates are received is set to Enabled Semi-Annual Channel 180 or more days"
   block:
-      - name: "18.9.102.1.2 | PATCH | L1 | Ensure Select when Preview Builds and Feature Updates are received is set to Enabled Semi-Annual Channel 180 or more days | DeferFeatureUpdates"
+      - name: "18.9.102.1.2 | PATCH | Ensure Select when Preview Builds and Feature Updates are received is set to Enabled Semi-Annual Channel 180 or more days | DeferFeatureUpdates"
         win_regedit:
             path: HKLM:\Software\Policies\Microsoft\Windows\WindowsUpdate
             name: DeferFeatureUpdates
             data: 1
             type: dword
 
-      - name: "18.9.102.1.2 | PATCH | L1 | Ensure Select when Preview Builds and Feature Updates are received is set to Enabled Semi-Annual Channel 180 or more days | DeferFeatureUpdatesPeriodInDays"
+      - name: "18.9.102.1.2 | PATCH | Ensure Select when Preview Builds and Feature Updates are received is set to Enabled Semi-Annual Channel 180 or more days | DeferFeatureUpdatesPeriodInDays"
         win_regedit:
             path: HKLM:\Software\Policies\Microsoft\Windows\WindowsUpdate
             name: DeferFeatureUpdatesPeriodInDays
             data: 180
             type: dword
 
-      - name: "18.9.102.1.2 | PATCH | L1 | Ensure Select when Preview Builds and Feature Updates are received is set to Enabled Semi-Annual Channel 180 or more days | BranchReadinessLevel"
+      - name: "18.9.102.1.2 | PATCH | Ensure Select when Preview Builds and Feature Updates are received is set to Enabled Semi-Annual Channel 180 or more days | BranchReadinessLevel"
         win_regedit:
             path: HKLM:\Software\Policies\Microsoft\Windows\WindowsUpdate
             name: BranchReadinessLevel
@@ -2709,16 +2710,16 @@
       - rule_18.9.102.1.2
       - patch
 
-- name: "18.9.102.1.3 | PATCH | L1 | Ensure Select when Quality Updates are received is set to Enabled 0 days"
+- name: "18.9.102.1.3 | PATCH | Ensure Select when Quality Updates are received is set to Enabled 0 days"
   block:
-      - name: "18.9.102.1.3 | PATCH | L1 | Ensure Select when Quality Updates are received is set to Enabled 0 days | DeferQualityUpdates"
+      - name: "18.9.102.1.3 | PATCH | Ensure Select when Quality Updates are received is set to Enabled 0 days | DeferQualityUpdates"
         win_regedit:
             path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate
             name: DeferQualityUpdates
             data: 1
             type: dword
 
-      - name: "18.9.102.1.3 | PATCH | L1 | Ensure Select when Quality Updates are received is set to Enabled 0 days | DeferQualityUpdatesPeriodInDays"
+      - name: "18.9.102.1.3 | PATCH | Ensure Select when Quality Updates are received is set to Enabled 0 days | DeferQualityUpdatesPeriodInDays"
         win_regedit:
             path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate
             name: DeferQualityUpdatesPeriodInDays
@@ -2732,7 +2733,7 @@
       - rule_18.9.102.1.3
       - patch
 
-- name: "18.9.102.2 | PATCH | L1 | Ensure Configure Automatic Updates is set to Enabled"
+- name: "18.9.102.2 | PATCH | Ensure Configure Automatic Updates is set to Enabled"
   win_regedit:
       path: HKLM:\Software\Policies\Microsoft\Windows\Windowsupdate\Au
       name: NoAutoUpdate
@@ -2746,7 +2747,7 @@
       - rule_18.9.102.2
       - patch
 
-- name: "18.9.102.3 | PATCH | L1 | Ensure Configure Automatic Updates Scheduled install day is set to 0 - Every day"
+- name: "18.9.102.3 | PATCH | Ensure Configure Automatic Updates Scheduled install day is set to 0 - Every day"
   win_regedit:
       path: HKLM:\Software\Policies\Microsoft\Windows\Windowsupdate\Au
       name: ScheduledInstallDay
@@ -2760,7 +2761,7 @@
       - rule_18.9.102.3
       - patch
 
-- name: "18.9.102.4 | PATCH | L1 | Ensure No auto-restart with logged on users for scheduled automatic updates installations is set to Disabled"
+- name: "18.9.102.4 | PATCH | Ensure No auto-restart with logged on users for scheduled automatic updates installations is set to Disabled"
   win_regedit:
       path: HKLM:\Software\Policies\Microsoft\Windows\Windowsupdate\Au
       name: NoAutoRebootWithLoggedOnUsers
