@@ -22,6 +22,7 @@
       - level1-memberserver
       - rule_1.1.1
       - patch
+      - password
 
 - name: "1.1.2 | PATCH | Ensure Maximum password age is set to 365 or fewer days but not 0"
   win_security_policy:
@@ -59,6 +60,7 @@
       - level1-memberserver
       - rule_1.1.3
       - patch
+      - password
 
 - name: "1.1.4 | PATCH | Ensure Minimum password length is set to 14 or more characters"
   block:
@@ -82,6 +84,7 @@
       - level1-memberserver
       - rule_1.1.4
       - patch
+      - password
 
 - name: "1.1.5 | PATCH | Ensure Password must meet complexity requirements is set to Enabled"
   win_security_policy:
@@ -95,6 +98,7 @@
       - level1-memberserver
       - rule_1.1.5
       - patch
+      - password
 
 - name: "1.1.6 | PATCH | Ensure Store passwords using reversible encryption is set to Disabled"
   win_security_policy:
@@ -108,6 +112,7 @@
       - level1-memberserver
       - rule_1.1.6
       - patch
+      - password
 
 # This rule must be applied first to make rule_1.2.1 and rule_1.2.3 applicable
 - name: "1.2.2 | PATCH | Ensure Account lockout threshold is set to 10 or fewer invalid logon attempts but not 0"
@@ -122,6 +127,7 @@
       - level1-memberserver
       - rule_1.2.2
       - patch
+      - account
 
 # Speelman | added because of this error "Failed to import secedit.ini file from C:\\Users\\vagrant\\AppData\\Local\\Temp\\tmp81F3.tmp
 - name: "1.2.1 | AUDIT | Ensure Account lockout duration is set to 15 or more minutes"
@@ -147,6 +153,7 @@
       - level1-memberserver
       - rule_1.2.1
       - patch
+      - account
 
 - name: "1.2.3 | PATCH | Ensure Reset account lockout counter after is set to 15 or more minutes"
   block:
@@ -170,3 +177,4 @@
       - level1-memberserver
       - rule_1.2.3
       - patch
+      - account
