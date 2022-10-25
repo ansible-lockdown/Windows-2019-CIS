@@ -115,7 +115,7 @@
       type: dword
   when:
       - rule_18_2_4
-      - ansible_windows_domain_role == "Member Server"
+      - ansible_windows_domain_role != "Member Server"
   tags:
       - level1-memberserver
       - rule_18.2.4
@@ -1078,7 +1078,7 @@
   win_regedit:
       path: HKLM:\Software\Microsoft\Windows\Currentversion\Policies\System\DisableBkGndGroupPolicy
       state: absent
-      delete_key: yes
+      delete_key: false
   when:
       - rule_18_8_21_5
   tags:
@@ -1916,7 +1916,7 @@
       - rule_18.9.17.3
       - patch
       - onesettings
-      
+
 - name: "18.9.17.4 | PATCH | Ensure Do not show feedback notifications is set to Enabled"
   win_regedit:
       path: HKLM:\Software\Policies\Microsoft\Windows\Datacollection
@@ -2941,8 +2941,6 @@
 #       - rule_18.9.95.1
 #       - patch
 
-
-
 - name: "18.9.97.1.1 | PATCH | Ensure Allow Basic authentication is set to Disabled"
   win_regedit:
       path: HKLM:\Software\Policies\Microsoft\Windows\Winrm\Client
@@ -3060,7 +3058,7 @@
   win_regedit:
       path: HKLM:\Software\Policies\Microsoft\Windows\Winrm\Service\Winrs
       name: AllowRemoteShellAccess
-      data: 1
+      data: 0
       type: dword
   when:
       - rule_18_9_98_1

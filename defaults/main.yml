@@ -35,21 +35,21 @@ min_ansible_version: "2.6"
 # We've defined complexity-high to mean that we cannot automatically remediate
 # the rule in question.  In the future this might mean that the remediation
 # may fail in some cases.
-complexity_high: no
+complexity_high: false
 
 # Show "changed" for complex items not remediated per complexity-high setting
 # to make them stand out.  "changed" items on a second run of the role would
 # indicate items requiring manual review.
-audit_complex: yes
+audit_complex: true
 
 # We've defined disruption-high to indicate items that are likely to cause
 # disruption in a normal workflow.  These items can be remediated automatically
 # but are disabled by default to avoid disruption.
-disruption_high: no
+disruption_high: false
 
 # Show "changed" for disruptive items not remediated per disruption-high
 # setting to make them stand out.
-audit_disruptive: yes
+audit_disruptive: true
 
 skip_for_travis: false
 
@@ -57,7 +57,7 @@ workaround_for_disa_benchmark: true
 workaround_for_ssg_benchmark: true
 
 # tweak role to run in a non-privileged container
-system_is_container: no
+system_is_container: false
 
 # set to false to skip tasks that either have not been developed or cannot be automated
 is_implemented: false
@@ -390,6 +390,8 @@ rule_18_9_14_1: true
 rule_18_9_14_2: true
 rule_18_9_15_1: true
 rule_18_9_15_2: true
+rule_18_9_16_1: true
+rule_18_9_16_2: true
 rule_18_9_17_1: true
 rule_18_9_17_2: true
 rule_18_9_17_3: true
@@ -553,7 +555,6 @@ legalnoticecaption: "DoD Notice and Consent Banner"
 # windows_installation_type should be 'Server Core' for Core installations
 # This is a variable to determine if Windows Manager should be included in this step
 increase_scheduling_priority_users: '{{ ["Administrators"] if (windows_installation_type=="Server Core") else (["Administrators","Window Manager\Window Manager Group"]) }}'
-
 
 # 9.1.5
 # domain_firewall_log_path is the path to the domain firewall log files. The control suggests %SystemRoot%\System32\logfiles\firewall\domainfw.log

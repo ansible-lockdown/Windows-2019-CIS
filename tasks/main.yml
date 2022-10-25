@@ -41,6 +41,12 @@
   tags:
       - section02
 
+- name: Execute the section 5 tasks
+  import_tasks: section05.yml
+  when: section05_patch | bool
+  tags:
+      - section05
+
 - name: Execute the section 9 tasks
   import_tasks: section09.yml
   when: section09_patch | bool
