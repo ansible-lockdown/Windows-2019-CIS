@@ -1,5 +1,4 @@
 ---
-
 - name: Gather distribution info
   setup:
       gather_subset: distribution,!all,!min
@@ -25,10 +24,10 @@
   tags:
       - always
 
-# - name: Include the preliminary tasks
-#   include_tasks: prelim.yml
-#   tags:
-#       - prelim_tasks
+- name: Include the preliminary tasks
+  include_tasks: prelim.yml
+  tags:
+      - prelim_tasks
 
 - name: Execute the section 1 tasks
   import_tasks: section01.yml
@@ -41,6 +40,12 @@
   when: section02_patch | bool
   tags:
       - section02
+
+- name: Execute the section 5 tasks
+  import_tasks: section05.yml
+  when: section05_patch | bool
+  tags:
+      - section05
 
 - name: Execute the section 9 tasks
   import_tasks: section09.yml

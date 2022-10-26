@@ -1,43 +1,45 @@
 ---
-- name: "SCORED | 17.1.1 | PATCH | L1 Ensure Audit Credential Validation is set to Success and Failure"
+
+- name: "17.1.1 | PATCH | Ensure Audit Credential Validation is set to Success and Failure"
   block:
-      - name: "SCORED | 17.1.1 | AUDIT | L1 Ensure Audit Credential Validation is set to Success and Failure"
+      - name: "17.1.1 | AUDIT | Ensure Audit Credential Validation is set to Success and Failure"
         win_shell: AuditPol /get /subcategory:"Credential Validation" -r | ConvertFrom-Csv | Select-Object -expand "Inclusion Setting"
         register: rule_17_1_1_audit
         changed_when: false
         failed_when: false
+        check_mode: false
 
-      - name: "SCORED | 17.1.1 | PATCH | L1 Ensure Audit Credential Validation is set to Success and Failure | Success"
+      - name: "17.1.1 | PATCH | Ensure Audit Credential Validation is set to Success and Failure | Success"
         win_shell: AuditPol /set /subcategory:"Credential Validation" /success:enable
         when: "'Success' not in rule_17_1_1_audit.stdout"
         changed_when: "'Success' not in rule_17_1_1_audit.stdout"
 
-      - name: "SCORED | 17.1.1 | PATCH | L1 Ensure Audit Credential Validation is set to Success and Failure | Failure"
+      - name: "17.1.1 | PATCH | Ensure Audit Credential Validation is set to Success and Failure | Failure"
         win_shell: AuditPol /set /subcategory:"Credential Validation" /failure:enable
         when: "'Failure' not in rule_17_1_1_audit.stdout"
         changed_when: "'Failure' not in rule_17_1_1_audit.stdout"
   when:
       - rule_17_1_1
-      - ansible_windows_domain_role == "Primary domain controller"
   tags:
       - level1-domaincontroller
       - level1-memberserver
       - rule_17.1.1
       - patch
 
-- name: "SCORED | 17.1.2 | PATCH | L1 Ensure 'Audit Kerberos Authentication Service' is set to 'Success and Failure' DC Only"
+- name: "17.1.2 | PATCH | Ensure 'Audit Kerberos Authentication Service' is set to 'Success and Failure' DC Only"
   block:
-      - name: "SCORED | 17.1.2 | AUDIT | L1 Ensure 'Audit Kerberos Authentication Service' is set to 'Success and Failure' DC Only"
+      - name: "17.1.2 | AUDIT | Ensure 'Audit Kerberos Authentication Service' is set to 'Success and Failure' DC Only"
         win_shell: AuditPol /get /subcategory:"Kerberos Authentication Service" -r | ConvertFrom-Csv | Select-Object -expand "Inclusion Setting"
         changed_when: false
         failed_when: false
+        check_mode: false
         register: rule_17_1_2_audit
 
-      - name: "SCORED | 17.1.2 | PATCH | L1 Ensure 'Audit Kerberos Authentication Service' is set to 'Success and Failure' DC Only"
+      - name: "17.1.2 | PATCH | Ensure 'Audit Kerberos Authentication Service' is set to 'Success and Failure' DC Only"
         win_shell: AuditPol /set /subcategory:"Kerberos Authentication Service" /success:enable
         when: "'Success' not in rule_17_1_2_audit.stdout"
 
-      - name: "SCORED | 17.1.2 | PATCH | L1 Ensure 'Audit Kerberos Authentication Service' is set to 'Success and Failure' DC Only"
+      - name: "17.1.2 | PATCH | Ensure 'Audit Kerberos Authentication Service' is set to 'Success and Failure' DC Only"
         win_shell: AuditPol /set /subcategory:"Kerberos Authentication Service" /failure:enable
         when: "'Failure' not in rule_17_1_2_audit.stdout"
   when:
@@ -48,19 +50,20 @@
       - rule_17.1.2
       - patch
 
-- name: "SCORED | 17.1.3 | PATCH | L1 Ensure 'Audit Kerberos Service Ticket Operations' is set to 'Success and Failure'"
+- name: "17.1.3 | PATCH | Ensure 'Audit Kerberos Service Ticket Operations' is set to 'Success and Failure'"
   block:
-      - name: "SCORED | 17.1.3 | AUDIT | L1 Ensure 'Audit Kerberos Service Ticket Operations' is set to 'Success and Failure'"
+      - name: "17.1.3 | AUDIT | Ensure 'Audit Kerberos Service Ticket Operations' is set to 'Success and Failure'"
         win_shell: AuditPol /get /subcategory:"Kerberos Service Ticket Operations" -r | ConvertFrom-Csv | Select-Object -expand "Inclusion Setting"
         changed_when: false
         failed_when: false
+        check_mode: false
         register: rule_17_1_3_audit
 
-      - name: "SCORED | 17.1.3 | PATCH | L1 Ensure 'Audit Kerberos Service Ticket Operations' is set to 'Success and Failure'"
+      - name: "17.1.3 | PATCH | Ensure 'Audit Kerberos Service Ticket Operations' is set to 'Success and Failure'"
         win_shell: AuditPol /set /subcategory:"Kerberos Service Ticket Operations" /success:enable
         when: "'Success' not in rule_17_1_3_audit.stdout"
 
-      - name: "SCORED | 17.1.3 | PATCH | L1 Ensure 'Audit Kerberos Service Ticket Operations' is set to 'Success and Failure'"
+      - name: "17.1.3 | PATCH | Ensure 'Audit Kerberos Service Ticket Operations' is set to 'Success and Failure'"
         win_shell: AuditPol /set /subcategory:"Kerberos Service Ticket Operations" /failure:enable
         when: "'Failure' not in rule_17_1_3_audit.stdout"
   when:
@@ -71,39 +74,40 @@
       - rule_17.1.2
       - patch
 
-- name: "SCORED | 17.2.1 | PATCH | L1 Ensure Audit Application Group Management is set to Success and Failure"
+- name: "17.2.1 | PATCH | Ensure Audit Application Group Management is set to Success and Failure"
   block:
-      - name: "SCORED | 17.2.1 | AUDIT | L1 Ensure Audit Application Group Management is set to Success and Failure"
-        win_shell: AuditPol /get /subcategory:"Security Group Management" -r | ConvertFrom-Csv | Select-Object -expand "Inclusion Setting"
+      - name: "17.2.1 | AUDIT | Ensure Audit Application Group Management is set to Success and Failure"
+        win_shell: AuditPol /get /subcategory:"Application Group Management" -r | ConvertFrom-Csv | Select-Object -expand "Inclusion Setting"
         register: rule_17_2_1_audit
         changed_when: false
         failed_when: false
+        check_mode: false
 
-      - name: "SCORED | 17.2.1 | PATCH | L1 Ensure Audit Application Group Management is set to Success and Failure | Success"
-        win_shell: AuditPol /set /subcategory:"Security Group Management" /success:enable
+      - name: "17.2.1 | PATCH | Ensure Audit Application Group Management is set to Success and Failure | Success"
+        win_shell: AuditPol /set /subcategory:"Application Group Management" /success:enable
         when: "'Success' not in rule_17_2_1_audit.stdout"
 
-      - name: "SCORED | 17.2.1 | PATCH | L1 Ensure Audit Application Group Management is set to Success and Failure | Failure"
-        win_shell: AuditPol /set /subcategory:"Security Group Management" /failure:enable
+      - name: "17.2.1 | PATCH | Ensure Audit Application Group Management is set to Success and Failure | Failure"
+        win_shell: AuditPol /set /subcategory:"Application Group Management" /failure:enable
         when: "'Failure' not in rule_17_2_1_audit.stdout"
   when:
       - rule_17_2_1
-      - ansible_windows_domain_role == "Primary domain controller"
   tags:
       - level1-domaincontroller
       - level1-memberserver
       - rule_17.2.1
       - patch
 
-- name: "SCORED | 17.2.2 | PATCH | L1 Ensure Audit Computer Account Management is set to include Success DC only"
+- name: "17.2.2 | PATCH | Ensure Audit Computer Account Management is set to include Success DC only"
   block:
-      - name: "SCORED | 17.2.2 | AUDIT | L1 Ensure Audit Computer Account Management is set to include Success DC only"
+      - name: "17.2.2 | AUDIT | Ensure Audit Computer Account Management is set to include Success DC only"
         win_shell: AuditPol /get /subcategory:"Computer Account Management" -r | ConvertFrom-Csv | Select-Object -expand "Inclusion Setting"
         register: rule_17_2_2_audit
         changed_when: false
         failed_when: false
+        check_mode: false
 
-      - name: "SCORED | 17.2.2 | PATCH | L1 Ensure Audit Computer Account Management is set to include Success DC only"
+      - name: "17.2.2 | PATCH | Ensure Audit Computer Account Management is set to include Success DC only"
         win_shell: AuditPol /set /subcategory:"Computer Account Management" /success:enable
         changed_when: "'Success' not in rule_17_2_2_audit.stdout"
         when: "'Success' not in rule_17_2_2_audit.stdout"
@@ -115,15 +119,16 @@
       - rule_17.2.2
       - patch
 
-- name: "SCORED | 17.2.3 | PATCH | L1 Ensure Audit Distribution Group Management is set to include Success DC only"
+- name: "17.2.3 | PATCH | Ensure Audit Distribution Group Management is set to include Success DC only"
   block:
-      - name: "SCORED | 17.2.3 | AUDIT | L1 Ensure Audit Distribution Group Management is set to include Success DC only"
+      - name: "17.2.3 | AUDIT | Ensure Audit Distribution Group Management is set to include Success DC only"
         win_shell: AuditPol /get /subcategory:"Distribution Group Management" -r | ConvertFrom-Csv | Select-Object -expand "Inclusion Setting"
         register: rule_17_2_3_audit
         changed_when: false
         failed_when: false
+        check_mode: false
 
-      - name: "SCORED | 17.2.3 | PATCH | L1 Ensure Audit Distribution Group Management is set to include Success DC only"
+      - name: "17.2.3 | PATCH | Ensure Audit Distribution Group Management is set to include Success DC only"
         win_shell: AuditPol /set /subcategory:"Distribution Group Management" /success:enable
         when: "'Success' not in rule_17_2_3_audit.stdout"
   when:
@@ -134,15 +139,16 @@
       - rule_17.2.3
       - patch
 
-- name: "SCORED | 17.2.4 | PATCH | L1 Ensure Audit Other Account Management Events is set to include Success DC only"
+- name: "17.2.4 | PATCH | Ensure Audit Other Account Management Events is set to include Success DC only"
   block:
-      - name: "SCORED | 17.2.4 | AUDIT | L1 Ensure Audit Other Account Management Events is set to include Success DC only"
+      - name: "17.2.4 | AUDIT | Ensure Audit Other Account Management Events is set to include Success DC only"
         win_shell: AuditPol /get /subcategory:"Other Account Management Events" -r | ConvertFrom-Csv | Select-Object -expand "Inclusion Setting"
         register: rule_17_2_4_audit
         changed_when: false
         failed_when: false
+        check_mode: false
 
-      - name: "SCORED | 17.2.4 | PATCH | L1 Ensure Audit Other Account Management Events is set to include Success DC only"
+      - name: "17.2.4 | PATCH | Ensure Audit Other Account Management Events is set to include Success DC only"
         win_shell: AuditPol /set /subcategory:"Other Account Management Events" /success:enable
         when: "'Success' not in rule_17_2_4_audit.stdout"
   when:
@@ -153,15 +159,16 @@
       - rule_17.2.4
       - patch
 
-- name: "SCORED | 17.2.5 | AUDIT | L1 Ensure Audit Security Group Management is set to include Success"
+- name: "17.2.5 | AUDIT | Ensure Audit Security Group Management is set to include Success"
   block:
-      - name: "SCORED | 17.2.5 | AUDIT | L1 Ensure Audit Security Group Management is set to include Success"
+      - name: "17.2.5 | AUDIT | Ensure Audit Security Group Management is set to include Success"
         win_shell: AuditPol /get /subcategory:"Security Group Management" -r | ConvertFrom-Csv | Select-Object -expand "Inclusion Setting"
         register: rule_17_2_5_audit
         changed_when: false
         failed_when: false
+        check_mode: false
 
-      - name: "SCORED | 17.2.5 | PATCH | L1 Ensure Audit Security Group Management is set to include Success"
+      - name: "17.2.5 | PATCH | Ensure Audit Security Group Management is set to include Success"
         win_shell: AuditPol /set /subcategory:"Security Group Management" /success:enable
         when: "'Success' not in rule_17_2_5_audit.stdout"
   when:
@@ -172,19 +179,20 @@
       - rule_17.2.5
       - patch
 
-- name: "SCORED | 17.2.6 | PATCH | L1 Ensure Audit User Account Management is set to Success and Failure"
+- name: "17.2.6 | PATCH | Ensure Audit User Account Management is set to Success and Failure"
   block:
-      - name: "SCORED | 17.2.6 | AUDIT | L1 Ensure Audit User Account Management is set to Success and Failure"
+      - name: "17.2.6 | AUDIT | Ensure Audit User Account Management is set to Success and Failure"
         win_shell: AuditPol /get /subcategory:"User Account Management" -r | ConvertFrom-Csv | Select-Object -expand "Inclusion Setting"
         changed_when: false
         failed_when: false
+        check_mode: false
         register: rule_17_2_6_audit
 
-      - name: "SCORED | 17.2.6 | PATCH | L1 Ensure Audit User Account Management is set to Success and Failure | Success"
+      - name: "17.2.6 | PATCH | Ensure Audit User Account Management is set to Success and Failure | Success"
         win_shell: AuditPol /set /subcategory:"User Account Management" /success:enable
         when: "'Success' not in rule_17_2_6_audit.stdout"
 
-      - name: "SCORED | 17.2.6 | PATCH | L1 Ensure Audit User Account Management is set to Success and Failure | Failure"
+      - name: "17.2.6 | PATCH | Ensure Audit User Account Management is set to Success and Failure | Failure"
         win_shell: AuditPol /set /subcategory:"User Account Management" /failure:enable
         when: "'Failure' not in rule_17_2_6_audit.stdout"
   when:
@@ -195,15 +203,16 @@
       - rule_17.2.6
       - patch
 
-- name: "SCORED | 17.3.1 | PATCH | L1 Ensure Audit PNP Activity is set to include Success"
+- name: "17.3.1 | PATCH | Ensure Audit PNP Activity is set to include Success"
   block:
-      - name: "SCORED | 17.3.1 | AUDIT | L1 Ensure Audit PNP Activity is set to include Success"
+      - name: "17.3.1 | AUDIT | Ensure Audit PNP Activity is set to include Success"
         win_shell: AuditPol /get /subcategory:"Plug and Play Events" -r | ConvertFrom-Csv | Select-Object -expand "Inclusion Setting"
         changed_when: false
         failed_when: false
+        check_mode: false
         register: rule_17_3_1_audit
 
-      - name: "SCORED | 17.3.1 | PATCH | L1 Ensure Audit PNP Activity is set to include Success"
+      - name: "17.3.1 | PATCH | Ensure Audit PNP Activity is set to include Success"
         win_shell: AuditPol /set /subcategory:"Plug and Play Events" /success:enable
         when: "'Success' not in rule_17_3_1_audit.stdout"
   when:
@@ -214,15 +223,16 @@
       - rule_17.3.1
       - patch
 
-- name: "SCORED | 17.3.2 | PATCH | L1 Ensure Audit Process Creation is set to include Success"
+- name: "17.3.2 | PATCH | Ensure Audit Process Creation is set to include Success"
   block:
-      - name: "SCORED | 17.3.2 | AUDIT | L1 Ensure Audit Process Creation is set to include Success"
+      - name: "17.3.2 | AUDIT | Ensure Audit Process Creation is set to include Success"
         win_shell: AuditPol /get /subcategory:"Process Creation" -r | ConvertFrom-Csv | Select-Object -expand "Inclusion Setting"
         changed_when: false
         failed_when: false
+        check_mode: false
         register: rule_17_3_2_audit
 
-      - name: "SCORED | 17.3.2 | PATCH | L1 Ensure Audit Process Creation is set to include Success"
+      - name: "17.3.2 | PATCH | Ensure Audit Process Creation is set to include Success"
         win_shell: AuditPol /set /subcategory:"Process Creation" /success:enable
         when: "'Success' not in rule_17_3_2_audit.stdout"
   when:
@@ -233,15 +243,16 @@
       - rule_17.3.2
       - patch
 
-- name: "SCORED | 17.4.1 | PATCH | L1 Ensure Audit Directory Service Access is set to include Failure DC only"
+- name: "17.4.1 | PATCH | Ensure Audit Directory Service Access is set to include Failure DC only"
   block:
-      - name: "SCORED | 17.4.1 | AUDIT | L1 Ensure Audit Directory Service Access is set to include Failure DC only"
+      - name: "17.4.1 | AUDIT | Ensure Audit Directory Service Access is set to include Failure DC only"
         win_shell: AuditPol /get /subcategory:"Directory Service Access" -r | ConvertFrom-Csv | Select-Object -expand "Inclusion Setting"
         changed_when: false
         failed_when: false
+        check_mode: false
         register: rule_17_4_1_audit
 
-      - name: "SCORED | 17.4.1 | PATCH | L1 Ensure Audit Directory Service Access is set to include Failure DC only"
+      - name: "17.4.1 | PATCH | Ensure Audit Directory Service Access is set to include Failure DC only"
         win_shell: AuditPol /set /subcategory:"Directory Service Access" /success:enable
         when: "'Success' not in rule_17_4_1_audit.stdout"
   when:
@@ -251,15 +262,16 @@
       - rule_17.4.1
       - patch
 
-- name: "SCORED | 17.4.2 | PATCH | L1 Ensure Audit Directory Service Changes is set to include Success DC only"
+- name: "17.4.2 | PATCH | Ensure Audit Directory Service Changes is set to include Success DC only"
   block:
-      - name: "SCORED | 17.4.2 | AUDIT | L1 Ensure Audit Directory Service Changes is set to include Success DC only"
+      - name: "17.4.2 | AUDIT | Ensure Audit Directory Service Changes is set to include Success DC only"
         win_shell: AuditPol /get /subcategory:"Directory Service Changes" -r | ConvertFrom-Csv | Select-Object -expand "Inclusion Setting"
         changed_when: false
         failed_when: false
+        check_mode: false
         register: rule_17_4_2_audit
 
-      - name: "SCORED | 17.4.2 | PATCH | L1 Ensure Audit Directory Service Changes is set to include Success DC only"
+      - name: "17.4.2 | PATCH | Ensure Audit Directory Service Changes is set to include Success DC only"
         win_shell: AuditPol /set /subcategory:"Directory Service Changes" /success:enable
         when: "'Success' not in rule_17_4_2_audit.stdout"
   when:
@@ -269,15 +281,16 @@
       - rule_17.4.2
       - patch
 
-- name: "SCORED | 17.5.1 | PATCH | L1 Ensure Audit Account Lockout is set to include Failure"
+- name: "17.5.1 | PATCH | Ensure Audit Account Lockout is set to include Failure"
   block:
-      - name: "SCORED | 17.5.1 | AUDIT | L1 Ensure Audit Account Lockout is set to include Failure"
+      - name: "17.5.1 | AUDIT | Ensure Audit Account Lockout is set to include Failure"
         win_shell: AuditPol /get /subcategory:"Account Lockout" -r | ConvertFrom-Csv | Select-Object -expand "Inclusion Setting"
         changed_when: false
         failed_when: false
+        check_mode: false
         register: rule_17_5_1_audit
 
-      - name: "SCORED | 17.5.1 | PATCH | L1 Ensure Audit Account Lockout is set to include Failure"
+      - name: "17.5.1 | PATCH | Ensure Audit Account Lockout is set to include Failure"
         win_shell: AuditPol /set /subcategory:"Account Lockout" /failure:enable
         when: "'Failure' not in rule_17_5_1_audit.stdout"
   when:
@@ -288,15 +301,16 @@
       - rule_17.5.1
       - patch
 
-- name: "SCORED | 17.5.2 | PATCH | L1 Ensure Audit Group Membership is set to include Success"
+- name: "17.5.2 | PATCH | Ensure Audit Group Membership is set to include Success"
   block:
-      - name: "SCORED | 17.5.2 | AUDIT | L1 Ensure Audit Group Membership is set to include Success"
+      - name: "17.5.2 | AUDIT | Ensure Audit Group Membership is set to include Success"
         win_shell: AuditPol /get /subcategory:"Group Membership" -r | ConvertFrom-Csv | Select-Object -expand "Inclusion Setting"
         changed_when: false
         failed_when: false
+        check_mode: false
         register: rule_17_5_2_audit
 
-      - name: "SCORED | 17.5.2 | PATCH | L1 Ensure Audit Group Membership is set to include Success"
+      - name: "17.5.2 | PATCH | Ensure Audit Group Membership is set to include Success"
         win_shell: AuditPol /set /subcategory:"Group Membership" /success:enable
         when: "'Success' not in rule_17_5_2_audit.stdout"
   when:
@@ -307,15 +321,16 @@
       - rule_17.5.2
       - patch
 
-- name: "SCORED | 17.5.3 | AUDIT | L1 Ensure Audit Logoff is set to include Success"
+- name: "17.5.3 | AUDIT | Ensure Audit Logoff is set to include Success"
   block:
-      - name: "SCORED | 17.5.3 | AUDIT | L1 Ensure Audit Logoff is set to include Success"
+      - name: "17.5.3 | AUDIT | Ensure Audit Logoff is set to include Success"
         win_shell: AuditPol /get /subcategory:"Logoff" -r | ConvertFrom-Csv | Select-Object -expand "Inclusion Setting"
         changed_when: false
         failed_when: false
+        check_mode: false
         register: rule_17_5_3_audit
 
-      - name: "SCORED | 17.5.3 | PATCH | L1 Ensure Audit Logoff is set to include Success"
+      - name: "17.5.3 | PATCH | Ensure Audit Logoff is set to include Success"
         win_shell: AuditPol /set /subcategory:"Logoff" /success:enable
         when: "'Success' not in rule_17_5_3_audit.stdout"
   when:
@@ -326,19 +341,20 @@
       - rule_17.5.3
       - patch
 
-- name: "SCORED | 17.5.4 | PATCH | L1 Ensure Audit Logon is set to Success and Failure"
+- name: "17.5.4 | PATCH | Ensure Audit Logon is set to Success and Failure"
   block:
-      - name: "SCORED | 17.5.4 | AUDIT | L1 Ensure Audit Logon is set to Success and Failure"
+      - name: "17.5.4 | AUDIT | Ensure Audit Logon is set to Success and Failure"
         win_shell: AuditPol /get /subcategory:"Logon" -r | ConvertFrom-Csv | Select-Object -expand "Inclusion Setting"
         changed_when: false
         failed_when: false
+        check_mode: false
         register: rule_17_5_4_audit
 
-      - name: "SCORED | 17.5.4 | PATCH | L1 Ensure Audit Logon is set to Success and Failure | Success"
+      - name: "17.5.4 | PATCH | Ensure Audit Logon is set to Success and Failure | Success"
         win_shell: AuditPol /set /subcategory:"Logon" /success:enable
-        when: "'Failure' not in rule_17_5_4_audit.stdout"
+        when: "'Success' not in rule_17_5_4_audit.stdout"
 
-      - name: "SCORED | 17.5.4 | PATCH | L1 Ensure Audit Logon is set to Success and Failure | Failure"
+      - name: "17.5.4 | PATCH | Ensure Audit Logon is set to Success and Failure | Failure"
         win_shell: AuditPol /set /subcategory:"Logon" /failure:enable
         when: "'Failure' not in rule_17_5_4_audit.stdout"
   when:
@@ -349,19 +365,20 @@
       - rule_17.5.4
       - patch
 
-- name: "SCORED | 17.5.5 | PATCH | L1 Ensure Audit Other LogonLogoff Events is set to Success and Failure"
+- name: "17.5.5 | PATCH | Ensure Audit Other LogonLogoff Events is set to Success and Failure"
   block:
-      - name: "SCORED | 17.5.5 | AUDIT | L1 Ensure Audit Other LogonLogoff Events is set to Success and Failure"
+      - name: "17.5.5 | AUDIT | Ensure Audit Other LogonLogoff Events is set to Success and Failure"
         win_shell: AuditPol /get /subcategory:"Other Logon/Logoff Events" -r | ConvertFrom-Csv | Select-Object -expand "Inclusion Setting"
         changed_when: false
         failed_when: false
+        check_mode: false
         register: rule_17_5_5_audit
 
-      - name: "SCORED | 17.5.5 | PATCH | L1 Ensure Audit Other LogonLogoff Events is set to Success and Failure | Success"
+      - name: "17.5.5 | PATCH | Ensure Audit Other LogonLogoff Events is set to Success and Failure | Success"
         win_shell: AuditPol /set /subcategory:"Other Logon/Logoff Events" /success:enable
         when: "'Success' not in rule_17_5_5_audit.stdout"
 
-      - name: "SCORED | 17.5.5 | PATCH | L1 Ensure Audit Other LogonLogoff Events is set to Success and Failure | Failure"
+      - name: "17.5.5 | PATCH | Ensure Audit Other LogonLogoff Events is set to Success and Failure | Failure"
         win_shell: AuditPol /set /subcategory:"Other Logon/Logoff Events" /failure:enable
         when: "'Failure' not in rule_17_5_5_audit.stdout"
   when:
@@ -372,15 +389,16 @@
       - rule_17.5.5
       - patch
 
-- name: "SCORED | 17.5.6 | PATCH | L1 Ensure Audit Special Logon is set to include Success"
+- name: "17.5.6 | PATCH | Ensure Audit Special Logon is set to include Success"
   block:
-      - name: "SCORED | 17.5.6 | AUDIT | L1 Ensure Audit Special Logon is set to include Success"
+      - name: "17.5.6 | AUDIT | Ensure Audit Special Logon is set to include Success"
         win_shell: AuditPol /get /subcategory:"Special Logon" -r | ConvertFrom-Csv | Select-Object -expand "Inclusion Setting"
         changed_when: false
         failed_when: false
+        check_mode: false
         register: rule_17_5_6_audit
 
-      - name: "SCORED | 17.5.6 | PATCH | L1 Ensure Audit Special Logon is set to include Success"
+      - name: "17.5.6 | PATCH | Ensure Audit Special Logon is set to include Success"
         win_shell: AuditPol /set /subcategory:"Special Logon" /success:enable
         when: "'Success' not in rule_17_5_6_audit.stdout"
   when:
@@ -391,15 +409,16 @@
       - rule_17.5.6
       - patch
 
-- name: "SCORED | 17.6.1 | PATCH | L1 Ensure Audit Detailed File Share is set to include Failure"
+- name: "17.6.1 | PATCH | Ensure Audit Detailed File Share is set to include Failure"
   block:
-      - name: "SCORED | 17.6.1 | AUDIT | L1 Ensure Audit Detailed File Share is set to include Failure"
+      - name: "17.6.1 | AUDIT | Ensure Audit Detailed File Share is set to include Failure"
         win_shell: AuditPol /get /subcategory:"Detailed File Share" -r | ConvertFrom-Csv | Select-Object -expand "Inclusion Setting"
         changed_when: false
         failed_when: false
+        check_mode: false
         register: rule_17_6_1_audit
 
-      - name: "SCORED | 17.6.1 | PATCH | L1 Ensure Audit Detailed File Share is set to include Failure"
+      - name: "17.6.1 | PATCH | Ensure Audit Detailed File Share is set to include Failure"
         win_shell: AuditPol /set /subcategory:"Detailed File Share" /failure:enable
         when: "'Failure' not in rule_17_6_1_audit.stdout"
   when:
@@ -410,15 +429,20 @@
       - rule_17.6.1
       - patch
 
-- name: "SCORED | 17.6.2 | PATCH | L1 Ensure Audit File Share is set to Success and Failure"
+- name: "17.6.2 | PATCH | Ensure Audit File Share is set to Success and Failure"
   block:
-      - name: "SCORED | 17.6.2 | AUDIT | L1 Ensure Audit File Share is set to Success and Failure"
+      - name: "17.6.2 | AUDIT | Ensure Audit File Share is set to Success and Failure"
         win_shell: AuditPol /get /subcategory:"File Share" -r | ConvertFrom-Csv | Select-Object -expand "Inclusion Setting"
         changed_when: false
         failed_when: false
+        check_mode: false
         register: rule_17_6_2_audit
 
-      - name: "SCORED | 17.6.2 | PATCH | L1 Ensure Audit File Share is set to Success and Failure"
+      - name: "17.6.2 | PATCH | Ensure Audit File Share is set to Success and Failure"
+        win_shell: AuditPol /set /subcategory:"File Share" /success:enable
+        when: "'Success' not in rule_17_6_2_audit.stdout"
+
+      - name: "17.6.2 | PATCH | Ensure Audit File Share is set to Success and Failure"
         win_shell: AuditPol /set /subcategory:"File Share" /failure:enable
         when: "'Failure' not in rule_17_6_2_audit.stdout"
   when:
@@ -429,7 +453,7 @@
       - rule_17.6.2
       - patch
 
-- name: "SCORED | 17.6.3 | PATCH | L1 Ensure Audit Other Object Access Events is set to Success and Failure"
+- name: "17.6.3 | PATCH | Ensure Audit Other Object Access Events is set to Success and Failure"
   win_audit_policy_system:
       subcategory: Other Object Access Events
       audit_type: success, failure
@@ -441,17 +465,22 @@
       - rule_17.6.3
       - patch
 
-- name: "SCORED | 17.6.4 | PATCH | L1 Ensure Audit Removable Storage is set to Success and Failure"
+- name: "17.6.4 | PATCH | Ensure Audit Removable Storage is set to Success and Failure"
   block:
-      - name: "SCORED | 17.6.4 | AUDIT | L1 Ensure Audit Removable Storage is set to Success and Failure"
+      - name: "17.6.4 | AUDIT | Ensure Audit Removable Storage is set to Success and Failure"
         win_shell: AuditPol /get /subcategory:"Removable Storage" -r | ConvertFrom-Csv | Select-Object -expand "Inclusion Setting"
         changed_when: false
         failed_when: false
+        check_mode: false
         register: rule_17_6_4_audit
 
-      - name: "SCORED | 17.6.4 | PATCH | L1 Ensure Audit Removable Storage is set to Success and Failure"
+      - name: "17.6.4 | PATCH | Ensure Audit Removable Storage is set to Success and Failure"
         win_shell: AuditPol /set /subcategory:"Removable Storage" /success:enable
         when: "'Success' not in rule_17_6_4_audit.stdout"
+
+      - name: "17.6.4 | PATCH | Ensure Audit Removable Storage is set to Success and Failure"
+        win_shell: AuditPol /set /subcategory:"Removable Storage" /failure:enable
+        when: "'Failure' not in rule_17_6_4_audit.stdout"
   when:
       - rule_17_6_4
   tags:
@@ -460,15 +489,16 @@
       - rule_17.6.4
       - patch
 
-- name: "SCORED | 17.7.1 | PATCH | L1 Ensure Audit Audit Policy Change is set to include Success"
+- name: "17.7.1 | PATCH | Ensure Audit Audit Policy Change is set to include Success"
   block:
-      - name: "SCORED | 17.7.1 | AUDIT | L1 Ensure Audit Audit Policy Change is set to include Success"
+      - name: "17.7.1 | AUDIT | Ensure Audit Audit Policy Change is set to include Success"
         win_shell: AuditPol /get /subcategory:"Audit Policy Change" -r | ConvertFrom-Csv | Select-Object -expand "Inclusion Setting"
         changed_when: false
         failed_when: false
+        check_mode: false
         register: rule_17_7_1_audit
 
-      - name: "SCORED | 17.7.1 | PATCH | L1 Ensure Audit Audit Policy Change is set to include Success"
+      - name: "17.7.1 | PATCH | Ensure Audit Audit Policy Change is set to include Success"
         win_shell: AuditPol /set /subcategory:"Audit Policy Change" /success:enable
         when: "'Success' not in rule_17_7_1_audit.stdout"
   when:
@@ -479,15 +509,16 @@
       - rule_17.7.1
       - patch
 
-- name: "SCORED | 17.7.2 | PATCH | L1 Ensure Audit Authentication Policy Change is set to include Success"
+- name: "17.7.2 | PATCH | Ensure Audit Authentication Policy Change is set to include Success"
   block:
-      - name: "SCORED | 17.7.2 | AUDIT | L1 Ensure Audit Authentication Policy Change is set to include Success"
+      - name: "17.7.2 | AUDIT | Ensure Audit Authentication Policy Change is set to include Success"
         win_shell: AuditPol /get /subcategory:"Authentication Policy Change" -r | ConvertFrom-Csv | Select-Object -expand "Inclusion Setting"
         changed_when: false
         failed_when: false
+        check_mode: false
         register: rule_17_7_2_audit
 
-      - name: "SCORED | 17.7.2 | PATCH | L1 Ensure Audit Authentication Policy Change is set to include Success"
+      - name: "17.7.2 | PATCH | Ensure Audit Authentication Policy Change is set to include Success"
         win_shell: AuditPol /set /subcategory:"Authentication Policy Change" /success:enable
         when: "'Success' not in rule_17_7_2_audit.stdout"
   when:
@@ -498,15 +529,16 @@
       - rule_17.7.2
       - patch
 
-- name: "SCORED | 17.7.3 | PATCH | L1 Ensure Audit Authorization Policy Change is set to include Success"
+- name: "17.7.3 | PATCH | Ensure Audit Authorization Policy Change is set to include Success"
   block:
-      - name: "SCORED | 17.7.3 | AUDIT | L1 Ensure Audit Authorization Policy Change is set to include Success"
+      - name: "17.7.3 | AUDIT | Ensure Audit Authorization Policy Change is set to include Success"
         win_shell: AuditPol /get /subcategory:"Authorization Policy Change" -r | ConvertFrom-Csv | Select-Object -expand "Inclusion Setting"
         changed_when: false
         failed_when: false
+        check_mode: false
         register: rule_17_7_3_audit
 
-      - name: "SCORED | 17.7.3 | PATCH | L1 Ensure Audit Authorization Policy Change is set to include Success"
+      - name: "17.7.3 | PATCH | Ensure Audit Authorization Policy Change is set to include Success"
         win_shell: AuditPol /set /subcategory:"Authorization Policy Change" /success:enable
         when: "'Success' not in rule_17_7_3_audit.stdout"
   when:
@@ -517,19 +549,20 @@
       - rule_17.7.3
       - patch
 
-- name: "SCORED | 17.7.4 | PATCH | L1 Ensure Audit MPSSVC Rule-Level Policy Change is set to Success and Failure"
+- name: "17.7.4 | PATCH | Ensure Audit MPSSVC Rule-Level Policy Change is set to Success and Failure"
   block:
-      - name: "SCORED | 17.7.4 | AUDIT | L1 Ensure Audit MPSSVC Rule-Level Policy Change is set to Success and Failure"
+      - name: "17.7.4 | AUDIT | Ensure Audit MPSSVC Rule-Level Policy Change is set to Success and Failure"
         win_shell: AuditPol /get /subcategory:"MPSSVC Rule-Level Policy Change" -r | ConvertFrom-Csv | Select-Object -expand "Inclusion Setting"
         changed_when: false
         failed_when: false
+        check_mode: false
         register: rule_17_7_4_audit
 
-      - name: "SCORED | 17.7.4 | PATCH | L1 Ensure Audit MPSSVC Rule-Level Policy Change is set to Success and Failure | Success"
+      - name: "17.7.4 | PATCH | Ensure Audit MPSSVC Rule-Level Policy Change is set to Success and Failure | Success"
         win_shell: AuditPol /set /subcategory:"MPSSVC Rule-Level Policy Change" /success:enable
         when: "'Success' not in rule_17_7_4_audit.stdout"
 
-      - name: "SCORED | 17.7.4 | PATCH | L1 Ensure Audit MPSSVC Rule-Level Policy Change is set to Success and Failure | Failure"
+      - name: "17.7.4 | PATCH | Ensure Audit MPSSVC Rule-Level Policy Change is set to Success and Failure | Failure"
         win_shell: AuditPol /set /subcategory:"MPSSVC Rule-Level Policy Change" /failure:enable
         when: "'Failure' not in rule_17_7_4_audit.stdout"
   when:
@@ -540,17 +573,18 @@
       - rule_17.7.4
       - patch
 
-- name: "SCORED | 17.7.5 | PATCH | L1 Ensure Audit Other Policy Change Events is set to include Failure"
+- name: "17.7.5 | PATCH | Ensure Audit Other Policy Change Events is set to include Failure"
   block:
-      - name: "SCORED | 17.7.5 | AUDIT | L1 Ensure Audit Other Policy Change Events is set to include Failure"
+      - name: "17.7.5 | AUDIT | Ensure Audit Other Policy Change Events is set to include Failure"
         win_shell: AuditPol /get /subcategory:"Other Policy Change Events" -r | ConvertFrom-Csv | Select-Object -expand "Inclusion Setting"
         changed_when: false
         failed_when: false
+        check_mode: false
         register: rule_17_7_5_audit
 
-      - name: "SCORED | 17.7.5 | PATCH | L1 Ensure Audit Other Policy Change Events is set to include Failure"
-        win_shell: AuditPol /set /subcategory:"Other Policy Change Events" /success:enable
-        when: "'Success' not in rule_17_7_5_audit.stdout"
+      - name: "17.7.5 | PATCH | Ensure Audit Other Policy Change Events is set to include Failure"
+        win_shell: AuditPol /set /subcategory:"Other Policy Change Events" /failure:enable
+        when: "'Failure' not in rule_17_7_5_audit.stdout"
   when:
       - rule_17_7_5
   tags:
@@ -559,19 +593,20 @@
       - rule_17.7.5
       - patch
 
-- name: "SCORED | 17.8.1 | PATCH | L1 Ensure Audit Sensitive Privilege Use is set to Success and Failure"
+- name: "17.8.1 | PATCH | Ensure Audit Sensitive Privilege Use is set to Success and Failure"
   block:
-      - name: "SCORED | 17.8.1 | AUDIT | L1 Ensure Audit Sensitive Privilege Use is set to Success and Failure"
+      - name: "17.8.1 | AUDIT | Ensure Audit Sensitive Privilege Use is set to Success and Failure"
         win_shell: AuditPol /get /subcategory:"Sensitive Privilege Use" -r | ConvertFrom-Csv | Select-Object -expand "Inclusion Setting"
         changed_when: false
         failed_when: false
+        check_mode: false
         register: rule_17_8_1_audit
 
-      - name: "SCORED | 17.8.1 | PATCH | L1 Ensure Audit Sensitive Privilege Use is set to Success and Failure | Success"
+      - name: "17.8.1 | PATCH | Ensure Audit Sensitive Privilege Use is set to Success and Failure | Success"
         win_shell: AuditPol /set /subcategory:"Sensitive Privilege Use" /success:enable
         when: "'Success' not in rule_17_8_1_audit.stdout"
 
-      - name: "SCORED | 17.8.1 | PATCH | L1 Ensure Audit Sensitive Privilege Use is set to Success and Failure | Failure"
+      - name: "17.8.1 | PATCH | Ensure Audit Sensitive Privilege Use is set to Success and Failure | Failure"
         win_shell: AuditPol /set /subcategory:"Sensitive Privilege Use" /failure:enable
         when: "'Failure' not in rule_17_8_1_audit.stdout"
   when:
@@ -582,19 +617,20 @@
       - rule_17.8.1
       - patch
 
-- name: "SCORED | 17.9.1 | PATCH | L1 Ensure Audit IPsec Driver is set to Success and Failure"
+- name: "17.9.1 | PATCH | Ensure Audit IPsec Driver is set to Success and Failure"
   block:
-      - name: "SCORED | 17.9.1 | AUDIT | L1 Ensure Audit IPsec Driver is set to Success and Failure"
+      - name: "17.9.1 | AUDIT | Ensure Audit IPsec Driver is set to Success and Failure"
         win_shell: AuditPol /get /subcategory:"IPsec Driver" -r | ConvertFrom-Csv | Select-Object -expand "Inclusion Setting"
         changed_when: false
         failed_when: false
+        check_mode: false
         register: rule_17_9_1_audit
 
-      - name: "SCORED | 17.9.1 | PATCH | L1 Ensure Audit IPsec Driver is set to Success and Failure | Success"
+      - name: "17.9.1 | PATCH | Ensure Audit IPsec Driver is set to Success and Failure | Success"
         win_shell: AuditPol /set /subcategory:"IPsec Driver" /success:enable
         when: "'Success' not in rule_17_9_1_audit.stdout"
 
-      - name: "SCORED | 17.9.1 | PATCH | L1 Ensure Audit IPsec Driver is set to Success and Failure | Failure"
+      - name: "17.9.1 | PATCH | Ensure Audit IPsec Driver is set to Success and Failure | Failure"
         win_shell: AuditPol /set /subcategory:"IPsec Driver" /failure:enable
         when: "'Failure' not in rule_17_9_1_audit.stdout"
   when:
@@ -605,19 +641,20 @@
       - rule_17.9.1
       - patch
 
-- name: "SCORED | 17.9.2 | PATCH | L1 Ensure Audit Other System Events is set to Success and Failure"
+- name: "17.9.2 | PATCH | Ensure Audit Other System Events is set to Success and Failure"
   block:
-      - name: "SCORED | 17.9.2 | AUDIT | L1 Ensure Audit Other System Events is set to Success and Failure"
+      - name: "17.9.2 | AUDIT | Ensure Audit Other System Events is set to Success and Failure"
         win_shell: AuditPol /get /subcategory:"Other System Events" -r | ConvertFrom-Csv | Select-Object -expand "Inclusion Setting"
         changed_when: false
         failed_when: false
+        check_mode: false
         register: rule_17_9_2_audit
 
-      - name: "SCORED | 17.9.2 | PATCH | L1 Ensure Audit Other System Events is set to Success and Failure | Success"
+      - name: "17.9.2 | PATCH | Ensure Audit Other System Events is set to Success and Failure | Success"
         win_shell: AuditPol /set /subcategory:"Other System Events" /success:enable
         when: "'Success' not in rule_17_9_2_audit.stdout"
 
-      - name: "SCORED | 17.9.2 | PATCH | L1 Ensure Audit Other System Events is set to Success and Failure | Failure"
+      - name: "17.9.2 | PATCH | Ensure Audit Other System Events is set to Success and Failure | Failure"
         win_shell: AuditPol /set /subcategory:"Other System Events" /failure:enable
         when: "'Failure' not in rule_17_9_2_audit.stdout"
   when:
@@ -628,15 +665,16 @@
       - rule_17.9.2
       - patch
 
-- name: "SCORED | 17.9.3 | PATCH | L1 Ensure Audit Security State Change is set to include Success"
+- name: "17.9.3 | PATCH | Ensure Audit Security State Change is set to include Success"
   block:
-      - name: "SCORED | 17.9.3 | AUDIT | L1 Ensure Audit Security State Change is set to include Success"
+      - name: "17.9.3 | AUDIT | Ensure Audit Security State Change is set to include Success"
         win_shell: AuditPol /get /subcategory:"Security State Change" -r | ConvertFrom-Csv | Select-Object -expand "Inclusion Setting"
         changed_when: false
         failed_when: false
+        check_mode: false
         register: rule_17_9_3_audit
 
-      - name: "SCORED | 17.9.3 | PATCH | L1 Ensure Audit Security State Change is set to include Success"
+      - name: "17.9.3 | PATCH | Ensure Audit Security State Change is set to include Success"
         win_shell: AuditPol /set /subcategory:"Security State Change" /success:enable
         when: "'Success' not in rule_17_9_3_audit.stdout"
   when:
@@ -647,15 +685,16 @@
       - rule_17.9.3
       - patch
 
-- name: "SCORED | 17.9.4 | PATCH | L1 Ensure Audit Security System Extension is set to include Success"
+- name: "17.9.4 | PATCH | Ensure Audit Security System Extension is set to include Success"
   block:
-      - name: "SCORED | 17.9.4 | AUDIT | L1 Ensure Audit Security System Extension is set to include Success"
+      - name: "17.9.4 | AUDIT | Ensure Audit Security System Extension is set to include Success"
         win_shell: AuditPol /get /subcategory:"Security System Extension" -r | ConvertFrom-Csv | Select-Object -expand "Inclusion Setting"
         changed_when: false
         failed_when: false
+        check_mode: false
         register: rule_17_9_4_audit
 
-      - name: "SCORED | 17.9.4 | PATCH | L1 Ensure Audit Security System Extension is set to include Success"
+      - name: "17.9.4 | PATCH | Ensure Audit Security System Extension is set to include Success"
         win_shell: AuditPol /set /subcategory:"Security System Extension" /success:enable
         when: "'Success' not in rule_17_9_4_audit.stdout"
   when:
@@ -666,20 +705,21 @@
       - rule_17.9.4
       - patch
 
-- name: "SCORED | 17.9.5 | PATCH | L1 Ensure Audit System Integrity is set to Success and Failure"
+- name: "17.9.5 | PATCH | Ensure Audit System Integrity is set to Success and Failure"
   block:
-      - name: "SCORED | 17.9.5 | AUDIT | L1 Ensure Audit System Integrity is set to Success and Failure"
+      - name: "17.9.5 | AUDIT | Ensure Audit System Integrity is set to Success and Failure"
         win_shell: AuditPol /get /subcategory:"System Integrity" -r | ConvertFrom-Csv | Select-Object -expand "Inclusion Setting"
         changed_when: false
         failed_when: false
+        check_mode: false
         register: rule_17_9_5_audit
 
-      - name: "SCORED | 17.9.5 | PATCH | L1 Ensure Audit System Integrity is set to Success and Failure | Success"
+      - name: "17.9.5 | PATCH | Ensure Audit System Integrity is set to Success and Failure | Success"
         win_shell: AuditPol /set /subcategory:"System Integrity" /success:enable
         changed_when: "'Success' not in rule_17_9_5_audit.stdout"
         when: "'Success' not in rule_17_9_5_audit.stdout"
 
-      - name: "SCORED | 17.9.5 | PATCH | L1 Ensure Audit System Integrity is set to Success and Failure | Failure"
+      - name: "17.9.5 | PATCH | Ensure Audit System Integrity is set to Success and Failure | Failure"
         win_shell: AuditPol /set /subcategory:"System Integrity" /failure:enable
         changed_when: "'Failure' not in rule_17_9_5_audit.stdout"
         when: "'Failure' not in rule_17_9_5_audit.stdout"
