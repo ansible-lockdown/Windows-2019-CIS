@@ -1,0 +1,20 @@
+---
+
+- name: |
+    "5.1 | PATCH | Ensure Print Spooler (Spooler) is set to Disabled
+     5.2 | PATCH | Ensure 'Print Spooler (Spooler) is set to Disabled"
+  win_regedit:
+      path: HKLM:\SYSTEM\CurrentControlSet\Services\Spooler
+      name: Start
+      data: 4
+      type: dword
+  when:
+      - rule_5_1 or
+        rule_5_2
+  tags:
+      - level1-domaincontroller
+      - level2-domainmember
+      - rule_5.1
+      - rule_5.2
+      - patch
+      - printer

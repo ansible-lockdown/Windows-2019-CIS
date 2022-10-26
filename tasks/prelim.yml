@@ -17,15 +17,15 @@
       - name: set fact if domain member server
         set_fact:
             win2019cis_is_domain_member: true
-        when: 
+        when:
             - ansible_windows_domain_role == 'Member server'
 
 - name: Get Windows installation type
   win_reg_stat:
-    path: HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion
-    name: InstallationType
+      path: HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion
+      name: InstallationType
   register: get_windows_installation_type
 
 - name: Set Windows installation type
   set_fact:
-    windows_installation_type: "{{ get_windows_installation_type.value | default('') }}"
+      windows_installation_type: "{{ get_windows_installation_type.value | default('') }}"
