@@ -1,0 +1,9 @@
+---
+
+# vars file for .
+
+# Used to control warning summary
+warn_control_list: ""
+warn_count: 0
+
+motd_asciiart: "{{lookup('file', './templates/banner.txt')}}"

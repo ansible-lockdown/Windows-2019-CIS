@@ -1,0 +1,103 @@
+# Changelog
+
+## Release 1.3.0
+- Major Update: All task rule names updated to add win19cis to them in default main.
+- Ansible Lockdown Banner In Playbook (Testing)
+- Updated to CIS 1.3.0
+- Updated Galaxy Workflow
+- Updated module names to new standard.
+- Issues Closed
+  [#31](https://github.com/ansible-lockdown/Windows-2019-CIS/issues/31)
+  [#64](https://github.com/ansible-lockdown/Windows-2019-CIS/issues/64)
+- Benchmarks 1.2.1 - 1.2.3 Put In Correct Order To Take Into Account System Defaults.
+- Benchmark 1.1.7 - Added
+- Benchmark 2.2.37 - Added Variable To Choose If Exchange Server Installed.
+- Benchmark 2.3.6.5 - Added Variable
+- Benchmark 2.3.7.3 - Added Variable
+- Benchmark 2.3.7.6 - Added Variable
+- Benchmark 2.3.7.7 - Added Variable
+- Benchmark 18.4.9 - Added Variable
+- Benchmark 18.4.12 - Added Variable
+- Benchmark 18.8.3.1 - Old setting was set to disabled, new benchmark calls for enabled. Updated registry value. 
+- Benchmark 18.9.12.1 - Calls For Disabled, Updated and Changed Registry Entry To Disable. 
+- Benchmark 18.9.17.2 - Calls For Enabled, Updated and Changed Registry Entry To Enable.
+- Benchmark 18.9.27.1.2 - Added Variable
+- Benchmark 18.9.27.2.2 - Added Variable
+- Benchmark 18.9.27.3.2 - Added Variable
+- Benchmark 18.9.27.4.2 - Added Variable
+- Benchmark 18.9.64.1 - Added
+- Benchmark 18.9.65.3.10.1 - Added Variable
+- Benchmark 18.9.65.3.10.2 - Updated the registry entry time to 1 Min per CIS. 
+- Benchmark 19.3.3 - Added Variable
+- Benchmark 19.1.3.4 - Removed Not A Valid Control
+
+
+
+ALL THE CHANGED CONTROLS
+
+- Renamed Control 18.8.47.5.1 - Benchmark Changed To 18.8.48.5.1 in default main to bring into alignment for CIS
+- Renamed Control 18.8.47.11.1 - Benchmark Changed To 18.8.48.11.1 in default main to bring into alignment for CIS
+- Renamed Control 18.8.49.1 - Benchmark Changed To 18.8.50.1 in default main to bring into alignment for CIS
+- Renamed Control 18.8.52.1.1 - Benchmark Changed To 18.8.53.1.1 in default main to bring into alignment for CIS
+- Renamed Control 18.8.52.1.2 - Benchmark Changed To 18.8.53.1.2 in default main to bring into alignment for CIS
+- Renamed Control 18.9.26.1.1 - Benchmark Changed To 18.9.27.1.1 in default main to bring into alignment for CIS
+- Renamed Control 18.9.26.1.2 - Benchmark Changed To 18.9.27.1.2 in default main to bring into alignment for CIS
+- Renamed Control 18.9.26.2.1 - Benchmark Changed To 18.9.27.2.1 in default main to bring into alignment for CIS
+- Renamed Control 18.9.26.2.2 - Benchmark Changed To 18.9.27.2.2 in default main to bring into alignment for CIS
+- Renamed Control 18.9.26.3.1 - Benchmark Changed To 18.9.27.3.1 in default main to bring into alignment for CIS
+- Renamed Control 18.9.26.3.2 - Benchmark Changed To 18.9.27.3.2 in default main to bring into alignment for CIS
+- Renamed Control 18.9.26.4.1 - Benchmark Changed To 18.9.27.4.1 in default main to bring into alignment for CIS
+- Renamed Control 18.9.26.4.2 - Benchmark Changed To 18.9.27.4.2 in default main to bring into alignment for CIS
+- Renamed Control 18.9.30.2 - Benchmark Changed To 18.9.31.2 in default main to bring into alignment for CIS
+- Renamed Control 18.9.30.3 - Benchmark Changed To 18.9.31.3 in default main to bring into alignment for CIS
+- Renamed Control 18.9.30.4 - Benchmark Changed To 18.9.31.4 in default main to bring into alignment for CIS
+- Renamed Control 18.9.39.1 - Benchmark Changed To 18.9.41.1 in default main to bring into alignment for CIS
+- Renamed Control 18.9.43.1 - Benchmark Changed To 18.9.45.1 in default main to bring into alignment for CIS
+- Renamed Control 18.9.44.1 - Benchmark Changed To 18.9.46.1 in default main to bring into alignment for CIS
+- Renamed Control 18.9.45.3.1 - Benchmark Changed To 18.9.47.4.1 in default main to bring into alignment for CIS
+- Renamed Control 18.9.45.3.2 - Benchmark Changed To 18.9.47.4.2 in default main to bring into alignment for CIS
+- Renamed Control 18.9.45.4.1.1 - Benchmark Changed To 18.9.47.5.1.1 in default main to bring into alignment for CIS
+- Renamed Control 18.9.45.4.1.2 - Benchmark Changed To 18.9.47.5.1.2 in default main to bring into alignment for CIS
+- Renamed Control 18.9.45.4.3.1 - Benchmark Changed To 18.9.47.5.3.1 in default main to bring into alignment for CIS
+- Renamed Control 18.9.45.5.1 - Benchmark Changed To 18.9.47.6.1 in default main to bring into alignment for CIS
+- Renamed Control 18.9.45.10.1 - Benchmark Changed To 18.9.47.11.1 in default main to bring into alignment for CIS
+- Renamed Control 18.9.45.11.1 - Benchmark Changed To 18.9.47.12.1 in default main to bring into alignment for CIS
+- Renamed Control 18.9.45.11.2 - Benchmark Changed To 18.9.47.12.2 in default main to bring into alignment for CIS
+- Renamed Control 18.9.45.14 - Benchmark Changed To 18.9.47.15 in default main to bring into alignment for CIS
+- Renamed Control 18.9.45.15 - Benchmark Changed To 18.9.47.16 in default main to bring into alignment for CIS
+- Renamed Control 18.9.55.1 - Benchmark Changed To 18.9.58.1 in default main to bring into alignment for CIS
+- Renamed Control 18.9.62.2.2 - Benchmark Changed To 18.9.65.2.2 in default main to bring into alignment for CIS
+- Renamed Control 18.9.62.3.2.1 - Benchmark Changed To 8.9.65.3.2.1 in default main to bring into alignment for CIS
+- Renamed Control 18.9.62.3.3.1 - Benchmark Changed To 18.9.65.3.3.1 in default main to bring into alignment for CIS
+- Renamed Control 18.9.62.3.3.2 - Benchmark Changed To 18.9.65.3.3.2 in default main to bring into alignment for CIS
+- Renamed Control 18.9.62.3.3.3 - Benchmark Changed To 18.9.65.3.3.3 in default main to bring into alignment for CIS
+- Renamed Control 18.9.62.3.3.4 - Benchmark Changed To 18.9.65.3.3.4 in default main to bring into alignment for CIS
+- Renamed Control 18.9.62.3.9.1 - Benchmark Changed To 18.9.65.3.9.1 in default main to bring into alignment for CIS
+- Renamed Control 18.9.62.3.9.2 - Benchmark Changed To 18.9.65.3.9.2 in default main to bring into alignment for CIS
+- Renamed Control 18.9.62.3.9.3 - Benchmark Changed To 18.9.65.3.9.3 in default main to bring into alignment for CIS
+- Renamed Control 18.9.62.3.9.4 - Benchmark Changed To 18.9.65.3.9.4 in default main to bring into alignment for CIS
+- Renamed Control 18.9.62.3.9.5 - Benchmark Changed To 18.9.65.3.9.5 in default main to bring into alignment for CIS
+- Renamed Control 18.9.62.3.10.1 - Benchmark Changed To 18.9.65.3.10.1 in default main to bring into alignment for CIS
+- Renamed Control 18.9.62.3.10.2 - Benchmark Changed To 18.9.65.3.10.2 in default main to bring into alignment for CIS
+- Renamed Control 18.9.62.3.11.1 - Benchmark Changed To 18.9.65.3.11.1  in default main to bring into alignment for CIS
+- Renamed Control 18.9.62.3.11.2 - Benchmark Changed To 18.9.65.3.11.2  in default main to bring into alignment for CIS
+- Renamed Control 18.9.63.1 - Benchmark Changed To 18.9.66.1  in default main to bring into alignment for CIS
+- Renamed Control 18.9.64.2 - Benchmark Changed To 18.9.67.2  in default main to bring into alignment for CIS
+- Renamed Control 18.9.64.3 - Benchmark Changed To 18.9.67.3  in default main to bring into alignment for CIS
+- Renamed Control 18.9.69.1 - Benchmark Changed To 18.9.72.1  in default main to bring into alignment for CIS
+- Renamed Control 18.9.80.1.1 - Benchmark Changed To 18.9.85.1.1  in default main to bring into alignment for CIS
+- Renamed Control 18.9.84.1 - Benchmark Changed To 18.9.89.1 in default main to bring into alignment for CIS
+- Renamed Control 18.9.84.2 - Benchmark Changed To 18.9.89.2 in default main to bring into alignment for CIS
+- Renamed Control 18.9.85.1 - Benchmark Changed To 18.9.90.1 in default main to bring into alignment for CIS
+- Renamed Control 18.9.85.2 - Benchmark Changed To 18.9.90.2 in default main to bring into alignment for CIS
+- Renamed Control 18.9.85.3 - Benchmark Changed To 18.9.90.3 in default main to bring into alignment for CIS
+- Renamed Control 18.9.86.1 - Benchmark Changed To 18.9.91.1 in default main to bring into alignment for CIS
+- Renamed Control 18.9.97.1.1 - Benchmark Changed To 18.9.102.1.1 in default main to bring into alignment for CIS
+- Renamed Control 18.9.97.1.2 - Benchmark Changed To 18.9.102.1.2 in default main to bring into alignment for CIS
+- Renamed Control 18.9.97.1.3 - Benchmark Changed To 18.9.102.1.3 in default main to bring into alignment for CIS
+- Renamed Control 18.9.97.2.1 - Benchmark Changed To 18.9.102.2.1 in default main to bring into alignment for CIS
+- Renamed Control 18.9.97.2.2 - Benchmark Changed To 18.9.102.2.2 in default main to bring into alignment for CIS
+- Renamed Control 18.9.97.2.3 - Benchmark Changed To 18.9.102.2.3 in default main to bring into alignment for CIS
+- Renamed Control 18.9.97.2.4 - Benchmark Changed To 18.9.102.2.4 in default main to bring into alignment for CIS
+- Renamed Control 18.9.98.1 - Benchmark Changed To 18.9.103.1 in default main to bring into alignment for CIS
+- Renamed Control 18.9.99.2.1 - Benchmark Changed To 18.9.105.2.1 in default main to bring into alignment for CIS

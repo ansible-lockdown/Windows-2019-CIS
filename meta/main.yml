@@ -1,6 +1,6 @@
 ---
 galaxy_info:
-    author: "Ryan Speelman"
+    author: "Ryan Speelman, Stephen Williams, George Nalen"
     description: "Ansible role to apply Windows Server 2019 CIS Benchmark"
     company: "MindPoint Group"
     license: MIT
@@ -16,11 +16,16 @@ galaxy_info:
     galaxy_tags:
         - system
         - security
-        - stig
+        - cis
         - hardening
+        - benchmark
         - microsoft
         - windows
+        - complianceascode
+        - compliance
 
-    dependencies:
+    collections:
         - ansible.windows
         - community.windows
+
+    dependencies: []

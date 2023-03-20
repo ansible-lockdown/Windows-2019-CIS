@@ -1,4 +1,4 @@
 ---
 
 collections:
-- name: community.windows
+    - name: community.windows
