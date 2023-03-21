@@ -8,7 +8,7 @@ Configure a Windows Server 2019 system to be [CIS](https://downloads.cisecurity.
 
  ## Join us
 
- On our [Discord Server](https://discord.gg/JFxpSgPFEJ) to ask questions, discuss features, or just chat with other Ansible-Lockdown users
+ On our [Discord Server](https://discord.io/ansible-lockdown) to ask questions, discuss features, or just chat with other Ansible-Lockdown users
 
  ## Caution(s)
 

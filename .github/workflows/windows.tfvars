@@ -1,8 +1,0 @@
-prefix         = "github"
-location       = "eastus"
-tagname        = "ansible_lockdown"
-system_size    = "Standard_DC4s_v2"
-OS_publisher   = "MicrosoftWindowsServer"
-OS_version     = "2019"
-system_release = "Datacenter-g2"
-hostname       = "github"

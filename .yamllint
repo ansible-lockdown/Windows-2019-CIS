@@ -1,12 +1,12 @@
 ---
+extends: default
+
 ignore: |
   tests/
   molecule/
   .github/
   .gitlab-ci.yml
   *molecule.yml
-
-extends: default
 
 rules:
     braces:

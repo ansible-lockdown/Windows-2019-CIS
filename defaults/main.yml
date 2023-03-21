@@ -30,30 +30,9 @@ win19cis_section18: true
 # 19.1.x Control Panel, 19.5.x Start Menu and Taskbar, 19.6.x System, 19.7.x Windows Components
 win19cis_section19: true
 
-min_ansible_version: "2.6"
+min_ansible_version: "2.10.1"
 
-# We've defined disruption-high to indicate items that are likely to cause
-# disruption in a normal workflow.  These items can be remediated automatically
-# but are disabled by default to avoid disruption.
-disruption_high: false
-
-# Show "changed" for disruptive items not remediated per disruption-high
-# setting to make them stand out.
-audit_disruptive: true
-
-workaround_for_disa_benchmark: true
-workaround_for_ssg_benchmark: true
-
-# tweak role to run in a non-privileged container
-system_is_container: false
-
-# set to false to skip tasks that either have not been developed or cannot be automated
-is_implemented: false
-
-# set to false to skip long running tasks
-long_running: false
-
-# win19cis_skip_for_test is used in the playbook to skip over certain controls that
+# win19cis_skip_for_ansible is used in the playbook to skip over certain controls that
 # may cause breaking changes when running it for testing purposes.
 # Controls that will be skipped:
 # win19cis_rule_18_9_102_2_1
@@ -61,7 +40,7 @@ long_running: false
 # win19cis_rule_18_9_102_2_3
 # win19cis_rule_18_9_102_2_4
 # win19cis_rule_18_9_103_1
-win19cis_skip_for_test: false
+win19cis_skip_for_ansible: false
 
 # These variables correspond with the CIS rule IDs or paragraph numbers defined in
 # the CIS benchmark documents.

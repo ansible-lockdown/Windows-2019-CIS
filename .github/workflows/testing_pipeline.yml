@@ -7,6 +7,7 @@ name: testing_pipeline
 # events but only for the devel branch
 on:
   pull_request_target:
+    types: [opened, reopened, synchronize]
     branches:
       - devel
       - main
@@ -30,23 +31,14 @@ jobs:
                 repo-token: ${{ secrets.GITHUB_TOKEN }}
                 pr-message: |-
                   Congrats on opening your first pull request and thank you for taking the time to help improve Ansible-Lockdown! 
-                  Please join in the conversation happening on the [Discord Server](https://discord.gg/ArDjfhY8) as well.
+                  Please join in the conversation happening on the [Discord Server](https://discord.io/ansible-lockdown) as well.
               
   # This workflow contains a single job called "build"
   build:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
-    # Set the OS to test on here
-    # Name matches the os_name.tfvars file
-    # one of
-    # - centos7
-    # - rocky8
-    # - ubuntu20
-    # - ubuntu18
-    # - windows
 
     env: 
-      TEST_OS: windows
       ENABLE_DEBUG: false
       ARM_CLIENT_ID: ${{ secrets.AZURE_AD_CLIENT_ID }}
       ARM_CLIENT_SECRET: ${{ secrets.AZURE_AD_CLIENT_SECRET }}
@@ -79,7 +71,7 @@ jobs:
 
       - name: Terraform_Apply
         working-directory: .github/workflows
-        run: terraform apply -var-file "${TEST_OS}.tfvars" --auto-approve
+        run: terraform apply -var-file "OS.tfvars" --auto-approve
 
 ## Debug Section
       - name: DEBUG - Show Ansible hostfile
@@ -102,6 +94,9 @@ jobs:
 # Remove test system
 
       - name: Terraform_Destroy
-        if: always() && env.ENABLE_DEBUG == 'false'
         working-directory: .github/workflows
-        run: terraform destroy -var-file "${TEST_OS}.tfvars" -auto-approve
+        if: always() && env.ENABLE_DEBUG == 'false'
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        run: terraform destroy -var-file "github_vars.tfvars" -var-file "OS.tfvars" --auto-approve -input=false

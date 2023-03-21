@@ -3128,7 +3128,7 @@
       type: dword
   when:
       - win19cis_rule_18_9_102_2_1
-      - not win19cis_skip_for_test
+      - not win19cis_skip_for_ansible
   tags:
       - level1-domaincontroller
       - level1-memberserver
@@ -3144,7 +3144,7 @@
       type: dword
   when:
       - win19cis_rule_18_9_102_2_2
-      - not win19cis_skip_for_test
+      - not win19cis_skip_for_ansible
   tags:
       - level2-domaincontroller
       - level2-memberserver
@@ -3160,7 +3160,7 @@
       type: dword
   when:
       - win19cis_rule_18_9_102_2_3
-      - not win19cis_skip_for_test
+      - not win19cis_skip_for_ansible
   tags:
       - level1-domaincontroller
       - level1-memberserver
@@ -3177,7 +3177,7 @@
       type: dword
   when:
       - win19cis_rule_18_9_102_2_4
-      - not win19cis_skip_for_test
+      - not win19cis_skip_for_ansible
   tags:
       - level1-domaincontroller
       - level1-memberserver
@@ -3193,7 +3193,7 @@
       type: dword
   when:
       - win19cis_rule_18_9_103_1
-      - not win19cis_skip_for_test
+      - not win19cis_skip_for_ansible
   tags:
       - level2-domaincontroller
       - level2-memberserver
