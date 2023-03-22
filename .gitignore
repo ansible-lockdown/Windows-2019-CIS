@@ -9,9 +9,9 @@ tests/Dockerfile
 packer_cache
 delete*
 ignore*
-.cache
 # VSCode
 .vscode
+vagrant
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
@@ -41,3 +41,5 @@ benchparse/
 *xccdf.xml
 *.retry
 
+# GitHub Action/Workflow files
+.github/
