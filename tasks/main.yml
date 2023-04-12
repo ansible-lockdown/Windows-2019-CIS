@@ -1,9 +1,11 @@
 ---
-- name: display multiple file contents
+- name: Display Banner
   ansible.builtin.debug:
-      msg: "{{ motd_asciiart.split('\n') }}"
+      msg: "{{ lockdown_banner.split('\n') }}"
+  tags:
+      - always
 
-- name: Gather distribution info
+- name: Gather Distribution Info
   ansible.builtin.setup:
       gather_subset: distribution,!all,!min
   when:
@@ -31,6 +33,7 @@
 - name: Include the preliminary tasks
   ansible.builtin.include_tasks: prelim.yml
   tags:
+      - always
       - prelim_tasks
 
 - name: Execute the section 1 tasks
@@ -76,7 +79,7 @@
       - section19
 
 - name: If Warnings found Output count and control IDs affected
-  debug:
+  ansible.builtin.debug:
       msg:
           - "You have {{ warn_count }} Warning(s) that require investigation(s). Their ID’s are listed below:"
           - "{{ warn_control_list }}"

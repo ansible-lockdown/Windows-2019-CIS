@@ -9,6 +9,7 @@
 - Issues Closed
   [#31](https://github.com/ansible-lockdown/Windows-2019-CIS/issues/31)
   [#64](https://github.com/ansible-lockdown/Windows-2019-CIS/issues/64)
+  [#67](https://github.com/ansible-lockdown/Windows-2019-CIS/issues/67)
 - Benchmarks 1.2.1 - 1.2.3 Put In Correct Order To Take Into Account System Defaults.
 - Benchmark 1.1.7 - Added
 - Benchmark 2.2.37 - Added Variable To Choose If Exchange Server Installed.

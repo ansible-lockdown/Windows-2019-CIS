@@ -454,7 +454,7 @@
       - patch
 
 - name: "17.6.3 | PATCH | Ensure Audit Other Object Access Events is set to Success and Failure"
-  win_audit_policy_system:
+  community.windows.win_audit_policy_system:
       subcategory: Other Object Access Events
       audit_type: success, failure
   when:

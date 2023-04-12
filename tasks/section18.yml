@@ -125,7 +125,7 @@
 - name: "18.2.5 | PATCH | Ensure Password Settings Password Length is set to Enabled 15 or more MS only"
   block:
       - name: "18.2.5 | AUDIT | Ensure Password Settings Password Length is set to Enabled 15 or more MS only. | Warning Check For Variable Standards."
-        debug:
+        ansible.builtin.debug:
             msg:
                 - "Warning!! You have a invalid password length set for win19cis_laps_password_length please read"
                 - "the notes for the variable and make the necessary change to the variable to be in compliance."
@@ -133,7 +133,7 @@
             - win19cis_laps_password_length < 15
 
       - name: "18.2.5 | AUDIT | Ensure Password Settings Password Length is set to Enabled 15 or more MS only. | Warn Count."
-        import_tasks: warning_facts.yml
+        ansible.builtin.import_tasks: warning_facts.yml
         vars:
             warn_control_id: '18.2.5'
         when:
@@ -159,7 +159,7 @@
 - name: "18.2.6 | PATCH | Ensure Password Settings Password Age Days is set to Enabled 30 or fewer MS only"
   block:
       - name: "18.2.6 | AUDIT | Ensure Password Settings Password Age Days is set to Enabled 30 or fewer MS only | Warning Check For Variable Standards."
-        debug:
+        ansible.builtin.debug:
             msg:
                 - "Warning!! You have a invalid password length set for win19cis_laps_password_length please read"
                 - "the notes for the variable and make the necessary change to the variable to be in compliance."
@@ -167,7 +167,7 @@
             - win19cis_laps_password_age_days > 30
 
       - name: "18.2.6 | AUDIT | Ensure Password Settings Password Age Days is set to Enabled 30 or fewer MS only | Warn Count."
-        import_tasks: warning_facts.yml
+        ansible.builtin.import_tasks: warning_facts.yml
         vars:
             warn_control_id: '18.2.6'
         when:
@@ -438,7 +438,7 @@
 - name: "18.4.9 | PATCH | Ensure MSS ScreenSaverGracePeriod The time in seconds before the screen saver grace period expires 0 recommended is set to Enabled 5 or fewer seconds"
   block:
       - name: "18.4.9 | AUDIT | Ensure MSS ScreenSaverGracePeriod The time in seconds before the screen saver grace period expires 0 recommended is set to Enabled 5 or fewer seconds | Warning Check For Variable Standards."
-        debug:
+        ansible.builtin.debug:
             msg:
                 - "Warning!! You have a invalid time set for win19cis_screen_saver_grace_period please read"
                 - "the notes for the variable and make the necessary change to the variable to be in compliance."
@@ -446,7 +446,7 @@
             - win19cis_screen_saver_grace_period > 5
 
       - name: "18.4.9 | PATCH | Ensure MSS ScreenSaverGracePeriod The time in seconds before the screen saver grace period expires 0 recommended is set to Enabled 5 or fewer seconds | Set Warn Count."
-        import_tasks: warning_facts.yml
+        ansible.builtin.import_tasks: warning_facts.yml
         vars:
             warn_control_id: '18.4.9'
         when:
@@ -503,7 +503,7 @@
 - name: "18.4.12 | PATCH | Ensure MSS WarningLevel Percentage threshold for the security event log at which the system will generate a warning is set to Enabled 90 or less"
   block:
       - name: "18.4.12 | AUDIT | Ensure MSS WarningLevel Percentage threshold for the security event log at which the system will generate a warning is set to Enabled 90 or less | Warning Check For Variable Standards."
-        debug:
+        ansible.builtin.debug:
             msg:
                 - "Warning!! You have a invalid percentage set for win19cis_log_threshold_audit_event please read"
                 - "the notes for the variable and make the necessary change to the variable to be in compliance."
@@ -511,7 +511,7 @@
             - win19cis_log_threshold_audit_event > 90
 
       - name: "18.4.12 | AUDIT | Ensure MSS WarningLevel Percentage threshold for the security event log at which the system will generate a warning is set to Enabled 90 or less | Warn Count."
-        import_tasks: warning_facts.yml
+        ansible.builtin.import_tasks: warning_facts.yml
         vars:
             warn_control_id: '18.4.12'
         when:
@@ -2082,7 +2082,7 @@
 - name: "18.9.27.1.2 | PATCH | Ensure Application Specify the maximum log file size KB is set to Enabled 32768 or greater"
   block:
       - name: "18.9.27.1.2 | AUDIT | Ensure Application Specify the maximum log file size KB is set to Enabled 32768 or greater | Warning Check For Variable Standards."
-        debug:
+        ansible.builtin.debug:
             msg:
                 - "Warning!! You have a invalid file size set for win19cis_application_max_log_file_size please read"
                 - "the notes for the variable and make the necessary change to the variable to be in compliance."
@@ -2090,7 +2090,7 @@
             - win19cis_application_max_log_file_size < 32768
 
       - name: "18.9.27.1.2 | AUDIT | Ensure Application Specify the maximum log file size KB is set to Enabled 32768 or greater | Warn Count."
-        import_tasks: warning_facts.yml
+        ansible.builtin.import_tasks: warning_facts.yml
         vars:
             warn_control_id: '18.9.27.1.2'
         when:
@@ -2131,7 +2131,7 @@
 - name: "18.9.27.2.2 | PATCH | Ensure Security Specify the maximum log file size KB is set to Enabled 196608 or greater"
   block:
       - name: "18.9.27.2.2 | AUDIT | Ensure Security Specify the maximum log file size KB is set to Enabled 196608 or greater | Warning Check For Variable Standards."
-        debug:
+        ansible.builtin.debug:
             msg:
                 - "Warning!! You have a invalid file size set for win19cis_security_max_log_file_size please read"
                 - "the notes for the variable and make the necessary change to the variable to be in compliance."
@@ -2139,7 +2139,7 @@
             - win19cis_security_max_log_file_size < 196608
 
       - name: "18.9.27.2.2 | AUDIT | Ensure Security Specify the maximum log file size KB is set to Enabled 196608 or greater | Warn Count."
-        import_tasks: warning_facts.yml
+        ansible.builtin.import_tasks: warning_facts.yml
         vars:
             warn_control_id: '18.9.27.2.2'
         when:
@@ -2180,7 +2180,7 @@
 - name: "18.9.27.3.2 | PATCH | Ensure Setup Specify the maximum log file size KB is set to Enabled 32768 or greater"
   block:
       - name: "18.9.27.3.2 | AUDIT | Ensure Setup Specify the maximum log file size KB is set to Enabled 32768 or greater | Warning Check For Variable Standards."
-        debug:
+        ansible.builtin.debug:
             msg:
                 - "Warning!! You have a invalid file size set for win19cis_setup_max_log_file_size please read"
                 - "the notes for the variable and make the necessary change to the variable to be in compliance."
@@ -2188,7 +2188,7 @@
             - win19cis_setup_max_log_file_size < 32768
 
       - name: "18.9.27.3.2 | AUDIT | Ensure Setup Specify the maximum log file size KB is set to Enabled 32768 or greater | Warn Count."
-        import_tasks: warning_facts.yml
+        ansible.builtin.import_tasks: warning_facts.yml
         vars:
             warn_control_id: '18.9.27.3.2'
         when:
@@ -2229,7 +2229,7 @@
 - name: "18.9.27.4.2 | PATCH | Ensure System Specify the maximum log file size KB is set to Enabled 32768 or greater"
   block:
       - name: "18.9.27.4.2 | AUDIT | Ensure System Specify the maximum log file size KB is set to Enabled 32768 or greater | Warning Check For Variable Standards."
-        debug:
+        ansible.builtin.debug:
             msg:
                 - "Warning!! You have a invalid file size set for win19cis_system_max_log_file_size please read"
                 - "the notes for the variable and make the necessary change to the variable to be in compliance."
@@ -2237,7 +2237,7 @@
             - win19cis_system_max_log_file_size < 32768
 
       - name: "18.9.27.4.2 | AUDIT | Ensure System Specify the maximum log file size KB is set to Enabled 32768 or greater | Warn Count."
-        import_tasks: warning_facts.yml
+        ansible.builtin.import_tasks: warning_facts.yml
         vars:
             warn_control_id: '18.9.27.4.2'
         when:
@@ -2790,7 +2790,7 @@
 - name: "18.9.65.3.10.1 | PATCH | Ensure Set time limit for active but idle Remote Desktop Services sessions is set to Enabled 15 minutes or less"
   block:
       - name: "18.9.65.3.10.1 | AUDIT | Ensure Set time limit for active but idle Remote Desktop Services sessions is set to Enabled 15 minutes or less | Warning Check For Variable Standards."
-        debug:
+        ansible.builtin.debug:
             msg:
                 - "Warning!! You have a invalid time set for win19cis_idle_rdp_session_disconnect_time please read"
                 - "the notes for the variable and make the necessary change to the variable to be in compliance."
@@ -2799,7 +2799,7 @@
               win19cis_idle_rdp_session_disconnect_time > 900000
 
       - name: "18.9.65.3.10.1 | AUDIT | Ensure Set time limit for active but idle Remote Desktop Services sessions is set to Enabled 15 minutes or less | Warn Count."
-        import_tasks: warning_facts.yml
+        ansible.builtin.import_tasks: warning_facts.yml
         vars:
             warn_control_id: '18.9.65.3.10.1'
         when:
