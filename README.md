@@ -16,7 +16,7 @@
 ![Discord Badge](https://img.shields.io/discord/925818806838919229?logo=discord)
 
 ![Devel Build Status](https://img.shields.io/github/actions/workflow/status/ansible-lockdown/Windows-2019-CIS/linux_benchmark_testing.yml?label=Devel%20Build%20Status)
-![Devel Commits](https://img.shields.io/github/commit-activity/m/ansible-lockdown/rhel7-cis/devel?color=dark%20green&label=Devel%20Branch%20commits)
+![Devel Commits](https://img.shields.io/github/commit-activity/m/ansible-lockdown/Windows-2019-CIS/devel?color=dark%20green&label=Devel%20Branch%20commits)
 
 ![Release Branch](https://img.shields.io/badge/Release%20Branch-Main-brightgreen) 
 ![Main Build Status](https://img.shields.io/github/actions/workflow/status/ansible-lockdown/Windows-2019-CIS/linux_benchmark_testing.yml?label=Build%20Status)
