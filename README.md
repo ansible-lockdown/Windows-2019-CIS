@@ -27,7 +27,7 @@
 ![Issues Closed](https://img.shields.io/github/issues-closed-raw/ansible-lockdown/Windows-2019-CIS?label=Closed%20Issues&&color=success)
 ![Pull Requests](https://img.shields.io/github/issues-pr/ansible-lockdown/Windows-2019-CIS?label=Pull%20Requests)
 
-![License](https://img.shields.io/github/license/ansible-lockdown/rhel7-cis?label=License)
+![License](https://img.shields.io/github/license/ansible-lockdown/Windows-2019-CIS?label=License)
 
 ---
 
