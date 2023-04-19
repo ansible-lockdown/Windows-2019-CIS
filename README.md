@@ -16,7 +16,7 @@
 ![Discord Badge](https://img.shields.io/discord/925818806838919229?logo=discord)
 
 ![Devel Build Status](https://img.shields.io/github/actions/workflow/status/ansible-lockdown/Windows-2019-CIS/linux_benchmark_testing.yml?label=Devel%20Build%20Status)
-![Devel Commits](https://img.shields.io/github/commit-activity/m/ansible-lockdown/rhel7-cis/devel?color=dark%20green&label=Devel%20Branch%20commits)
+![Devel Commits](https://img.shields.io/github/commit-activity/m/ansible-lockdown/Windows-2019-CIS/devel?color=dark%20green&label=Devel%20Branch%20commits)
 
 ![Release Branch](https://img.shields.io/badge/Release%20Branch-Main-brightgreen) 
 ![Main Build Status](https://img.shields.io/github/actions/workflow/status/ansible-lockdown/Windows-2019-CIS/linux_benchmark_testing.yml?label=Build%20Status)
@@ -27,7 +27,7 @@
 ![Issues Closed](https://img.shields.io/github/issues-closed-raw/ansible-lockdown/Windows-2019-CIS?label=Closed%20Issues&&color=success)
 ![Pull Requests](https://img.shields.io/github/issues-pr/ansible-lockdown/Windows-2019-CIS?label=Pull%20Requests)
 
-![License](https://img.shields.io/github/license/ansible-lockdown/rhel7-cis?label=License)
+![License](https://img.shields.io/github/license/ansible-lockdown/Windows-2019-CIS?label=License)
 
 ---
 
@@ -126,7 +126,7 @@ Below is an example of the tag section from a control within this role. Using th
       tags:
       - level1-domaincontroller
       - level1-memberserver
-      - rule_18.3.3
+      - win19cis_rule_18.3.3
       - patch
       - smb
 ```
