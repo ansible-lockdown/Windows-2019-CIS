@@ -19,17 +19,13 @@ terraform {
 
 provider "azurerm" {
   features {}
-
-  subscription_id   = "${{ secrets.AZURE_SUBSCRIPTION_ID }}"
-  tenant_id         = "${{ secrets.AZURE_AD_TENANT_ID }}"
-  client_id         = "${{ secrets.AZURE_AD_CLIENT_ID }}"
-  client_secret     = "${{ secrets.AZURE_AD_CLIENT_SECRET }}"
 }
 
 #Read Username and password from file
 data "external" "win_account" {
   program = ["cat", "./sensitive_info.json"]
 }
+
 
 resource "azurerm_resource_group" "main" {
   name     = "${var.prefix}-${var.OS_version}-RG"
@@ -81,6 +77,7 @@ resource "azurerm_network_interface" "main" {
   tags = {
     environment = var.tagname
   }
+
 }
 
 resource "azurerm_network_security_group" "secgroup" {
@@ -166,6 +163,7 @@ resource "azurerm_virtual_machine_extension" "enablewinrm" {
     }
 SETTINGS
 }
+
 
 // generate inventory file
 resource "local_file" "inventory" {
