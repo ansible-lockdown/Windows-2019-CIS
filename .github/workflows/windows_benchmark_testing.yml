@@ -71,7 +71,7 @@ jobs:
 
             - name: Terraform_Apply
               working-directory: .github/workflows
-              run: terraform apply -var-file "OS.tfvars" --auto-approve
+              run: terraform apply -var-file "OS.tfvars" -auto-approve
 
       # Debug Section
             - name: DEBUG - Show Ansible hostfile
