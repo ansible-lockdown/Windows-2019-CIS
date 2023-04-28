@@ -26,7 +26,6 @@ data "external" "win_account" {
   program = ["cat", "./sensitive_info.json"]
 }
 
-
 resource "azurerm_resource_group" "main" {
   name     = "${var.prefix}-${var.OS_version}-RG"
   location = var.location
@@ -77,7 +76,6 @@ resource "azurerm_network_interface" "main" {
   tags = {
     environment = var.tagname
   }
-
 }
 
 resource "azurerm_network_security_group" "secgroup" {
