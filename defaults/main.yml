@@ -523,7 +523,7 @@ win19cis_minimum_password_length: 14
 # NOTE: If the value for this policy setting is configured to 0, locked out accounts will remain locked out
 # until an administrator manually unlocks them.
 # The recommended state for this setting is: 15 or more minute(s).
-win19cis_account_lockout_duration: 15
+win19cis_account_lockout_duration: 20
 
 # 1.2.2
 # win19cis_lockout_bad_count is the policy setting determines the number of failed logon
