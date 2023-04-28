@@ -39,11 +39,21 @@ jobs:
         runs-on: ubuntu-latest
 
         env:
+
+            TEST_OS: windows
+            # Set the OS to test on here to match the tfvars file name you have.
+            # Example: windows.tfvars
+            # Name matches the os_name.tfvars file
+            # - centos7
+            # - rocky8
+            # - ubuntu20
+            # - ubuntu18
+            # - windows
             ENABLE_DEBUG: false
-            AZURE_AD_CLIENT_ID: ${{ secrets.AZURE_AD_CLIENT_ID }}
-            AZURE_AD_CLIENT_SECRET: ${{ secrets.AZURE_AD_CLIENT_SECRET }}
-            AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-            AZURE_AD_TENANT_ID: ${{ secrets.AZURE_AD_TENANT_ID }}
+            ARM_CLIENT_ID: ${{ secrets.AZURE_AD_CLIENT_ID }}
+            ARM_CLIENT_SECRET: ${{ secrets.AZURE_AD_CLIENT_SECRET }}
+            ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+            ARM_TENANT_ID: ${{ secrets.AZURE_AD_TENANT_ID }}
             WIN_USERNAME: ${{ secrets.WIN_USERNAME }}
             WIN_PASSWORD: ${{ secrets.WIN_PASSWORD }}
 
@@ -71,7 +81,7 @@ jobs:
 
             - name: Terraform_Apply
               working-directory: .github/workflows
-              run: terraform apply -var-file "OS.tfvars" --auto-approve
+              run: terraform apply -var-file "${TEST_OS}.tfvars" --auto-approve
 
       # Debug Section
             - name: DEBUG - Show Ansible hostfile
@@ -95,8 +105,8 @@ jobs:
 
             - name: Terraform_Destroy
               working-directory: .github/workflows
+              run: terraform destroy -var-file "${TEST_OS}.tfvars" -auto-approve
               if: always() && env.ENABLE_DEBUG == 'false'
               env:
                   AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
                   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-              run: terraform destroy -var-file "github_vars.tfvars" -var-file "OS.tfvars" --auto-approve -input=false
