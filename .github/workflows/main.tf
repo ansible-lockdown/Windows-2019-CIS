@@ -5,8 +5,15 @@ terraform {
       source  = "hashicorp/azurerm"
       version = "~> 2.65"
     }
+    random = {
+      source  = "hashicorp/random"
+      version = "~>3.5"
+    }
+    tls = {
+      source = "hashicorp/tls"
+      version = "~>4.0"
+    }
   }
-
   required_version = ">= 1.1.0"
 }
 
