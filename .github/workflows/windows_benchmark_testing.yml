@@ -39,13 +39,14 @@ jobs:
         runs-on: ubuntu-latest
 
         env:
-            ENABLE_DEBUG: false
-            AZURE_AD_CLIENT_ID: ${{ secrets.AZURE_AD_CLIENT_ID }}
-            AZURE_AD_CLIENT_SECRET: ${{ secrets.AZURE_AD_CLIENT_SECRET }}
-            AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-            AZURE_AD_TENANT_ID: ${{ secrets.AZURE_AD_TENANT_ID }}
-            WIN_USERNAME: ${{ secrets.WIN_USERNAME }}
-            WIN_PASSWORD: ${{ secrets.WIN_PASSWORD }}
+          TEST_OS: windows
+          ENABLE_DEBUG: false
+          ARM_CLIENT_ID: ${{ secrets.AZURE_AD_CLIENT_ID }}
+          ARM_CLIENT_SECRET: ${{ secrets.AZURE_AD_CLIENT_SECRET }}
+          ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          ARM_TENANT_ID: ${{ secrets.AZURE_AD_TENANT_ID }}
+          WIN_USERNAME: ${{ secrets.WIN_USERNAME }}
+          WIN_PASSWORD: ${{ secrets.WIN_PASSWORD }}
 
         # Steps represent a sequence of tasks that will be executed as part of the job
         steps:
@@ -71,7 +72,7 @@ jobs:
 
             - name: Terraform_Apply
               working-directory: .github/workflows
-              run: terraform apply -var-file "OS.tfvars" --auto-approve
+              run: terraform apply -var-file "${TEST_OS}.tfvars" --auto-approve
 
       # Debug Section
             - name: DEBUG - Show Ansible hostfile
@@ -92,11 +93,7 @@ jobs:
                   ANSIBLE_DEPRECATION_WARNINGS: "false"
 
       # Remove test system
-
             - name: Terraform_Destroy
-              working-directory: .github/workflows
               if: always() && env.ENABLE_DEBUG == 'false'
-              env:
-                  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-                  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-              run: terraform destroy -var-file "github_vars.tfvars" -var-file "OS.tfvars" --auto-approve -input=false
+              working-directory: .github/workflows
+              run: terraform destroy -var-file "${TEST_OS}.tfvars" -auto-approve
