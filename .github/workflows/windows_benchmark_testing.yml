@@ -47,7 +47,6 @@ jobs:
     # - windows
 
     env: 
-      TEST_OS: windows
       ENABLE_DEBUG: false
       ARM_CLIENT_ID: ${{ secrets.AZURE_AD_CLIENT_ID }}
       ARM_CLIENT_SECRET: ${{ secrets.AZURE_AD_CLIENT_SECRET }}
@@ -80,7 +79,7 @@ jobs:
 
       - name: Terraform_Apply
         working-directory: .github/workflows
-        run: terraform apply -var-file "${TEST_OS}.tfvars" --auto-approve
+        run: terraform apply -var-file "OS.tfvars" --auto-approve
 
 ## Debug Section
       - name: DEBUG - Show Ansible hostfile
@@ -105,4 +104,4 @@ jobs:
       - name: Terraform_Destroy
         if: always() && env.ENABLE_DEBUG == 'false'
         working-directory: .github/workflows
-        run: terraform destroy -var-file "${TEST_OS}.tfvars" -auto-approve
+        run: terraform destroy -var-file "OS.tfvars" -auto-approve
