@@ -19,6 +19,11 @@ terraform {
 
 provider "azurerm" {
   features {}
+
+  subscription_id   = "${{ secrets.AZURE_SUBSCRIPTION_ID }}"
+  tenant_id         = "${{ secrets.AZURE_AD_TENANT_ID }}"
+  client_id         = "${{ secrets.AZURE_AD_CLIENT_ID }}"
+  client_secret     = "${{ secrets.AZURE_AD_CLIENT_SECRET }}"
 }
 
 #Read Username and password from file
