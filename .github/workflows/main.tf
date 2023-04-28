@@ -5,15 +5,8 @@ terraform {
       source  = "hashicorp/azurerm"
       version = "~> 2.65"
     }
-    random = {
-      source  = "hashicorp/random"
-      version = "~>3.5"
-    }
-    tls = {
-      source = "hashicorp/tls"
-      version = "~>4.0"
-    }
   }
+
   required_version = ">= 1.1.0"
 }
 
@@ -25,7 +18,6 @@ provider "azurerm" {
 data "external" "win_account" {
   program = ["cat", "./sensitive_info.json"]
 }
-
 
 resource "azurerm_resource_group" "main" {
   name     = "${var.prefix}-${var.OS_version}-RG"
@@ -77,7 +69,6 @@ resource "azurerm_network_interface" "main" {
   tags = {
     environment = var.tagname
   }
-
 }
 
 resource "azurerm_network_security_group" "secgroup" {
@@ -163,7 +154,6 @@ resource "azurerm_virtual_machine_extension" "enablewinrm" {
     }
 SETTINGS
 }
-
 
 // generate inventory file
 resource "local_file" "inventory" {
