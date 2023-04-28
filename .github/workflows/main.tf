@@ -189,8 +189,8 @@ resource "local_file" "inventory" {
         ansible_winrm_operation_timeout_sec: 120
         ansible_winrm_read_timeout_sec: 180
         # to keep ansible connections
-        rule_9_2_1: false
-        rule_18_3_1: false
-        rule_2_3_1_1: false
+        win19cis_rule_9_2_1: false
+        win19cis_rule_18_3_1: false
+        win19cis_rule_2_3_1_1: false
     EOF
 }
