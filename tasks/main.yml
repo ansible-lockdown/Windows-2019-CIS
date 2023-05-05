@@ -5,10 +5,6 @@
   tags:
       - always
 
-- name: Ansible Facts Print out
-  ansible.builtin.debug:
-      var: ansible_facts
-
 - name: Gather Distribution Info
   ansible.builtin.setup:
       gather_subset: distribution,!all,!min
