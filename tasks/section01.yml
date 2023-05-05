@@ -181,7 +181,7 @@
       - patch
       - password
 
-# THE FOLLOWING 3 CONTROLS WILL FAIL UNLESS THEY ARE IN THE FOLLOWING ORDER.
+# THE FOLLOWING 3 CONTROLS WILL FAIL UNLESS THEY ARE IN THE FOLLOWING ORDER FOR LOCAL BASED SYSTEMS
 # CONTROL 1.2.2
 # CONTROL 1.2.3
 # CONTROL 1.2.1
@@ -214,6 +214,7 @@
             - win19cis_bad_login_lockout_count > 0
   when:
       - win19cis_rule_1_2_2
+      - not win19cis_cloud_based_system
   tags:
       - level1-domaincontroller
       - level1-memberserver
@@ -229,18 +230,16 @@
                 - "Warning!! You have a invalid number of minutes set for win19cis_account_lockout_counter_reset please read"
                 - "the notes for the variable and make the necessary change to the variable to be in compliance."
         when:
-            - win19cis_account_lockout_counter_reset < 15 or
-              win19cis_account_lockout_counter_reset > 15
-            - win19cis_account_lockout_counter_reset >= win19cis_account_lockout_duration
+            - win19cis_account_lockout_counter_reset > win19cis_account_lockout_duration or
+              win19cis_account_lockout_counter_reset < 15
 
       - name: "1.2.3 | PATCH | Ensure Reset account lockout counter after is set to 15 or more minutes. | | Set warning count."
         ansible.builtin.import_tasks: warning_facts.yml
         vars:
             warn_control_id: '1.2.3'
         when:
-            - win19cis_account_lockout_counter_reset < 15 or
-              win19cis_account_lockout_counter_reset > 15
-            - win19cis_account_lockout_counter_reset > win19cis_account_lockout_duration
+            - win19cis_account_lockout_counter_reset > win19cis_account_lockout_duration or
+              win19cis_account_lockout_counter_reset < 15
 
       - name: "1.2.3 | PATCH | Ensure Reset account lockout counter after is set to 15 or more minutes. | Set Variable."
         community.windows.win_security_policy:
@@ -252,6 +251,7 @@
             - win19cis_account_lockout_counter_reset <= win19cis_account_lockout_duration
   when:
       - win19cis_rule_1_2_3
+      - not win19cis_cloud_based_system
   tags:
       - level1-domaincontroller
       - level1-memberserver
@@ -286,6 +286,7 @@
             - win19cis_account_lockout_duration >= 15
   when:
       - win19cis_rule_1_2_1
+      - not win19cis_cloud_based_system
   tags:
       - level1-domaincontroller
       - level1-memberserver

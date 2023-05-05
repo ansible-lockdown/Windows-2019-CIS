@@ -40,13 +40,13 @@ min_ansible_version: "2.10.1"
 # win19cis_rule_18_9_102_2_3
 # win19cis_rule_18_9_102_2_4
 # win19cis_rule_18_9_103_1
-win19cis_skip_for_ansible: false
+win19cis_skip_for_ansible: true
 
 # win_skip_for_test is the setting that will skip tasks that may cause changes that will affect the system.
 # Controls that will be skipped:
 # win19cis_rule_2_3_1_5
 # win19cis_rule_9_3_5
-win19cis_skip_for_test: false
+win19cis_skip_for_test: true
 
 # These variables correspond with the CIS rule IDs or paragraph numbers defined in
 # the CIS benchmark documents.
@@ -64,6 +64,9 @@ win19cis_rule_1_1_5: true
 # Windows 10 Release 2004 and Server 2022 (or newer). Control Commented out for now.
 win19cis_rule_1_1_6: false
 win19cis_rule_1_1_7: true
+# We have found the order of these three tasks below varies between cloud based instances
+# and VM based instances locally. The task below breaks out to run in a different order
+# for cloud based systems and local based systems. Notes are applied in the section01.yml file.
 win19cis_rule_1_2_1: true
 win19cis_rule_1_2_2: true
 win19cis_rule_1_2_3: true

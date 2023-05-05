@@ -5,6 +5,10 @@
   tags:
       - always
 
+- name: Ansible Facts Print out
+  ansible.builtin.debug:
+      var: ansible_facts
+
 - name: Gather Distribution Info
   ansible.builtin.setup:
       gather_subset: distribution,!all,!min
@@ -41,6 +45,22 @@
   when: win19cis_section01
   tags:
       - section01
+
+# We have found the order of these three tasks varies between cloud based instances
+# and VM based instances. The task below breaks out to run in a different order
+# for cloud based systems
+- name:
+      “1.2.2 | PATCH | Ensure Account lockout threshold is set to 5 or fewer invalid logon attempt(s), but not 0.
+       1.2.1 | AUDIT | Ensure Account lockout duration is set to 15 or more minutes
+       1.2.3 | PATCH | Ensure Reset account lockout counter after is set to 15 or more minutes."
+  ansible.builtin.import_tasks: section01_cloud.yml
+  when:
+      - win19cis_cloud_based_system
+      - win19cis_rule_1_2_2 or
+        win19cis_rule_1_2_1 or
+        win19cis_rule_1_2_2
+  tags:
+      - section01_cloud
 
 - name: Execute the section 2 tasks
   ansible.builtin.import_tasks: section02.yml

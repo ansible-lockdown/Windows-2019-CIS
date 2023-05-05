@@ -7,3 +7,6 @@ warn_control_list: ""
 warn_count: 0
 
 lockdown_banner: "{{lookup('file', './templates/banner.txt')}}"
+
+# This will be changed to true if discovered.
+win19cis_cloud_based_system: false
