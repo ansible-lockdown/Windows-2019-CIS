@@ -1,5 +1,5 @@
 ---
-- name: Display Banner
+- name: Display Banners
   ansible.builtin.debug:
       msg: "{{ lockdown_banner.split('\n') }}"
   tags:
