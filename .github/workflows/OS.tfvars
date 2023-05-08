@@ -1,4 +1,4 @@
-prefix         = "githubLE-win"
+prefix         = "githubLE-win-cis"
 location       = "eastus"
 tagname        = "github_LE_actions"
 system_size    = "Standard_DC4s_v2"

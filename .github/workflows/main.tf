@@ -76,6 +76,7 @@ resource "azurerm_network_interface" "main" {
   tags = {
     environment = var.tagname
   }
+
 }
 
 resource "azurerm_network_security_group" "secgroup" {
@@ -181,14 +182,19 @@ resource "local_file" "inventory" {
         run_audit: true
         system_is_ec2: true
         audit_git_version: devel
-        win_skip_for_test: true
         ansible_connection: winrm
         ansible_winrm_server_cert_validation: ignore
         ansible_winrm_operation_timeout_sec: 120
         ansible_winrm_read_timeout_sec: 180
-        # to keep ansible connections
-        win19cis_rule_9_2_1: false
-        win19cis_rule_18_3_1: false
-        win19cis_rule_2_3_1_1: false
+        # This section turns off and on the groups of controls for connections and tests.
+        # Refer to default main for the controls here explanation.
+        win19cis_skip_for_test: false
+        win19cis_skip_for_ansible: false
+        # to keep ansible connections indivigual controls.
+        win19cis_rule_18_9_102_2_1: false
+        win19cis_rule_18_9_102_2_2: false
+        win19cis_rule_18_9_102_2_3: false
+        win19cis_rule_18_9_102_2_4: false
+        win19cis_rule_18_9_103_1: false
     EOF
 }
