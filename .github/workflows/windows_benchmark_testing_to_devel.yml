@@ -1,6 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 
-name: windows_testing_pipeline
+name: windows_testing_pipeline_to_devel
 
 # Controls when the action will run.
 # Triggers the workflow on push or pull request
@@ -10,7 +10,6 @@ on:  # yamllint disable-line rule:truthy
         types: [opened, reopened, synchronize]
         branches:
             - devel
-            - main
         paths:
             - '**.yml'
             - '**.sh'
