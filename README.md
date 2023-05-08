@@ -1,4 +1,4 @@
-# Windows 2019 CIS Test
+# Windows 2019 CIS
 
 ## Configure a Windows 2019 machine to be [CIS](https://www.cisecurity.org/cis-benchmarks/) compliant
 
@@ -13,7 +13,7 @@
 [![Twitter URL](https://img.shields.io/twitter/url/https/twitter.com/AnsibleLockdown.svg?style=social&label=Follow%20%40AnsibleLockdown)](https://twitter.com/AnsibleLockdown)
 
 ![Ansible Galaxy Quality](https://img.shields.io/ansible/quality/56324?label=Quality&&logo=ansible)
-![Discord Badge](https://img.shields.io/discord/925818806838919229?logo=discord)
+![Discord Badge](https://img.shields.io/discord/925818806838919229?logo=discord) 
 
 ![Devel Build Status](https://img.shields.io/github/actions/workflow/status/ansible-lockdown/Windows-2019-CIS/linux_benchmark_testing.yml?label=Devel%20Build%20Status)
 ![Devel Commits](https://img.shields.io/github/commit-activity/m/ansible-lockdown/Windows-2019-CIS/devel?color=dark%20green&label=Devel%20Branch%20commits)
