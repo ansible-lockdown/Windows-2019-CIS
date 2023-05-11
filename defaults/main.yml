@@ -448,7 +448,7 @@ win19cis_rule_18_9_91_1: true
 win19cis_rule_18_9_100_1: true
 win19cis_rule_18_9_100_2: true
 # WINRM CONTROLS #
-# Setting The Following Control To True Will Break Ansible Connection
+# Setting The Following Controls To True Will Break Ansible Connection
 # Setting win19cis_skip_for_test: true -- will skip the controls here even if they are set to true.
 # win19cis_rule_18_9_102_1_1
 # win19cis_rule_18_9_102_1_2
