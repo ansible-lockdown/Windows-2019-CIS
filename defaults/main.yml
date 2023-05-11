@@ -32,21 +32,17 @@ win19cis_section19: true
 
 min_ansible_version: "2.10.1"
 
-# win19cis_skip_for_ansible is used in the playbook to skip over certain controls that
-# may cause breaking changes when running it for testing purposes.
-# Controls that will be skipped:
-# win19cis_rule_18_9_102_2_1
-# win19cis_rule_18_9_102_2_2
-# win19cis_rule_18_9_102_2_3
-# win19cis_rule_18_9_102_2_4
-# win19cis_rule_18_9_103_1
-win19cis_skip_for_ansible: true
-
 # win_skip_for_test is the setting that will skip tasks that may cause changes that will affect the system.
 # Controls that will be skipped:
 # win19cis_rule_2_3_1_5
 # win19cis_rule_9_3_5
-win19cis_skip_for_test: true
+# win19cis_rule_18_9_102_1_1
+# win19cis_rule_18_9_102_1_2
+# win19cis_rule_18_9_102_2_1
+# win19cis_rule_18_9_102_2_2
+# win19cis_rule_18_9_102_2_3
+# win19cis_rule_18_9_103_1
+win19cis_skip_for_test: false
 
 # These variables correspond with the CIS rule IDs or paragraph numbers defined in
 # the CIS benchmark documents.
@@ -124,6 +120,8 @@ win19cis_rule_2_3_1_1: true
 win19cis_rule_2_3_1_2: true
 win19cis_rule_2_3_1_3: true
 win19cis_rule_2_3_1_4: true
+# Setting win19cis_rule_2_3_1_5 Control To True Will Break Ansible Connection
+# Setting win19cis_skip_for_test: true -- will skip the controls here even if they are set to true.
 win19cis_rule_2_3_1_5: true
 win19cis_rule_2_3_1_6: true
 win19cis_rule_2_3_2_1: true
@@ -218,6 +216,8 @@ win19cis_rule_9_3_1: true
 win19cis_rule_9_3_2: true
 win19cis_rule_9_3_3: true
 win19cis_rule_9_3_4: true
+# Setting win19cis_rule_9_3_5 Control To True Will Break Ansible Connection
+# Setting win19cis_skip_for_test: true -- will skip the controls here even if they are set to true.
 win19cis_rule_9_3_5: true
 win19cis_rule_9_3_6: true
 win19cis_rule_9_3_7: true
@@ -449,22 +449,24 @@ win19cis_rule_18_9_100_1: true
 win19cis_rule_18_9_100_2: true
 # WINRM CONTROLS #
 # Setting The Following Control To True Will Break Ansible Connection
+# Setting win19cis_skip_for_test: true -- will skip the controls here even if they are set to true.
+# win19cis_rule_18_9_102_1_1
+# win19cis_rule_18_9_102_1_2
 # win19cis_rule_18_9_102_2_1
 # win19cis_rule_18_9_102_2_2
 # win19cis_rule_18_9_102_2_3
-# win19cis_rule_18_9_102_2_4
 # win19cis_rule_18_9_103_1
 win19cis_rule_18_9_102_1_1: true
 win19cis_rule_18_9_102_1_2: true
 win19cis_rule_18_9_102_1_3: true
 win19cis_rule_18_9_102_2_1: true
+# This control will have to be set to Enabled (1) to allow for continued remote management via Ansible following
+# machine restart. The CIS standard calls for 0 but doing so will break all remote connections to the system.
 win19cis_rule_18_9_102_2_2: true
 win19cis_rule_18_9_102_2_3: true
 win19cis_rule_18_9_102_2_4: true
 # WINRM CONTROLS END #
-# SHELL ACCESS #
 win19cis_rule_18_9_103_1: true
-# SHELL ACCESS END #
 win19cis_rule_18_9_105_2_1: true
 win19cis_rule_18_9_108_1_1: true
 win19cis_rule_18_9_108_2_1: true
