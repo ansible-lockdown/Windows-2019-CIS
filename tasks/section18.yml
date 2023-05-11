@@ -3083,6 +3083,7 @@
       type: dword
   when:
       - win19cis_rule_18_9_102_1_1
+      - not win19cis_skip_for_test
   tags:
       - level1-domaincontroller
       - level1-memberserver
@@ -3098,6 +3099,7 @@
       type: dword
   when:
       - win19cis_rule_18_9_102_1_2
+      - not win19cis_skip_for_test
   tags:
       - level1-domaincontroller
       - level1-memberserver
@@ -3128,7 +3130,7 @@
       type: dword
   when:
       - win19cis_rule_18_9_102_2_1
-      - not win19cis_skip_for_ansible
+      - not win19cis_skip_for_test
   tags:
       - level1-domaincontroller
       - level1-memberserver
@@ -3136,15 +3138,16 @@
       - patch
       - winrm
 
+# This control will have to be set to Enabled (1) to allow for continued remote management via Ansible following machine restart
 - name: "18.9.102.2.2 | PATCH | Ensure Allow remote server management through WinRM is set to Disabled"
   ansible.windows.win_regedit:
       path: HKLM:\Software\Policies\Microsoft\Windows\Winrm\Service
       name: AllowAutoConfig
-      data: 0
+      data: 1
       type: dword
   when:
       - win19cis_rule_18_9_102_2_2
-      - not win19cis_skip_for_ansible
+      - not win19cis_skip_for_test
   tags:
       - level2-domaincontroller
       - level2-memberserver
@@ -3160,7 +3163,7 @@
       type: dword
   when:
       - win19cis_rule_18_9_102_2_3
-      - not win19cis_skip_for_ansible
+      - not win19cis_skip_for_test
   tags:
       - level1-domaincontroller
       - level1-memberserver
@@ -3177,7 +3180,6 @@
       type: dword
   when:
       - win19cis_rule_18_9_102_2_4
-      - not win19cis_skip_for_ansible
   tags:
       - level1-domaincontroller
       - level1-memberserver
@@ -3193,7 +3195,7 @@
       type: dword
   when:
       - win19cis_rule_18_9_103_1
-      - not win19cis_skip_for_ansible
+      - not win19cis_skip_for_test
   tags:
       - level2-domaincontroller
       - level2-memberserver

@@ -1,0 +1,110 @@
+---
+# THE FOLLOWING 3 CONTROLS WILL FAIL UNLESS THEY ARE IN THE FOLLOWING ORDER FOR CLOUD BASED SYSTEMS
+# CONTROL 1.2.2
+# CONTROL 1.2.1
+# CONTROL 1.2.3
+- name: "1.2.2 | PATCH | Ensure Account lockout threshold is set to 5 or fewer invalid logon attempt(s), but not 0."
+  block:
+      - name: "1.2.2 | AUDIT | Ensure Account lockout threshold is set to 5 or fewer invalid logon attempt(s), but not 0. | Verify Variable Not 0 or more then 5 warning."
+        ansible.builtin.debug:
+            msg:
+                - "Warning!! You have a invalid number of attempts set for win19cis_bad_login_lockout_count please read"
+                - "the notes for the variable and make the necessary change to the variable to be in compliance."
+        when:
+            - win19cis_bad_login_lockout_count > 5 or
+              win19cis_bad_login_lockout_count == 0
+
+      - name: "1.2.2 | AUDIT | Ensure Account lockout threshold is set to 5 or fewer invalid logon attempt(s), but not 0. | Set warning count."
+        ansible.builtin.import_tasks: warning_facts.yml
+        vars:
+            warn_control_id: '1.2.2'
+        when:
+            - win19cis_bad_login_lockout_count > 5 or
+              win19cis_bad_login_lockout_count == 0
+
+      - name: "1.2.2 | PATCH | Ensure Account lockout threshold is set to 5 or fewer invalid logon attempt(s), but not 0. | Set Variable."
+        community.windows.win_security_policy:
+            section: System Access
+            key: LockoutBadCount
+            value: "{{ win19cis_bad_login_lockout_count }}"
+        when:
+            - win19cis_bad_login_lockout_count <= 5
+            - win19cis_bad_login_lockout_count > 0
+  when:
+      - win19cis_rule_1_2_2
+  tags:
+      - level1-domaincontroller
+      - level1-memberserver
+      - rule_1.2.2
+      - patch
+      - account
+
+# Speelman | added because of this error "Failed to import secedit.ini file from C:\\Users\\vagrant\\AppData\\Local\\Temp\\tmp81F3.tmp
+- name: "1.2.1 | AUDIT | Ensure Account lockout duration is set to 15 or more minutes"
+  block:
+      - name: "1.2.1 | AUDIT | Ensure Account lockout duration is set to 15 or more minutes. | Verify variable set to 15 or more minutes warning."
+        ansible.builtin.debug:
+            msg:
+                - "Warning!! You have a invalid number of minutes set for win19cis_account_lockout_duration please read"
+                - "the notes for the variable and make the necessary change to the variable to be in compliance."
+        when:
+            - win19cis_account_lockout_duration < 15
+
+      - name: "1.2.1 | AUDIT | Ensure Account lockout duration is set to 15 or more minutes. | Set warning count."
+        ansible.builtin.import_tasks: warning_facts.yml
+        vars:
+            warn_control_id: '1.2.1'
+        when:
+            - win19cis_account_lockout_duration < 15
+
+      - name: "1.2.1 | PATCH | Ensure Account lockout duration is set to 15 or more minutes. | Set Variable"
+        community.windows.win_security_policy:
+            section: System Access
+            key: LockoutDuration
+            value: "{{ win19cis_account_lockout_duration }}"
+        when:
+            - win19cis_account_lockout_duration >= 15
+  when:
+      - win19cis_rule_1_2_1
+  tags:
+      - level1-domaincontroller
+      - level1-memberserver
+      - rule_1.2.1
+      - patch
+      - account
+
+- name: "1.2.3 | PATCH | Ensure Reset account lockout counter after is set to 15 or more minutes."
+  block:
+      - name: "1.2.3 | PATCH | Ensure Reset account lockout counter after is set to 15 or more minutes. | Verify variable set to 15 or more minutes warning."
+        ansible.builtin.debug:
+            msg:
+                - "Warning!! You have a invalid number of minutes set for win19cis_account_lockout_counter_reset please read"
+                - "the notes for the variable and make the necessary change to the variable to be in compliance."
+        when:
+            - win19cis_account_lockout_counter_reset > win19cis_account_lockout_duration or
+              win19cis_account_lockout_counter_reset < 15
+
+      - name: "1.2.3 | PATCH | Ensure Reset account lockout counter after is set to 15 or more minutes. | | Set warning count."
+        ansible.builtin.import_tasks: warning_facts.yml
+        vars:
+            warn_control_id: '1.2.3'
+        when:
+            - win19cis_account_lockout_counter_reset > win19cis_account_lockout_duration or
+              win19cis_account_lockout_counter_reset < 15
+
+      - name: "1.2.3 | PATCH | Ensure Reset account lockout counter after is set to 15 or more minutes. | Set Variable."
+        community.windows.win_security_policy:
+            section: System Access
+            key: ResetLockoutCount
+            value: "{{ win19cis_account_lockout_counter_reset }}"
+        when:
+            - win19cis_account_lockout_counter_reset >= 15
+            - win19cis_account_lockout_counter_reset <= win19cis_account_lockout_duration
+  when:
+      - win19cis_rule_1_2_3
+  tags:
+      - level1-domaincontroller
+      - level1-memberserver
+      - rule_1.2.3
+      - patch
+      - account

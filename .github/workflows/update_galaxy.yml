@@ -1,11 +1,11 @@
 # This is a basic workflow to help you get started with Actions
 
-name: update galaxy
+name: update_galaxy
 
 # Controls when the action will run.
 # Triggers the workflow on push or pull request
 # events but only for the devel branch
-on:  # yamllint disable-line rule:truthy
+on:
     push:
         branches:
             - main
