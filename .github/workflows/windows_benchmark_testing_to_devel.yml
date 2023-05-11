@@ -39,10 +39,10 @@ jobs:
 
         env:
             ENABLE_DEBUG: false
-            AZURE_AD_CLIENT_ID: ${{ secrets.AZURE_AD_CLIENT_ID }}
-            AZURE_AD_CLIENT_SECRET: ${{ secrets.AZURE_AD_CLIENT_SECRET }}
-            AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-            AZURE_AD_TENANT_ID: ${{ secrets.AZURE_AD_TENANT_ID }}
+            ARM_CLIENT_ID: ${{ secrets.AZURE_AD_CLIENT_ID }}
+            ARM_CLIENT_SECRET: ${{ secrets.AZURE_AD_CLIENT_SECRET }}
+            ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+            ARM_TENANT_ID: ${{ secrets.AZURE_AD_TENANT_ID }}
             WIN_USERNAME: ${{ secrets.WIN_USERNAME }}
             WIN_PASSWORD: ${{ secrets.WIN_PASSWORD }}
 
@@ -93,9 +93,6 @@ jobs:
       # Remove test system
 
             - name: Terraform_Destroy
-              working-directory: .github/workflows
               if: always() && env.ENABLE_DEBUG == 'false'
-              env:
-                  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-                  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+              working-directory: .github/workflows
               run: terraform destroy -var-file "OS.tfvars" --auto-approve
