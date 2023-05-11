@@ -189,12 +189,5 @@ resource "local_file" "inventory" {
         # This section turns off and on the groups of controls for connections and tests.
         # Refer to default main for the controls here explanation.
         win19cis_skip_for_test: true
-        win19cis_skip_for_ansible: true
-        # to keep ansible connections indivigual controls.
-        win19cis_rule_18_9_102_2_1: false
-        win19cis_rule_18_9_102_2_2: false
-        win19cis_rule_18_9_102_2_3: false
-        win19cis_rule_18_9_102_2_4: false
-        win19cis_rule_18_9_103_1: false
     EOF
 }
