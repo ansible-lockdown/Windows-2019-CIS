@@ -1,6 +1,6 @@
-prefix         = "githubLE-win-cis"
+prefix         = "Lockdown_Github_Repo_Workflow_Win_CIS"
 location       = "eastus"
-tagname        = "github_LE_actions"
+tagname        = "Ansible_Lockdown"
 system_size    = "Standard_DC4s_v2"
 OS_publisher   = "MicrosoftWindowsServer"
 OS_version     = "2019"
