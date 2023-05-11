@@ -19,7 +19,7 @@
 ![Devel Commits](https://img.shields.io/github/commit-activity/m/ansible-lockdown/Windows-2019-CIS/devel?color=dark%20green&label=Devel%20Branch%20commits)
 
 ![Release Branch](https://img.shields.io/badge/Release%20Branch-Main-brightgreen) 
-![Main Build Status](https://img.shields.io/github/actions/workflow/status/ansible-lockdown/Windows-2019-CIS/windows_benchmark_testing_to_main.yml?label=Devel%20Build%20Status)
+![Main Build Status](https://img.shields.io/github/actions/workflow/status/ansible-lockdown/Windows-2019-CIS/windows_benchmark_testing_to_main.yml?label=%20Build%20Status)
 ![Main Release Date](https://img.shields.io/github/release-date/ansible-lockdown/Windows-2019-CIS?label=Release%20Date)
 ![Release Tag](https://img.shields.io/github/v/tag/ansible-lockdown/Windows-2019-CIS?label=Release%20Tag&&color=success)
 
