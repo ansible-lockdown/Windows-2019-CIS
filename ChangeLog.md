@@ -2,7 +2,7 @@
 
 ## Release 1.3.0
 - May 2023 Updates
-  - Added Additonal Cloud support for tasks.
+  - Added Additional Cloud support for tasks.
   - Fixed Pipelines
 - Major Update: All task rule names updated to add win19cis to them in default main.
 - Ansible Lockdown Banner In Playbook (Testing)
