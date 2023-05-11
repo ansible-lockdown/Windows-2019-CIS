@@ -24,7 +24,8 @@
         ansible.builtin.set_fact:
             win19cis_cloud_based_system: true
         when:
-            - ansible_virtualization_type == 'Hyper-V'
+            - ansible_virtualization_type == 'Hyper-V' or
+              ansible_virtualization_type == 'Amazon EC2'
   tags:
       - always
 
