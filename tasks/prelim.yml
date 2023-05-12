@@ -19,19 +19,20 @@
             win2019cis_is_domain_member: true
         when:
             - ansible_windows_domain_role == 'Member server'
+  tags:
+      - always
 
-      - name: Set Fact If Cloud Based System.
-        ansible.builtin.set_fact:
-            win19cis_cloud_based_system: true
-        when:
-            - ansible_virtualization_type == 'Hyper-V' or
-              ansible_virtualization_type == 'hvm' or
-              ansible_virtualization_type == 'kvm'
-        # hvm is for amazon ami's, Hyper-V we have found for azure, kvm is used for ('QEMU', 'Amazon EC2', 'DigitalOcean', 'Google', 'Scaleway', 'Nutanix', 'KVM', 'KVM Server', 'Bochs', 'AHV')
-        # This list is not complete and will be updated as we try on more cloud based services.
-        # As of now testing is working in azure using Hyper-V. We are curently using this for reference:
-        # https://github.com/ansible/ansible/blob/905131fc76a07cf89dbc8d33e7a4910da3f10a16/lib/ansible/module_utils/facts/virtual/linux.py#L205
-
+# hvm is for amazon ami's, Hyper-V we have found for azure, kvm is used for ('QEMU', 'Amazon EC2', 'DigitalOcean', 'Google', 'Scaleway', 'Nutanix', 'KVM', 'KVM Server', 'Bochs', 'AHV')
+# This list is not complete and will be updated as we try on more cloud based services.
+# As of now testing is working in azure using Hyper-V. We are curently using this for reference:
+# https://github.com/ansible/ansible/blob/905131fc76a07cf89dbc8d33e7a4910da3f10a16/lib/ansible/module_utils/facts/virtual/linux.py#L205
+- name: Set Fact If Cloud Based System.
+  ansible.builtin.set_fact:
+      win19cis_cloud_based_system: true
+  when:
+      - ansible_virtualization_type == 'Hyper-V' or
+        ansible_virtualization_type == 'hvm' or
+        ansible_virtualization_type == 'kvm'
   tags:
       - always
 
