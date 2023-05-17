@@ -129,7 +129,7 @@ resource "azurerm_windows_virtual_machine" "main" {
 
   source_image_reference {
     publisher = var.OS_publisher
-    offer     = "WindowsServer"
+    offer     = var.product_id
     sku       = "${var.OS_version}-${var.system_release}"
     version   = "latest"
   }
