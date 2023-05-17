@@ -23,9 +23,13 @@ variable "hostname" {
 }
 
 variable "OS_publisher" {
-  description = "The version of the OS"
+  description = "The version of the OS, also known as publisher in Template azure file"
 }
 
 variable "OS_version" {
-  description = "The version of the OS"
+  description = "The version of the OS, also this is combined with system_release to give you the sku in the template."
+}
+
+variable "product_id" {
+  description = "This is the offer that azure gives you for the image"
 }
