@@ -42,7 +42,7 @@ min_ansible_version: "2.10.1"
 # win19cis_rule_18_9_102_2_2
 # win19cis_rule_18_9_102_2_3
 # win19cis_rule_18_9_103_1
-win19cis_skip_for_test: false
+win_skip_for_test: false
 
 # These variables correspond with the CIS rule IDs or paragraph numbers defined in
 # the CIS benchmark documents.
@@ -121,7 +121,7 @@ win19cis_rule_2_3_1_2: true
 win19cis_rule_2_3_1_3: true
 win19cis_rule_2_3_1_4: true
 # Setting win19cis_rule_2_3_1_5 Control To True Will Break Ansible Connection
-# Setting win19cis_skip_for_test: true -- will skip the controls here even if they are set to true.
+# Setting win_skip_for_test: true -- will skip the controls here even if they are set to true.
 win19cis_rule_2_3_1_5: true
 win19cis_rule_2_3_1_6: true
 win19cis_rule_2_3_2_1: true
@@ -217,7 +217,7 @@ win19cis_rule_9_3_2: true
 win19cis_rule_9_3_3: true
 win19cis_rule_9_3_4: true
 # Setting win19cis_rule_9_3_5 Control To True Will Break Ansible Connection
-# Setting win19cis_skip_for_test: true -- will skip the controls here even if they are set to true.
+# Setting win_skip_for_test: true -- will skip the controls here even if they are set to true.
 win19cis_rule_9_3_5: true
 win19cis_rule_9_3_6: true
 win19cis_rule_9_3_7: true
@@ -449,7 +449,7 @@ win19cis_rule_18_9_100_1: true
 win19cis_rule_18_9_100_2: true
 # WINRM CONTROLS #
 # Setting The Following Controls To True Will Break Ansible Connection
-# Setting win19cis_skip_for_test: true -- will skip the controls here even if they are set to true.
+# Setting win_skip_for_test: true -- will skip the controls here even if they are set to true.
 # win19cis_rule_18_9_102_1_1
 # win19cis_rule_18_9_102_1_2
 # win19cis_rule_18_9_102_2_1
