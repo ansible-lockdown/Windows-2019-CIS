@@ -368,7 +368,7 @@
       type: dword
   when:
       - win19cis_rule_9_3_5
-      - not win19cis_skip_for_test
+      - not win_skip_for_test
   tags:
       - level1-domaincontroller
       - level1-memberserver

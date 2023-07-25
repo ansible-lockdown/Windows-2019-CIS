@@ -12,6 +12,7 @@ skip_list:
     - 'name[casing]'
     - 'name[template]'
     - 'jinja[spacing]'
+    - 'yaml[line-length]'
     - 'var-naming'  # Older playbook no new release
     - '204'
     - '208'

@@ -188,6 +188,6 @@ resource "local_file" "inventory" {
         ansible_winrm_read_timeout_sec: 180
         # This section turns off and on the groups of controls for connections and tests.
         # Refer to default main for the controls here explanation.
-        win19cis_skip_for_test: true
+        win_skip_for_test: true
     EOF
 }
