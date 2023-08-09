@@ -7,7 +7,7 @@ August 2023 Update
     - Renamed them to better run across all repos. 
   - Removed Templates & PR Temmplate from repo and adjusted to Org level. 
   - Updated Readme Layout to add new pipeline badges.
-  - Section1_Cloud moved frm tasks/main and renamed to section1_cloud_lockout_order and in section1.yml workflow.
+  - Section1_Cloud moved from tasks/main and renamed to section1_cloud_lockout_order and in section1.yml workflow.
   - Updated Tags in tasks/main.
   - Updated When Statement Formatting For Entire Playbook.
 
