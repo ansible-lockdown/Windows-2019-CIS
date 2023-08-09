@@ -1,7 +1,17 @@
 # Changelog
 
 ## Release 1.3.0
-- May 2023 Updates
+
+August 2023 Update
+  - Updated Workflows To Central Repo
+    - Renamed them to better run across all repos. 
+  - Removed Templates & PR Temmplate from repo and adjusted to Org level. 
+  - Updated Readme Layout to add new pipeline badges.
+  - Section1_Cloud moved frm tasks/main and renamed to section1_cloud_lockout_order and in section1.yml workflow.
+  - Updated Tags in tasks/main.
+  - Updated When Statement Formatting For Entire Playbook.
+
+- May 2023 Update
   - Added Additional Cloud support for tasks.
   - Fixed Pipelines
 - Major Update: All task rule names updated to add win19cis to them in default main.

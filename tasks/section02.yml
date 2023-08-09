@@ -553,8 +553,7 @@
             users:
                 - Administrators
             action: set
-        when:
-            - not win19cis_exchange_server_running
+        when: not win19cis_exchange_server_running
 
       - name: "2.2.37 | PATCH | Ensure Manage auditing and security log is set to Administrators and when Exchange is running in the environment Exchange Servers DC only. | Set Exchange Server Groups."
         ansible.windows.win_user_right:
@@ -563,8 +562,7 @@
                 - Administrators
                 - Exchange Servers
             action: set
-        when:
-            - win19cis_exchange_server_running
+        when: win19cis_exchange_server_running
   when:
       - win19cis_rule_2_2_37
       - ansible_windows_domain_role == "Primary domain controller"
@@ -815,23 +813,20 @@
             msg:
                 - "Warning!! You have not changed the default admin username in win19cis_admin_username please"
                 - "make the necessary change to the variable to be in compliance."
-        when:
-            - "'adminchangethis' in win19cis_admin_username"
+        when: "'adminchangethis' in win19cis_admin_username"
 
       - name: "2.3.1.5 | AUDIT | Configure Accounts Rename administrator account. | Add Warn Count."
         import_tasks: warning_facts.yml
         vars:
             warn_control_id: '2.3.1.5'
-        when:
-            - "'adminchangethis' in win19cis_admin_username"
+        when: "'adminchangethis' in win19cis_admin_username"
 
       - name: "2.3.1.5 | PATCH | Configure Accounts Rename administrator account. | Make Changes To Admin Name."
         community.windows.win_security_policy:
             section: System Access
             key: newadministratorname
             value: "{{ win19cis_admin_username }}"
-        when:
-            - "'adminchangethis' not in win19cis_admin_username"
+        when: "'adminchangethis' not in win19cis_admin_username"
   when:
       - win19cis_rule_2_3_1_5
       - not win_skip_for_test
@@ -849,23 +844,20 @@
             msg:
                 - "Warning!! You have not changed the default guest name in win19cis_guest_username please"
                 - "make the necessary change to the variable to be in compliance."
-        when:
-            - "'guestchangethis' in win19cis_guest_username"
+        when: "'guestchangethis' in win19cis_guest_username"
 
       - name: "2.3.1.6 | AUDIT | Configure Accounts Rename guest account. | Add Warn Count."
         ansible.builtin.import_tasks: warning_facts.yml
         vars:
             warn_control_id: '2.3.1.6'
-        when:
-            - "'guestchangethis' in win19cis_guest_username"
+        when: "'guestchangethis' in win19cis_guest_username"
 
       - name: "2.3.1.6 | AUDIT | Configure Accounts Rename guest account. | Make Changes To Guest Name."
         win_security_policy:
             section: System Access
             key: NewGuestName
             value: "{{ win19cis_guest_username }}"
-        when:
-            - "'guestchangethis' not in win19cis_guest_username"
+        when: "'guestchangethis' not in win19cis_guest_username"
   when:
       - win19cis_rule_2_3_1_6
   tags:
@@ -1238,15 +1230,13 @@
             msg:
                 - "Warning!! You have a invalid number of logons set for win19cis_cached_logons_count please read"
                 - "the notes for the variable and make the necessary change to the variable to be in compliance."
-        when:
-            - win19cis_cached_logons_count > 4
+        when: win19cis_cached_logons_count > 4
 
       - name: "2.3.7.6 | AUDIT | Ensure Interactive logon Number of previous logons to cache in case domain controller is not available is set to 4 or fewer logons MS only. | Warn Count."
         ansible.builtin.import_tasks: warning_facts.yml
         vars:
             warn_control_id: '2.3.7.6'
-        when:
-            - win19cis_cached_logons_count > 4
+        when: win19cis_cached_logons_count > 4
 
       - name: "2.3.7.6 | PATCH | Ensure Interactive logon Number of previous logons to cache in case domain controller is not available is set to 4 or fewer logons MS only. | Apply Settings To Registry."
         ansible.windows.win_regedit:
@@ -1254,8 +1244,7 @@
             name: CachedLogonsCount
             data: "{{ win19cis_cached_logons_count }}"
             type: string
-        when:
-            - win19cis_cached_logons_count <= 4
+        when: win19cis_cached_logons_count <= 4
   when:
       - win19cis_rule_2_3_7_6
   tags:
@@ -1383,15 +1372,13 @@
             msg:
                 - "Warning!! You have a invalid number of minutes set for win19cis_smb_auto_disconnect_time please read"
                 - "the notes for the variable and make the necessary change to the variable to be in compliance."
-        when:
-            - win19cis_smb_auto_disconnect_time > 15
+        when: win19cis_smb_auto_disconnect_time > 15
 
       - name: "2.3.9.1 | AUDIT | Ensure Microsoft network server Amount of idle time required before suspending session is set to 15 or fewer minutes. | Warn Count."
         ansible.builtin.import_tasks: warning_facts.yml
         vars:
             warn_control_id: '2.3.7.7'
-        when:
-            - win19cis_smb_auto_disconnect_time > 15
+        when: win19cis_smb_auto_disconnect_time > 15
 
       - name: "2.3.9.1 | PATCH | Ensure Microsoft network server Amount of idle time required before suspending session is set to 15 or fewer minutes. | Apply Settings To Registry."
         ansible.windows.win_regedit:
@@ -1399,8 +1386,7 @@
             name: AutoDisconnect
             data: "{{ win19cis_smb_auto_disconnect_time }}"
             type: dword
-        when:
-            - win19cis_smb_auto_disconnect_time <= 15
+        when: win19cis_smb_auto_disconnect_time <= 15
   when:
       - win19cis_rule_2_3_9_1
   tags:

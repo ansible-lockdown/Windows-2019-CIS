@@ -129,15 +129,13 @@
             msg:
                 - "Warning!! You have a invalid password length set for win19cis_laps_password_length please read"
                 - "the notes for the variable and make the necessary change to the variable to be in compliance."
-        when:
-            - win19cis_laps_password_length < 15
+        when: win19cis_laps_password_length < 15
 
       - name: "18.2.5 | AUDIT | Ensure Password Settings Password Length is set to Enabled 15 or more MS only. | Warn Count."
         ansible.builtin.import_tasks: warning_facts.yml
         vars:
             warn_control_id: '18.2.5'
-        when:
-            - win19cis_laps_password_length < 15
+        when: win19cis_laps_password_length < 15
 
       - name: "18.2.5 | PATCH | Ensure Password Settings Password Length is set to Enabled 15 or more MS only. | Set Variable."
         ansible.windows.win_regedit:
@@ -145,8 +143,7 @@
             name: PasswordLength
             data: "{{ win19cis_laps_password_length }}"
             type: dword
-        when:
-            - win19cis_laps_password_length >= 15
+        when: win19cis_laps_password_length >= 15
   when:
       - win19cis_rule_18_2_5
       - ansible_windows_domain_role == "Member Server"
@@ -163,15 +160,13 @@
             msg:
                 - "Warning!! You have a invalid password length set for win19cis_laps_password_length please read"
                 - "the notes for the variable and make the necessary change to the variable to be in compliance."
-        when:
-            - win19cis_laps_password_age_days > 30
+        when: win19cis_laps_password_age_days > 30
 
       - name: "18.2.6 | AUDIT | Ensure Password Settings Password Age Days is set to Enabled 30 or fewer MS only | Warn Count."
         ansible.builtin.import_tasks: warning_facts.yml
         vars:
             warn_control_id: '18.2.6'
-        when:
-            - win19cis_laps_password_age_days > 30
+        when: win19cis_laps_password_age_days > 30
 
       - name: "18.2.6 | PATCH | Ensure Password Settings Password Age Days is set to Enabled 30 or fewer MS only | Set Variable."
         ansible.windows.win_regedit:
@@ -179,8 +174,7 @@
             name: PasswordAgeDays
             data: "{{ win19cis_laps_password_age_days }}"
             type: dword
-        when:
-            - win19cis_laps_password_age_days <= 30
+        when: win19cis_laps_password_age_days <= 30
   when:
       - win19cis_rule_18_2_6
       - ansible_windows_domain_role == "Member Server"
@@ -442,15 +436,13 @@
             msg:
                 - "Warning!! You have a invalid time set for win19cis_screen_saver_grace_period please read"
                 - "the notes for the variable and make the necessary change to the variable to be in compliance."
-        when:
-            - win19cis_screen_saver_grace_period > 5
+        when: win19cis_screen_saver_grace_period > 5
 
       - name: "18.4.9 | PATCH | Ensure MSS ScreenSaverGracePeriod The time in seconds before the screen saver grace period expires 0 recommended is set to Enabled 5 or fewer seconds | Set Warn Count."
         ansible.builtin.import_tasks: warning_facts.yml
         vars:
             warn_control_id: '18.4.9'
-        when:
-            - win19cis_screen_saver_grace_period > 5
+        when: win19cis_screen_saver_grace_period > 5
 
       - name: "18.4.9 | PATCH | Ensure MSS ScreenSaverGracePeriod The time in seconds before the screen saver grace period expires 0 recommended is set to Enabled 5 or fewer seconds | Set Variable."
         ansible.windows.win_regedit:
@@ -459,8 +451,7 @@
             data: "{{ win19cis_screen_saver_grace_period }}"
             type: string
             state: present
-        when:
-            - win19cis_screen_saver_grace_period <= 5
+        when: win19cis_screen_saver_grace_period <= 5
   when:
       - win19cis_rule_18_4_9
   tags:
@@ -507,15 +498,13 @@
             msg:
                 - "Warning!! You have a invalid percentage set for win19cis_log_threshold_audit_event please read"
                 - "the notes for the variable and make the necessary change to the variable to be in compliance."
-        when:
-            - win19cis_log_threshold_audit_event > 90
+        when: win19cis_log_threshold_audit_event > 90
 
       - name: "18.4.12 | AUDIT | Ensure MSS WarningLevel Percentage threshold for the security event log at which the system will generate a warning is set to Enabled 90 or less | Warn Count."
         ansible.builtin.import_tasks: warning_facts.yml
         vars:
             warn_control_id: '18.4.12'
-        when:
-            - win19cis_log_threshold_audit_event > 90
+        when: win19cis_log_threshold_audit_event > 90
 
       - name: "18.4.12 | PATCH | Ensure MSS WarningLevel Percentage threshold for the security event log at which the system will generate a warning is set to Enabled 90 or less | Set Variable."
         ansible.windows.win_regedit:
@@ -523,8 +512,7 @@
             name: WarningLevel
             data: "{{ win19cis_log_threshold_audit_event }}"
             type: dword
-        when:
-            - win19cis_log_threshold_audit_event <= 90
+        when: win19cis_log_threshold_audit_event <= 90
   when:
       - win19cis_rule_18_4_12
   tags:
@@ -2086,15 +2074,13 @@
             msg:
                 - "Warning!! You have a invalid file size set for win19cis_application_max_log_file_size please read"
                 - "the notes for the variable and make the necessary change to the variable to be in compliance."
-        when:
-            - win19cis_application_max_log_file_size < 32768
+        when: win19cis_application_max_log_file_size < 32768
 
       - name: "18.9.27.1.2 | AUDIT | Ensure Application Specify the maximum log file size KB is set to Enabled 32768 or greater | Warn Count."
         ansible.builtin.import_tasks: warning_facts.yml
         vars:
             warn_control_id: '18.9.27.1.2'
-        when:
-            - win19cis_application_max_log_file_size < 32768
+        when: win19cis_application_max_log_file_size < 32768
 
       - name: "18.9.27.1.2 | PATCH | Ensure Application Specify the maximum log file size KB is set to Enabled 32768 or greater | Set File Size."
         ansible.windows.win_regedit:
@@ -2102,8 +2088,7 @@
             name: MaxSize
             data: "{{ win19cis_application_max_log_file_size }}"
             type: dword
-        when:
-            - win19cis_application_max_log_file_size >= 32768
+        when: win19cis_application_max_log_file_size >= 32768
   when:
       - win19cis_rule_18_9_27_1_2
   tags:
@@ -2135,15 +2120,13 @@
             msg:
                 - "Warning!! You have a invalid file size set for win19cis_security_max_log_file_size please read"
                 - "the notes for the variable and make the necessary change to the variable to be in compliance."
-        when:
-            - win19cis_security_max_log_file_size < 196608
+        when: win19cis_security_max_log_file_size < 196608
 
       - name: "18.9.27.2.2 | AUDIT | Ensure Security Specify the maximum log file size KB is set to Enabled 196608 or greater | Warn Count."
         ansible.builtin.import_tasks: warning_facts.yml
         vars:
             warn_control_id: '18.9.27.2.2'
-        when:
-            - win19cis_security_max_log_file_size < 196608
+        when: win19cis_security_max_log_file_size < 196608
 
       - name: "18.9.27.2.2 | PATCH | Ensure Security Specify the maximum log file size KB is set to Enabled 196608 or greater | Set Variable."
         ansible.windows.win_regedit:
@@ -2151,8 +2134,7 @@
             name: MaxSize
             data: "{{ win19cis_security_max_log_file_size }}"
             type: dword
-        when:
-            - win19cis_security_max_log_file_size >= 196608
+        when: win19cis_security_max_log_file_size >= 196608
   when:
       - win19cis_rule_18_9_27_2_2
   tags:
@@ -2184,15 +2166,13 @@
             msg:
                 - "Warning!! You have a invalid file size set for win19cis_setup_max_log_file_size please read"
                 - "the notes for the variable and make the necessary change to the variable to be in compliance."
-        when:
-            - win19cis_setup_max_log_file_size < 32768
+        when: win19cis_setup_max_log_file_size < 32768
 
       - name: "18.9.27.3.2 | AUDIT | Ensure Setup Specify the maximum log file size KB is set to Enabled 32768 or greater | Warn Count."
         ansible.builtin.import_tasks: warning_facts.yml
         vars:
             warn_control_id: '18.9.27.3.2'
-        when:
-            - win19cis_setup_max_log_file_size < 32768
+        when: win19cis_setup_max_log_file_size < 32768
 
       - name: "18.9.27.3.2 | PATCH | Ensure Setup Specify the maximum log file size KB is set to Enabled 32768 or greater | Set Variable."
         ansible.windows.win_regedit:
@@ -2200,8 +2180,7 @@
             name: MaxSize
             data: "{{ win19cis_setup_max_log_file_size }}"
             type: dword
-        when:
-            - win19cis_setup_max_log_file_size >= 32768
+        when: win19cis_setup_max_log_file_size >= 32768
   when:
       - win19cis_rule_18_9_27_3_2
   tags:
@@ -2233,15 +2212,13 @@
             msg:
                 - "Warning!! You have a invalid file size set for win19cis_system_max_log_file_size please read"
                 - "the notes for the variable and make the necessary change to the variable to be in compliance."
-        when:
-            - win19cis_system_max_log_file_size < 32768
+        when: win19cis_system_max_log_file_size < 32768
 
       - name: "18.9.27.4.2 | AUDIT | Ensure System Specify the maximum log file size KB is set to Enabled 32768 or greater | Warn Count."
         ansible.builtin.import_tasks: warning_facts.yml
         vars:
             warn_control_id: '18.9.27.4.2'
-        when:
-            - win19cis_system_max_log_file_size < 32768
+        when: win19cis_system_max_log_file_size < 32768
 
       - name: "18.9.27.4.2 | PATCH | Ensure System Specify the maximum log file size KB is set to Enabled 32768 or greater | Set Variable."
         ansible.windows.win_regedit:
@@ -2249,8 +2226,7 @@
             name: MaxSize
             data: "{{ win19cis_system_max_log_file_size }}"
             type: dword
-        when:
-            - win19cis_system_max_log_file_size >= 32768
+        when: win19cis_system_max_log_file_size >= 32768
   when:
       - win19cis_rule_18_9_27_4_2
   tags:

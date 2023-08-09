@@ -562,9 +562,9 @@ win19cis_increase_scheduling_priority_users: '{{ ["Administrators"] if (windows_
 # 2.2.37
 # win19cis_exchange_server_running is the policy setting determines which users can change the auditing options for
 # files and directories and clear the Security log. Setting to true will set both groups to be added.
-# Leaving as false will only add Administrators.
-# The recommended state for this setting is: Administrators and
-# (when Exchange is running in the environment) Exchange Servers.
+# False will only add Administrators.
+# True will add dministrators and (when Exchange is running in the environment) Exchange Servers.
+# The recommended state for this setting is: Administrators and when Exchange is running in the environment) Exchange Servers.
 win19cis_exchange_server_running: false
 
 # 2.3.1.5
