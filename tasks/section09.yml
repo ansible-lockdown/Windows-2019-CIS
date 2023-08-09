@@ -88,15 +88,13 @@
             msg:
                 - "Warning!! You have a invalid size set for win19cis_domain_firewall_log_size please read"
                 - "the notes for the variable and make the necessary change to the variable to be in compliance."
-        when:
-            - win19cis_domain_firewall_log_size < 16384
+        when: win19cis_domain_firewall_log_size < 16384
 
       - name: "9.1.6 | AUDIT | Ensure 'Windows Firewall: Domain: Logging: Size limit (KB)' is set to '16,384 KB or greater' | Warn Count."
         ansible.builtin.import_tasks: warning_facts.yml
         vars:
             warn_control_id: '9.1.6'
-        when:
-            - win19cis_domain_firewall_log_size < 16384
+        when: win19cis_domain_firewall_log_size < 16384
 
       - name: "9.1.6 | PATCH | Ensure 'Windows Firewall: Domain: Logging: Size limit (KB)' is set to '16,384 KB or greater' | Apply Settings To Registry."
         ansible.windows.win_regedit:
@@ -104,8 +102,7 @@
             name: LogFileSize
             data: '{{ win19cis_domain_firewall_log_size }}'
             type: dword
-        when:
-            - win19cis_domain_firewall_log_size >= 16384
+        when: win19cis_domain_firewall_log_size >= 16384
   when:
       - win19cis_rule_9_1_6
   tags:
@@ -236,15 +233,13 @@
             msg:
                 - "Warning!! You have a invalid size set for win19cis_private_firewall_log_size please read"
                 - "the notes for the variable and make the necessary change to the variable to be in compliance."
-        when:
-            - win19cis_private_firewall_log_size < 16384
+        when: win19cis_private_firewall_log_size < 16384
 
       - name: "9.2.6 | AUDIT | Ensure 'Windows Firewall: Private: Logging: Size limit (KB)' is set to '16,384 KB or greater' | Warn Count."
         ansible.builtin.import_tasks: warning_facts.yml
         vars:
             warn_control_id: '9.2.6'
-        when:
-            - win19cis_private_firewall_log_size < 16384
+        when: win19cis_private_firewall_log_size < 16384
 
       - name: "9.2.6 | PATCH | Ensure 'Windows Firewall: Private: Logging: Size limit (KB)' is set to '16,384 KB or greater' | Apply Settings To Registry."
         ansible.windows.win_regedit:
@@ -252,8 +247,7 @@
             name: LogFileSize
             data: '{{ win19cis_private_firewall_log_size }}'
             type: dword
-        when:
-            - win19cis_private_firewall_log_size >= 16384
+        when: win19cis_private_firewall_log_size >= 16384
   when:
       - win19cis_rule_9_2_6
   tags:
@@ -417,15 +411,13 @@
             msg:
                 - "Warning!! You have a invalid size set for win19cis_public_firewall_log_size please read"
                 - "the notes for the variable and make the necessary change to the variable to be in compliance."
-        when:
-            - win19cis_public_firewall_log_size < 16384
+        when: win19cis_public_firewall_log_size < 16384
 
       - name: "9.3.8 | AUDIT | Ensure 'Windows Firewall: Public: Logging: Size limit (KB)' is set to '16,384 KB or greater' | Warn Count."
         ansible.builtin.import_tasks: warning_facts.yml
         vars:
             warn_control_id: '9.3.8'
-        when:
-            - win19cis_public_firewall_log_size < 16384
+        when: win19cis_public_firewall_log_size < 16384
 
       - name: Apply Settings To Registry."
         ansible.windows.win_regedit:
@@ -433,8 +425,7 @@
             name: LogFileSize
             data: '{{ win19cis_public_firewall_log_size }}'
             type: dword
-        when:
-            - win19cis_public_firewall_log_size >= 16384
+        when: win19cis_public_firewall_log_size >= 16384
   when:
       - win19cis_rule_9_3_8
   tags:
