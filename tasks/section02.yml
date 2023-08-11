@@ -809,14 +809,14 @@
 - name: "2.3.1.5 | PATCH | Configure Accounts Rename administrator account"
   block:
       - name: "2.3.1.5 | AUDIT | Configure Accounts Rename administrator account. | Warning Msg For Default Variable Not Edited."
-        debug:
+        ansible.builtin.debug:
             msg:
                 - "Warning!! You have not changed the default admin username in win19cis_admin_username please"
                 - "make the necessary change to the variable to be in compliance."
         when: "'adminchangethis' in win19cis_admin_username"
 
       - name: "2.3.1.5 | AUDIT | Configure Accounts Rename administrator account. | Add Warn Count."
-        import_tasks: warning_facts.yml
+        ansible.builtin.import_tasks: warning_facts.yml
         vars:
             warn_control_id: '2.3.1.5'
         when: "'adminchangethis' in win19cis_admin_username"
@@ -853,7 +853,7 @@
         when: "'guestchangethis' in win19cis_guest_username"
 
       - name: "2.3.1.6 | AUDIT | Configure Accounts Rename guest account. | Make Changes To Guest Name."
-        win_security_policy:
+        community.windows.win_security_policy:
             section: System Access
             key: NewGuestName
             value: "{{ win19cis_guest_username }}"

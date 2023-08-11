@@ -5,10 +5,7 @@ quiet: true
 skip_list:
     - 'schema'
     - 'no-changed-when'
-    - 'fqcn-builtins'
     - 'experimental'
-    - 'fqcn[action-core]'
-    - 'fqcn[action]'
     - 'name[casing]'
     - 'name[template]'
     - 'jinja[spacing]'

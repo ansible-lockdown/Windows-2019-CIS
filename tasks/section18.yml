@@ -1904,7 +1904,7 @@
       - pin
 
 - name: "18.9.16.1 | PATCH | Ensure Do not display the password reveal button is set to Enabled"
-  win_regedit:
+  ansible.windows.win_regedit:
       path: HKLM:\Software\Policies\Microsoft\Windows\Credui
       name: DisablePasswordReveal
       data: 1
