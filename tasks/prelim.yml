@@ -1,6 +1,6 @@
 ---
 
-- name: Set system facts based on gather facts module
+- name: Set System Facts Based On Gather Facts Module
   block:
       - name: Set fact is system is standalone
         ansible.builtin.set_fact:
