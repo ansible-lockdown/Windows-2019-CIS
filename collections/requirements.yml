@@ -1,4 +1,8 @@
 ---
 
 collections:
-- name: community.windows
+    - name: ansible.windows
+
+    - name: community.windows
+
+    - name: community.general

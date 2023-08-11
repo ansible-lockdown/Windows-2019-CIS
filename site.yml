@@ -2,5 +2,7 @@
 
 - hosts: all  # noqa: name[play]
 
+  gather_facts: true
+
   roles:
       - role: "{{ playbook_dir }}"
