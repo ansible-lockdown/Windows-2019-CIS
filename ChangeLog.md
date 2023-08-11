@@ -1,6 +1,6 @@
 # Changelog
 
-## Release 1.3.0
+## Release 2.0.0
 
 August 2023 Update
 - Updated Workflows To Central Repo
@@ -58,3 +58,56 @@ October 2022 Update
     - #59
   - Enhancements:
     - Updated to CIS benchmark 1.3.0
+
+## Release 1.1.1
+
+July 2021 Update
+  - Issue Fixes:
+    - #37 - 18.9.59.3.11.1 - Updated level tags
+    - #38 - 18.1.2.2 - Implemented control
+    - #39 - 18.3.1 - Implemented control
+    - #40 - 2.3.1.5/2.3.1.6 - Created variables for values
+    - #41 - 2.2.47 - Updated value
+    - #42 - 2.2.18 - Added logic for Hyper-V role not being installed
+  - Enhancements:
+    - Fixed linting issues to work with Galaxy
+    - Implemented 18.1.3
+    - Implemented 18.2.1
+    - Implemented 18.2.2
+    - Implemented 18.2.3
+    - Implemented 18.2.4
+    - Implemented 18.2.5
+    - Implemented 18.2.6
+    - Implemented 18.3.2
+    - Implemented 18.3.5
+
+## Release 1.1.0
+
+April 2021 Update
+  - #14 - 18.3.4 - Bad data value
+  - #15 - 18.3.6 - Bad data value
+  - #16 - 18.5.21.1 - Bad data value
+  - #17 - 18.9.77.13.3.1 - Bad regkey name
+  - #18 - 18.9.95.1 - Bad data value
+  - #19 - 18.9.95.2 - Bad data value
+  - #21 - 18.9.26.3.1 - Bad regkey path
+  - #23 - 18.9.26.1.1 - Bad data type
+  - #24 - 19.7.4.1 - Bad data value
+  - #25 - 2.3.6.4 - Bad data value
+  - #26 - 2.3.11.4 - Bad data value
+  - #27 - 17.5.1 - Bad shell command (fixed success:enable to failure:enable)
+  - #28 - 9.1.4/9.2.4/9.3.4 - Bad data value
+
+## Release 1.0.1
+
+March 2021 Update
+  - #7 - 18.3.7 Control is missing
+  - #8 - Align tags between sections
+  - #10 - Wrong user for all users in win_user_right module
+  - Added missing controls 17.1.2 and 17.1.3
+  - Updated README and CONTRIBUTING file
+
+## Release 1.0.0
+
+March 2021
+  - Initial Release
