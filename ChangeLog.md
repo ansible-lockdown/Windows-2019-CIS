@@ -1,6 +1,6 @@
 # Changelog
 
-## Release 2.0.0
+## Release 1.3.0
 
 August 2023 Update
 - Updated Workflows To Central Repo
