@@ -42,7 +42,7 @@
         when: "'Failure' not in rule_17_1_2_audit.stdout"
   when:
       - win19cis_rule_17_1_2
-      - ansible_windows_domain_role == "Primary domain controller"
+      - win2019cis_is_domain_controller
   tags:
       - level1-domaincontroller
       - rule_17.1.2
@@ -111,7 +111,7 @@
         when: "'Success' not in rule_17_2_2_audit.stdout"
   when:
       - win19cis_rule_17_2_2
-      - ansible_windows_domain_role == "Primary domain controller"
+      - win2019cis_is_domain_controller
   tags:
       - level1-domaincontroller
       - rule_17.2.2
@@ -131,7 +131,7 @@
         when: "'Success' not in rule_17_2_3_audit.stdout"
   when:
       - win19cis_rule_17_2_3
-      - ansible_windows_domain_role == "Primary domain controller"
+      - win2019cis_is_domain_controller
   tags:
       - level1-domaincontroller
       - rule_17.2.3
@@ -151,7 +151,7 @@
         when: "'Success' not in rule_17_2_4_audit.stdout"
   when:
       - win19cis_rule_17_2_4
-      - ansible_windows_domain_role == "Primary domain controller"
+      - win2019cis_is_domain_controller
   tags:
       - level1-domaincontroller
       - rule_17.2.4
@@ -275,7 +275,7 @@
         when: "'Success' not in rule_17_4_2_audit.stdout"
   when:
       - win19cis_rule_17_4_2
-      - ansible_windows_domain_role == "Primary domain controller"
+      - win2019cis_is_domain_controller
   tags:
       - level1-domaincontroller
       - rule_17.4.2

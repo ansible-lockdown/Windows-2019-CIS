@@ -2,7 +2,7 @@
 
 ## Configure a Windows 2019 system to be [CIS](https://www.cisecurity.org/cis-benchmarks/) compliant
 
-### Based on [ Microsoft Windows Server 2019 Benchmark v2.0.0 - 04-05-2023 ](https://www.cisecurity.org/cis-benchmarks/)
+### Based on [ Microsoft Windows Server 2019 Benchmark v2.0.0 - 04-14-2023 ](https://www.cisecurity.org/cis-benchmarks/)
 
 ---
 
@@ -77,7 +77,7 @@ Further details can be seen in the [Changelog](./ChangeLog.md)
 
 ## Auditing (new)
 
-Currently this release does not have a auditing tool that is up to date.
+Currently this release does not have an auditing tool that is up to date.
 
 ## Documentation
 

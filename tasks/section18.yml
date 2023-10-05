@@ -68,7 +68,7 @@
       type: string
   when:
       - win19cis_rule_18_2_1
-      - ansible_windows_domain_role == "Member Server"
+      - win2019cis_is_domain_member
   tags:
       - level1-memberserver
       - rule_18.2.1
@@ -84,7 +84,7 @@
       type: dword
   when:
       - win19cis_rule_18_2_2
-      - ansible_windows_domain_role == "Member Server"
+      - win2019cis_is_domain_member
   tags:
       - level1-memberserver
       - rule_18.2.2
@@ -99,7 +99,7 @@
       type: dword
   when:
       - win19cis_rule_18_2_3
-      - ansible_windows_domain_role == "Member Server"
+      - win2019cis_is_domain_member
   tags:
       - level1-memberserver
       - rule_18.2.3
@@ -115,7 +115,7 @@
       type: dword
   when:
       - win19cis_rule_18_2_4
-      - ansible_windows_domain_role != "Member Server"
+      - win2019cis_is_domain_member
   tags:
       - level1-memberserver
       - rule_18.2.4
@@ -146,7 +146,7 @@
         when: win19cis_laps_password_length >= 15
   when:
       - win19cis_rule_18_2_5
-      - ansible_windows_domain_role == "Member Server"
+      - win2019cis_is_domain_member
   tags:
       - level1-memberserver
       - rule_18.2.5
@@ -192,7 +192,7 @@
       type: dword
   when:
       - win19cis_rule_18_3_1
-      - not ansible_windows_domain_role == "Primary domain controller"
+      - win2019cis_is_domain_member
   tags:
       - level1-memberserver
       - rule_18.3.1
@@ -545,7 +545,7 @@
       type: dword
   when:
       - win19cis_rule_18_5_4_2
-      - not ansible_windows_domain_role == "Primary domain controller"
+      - win2019cis_is_domain_member
   tags:
       - level1-domaincontroller
       - level1-memberserver
@@ -844,7 +844,7 @@
       type: dword
   when:
       - win19cis_rule_18_5_21_2
-      - not ansible_windows_domain_role == "Primary domain controller"
+      - win2019cis_is_domain_member
   tags:
       - level2-memberserver
       - rule_18.5.21.2
@@ -1023,7 +1023,7 @@
       type: dword
   when:
       - win19cis_rule_18_8_5_5
-      - not ansible_windows_domain_role == "Primary domain controller"
+      - win2019cis_is_domain_member
   tags:
       - ngws-memberserver
       - rule_18.8.5.5
@@ -1038,7 +1038,7 @@
       type: dword
   when:
       - win19cis_rule_18_8_5_6
-      - ansible_windows_domain_role == "Primary domain controller"
+      - win2019cis_is_domain_controller
   tags:
       - ngws-domaincontroller
       - rule_18.8.5.6
@@ -1462,6 +1462,7 @@
       type: dword
   when:
       - win19cis_rule_18_8_28_4
+      - win2019cis_is_domain_member
   tags:
       - level1-memberserver
       - rule_18.8.28.4
@@ -1641,7 +1642,7 @@
       type: dword
   when:
       - win19cis_rule_18_8_37_1
-      - not ansible_windows_domain_role == "Primary domain controller"
+      - win2019cis_is_domain_member
   tags:
       - level1-memberserver
       - rule_18.8.37.1
@@ -1656,7 +1657,7 @@
       type: dword
   when:
       - win19cis_rule_18_8_37_2
-      - not ansible_windows_domain_role == "Primary domain controller"
+      - win2019cis_is_domain_member
   tags:
       - level2-memberserver
       - rule_18.8.37.2
@@ -1746,7 +1747,7 @@
       type: dword
   when:
       - win19cis_rule_18_8_53_1_2
-      - not ansible_windows_domain_role == "Primary domain controller"
+      - win2019cis_is_domain_member
   tags:
       - level2-memberserver
       - rule_18.8.53.1.2
