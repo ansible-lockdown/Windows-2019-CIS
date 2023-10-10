@@ -1087,7 +1087,7 @@
       - name: "2.3.6.5 | AUDIT | Ensure Domain member Maximum machine account password age is set to 30 or fewer days but not 0. | Warning Check For Variable Standards."
         ansible.builtin.debug:
             msg:
-                - "Warning!! You have a invalid number of days set for win19cis_domain_member_maximum_password_age please read"
+                - "Warning!! You have an invalid number of days set for win19cis_domain_member_maximum_password_age please read"
                 - "the notes for the variable and make the necessary change to the variable to be in compliance."
         when:
             - win19cis_domain_member_maximum_password_age > 30 or
@@ -1171,7 +1171,7 @@
       - name: "2.3.7.3 | AUDIT | Ensure Interactive logon Machine inactivity limit is set to 900 or fewer seconds but not 0. | Warning Check For Variable Standards."
         ansible.builtin.debug:
             msg:
-                - "Warning!! You have a invalid number of seconds set for win19cis_inactivity_timeout_seconds please read"
+                - "Warning!! You have an invalid number of seconds set for win19cis_inactivity_timeout_seconds please read"
                 - "the notes for the variable and make the necessary change to the variable to be in compliance."
         when:
             - win19cis_inactivity_timeout_seconds > 900 or
@@ -1238,7 +1238,7 @@
       - name: "2.3.7.6 | AUDIT| Ensure Interactive logon Number of previous logons to cache in case domain controller is not available is set to 4 or fewer logons MS only. | Warning Check For Variable Standards."
         ansible.builtin.debug:
             msg:
-                - "Warning!! You have a invalid number of logons set for win19cis_cached_logons_count please read"
+                - "Warning!! You have an invalid number of logons set for win19cis_cached_logons_count please read"
                 - "the notes for the variable and make the necessary change to the variable to be in compliance."
         when: win19cis_cached_logons_count > 4
 
@@ -1269,7 +1269,7 @@
       - name: "2.3.7.7 | AUDIT | Ensure Interactive logon Prompt user to change password before expiration is set to between 5 and 14 days. | Warning Check For Variable Standards."
         ansible.builtin.debug:
             msg:
-                - "Warning!! You have a invalid number of days set for win19cis_password_expiry_warning_days please read"
+                - "Warning!! You have an invalid number of days set for win19cis_password_expiry_warning_days please read"
                 - "the notes for the variable and make the necessary change to the variable to be in compliance."
         when:
             - win19cis_password_expiry_warning_days < 5 or
@@ -1381,7 +1381,7 @@
       - name: "2.3.9.1 | AUDIT | Ensure Microsoft network server Amount of idle time required before suspending session is set to 15 or fewer minutes. | Warning Check For Variable Standards."
         ansible.builtin.debug:
             msg:
-                - "Warning!! You have a invalid number of minutes set for win19cis_smb_auto_disconnect_time please read"
+                - "Warning!! You have an invalid number of minutes set for win19cis_smb_auto_disconnect_time please read"
                 - "the notes for the variable and make the necessary change to the variable to be in compliance."
         when: win19cis_smb_auto_disconnect_time > 15
 

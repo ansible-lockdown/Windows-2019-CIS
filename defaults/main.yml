@@ -49,25 +49,26 @@ win_skip_for_test: false
 # PLEASE NOTE: These work in coordination with the section # group variables and tags.
 # You must enable an entire section in order for the variables below to take effect.
 
-# Section 1 rules
+# section01
 win19cis_rule_1_1_1: true
 win19cis_rule_1_1_2: true
 win19cis_rule_1_1_3: true
 win19cis_rule_1_1_4: true
 win19cis_rule_1_1_5: true
-# win19cis_rule_1_1_6 set To false this control cannot be implemented on 2019.
+# win19cis_rule_1_1_6 set To false this control cannot be implemented in 2022.
 # This setting is only available within the built-in OS security template of
-# Windows 10 Release 2004 and Server 2022 (or newer). Control Commented out for now.
+# Windows 10 Release 2004 and Server 2022 (or newer). Control is Commented out for now.
 win19cis_rule_1_1_6: false
 win19cis_rule_1_1_7: true
-# We have found the order of these three tasks below varies between cloud based instances
-# and VM based instances locally. The task below breaks out to run in a different order
-# for cloud based systems and local based systems. Notes are applied in the section01.yml file.
+# We have found the order of these three tasks below varies between cloud-based instances
+# and VM-based instances locally. The task below breaks out to run in a different order
+# for cloud-based systems and local-based systems. Notes are applied in the section01.yml file.
 win19cis_rule_1_2_1: true
 win19cis_rule_1_2_2: true
 win19cis_rule_1_2_3: true
+win19cis_rule_1_2_4: true
 
-# Section 2 rules
+# section02
 win19cis_rule_2_2_1: true
 win19cis_rule_2_2_2: true
 win19cis_rule_2_2_3: true
@@ -123,7 +124,6 @@ win19cis_rule_2_3_1_4: true
 # Setting win19cis_rule_2_3_1_5 Control To True Will Break Ansible Connection
 # Setting win_skip_for_test: true -- will skip the controls here even if they are set to true.
 win19cis_rule_2_3_1_5: true
-win19cis_rule_2_3_1_6: true
 win19cis_rule_2_3_2_1: true
 win19cis_rule_2_3_2_2: true
 win19cis_rule_2_3_4_1: true
@@ -191,11 +191,11 @@ win19cis_rule_2_3_17_6: true
 win19cis_rule_2_3_17_7: true
 win19cis_rule_2_3_17_8: true
 
-# Section 5 rules
+# section05
 win19cis_rule_5_1: true
 win19cis_rule_5_2: true
 
-# Section 9 rules
+# section09
 win19cis_rule_9_1_1: true
 win19cis_rule_9_1_2: true
 win19cis_rule_9_1_3: true
@@ -225,7 +225,7 @@ win19cis_rule_9_3_8: true
 win19cis_rule_9_3_9: true
 win19cis_rule_9_3_10: true
 
-# Section 17 rules
+# section17
 win19cis_rule_17_1_1: true
 win19cis_rule_17_1_2: true
 win19cis_rule_17_1_3: true
@@ -261,24 +261,17 @@ win19cis_rule_17_9_3: true
 win19cis_rule_17_9_4: true
 win19cis_rule_17_9_5: true
 
-# Section 18 rules
+# section18
 win19cis_rule_18_1_1_1: true
 win19cis_rule_18_1_1_2: true
 win19cis_rule_18_1_2_2: true
 win19cis_rule_18_1_3: true
-win19cis_rule_18_2_1: true
-win19cis_rule_18_2_2: true
-win19cis_rule_18_2_3: true
-win19cis_rule_18_2_4: true
-win19cis_rule_18_2_5: true
-win19cis_rule_18_2_6: true
 win19cis_rule_18_3_1: true
 win19cis_rule_18_3_2: true
 win19cis_rule_18_3_3: true
 win19cis_rule_18_3_4: true
 win19cis_rule_18_3_5: true
 win19cis_rule_18_3_6: true
-win19cis_rule_18_3_7: true
 win19cis_rule_18_4_1: true
 win19cis_rule_18_4_2: true
 win19cis_rule_18_4_3: true
@@ -286,196 +279,222 @@ win19cis_rule_18_4_4: true
 win19cis_rule_18_4_5: true
 win19cis_rule_18_4_6: true
 win19cis_rule_18_4_7: true
-win19cis_rule_18_4_8: true
-win19cis_rule_18_4_9: true
-win19cis_rule_18_4_10: true
-win19cis_rule_18_4_11: true
-win19cis_rule_18_4_12: true
-win19cis_rule_18_5_4_1: true
-win19cis_rule_18_5_4_2: true
-win19cis_rule_18_5_5_1: true
-win19cis_rule_18_5_8_1: true
-win19cis_rule_18_5_9_1: true
-win19cis_rule_18_5_9_2: true
-win19cis_rule_18_5_10_2: true
-win19cis_rule_18_5_11_2: true
+win19cis_rule_18_5_1: true
+win19cis_rule_18_5_2: true
+win19cis_rule_18_5_3: true
+win19cis_rule_18_5_4: true
+win19cis_rule_18_5_5: true
+win19cis_rule_18_5_6: true
+win19cis_rule_18_5_7: true
+win19cis_rule_18_5_8: true
+win19cis_rule_18_5_9: true
+win19cis_rule_18_5_10: true
+win19cis_rule_18_5_11: true
+win19cis_rule_18_5_12: true
+win19cis_rule_18_6_4_1: true
+win19cis_rule_18_6_4_2: true
+win19cis_rule_18_6_4_3: true
+win19cis_rule_18_6_5_1: true
+win19cis_rule_18_6_8_1: true
+win19cis_rule_18_6_9_1: true
+win19cis_rule_18_6_9_2: true
+win19cis_rule_18_6_10_2: true
+win19cis_rule_18_6_11_2: true
 win19cis_rule_18_5_11_3: true
-win19cis_rule_18_5_11_4: true
-win19cis_rule_18_5_14_1: true
-win19cis_rule_18_5_19_2_1: true
-win19cis_rule_18_5_20_1: true
-win19cis_rule_18_5_20_2: true
-win19cis_rule_18_5_21_1: true
-win19cis_rule_18_5_21_2: true
-win19cis_rule_18_6_1: true
-win19cis_rule_18_6_2: true
-win19cis_rule_18_6_3: true
-win19cis_rule_18_7_1_1: true
-win19cis_rule_18_8_3_1: true
-win19cis_rule_18_8_4_1: true
-win19cis_rule_18_8_4_2: true
-win19cis_rule_18_8_5_1: true
-win19cis_rule_18_8_5_2: true
-win19cis_rule_18_8_5_3: true
-win19cis_rule_18_8_5_4: true
-win19cis_rule_18_8_5_5: true
-win19cis_rule_18_8_5_6: true
-win19cis_rule_18_8_5_7: true
-win19cis_rule_18_8_7_2: true
-win19cis_rule_18_8_14_1: true
-win19cis_rule_18_8_21_2: true
-win19cis_rule_18_8_21_3: true
-win19cis_rule_18_8_21_4: true
-win19cis_rule_18_8_21_5: true
-win19cis_rule_18_8_22_1_1: true
-win19cis_rule_18_8_22_1_2: true
-win19cis_rule_18_8_22_1_3: true
-win19cis_rule_18_8_22_1_4: true
-win19cis_rule_18_8_22_1_5: true
-win19cis_rule_18_8_22_1_6: true
-win19cis_rule_18_8_22_1_7: true
-win19cis_rule_18_8_22_1_8: true
-win19cis_rule_18_8_22_1_9: true
-win19cis_rule_18_8_22_1_10: true
-win19cis_rule_18_8_22_1_11: true
-win19cis_rule_18_8_22_1_12: true
-win19cis_rule_18_8_22_1_13: true
-win19cis_rule_18_8_25_1: true
-win19cis_rule_18_8_26_1: true
-win19cis_rule_18_8_27_1: true
-win19cis_rule_18_8_28_1: true
-win19cis_rule_18_8_28_2: true
-win19cis_rule_18_8_28_3: true
-win19cis_rule_18_8_28_4: true
-win19cis_rule_18_8_28_5: true
-win19cis_rule_18_8_28_6: true
-win19cis_rule_18_8_28_7: true
-win19cis_rule_18_8_31_1: true
-win19cis_rule_18_8_31_2: true
-win19cis_rule_18_8_34_6_1: true
-win19cis_rule_18_8_34_6_2: true
-win19cis_rule_18_8_34_6_3: true
-win19cis_rule_18_8_34_6_4: true
-win19cis_rule_18_8_36_1: true
-win19cis_rule_18_8_36_2: true
-win19cis_rule_18_8_37_1: true
-win19cis_rule_18_8_37_2: true
-win19cis_rule_18_8_40_1: true
-win19cis_rule_18_8_48_5_1: true
-win19cis_rule_18_8_48_11_1: true
-win19cis_rule_18_8_50_1: true
-win19cis_rule_18_8_53_1_1: true
-win19cis_rule_18_8_53_1_2: true
+win19cis_rule_18_6_11_4: true
+win19cis_rule_18_6_14_1: true
+win19cis_rule_18_6_19_2_1: true
+win19cis_rule_18_6_20_1: true
+win19cis_rule_18_6_20_2: true
+win19cis_rule_18_6_21_1: true
+win19cis_rule_18_6_21_2: true
+win19cis_rule_18_7_1: true
+win19cis_rule_18_7_2: true
+win19cis_rule_18_7_3: true
+win19cis_rule_18_7_4: true
+win19cis_rule_18_7_5: true
+win19cis_rule_18_7_6: true
+win19cis_rule_18_7_7: true
+win19cis_rule_18_7_8: true
+win19cis_rule_18_7_9: true
+win19cis_rule_18_7_10: true
+win19cis_rule_18_7_11: true
+win19cis_rule_18_8_1_1: true
+win19cis_rule_18_9_3_1: true
 win19cis_rule_18_9_4_1: true
-win19cis_rule_18_9_6_1: true
-win19cis_rule_18_9_8_1: true
-win19cis_rule_18_9_8_2: true
-win19cis_rule_18_9_8_3: true
-win19cis_rule_18_9_10_1_1: true
-win19cis_rule_18_9_12_1: true
+win19cis_rule_18_9_4_2: true
+win19cis_rule_18_9_5_1: true
+win19cis_rule_18_9_5_2: true
+win19cis_rule_18_9_5_3: true
+win19cis_rule_18_9_5_4: true
+win19cis_rule_18_9_5_5: true
+win19cis_rule_18_9_5_6: true
+win19cis_rule_18_9_5_7: true
+win19cis_rule_18_8_7_2: true
 win19cis_rule_18_9_13_1: true
-win19cis_rule_18_9_14_1: true
-win19cis_rule_18_9_14_2: true
-win19cis_rule_18_9_15_1: true
-win19cis_rule_18_9_15_2: true
-win19cis_rule_18_9_16_1: true
-win19cis_rule_18_9_16_2: true
-win19cis_rule_18_9_17_1: true
-win19cis_rule_18_9_17_2: true
-win19cis_rule_18_9_17_3: true
-win19cis_rule_18_9_17_4: true
-win19cis_rule_18_9_17_5: true
-win19cis_rule_18_9_17_6: true
-win19cis_rule_18_9_17_7: true
-win19cis_rule_18_9_17_8: true
-win19cis_rule_18_9_27_1_1: true
-win19cis_rule_18_9_27_1_2: true
-win19cis_rule_18_9_27_2_1: true
-win19cis_rule_18_9_27_2_2: true
-win19cis_rule_18_9_27_3_1: true
-win19cis_rule_18_9_27_3_2: true
-win19cis_rule_18_9_27_4_1: true
-win19cis_rule_18_9_27_4_2: true
-win19cis_rule_18_9_31_2: true
-win19cis_rule_18_9_31_3: true
-win19cis_rule_18_9_31_4: true
-win19cis_rule_18_9_41_1: true
-win19cis_rule_18_9_45_1: true
-win19cis_rule_18_9_46_1: true
-win19cis_rule_18_9_47_4_1: true
-win19cis_rule_18_9_47_4_2: true
-win19cis_rule_18_9_47_5_1_1: true
-win19cis_rule_18_9_47_5_1_2: true
-win19cis_rule_18_9_47_5_3_1: true
-win19cis_rule_18_9_47_6_1: true
-win19cis_rule_18_9_47_9_1: true
-win19cis_rule_18_9_47_9_2: true
-win19cis_rule_18_9_47_9_3: true
-win19cis_rule_18_9_47_9_4: true
-win19cis_rule_18_9_47_11_1: true
-win19cis_rule_18_9_47_12_1: true
-win19cis_rule_18_9_47_12_2: true
-win19cis_rule_18_9_47_15: true
-win19cis_rule_18_9_47_16: true
-win19cis_rule_18_9_58_1: true
-win19cis_rule_18_9_64_1: true
-win19cis_rule_18_9_65_2_2: true
-win19cis_rule_18_9_65_3_2_1: true
-win19cis_rule_18_9_65_3_3_1: true
-win19cis_rule_18_9_65_3_3_2: true
-win19cis_rule_18_9_65_3_3_3: true
-win19cis_rule_18_9_65_3_3_4: true
-win19cis_rule_18_9_65_3_9_1: true
-win19cis_rule_18_9_65_3_9_2: true
-win19cis_rule_18_9_65_3_9_3: true
-win19cis_rule_18_9_65_3_9_4: true
-win19cis_rule_18_9_65_3_9_5: true
-win19cis_rule_18_9_65_3_10_1: true
-win19cis_rule_18_9_65_3_10_2: true
-win19cis_rule_18_9_65_3_11_1: true
-win19cis_rule_18_9_65_3_11_2: true
-win19cis_rule_18_9_66_1: true
-win19cis_rule_18_9_67_2: true
-win19cis_rule_18_9_67_3: true
-win19cis_rule_18_9_72_1: true
-win19cis_rule_18_9_85_1_1: true
-win19cis_rule_18_9_89_1: true
-win19cis_rule_18_9_89_2: true
-win19cis_rule_18_9_90_1: true
-win19cis_rule_18_9_90_2: true
-win19cis_rule_18_9_90_3: true
-win19cis_rule_18_9_91_1: true
-win19cis_rule_18_9_100_1: true
-win19cis_rule_18_9_100_2: true
+win19cis_rule_18_9_19_2: true
+win19cis_rule_18_9_19_3: true
+win19cis_rule_18_9_19_4: true
+win19cis_rule_18_9_19_5: true
+win19cis_rule_18_9_20_1_1: true
+win19cis_rule_18_9_20_1_2: true
+win19cis_rule_18_9_20_1_3: true
+win19cis_rule_18_9_20_1_4: true
+win19cis_rule_18_9_20_1_5: true
+win19cis_rule_18_9_20_1_6: true
+win19cis_rule_18_9_20_1_7: true
+win19cis_rule_18_9_20_1_8: true
+win19cis_rule_18_9_20_1_9: true
+win19cis_rule_18_9_20_1_10: true
+win19cis_rule_18_9_20_1_11: true
+win19cis_rule_18_9_20_1_12: true
+win19cis_rule_18_9_20_1_13: true
+win19cis_rule_18_9_23_1: true
+win19cis_rule_18_9_24_1: true
+win19cis_rule_18_9_25_1: true
+win19cis_rule_18_9_25_2: true
+win19cis_rule_18_9_26_1: true
+win19cis_rule_18_9_27_1: true
+win19cis_rule_18_9_27_2: true
+win19cis_rule_18_9_27_3: true
+win19cis_rule_18_9_27_4: true
+win19cis_rule_18_9_27_5: true
+win19cis_rule_18_9_27_6: true
+win19cis_rule_18_9_27_7: true
+win19cis_rule_18_9_30_1: true
+win19cis_rule_18_9_30_2: true
+win19cis_rule_18_9_32_6_1: true
+win19cis_rule_18_3_32_6_2: true
+win19cis_rule_18_9_32_6_3: true
+win19cis_rule_18_9_32_6_4: true
+win19cis_rule_18_9_34_1: true
+win19cis_rule_18_9_34_2: true
+win19cis_rule_18_9_35_1: true
+win19cis_rule_18_9_35_2: true
+win19cis_rule_18_9_38_1: true
+win19cis_rule_18_9_46_5_1: true
+win19cis_rule_18_9_46_11_1: true
+win19cis_rule_18_9_48_1: true
+win19cis_rule_18_9_50_1_1: true
+win19cis_rule_18_9_50_1_2: true
+win19cis_rule_18_10_3_1: true
+win19cis_rule_18_10_5_1: true
+win19cis_rule_18_10_7_1: true
+win19cis_rule_18_10_7_2: true
+win19cis_rule_18_10_7_3: true
+win19cis_rule_18_10_8_1_1: true
+win19cis_rule_18_10_10_1: true
+win19cis_rule_18_10_12_1: true
+win19cis_rule_18_10_12_2: true
+win19cis_rule_18_10_12_3: true
+win19cis_rule_18_9_14_3: true
+win19cis_rule_18_10_13_1: true
+win19cis_rule_18_10_14_1: true
+win19cis_rule_18_10_14_2: true
+win19cis_rule_18_10_15_1: true
+win19cis_rule_18_10_15_2: true
+win19cis_rule_18_10_15_3: true
+win19cis_rule_18_10_15_4: true
+win19cis_rule_18_10_15_5: true
+win19cis_rule_18_10_15_6: true
+win19cis_rule_18_10_15_7: true
+win19cis_rule_18_10_15_8: true
+win19cis_rule_18_10_17_1: true
+win19cis_rule_18_10_17_2: true
+win19cis_rule_18_10_17_3: true
+win19cis_rule_18_10_17_4: true
+win19cis_rule_18_10_26_1_1: true
+win19cis_rule_18_10_26_1_2: true
+win19cis_rule_18_10_26_2_1: true
+win19cis_rule_18_10_26_2_2: true
+win19cis_rule_18_10_26_3_1: true
+win19cis_rule_18_10_26_3_2: true
+win19cis_rule_18_10_26_4_1: true
+win19cis_rule_18_10_26_4_2: true
+win19cis_rule_18_10_29_2: true
+win19cis_rule_18_10_29_3: true
+win19cis_rule_18_10_29_4: true
+win19cis_rule_18_10_37_1: true
+win19cis_rule_18_10_41_1: true
+win19cis_rule_18_10_42_1: true
+win19cis_rule_18_10_43_5_1: true
+win19cis_rule_18_10_43_5_2: true
+win19cis_rule_18_10_43_6_1_1: true
+win19cis_rule_18_10_43_6_1_2: true
+win19cis_rule_18_10_43_6_3_1: true
+win19cis_rule_18_10_43_7_1: true
+win19cis_rule_18_10_43_10_1: true
+win19cis_rule_18_10_43_10_2: true
+win19cis_rule_18_10_43_10_3: true
+win19cis_rule_18_10_43_10_4: true
+win19cis_rule_18_10_43_12_1: true
+win19cis_rule_18_10_43_13_1: true
+win19cis_rule_18_10_43_13_2: true
+win19cis_rule_18_10_43_16: true
+win19cis_rule_18_10_43_17: true
+win19cis_rule_18_10_51_1: true
+win19cis_rule_18_10_56_1: true
+win19cis_rule_18_10_57_2_2: true
+win19cis_rule_18_10_57_3_2_1: true
+win19cis_rule_18_10_57_3_3_1: true
+win19cis_rule_18_10_57_3_3_2: true
+win19cis_rule_18_10_57_3_3_3: true
+win19cis_rule_18_10_57_3_3_4: true
+win19cis_rule_18_10_57_3_3_5: true
+win19cis_rule_18_10_57_3_3_6: true
+win19cis_rule_18_10_57_3_9_1: true
+win19cis_rule_18_10_57_3_9_2: true
+win19cis_rule_18_10_57_3_9_3: true
+win19cis_rule_18_10_57_3_9_4: true
+win19cis_rule_18_10_57_3_9_5: true
+win19cis_rule_18_10_57_3_10_1: true
+win19cis_rule_18_10_57_3_10_2: true
+win19cis_rule_18_10_57_3_11_1: true
+win19cis_rule_18_10_57_3_11_2: true
+win19cis_rule_18_10_58_1: true
+win19cis_rule_18_10_59_2: true
+win19cis_rule_18_10_59_3: true
+win19cis_rule_18_10_59_4: true
+win19cis_rule_18_10_63_1: true
+win19cis_rule_18_10_76_2_1: true
+win19cis_rule_18_10_80_1: true
+win19cis_rule_18_10_80_2: true
+win19cis_rule_18_10_81_1: true
+win19cis_rule_18_10_81_2: true
+win19cis_rule_18_10_81_3: true
+win19cis_rule_18_10_82_1: true
+win19cis_rule_18_10_82_2: true
+win19cis_rule_18_10_87_1: true
+win19cis_rule_18_10_87_2: true
 # WINRM CONTROLS #
-# Setting The Following Controls To True Will Break Ansible Connection
+# Setting The Following Controls To True Will Break the Ansible Connection
 # Setting win_skip_for_test: true -- will skip the controls here even if they are set to true.
-# win19cis_rule_18_9_102_1_1
-# win19cis_rule_18_9_102_1_2
-# win19cis_rule_18_9_102_2_1
-# win19cis_rule_18_9_102_2_2
-# win19cis_rule_18_9_102_2_3
-# win19cis_rule_18_9_103_1
-win19cis_rule_18_9_102_1_1: true
-win19cis_rule_18_9_102_1_2: true
-win19cis_rule_18_9_102_1_3: true
-win19cis_rule_18_9_102_2_1: true
+# win19cis_rule_18_10_89_1_1
+# win19cis_rule_18_10_89_1_2
+# win19cis_rule_18_10_89_2_1
+# win19cis_rule_18_10_89_2_2
+# win19cis_rule_18_10_89_2_3
+win19cis_rule_18_10_89_1_1: true
+win19cis_rule_18_10_89_1_2: true
+win19cis_rule_18_10_89_2_1: true
+win19cis_rule_18_10_89_2_2: true
+win19cis_rule_18_10_89_2_3: true
 # This control will have to be set to Enabled (1) to allow for continued remote management via Ansible following
 # machine restart. The CIS standard calls for 0 but doing so will break all remote connections to the system.
-win19cis_rule_18_9_102_2_2: true
-win19cis_rule_18_9_102_2_3: true
-win19cis_rule_18_9_102_2_4: true
+win19cis_rule_18_10_89_1_3: true
+win19cis_rule_18_10_89_2_4: true
+win19cis_rule_18_10_90_1: true
 # WINRM CONTROLS END #
-win19cis_rule_18_9_103_1: true
-win19cis_rule_18_9_105_2_1: true
-win19cis_rule_18_9_108_1_1: true
-win19cis_rule_18_9_108_2_1: true
-win19cis_rule_18_9_108_2_2: true
-win19cis_rule_18_9_108_4_1: true
-win19cis_rule_18_9_108_4_2: true
-win19cis_rule_18_9_108_4_3: true
+win19cis_rule_18_10_92_2_1: true
+win19cis_rule_18_10_93_1_1: true
+win19cis_rule_18_10_93_2_1: true
+win19cis_rule_18_10_93_2_2: true
+win19cis_rule_18_10_93_4_1: true
+win19cis_rule_18_10_93_4_2: true
+win19cis_rule_18_10_93_4_3: true
 
-# Section 19 rules
+
+# section19
 win19cis_rule_19_1_3_1: true
 win19cis_rule_19_1_3_2: true
 win19cis_rule_19_1_3_3: true
@@ -483,14 +502,14 @@ win19cis_rule_19_5_1_1: true
 win19cis_rule_19_6_6_1_1: true
 win19cis_rule_19_7_4_1: true
 win19cis_rule_19_7_4_2: true
-win19cis_rule_19_7_8_1: true
-win19cis_rule_19_7_8_2: true
-win19cis_rule_19_7_8_3: true
-win19cis_rule_19_7_8_4: true
-win19cis_rule_19_7_8_5: true
-win19cis_rule_19_7_28_1: true
-win19cis_rule_19_7_43_1: true
-win19cis_rule_19_7_47_2_1: true
+win19cis_rule_19_7_7_1: true
+win19cis_rule_19_7_7_2: true
+win19cis_rule_19_7_7_3: true
+win19cis_rule_19_7_7_4: true
+win19cis_rule_19_7_7_5: true
+win19cis_rule_19_7_25_1: true
+win19cis_rule_19_7_40_1: true
+win19cis_rule_19_7_42_2_1: true
 
 # Section 1 Variables
 
@@ -498,18 +517,18 @@ win19cis_rule_19_7_47_2_1: true
 # win19cis_max_passwords_saved is the variable used to dictate the number of unique passwords
 # that have to be associated with a user account before you can reuse an old password.
 # The recommended state for this setting is 24 Or More passwords.
-# NOTE: As Of the publication if this benchmark, Microsoft has a maximum limit of 24 saved passwords.
-# This may change at a later date but we have left it setup as a variable for that reason.
+# NOTE: As Of the publication of this benchmark, Microsoft has a maximum limit of 24 saved passwords.
+# This may change at a later date but we have left it set up as a variable for that reason.
 win19cis_max_passwords_saved: 24
 
 # 1.1.2
-# win19cis_maximum_password_age is the policy setting defines how long a user can use their
+# win19cis_maximum_password_age is the policy setting that defines how long a user can use their
 # password before it expires.
 # The recommended state for this setting is 365 or fewer days, but not 0 (zero).
 win19cis_maximum_password_age: 365
 
 # 1.1.3
-# win19cis_minimum_password_age is the policy setting determines the number of days that you
+# win19cis_minimum_password_age is the policy setting that determines the number of days that you
 # must use a password before you can change it. The range of values for this policy setting is
 # between 1 and 999 days. (You may also set the value to 0 to allow immediate password changes.)
 # The default value for this setting is 0 days.
@@ -517,7 +536,7 @@ win19cis_maximum_password_age: 365
 win19cis_minimum_password_age: 1
 
 # 1.1.4
-# win19cis_minimum_password_length is the policy setting determines the least number of characters
+# win19cis_minimum_password_length is the policy setting that determines the least number of characters
 # that make up a password for a user account.
 # The recommended state for this setting is: 14 or more character(s).
 win19cis_minimum_password_length: 14
@@ -525,19 +544,25 @@ win19cis_minimum_password_length: 14
 # 1.2.1
 # win19cis_account_lockout_duration is the  policy setting determines the length of time that
 # must pass before a locked account is unlocked and a user can try to log on again.
-# NOTE: If the value for this policy setting is configured to 0, locked out accounts will remain locked out
+# NOTE: If the value for this policy setting is configured to 0, locked-out accounts will remain locked-out
 # until an administrator manually unlocks them.
 # The recommended state for this setting is: 15 or more minute(s).
 win19cis_account_lockout_duration: 15
 
 # 1.2.2
-# win19cis_lockout_bad_count is the policy setting determines the number of failed logon
+# win19cis_lockout_bad_count is the policy setting that determines the number of failed logon
 # attempts before the account is locked.
 # The recommended state for this setting is: 5 or fewer invalid logon attempt(s), but not 0.
 win19cis_bad_login_lockout_count: 5
 
 # 1.2.3
-# win19cis_account_lockout_counter_reset is the policy setting determines the length of time before the
+# win19cis_allow_admin_account_lockout is the policy setting that determines whether the built-in
+# Administrator account is subject to the following Account Lockout Policy settings.
+# 1 = enabled or 0 = disabled
+win19cis_allow_admin_account_lockout: 1
+
+# 1.2.4
+# win19cis_account_lockout_counter_reset is the policy setting that determines the length of time before the
 # Account lockout threshold resets to zero. The default value for this policy setting is Not Defined.
 # NOTE: If the Account lockout threshold is defined (win19cis_account_lockout_duration), this reset
 # time must be less than or equal to the value for the Account lockout duration setting.
@@ -547,36 +572,33 @@ win19cis_account_lockout_counter_reset: 15
 # Section 2 Variables
 
 # 2.2.18
-# win19cis_hyperv_installed is the toggle that will address if there is Hyper-V installed on the system.
-# By default, only Administrators can create symbolic links this is when it is left as false.
-# When true The recommended state for this setting is: Administrators and (when the Hyper-V Role is installed)
-# NT VIRTUAL MACHINE\Virtual Machines
+# is_hyperv_installed is Hyper-V installed
 win19cis_hyperv_installed: false
 
 # 2.2.33
-# Window Manager\Window Manager Group only exists on non Core installations
+# Window Manager\Window Manager Group only exists on non-Core installations
 # windows_installation_type should be 'Server Core' for Core installations
 # This is a variable to determine if Windows Manager should be included in this step
 win19cis_increase_scheduling_priority_users: '{{ ["Administrators"] if (windows_installation_type=="Server Core") else (["Administrators","Window Manager\Window Manager Group"]) }}'
 
 # 2.2.37
-# win19cis_exchange_server_running is the policy setting determines which users can change the auditing options for
+# win19cis_exchange_server_running is the policy setting that determines which users can change the auditing options for
 # files and directories and clear the Security log. Setting to true will set both groups to be added.
 # False will only add Administrators.
 # True will add administrators and (when Exchange is running in the environment) Exchange Servers.
 # The recommended state for this setting is: Administrators and when Exchange is running in the environment) Exchange Servers.
 win19cis_exchange_server_running: false
 
-# 2.3.1.5
+# 2.3.1.4
 # win19cis_admin_username is the name the administrator account will be renamed to
 win19cis_admin_username: adminchangethis
 
-# 2.3.1.6
+# 2.3.1.5
 # win19cis_guest_username is the name the guest account will be renamed to
 win19cis_guest_username: guestchangethis
 
 # 2.3.6.5
-# win19cis_domain_member_maximum_password_age is the policy setting determines the maximum allowable age for a
+# win19cis_domain_member_maximum_password_age is the policy setting that determines the maximum allowable age for a
 # computer account password. By default, domain members automatically change their domain passwords every 30 days.
 # The recommended state for this setting is: 30 or fewer days, but not 0.
 win19cis_domain_member_maximum_password_age: 30
@@ -606,24 +628,24 @@ win19cis_legal_notice: |
     -Notwithstanding the above, using this IS does not constitute consent to PM, LE or CI investigative searching or monitoring of the content of privileged communications, or work product, related to personal representation or services by attorneys, psychotherapists, or clergy, and their assistants. Such communications and work product are private and confidential. See User Agreement for details.
 
 # 2.3.7.5
-# win19cis_legal_notice_caption is the policy setting specifies the text displayed in the title bar of the window that users see
+# win19cis_legal_notice_caption is the policy setting that specifies the text displayed in the title bar of the window that users see
 # when they log on to the system. Configure this setting in a manner that is consistent with the security and operational
 # requirements of your organization.
 win19cis_legal_notice_caption: "DoD Notice and Consent Banner"
 
 # 2.3.7.6
-# win19cis_cached_logons_count is the number that is assigned to this policy setting indicates the number of users whose
+# win19cis_cached_logons_count is the number that is assigned to this policy setting and indicates the number of users whose
 # logon information the computer will cache locally. If this value is set to 0, the logon cache feature is disabled.
 # The recommended state for this setting is: 4 or fewer logon(s).
 win19cis_cached_logons_count: 1
 
 # 2.3.7.7
-# win19cis_password_expiry_warning_days is the policy setting determines how far in advance users are warned that their password will expire.
+# win19cis_password_expiry_warning_days is the policy setting that determines how far in advance users are warned that their password will expire.
 # The recommended state for this setting is: between 5 and 14 days.
 win19cis_password_expiry_warning_days: 14
 
 # 2.3.9.1
-# win19cis_smb_auto_disconnect_time is the policy setting allows you to specify the amount of continuous idle time that must pass in an
+# win19cis_smb_auto_disconnect_time is the policy setting that allows you to specify the amount of continuous idle time that must pass in an
 # SMB session before the session is suspended because of inactivity.
 # The recommended state for this setting is: 15 or fewer minute(s).
 win19cis_smb_auto_disconnect_time: 15
@@ -632,7 +654,7 @@ win19cis_smb_auto_disconnect_time: 15
 
 # 9.1.5
 # win19cis_domain_firewall_log_path is the path to the domain firewall log files. The control suggests %SystemRoot%\System32\logfiles\firewall\domainfw.log
-# This is a variable to give some leway on where to store these log files
+# This is a variable to give some leeway on where to store these log files
 win19cis_domain_firewall_log_path: '%SystemRoot%\System32\logfiles\firewall\domainfw.log'
 
 # 9.1.6
@@ -642,83 +664,131 @@ win19cis_domain_firewall_log_size: 16384
 
 # 9.2.5
 # private_firewall_log_path is the path to the private firewall log files. The control suggests %SystemRoot%\System32\logfiles\firewall\privatefw.log
-# This is a variable to give some leway on where to store these log files
+# This is a variable to give some leeway on where to store these log files
 win19cis_private_firewall_log_path: '%SystemRoot%\System32\logfiles\firewall\privatefw.log'
 
 # 9.2.6
 # private_firewall_log_size is the size of the log file
-# To conform to CIS stadnards the value should be 16,384 or greater. Value is in KB
+# To conform to CIS standards the value should be 16,384 or greater. Value is in KB
 win19cis_private_firewall_log_size: 16384
 
 # 9.3.7
 # win19cis_public_firewall_log_path is the path to the public firewall log file. The control suggests %SystemRoot%\System32\logfiles\firewall\publicfw.log
-# This is a variable to give some leway on where to store these log files
+# This is a variable to give some leeway on where to store these log files
 win19cis_public_firewall_log_path: '%SystemRoot%\System32\logfiles\firewall\publicfw.log'
 
 # 9.3.8
 # public_firewall_log_size is the size of the log file
-# To conform to CIS stadnards the value should be 16,384 or greater. Value is in KB
+# To conform to CIS standards the value should be 16,384 or greater. Value is in KB
 win19cis_public_firewall_log_size: 16384
 
 # Section 18 Variables
 
-# Control 18.2.5
-# win19cis_laps_password_length is the LAPS tool password length.
-# The recommended state for this setting is: Enabled: 15 or more.
-win19cis_laps_password_length: 15
-
-# Control 18.2.6
-# win19cis_laps_password_age_days is the LAPS tool password age in days.
-# The recommended state for this setting is: Enabled: 30 or fewer.
-win19cis_laps_password_age_days: 30
-
-# 18.3.6
+# 18.4.6
 # win19cis_netbt_nodetype is the node type value in HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\NetBT\Parameters:NodeType
-# Options are B-node value of 1, P-node value of 2, M-node value of 4, H-node value of 8. P-node is the recommended setting from CIS
+# Options are a B-node value of 1, P-node value of 2, M-node value of 4, and H-node value of 8. P-node is the recommended setting from CIS
 win19cis_netbt_nodetype: 2
 
-# 18.4.9
+# 18.5.9
 # win19cis_screen_saver_grace_period is the grace period between when the screen saver is launched and when the console is actually
 # locked automatically when screen saver locking is enabled.
 # The recommended state for this setting is: Enabled: 5 or fewer seconds.
 win19cis_screen_saver_grace_period: 5
 
-# 18.4.12
+# 18.5.12
 # win19cis_log_threshold_audit_event is the setting that can generate a security audit in the Security event log when the
 # log reaches a user-defined threshold.
 # The recommended state for this setting is: Enabled: 90% or less.
 win19cis_log_threshold_audit_event: 90
 
-# 18.9.27.1.2
+# 18.6.4.1
+# win19cis_doh_policy os the setting determines if DNS over HTTPS (DoH) is used by the system. DNS over HTTPS (DoH) is a protocol
+# for performing remote Domain Name System (DNS) resolution over the Hypertext Transfer Protocol Secure (HTTPS).
+# The recommended state for this setting is: Enabled: Allow DoH.
+# Note: Possible Valid Settings
+# 2 - Enabled: Allow DoH
+# 3 - Enabled: Require DoH
+# Default: 2
+win19cis_doh_policy: 2
+
+# 18.6.4.2
+# win19cis_enable_netbios_policy is the policy that setting specifies if the Domain Name System (DNS) client will perform name resolution
+# over Network Basic Input/Output System (NetBIOS).
+# The recommended state for this setting is: Enabled: Disable NetBIOS name resolution on public networks.
+# Note: Possible Valid Settings
+# 0 - Enabled: Disable NetBIOS name resolution
+# 2 - Enabled: Disable NetBIOS name resolution on public networks
+# Default: 2
+win19cis_enable_netbios_policy: 2
+
+# 18.7.6
+# win19cis_force_kerberos_for_rpc is the policy setting controls which protocols incoming Remote Procedure Call (RPC) connections to the
+# print spooler are allowed to use.
+# The recommended state for this setting is: Enabled: Negotiate or higher.
+# 0 - Negotiate
+# 1 - Kerberos
+# Default: 0
+win19cis_force_kerberos_for_rpc: 0
+
+# 18.10.13.1
+# win19cis_require_pin_for_pairing is the policy setting that controls whether or not a PIN is required for pairing to a wireless display device.
+# The recommended state for this setting is: Enabled: First Time OR Enabled: Always.
+# 1 - First Time
+# 2 - Always
+# Default: 1
+win19cis_require_pin_for_pairing: 1
+
+# 18.10.15.1
+# win19cis_allow_telemetry is the policy setting that determines the amount of diagnostic and usage data reported to Microsoft
+# Note: If your organization relies on Windows Update, the minimum recommended setting is Required diagnostic data.
+# 0 - Diagnostic data off (not recommended)
+# 1 - Send required diagnostic data.
+# Default: 1
+win19cis_allow_telemetry: 1
+
+# 18.10.26.1.2
 # win19cis_application_max_log_file_size is the setting that specifies the maximum size of the log file in kilobytes. The maximum log file size can be
 # configured between 1 megabyte (1,024 kilobytes) and 4 terabytes (4,194,240 kilobytes) in kilobyte increments.
 # The recommended state for this setting is: Enabled: 32,768 or greater
 win19cis_application_max_log_file_size: 32768
 
-# 18.9.27.2.2
+# 18.10.26.2.2
 # win19cis_security_max_log_file_size is the setting that specifies the maximum size of the log file in kilobytes. The maximum log file size can
 # be configured between 1 megabyte (1,024 kilobytes) and 4 terabytes (4,194,240 kilobytes) in kilobyte increments.
 # The recommended state for this setting is: Enabled: 196,608 or greater.
 win19cis_security_max_log_file_size: 196608
 
-# 18.9.27.3.2
-# win19cis_setup_max_log_file_size is the setting specifies the maximum size of the log file in kilobytes. The maximum log file size can be
+# 18.10.26.3.2
+# win19cis_setup_max_log_file_size is the setting that specifies the maximum size of the log file in kilobytes. The maximum log file size can be
 # configured between 1 megabyte (1,024 kilobytes) and 4 terabytes (4,194,240 kilobytes) in kilobyte increments.#
 # The recommended state for this setting is: Enabled: 32,768 or greater.
 win19cis_setup_max_log_file_size: 32768
 
-# 18.9.27.4.2
+# 18.10.26.4.2
 # win19cis_system_max_log_file_size is the setting that specifies the maximum size of the log file in kilobytes. The maximum log file size
 # can be configured between 1 megabyte (1,024 kilobytes) and 4 terabytes (4,194,240 kilobytes) in kilobyte increments.
 # The recommended state for this setting is: Enabled: 32,768 or greater.
 win19cis_system_max_log_file_size: 32768
 
-# 18.9.65.3.10.1
-# win19cis_idle_rdp_session_disconnect_time is the setting allows you to specify the maximum amount of time that an active Remote Desktop
+# 18.10.57.3.10.1
+# win19cis_idle_rdp_session_disconnect_time is the setting that allows you to specify the maximum amount of time that an active Remote Desktop
 # Services session can be idle (without user input) before it is automatically disconnected.
 # The recommended state for this setting is: Enabled: 15 minutes or less, but not Never (0).
 # 1 min = 60000, 5 min = 300000, 10 min = 600000, 15 min = 900000
 win19cis_idle_rdp_session_disconnect_time: 900000
+
+# 18.10.80.2
+# win19cis_allow_windows_ink_workspace is the policy setting that determines whether Windows Ink items are allowed above the lock screen.
+# The recommended state for this setting is: Enabled: On, but disallow access above lock OR Enabled: Disabled.
+# 0 - Enabled: Disabled
+# 1 - Enabled: On, but disallow access above lock
+win19cis_allow_windows_ink_workspace: 1
+
+# 18.10.93.4.2
+# win19cis_defer_feature_updates_period_in_days is the policy setting that determines when Preview Build or Feature Updates are received.
+# Recommended setting: Enabled: 180 or more days
+# Default: 180
+win19cis_defer_feature_updates_period_in_days: 180
 
 # Section 19 Variables
 
