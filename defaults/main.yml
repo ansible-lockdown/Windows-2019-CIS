@@ -59,7 +59,6 @@ win19cis_rule_1_1_5: true
 # This setting is only available within the built-in OS security template of
 # Windows 10 Release 2004 and Server 2022 (or newer). Control is Commented out for now.
 win19cis_rule_1_1_6: false
-win19cis_rule_1_1_7: true
 # We have found the order of these three tasks below varies between cloud-based instances
 # and VM-based instances locally. The task below breaks out to run in a different order
 # for cloud-based systems and local-based systems. Notes are applied in the section01.yml file.
