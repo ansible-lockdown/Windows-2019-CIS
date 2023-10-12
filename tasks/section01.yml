@@ -305,9 +305,8 @@
       value: "{{ win19cis_allow_admin_account_lockout }}"
   when:
       - win19cis_rule_1_2_3
-      - not win19cis_cloud_based_system or
-        win2019cis_is_domain_controller or
-        win2019cis_is_domain_member
+      - win2019cis_is_domain_member
+      - not win19cis_cloud_based_system
   tags:
       - level1-memberserver
       - rule_1.2.3
