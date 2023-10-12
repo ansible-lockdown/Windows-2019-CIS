@@ -214,7 +214,7 @@
             - win19cis_bad_login_lockout_count > 0
   when:
       - win19cis_rule_1_2_2
-      - not win19cis_cloud_based_systema 
+      - not win19cis_cloud_based_system
   tags:
       - level1-domaincontroller
       - level1-memberserver
