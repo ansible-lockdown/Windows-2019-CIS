@@ -603,7 +603,7 @@
       type: dword
   when:
       - win19cis_rule_18_6_4_3
-      - win2022cis_is_domain_member
+      - win2019cis_is_domain_member
   tags:
       - level1-domaincontroller
       - level1-memberserver
@@ -902,7 +902,7 @@
       type: dword
   when:
       - win19cis_rule_18_6_21_2
-      - win2022cis_is_domain_member
+      - win2019cis_is_domain_member
   tags:
       - level2-memberserver
       - rule_18.6.21.2
@@ -1225,7 +1225,7 @@
       type: dword
   when:
       - win19cis_rule_18_9_5_5
-      - win2022cis_is_domain_member
+      - win2019cis_is_domain_member
   tags:
       - ngws-memberserver
       - rule_18.9.5.5
@@ -1240,7 +1240,7 @@
       type: dword
   when:
       - win19cis_rule_18_9_5_6
-      - win2022cis_is_domain_controller
+      - win2019cis_is_domain_controller
   tags:
       - ngws-domaincontroller
       - rule_18.9.5.6
@@ -1694,7 +1694,7 @@
       type: dword
   when:
       - win19cis_rule_18_9_27_4
-      - win2022cis_is_domain_member
+      - win2019cis_is_domain_member
   tags:
       - level1-memberserver
       - rule_18.9.27.4
@@ -1874,7 +1874,7 @@
       type: dword
   when:
       - win19cis_rule_18_9_35_1
-      - win2022cis_is_domain_member
+      - win2019cis_is_domain_member
   tags:
       - level1-memberserver
       - rule_18.9.35.1
@@ -1889,7 +1889,7 @@
       type: dword
   when:
       - win19cis_rule_18_9_35_2
-      - win2022cis_is_domain_member
+      - win2019cis_is_domain_member
   tags:
       - level2-memberserver
       - rule_18.9.35.2
@@ -1979,7 +1979,7 @@
       type: dword
   when:
       - win19cis_rule_18_9_50_1_2
-      - win2022cis_is_domain_member
+      - win2019cis_is_domain_member
   tags:
       - level2-memberserver
       - rule_18.9.50.1.2
