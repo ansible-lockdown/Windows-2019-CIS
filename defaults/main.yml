@@ -123,6 +123,7 @@ win19cis_rule_2_3_1_4: true
 # Setting win19cis_rule_2_3_1_5 Control To True Will Break Ansible Connection
 # Setting win_skip_for_test: true -- will skip the controls here even if they are set to true.
 win19cis_rule_2_3_1_5: true
+win19cis_rule_2_3_1_6: true
 win19cis_rule_2_3_2_1: true
 win19cis_rule_2_3_2_2: true
 win19cis_rule_2_3_4_1: true
