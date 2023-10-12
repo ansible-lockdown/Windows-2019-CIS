@@ -224,22 +224,6 @@
       - patch
       - account
 
-- name: "1.2.3 | PATCH | Ensure Allow Administrator account lockout is set to Enabled"
-  community.windows.win_security_policy:
-      section: System Access
-      key: AllowAdministratorLockout
-      value: "{{ win19cis_allow_admin_account_lockout }}"
-  when:
-      - win19cis_rule_1_2_3
-      - not win19cis_cloud_based_system or
-        win2019cis_is_domain_controller or
-        win2019cis_is_domain_member
-  tags:
-      - level1-memberserver
-      - rule_1.2.3
-      - patch
-      - password
-
 - name: "1.2.4 | PATCH | Ensure Reset account lockout counter after is set to 15 or more minutes."
   block:
       - name: "1.2.4 | PATCH | Ensure Reset account lockout counter after is set to 15 or more minutes. | Verify variable set to 15 or more minutes warning."
@@ -279,6 +263,22 @@
       - rule_1.2.4
       - patch
       - account
+
+- name: "1.2.3 | PATCH | Ensure Allow Administrator account lockout is set to Enabled"
+  community.windows.win_security_policy:
+      section: System Access
+      key: AllowAdministratorLockout
+      value: "{{ win19cis_allow_admin_account_lockout }}"
+  when:
+      - win19cis_rule_1_2_3
+      - not win19cis_cloud_based_system or
+        win2019cis_is_domain_controller or
+        win2019cis_is_domain_member
+  tags:
+      - level1-memberserver
+      - rule_1.2.3
+      - patch
+      - password
 
 - name: "1.2.1 | PATCH | Ensure Account lockout duration is set to 15 or more minutes"
   block:
