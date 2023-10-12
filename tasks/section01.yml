@@ -184,7 +184,23 @@
       - section01_cloud_lockout_order
 
 # THE FOLLOWING 3 CONTROLS WILL FAIL UNLESS THEY ARE IN THE FOLLOWING ORDER FOR LOCAL-BASED SYSTEMS
-# CONTROL 1.2.2, CONTROL 1.2.4, CONTROL 1.2.1, CONTROL 1.2.3
+# CONTROL CONTROL 1.2.3, 1.2.2, CONTROL 1.2.4, CONTROL 1.2.1
+- name: "1.2.3 | PATCH | Ensure Allow Administrator account lockout is set to Enabled"
+  community.windows.win_security_policy:
+      section: System Access
+      key: AllowAdministratorLockout
+      value: "{{ win19cis_allow_admin_account_lockout }}"
+  when:
+      - win19cis_rule_1_2_3
+      - not win19cis_cloud_based_system or
+        win2019cis_is_domain_controller or
+        win2019cis_is_domain_member
+  tags:
+      - level1-memberserver
+      - rule_1.2.3
+      - patch
+      - password
+
 - name: "1.2.2 | PATCH | Ensure Account lockout threshold is set to 5 or fewer invalid logon attempt(s), but not 0."
   block:
       - name: "1.2.2 | AUDIT | Ensure Account lockout threshold is set to 5 or fewer invalid logon attempt(s), but not 0. | Verify Variable Not 0 or more then 5 warning."
@@ -296,19 +312,3 @@
       - rule_1.2.1
       - patch
       - account
-
-- name: "1.2.3 | PATCH | Ensure Allow Administrator account lockout is set to Enabled"
-  community.windows.win_security_policy:
-      section: System Access
-      key: AllowAdministratorLockout
-      value: "{{ win19cis_allow_admin_account_lockout }}"
-  when:
-      - win19cis_rule_1_2_3
-      - not win19cis_cloud_based_system or
-        win2019cis_is_domain_controller or
-        win2019cis_is_domain_member
-  tags:
-      - level1-memberserver
-      - rule_1.2.3
-      - patch
-      - password
