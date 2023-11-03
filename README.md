@@ -2,7 +2,7 @@
 
 ## Configure a Windows 2019 system to be [CIS](https://www.cisecurity.org/cis-benchmarks/) compliant
 
-### Based on [ Microsoft Windows Server 2019 Benchmark v1.3.0 - 03-18-2022 ](https://www.cisecurity.org/cis-benchmarks/)
+### Based on [ Microsoft Windows Server 2019 Benchmark v2.0.0 - 04-14-2023 ](https://www.cisecurity.org/cis-benchmarks/)
 
 ---
 
@@ -12,7 +12,6 @@
 ![followers](https://img.shields.io/github/followers/ansible-lockdown?style=social)
 [![Twitter URL](https://img.shields.io/twitter/url/https/twitter.com/AnsibleLockdown.svg?style=social&label=Follow%20%40AnsibleLockdown)](https://twitter.com/AnsibleLockdown)
 
-![Ansible Galaxy Quality](https://img.shields.io/ansible/quality/56324?label=Quality&&logo=ansible)
 ![Discord Badge](https://img.shields.io/discord/925818806838919229?logo=discord)
 
 ![Release Branch](https://img.shields.io/badge/Release%20Branch-Main-brightgreen)
@@ -40,7 +39,7 @@
 
 ### Community
 
-On our [Discord Server](https://discord.io/ansible-lockdown) to ask questions, discuss features, or just chat with other Ansible-Lockdown users
+On our [Discord Server](https://www.lockdownenterprise.com/discord) to ask questions, discuss features, or just chat with other Ansible-Lockdown users
 
 ---
 
@@ -77,7 +76,7 @@ Further details can be seen in the [Changelog](./ChangeLog.md)
 
 ## Auditing (new)
 
-Currently this release does not have a auditing tool that is up to date.
+Currently this release does not have an auditing tool that is up to date.
 
 ## Documentation
 
@@ -98,7 +97,7 @@ Currently this release does not have a auditing tool that is up to date.
   - [Tower User Guide](https://docs.ansible.com/ansible-tower/latest/html/userguide/index.html)
   - [Ansible Community Info](https://docs.ansible.com/ansible/latest/community/index.html)
 - Functioning Ansible and/or Tower Installed, configured, and running. This includes all of the base Ansible/Tower configurations, needed packages installed, and infrastructure setup.
-- Please read through the tasks in this role to gain an understanding of what each control is doing. Some of the tasks are disruptive and can have unintended consiquences in a live production system. Also familiarize yourself with the variables in the defaults/main.yml file.
+- Please read through the tasks in this role to gain an understanding of what each control is doing. Some of the tasks are disruptive and can have unintended consequences in a live production system. Also familiarize yourself with the variables in the defaults/main.yml file.
 
 **Technical Dependencies:**
 
@@ -119,7 +118,7 @@ This role is designed that the end user should not have to edit the tasks themse
 
 ## Tags
 
-There are many tags available for added control precision. Each control has it's own set of tags noting what level, if it's scored/notscored, what OS element it relates to, if it's a patch or audit, and the rule number.
+There are many tags available for added control precision. Each control has it's own set of tags noting what level, what OS element it relates to, if it's a patch or audit, and the rule number.
 
 Below is an example of the tag section from a control within this role. Using this example if you set your run to skip all controls with the tag smb, this task will be skipped. The opposite can also happen where you run only controls tagged with smb.
 
@@ -127,7 +126,7 @@ Below is an example of the tag section from a control within this role. Using th
       tags:
       - level1-domaincontroller
       - level1-memberserver
-      - win19cis_rule_18.3.3
+      - rule_18.3.3
       - patch
       - smb
 ```
@@ -136,9 +135,9 @@ Below is an example of the tag section from a control within this role. Using th
 
 We encourage you (the community) to contribute to this role. Please read the rules below.
 
-- Your work is done in your own individual branch. Make sure to Signed-off and GPG sign all commits you intend to merge.
+- Your work is done in your own individual branch. Make sure to Signed-off-by and GPG sign all commits you intend to merge.
 - All community Pull Requests are pulled into the devel branch
-- Pull Requests into devel will confirm your commits have a GPG signature, Signed-off, and a functional test before being approved
+- Pull Requests into devel will confirm your commits have a GPG signature, Signed-off-by, and a functional test before being approved
 - Once your changes are merged and a more detailed review is complete, an authorized member will merge your changes into the main branch for a new release
 
 ## Pipeline Testing

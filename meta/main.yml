@@ -1,6 +1,7 @@
 ---
+
 galaxy_info:
-    author: "Ryan Speelman, Stephen Williams, George Nalen"
+    author: "Stephen Williams, George Nalen, Mark Bolwell, Frederick Witty Jr."
     description: "Ansible Role to Apply The Windows Server 2019 CIS Benchmark"
     company: "MindPoint Group"
     license: MIT

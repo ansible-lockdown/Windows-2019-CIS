@@ -1,4 +1,5 @@
 ---
+
 - name: Display Banner
   ansible.builtin.debug:
       msg: "{{ lockdown_banner.split('\n') }}"
@@ -31,49 +32,57 @@
       - always
 
 - name: Include the preliminary tasks
-  ansible.builtin.include_tasks: prelim.yml
+  ansible.builtin.include_tasks:
+      file: prelim.yml
   tags:
       - always
       - prelim_tasks
 
 - name: Execute the section 1 tasks
-  ansible.builtin.import_tasks: section01.yml
+  ansible.builtin.import_tasks:
+      file: section01.yml
   when: win19cis_section01
   tags:
       - section01
 
 - name: Execute the section 2 tasks
-  ansible.builtin.import_tasks: section02.yml
+  ansible.builtin.import_tasks:
+      file: section02.yml
   when: win19cis_section02
   tags:
       - section02
 
 - name: Execute the section 5 tasks
-  ansible.builtin.import_tasks: section05.yml
+  ansible.builtin.import_tasks:
+      file: section05.yml
   when: win19cis_section05
   tags:
       - section05
 
 - name: Execute the section 9 tasks
-  ansible.builtin.import_tasks: section09.yml
+  ansible.builtin.import_tasks:
+      file: section09.yml
   when: win19cis_section09
   tags:
       - section09
 
 - name: Execute the section 17 tasks
-  ansible.builtin.import_tasks: section17.yml
+  ansible.builtin.import_tasks:
+      file: section17.yml
   when: win19cis_section17
   tags:
       - section17
 
 - name: Execute the section 18 tasks
-  ansible.builtin.import_tasks: section18.yml
+  ansible.builtin.import_tasks:
+      file: section18.yml
   when: win19cis_section18
   tags:
       - section18
 
 - name: Execute the section 19 tasks
-  ansible.builtin.import_tasks: section19.yml
+  ansible.builtin.import_tasks:
+      file: section19.yml
   when: win19cis_section19
   tags:
       - section19
@@ -81,6 +90,6 @@
 - name: If Warnings found Output count and control IDs affected
   ansible.builtin.debug:
       msg:
-          - "You have {{ warn_count }} Warning(s) that require investigation(s). Their ID’s are listed below:"
+          - "You have {{ warn_count }} Warning(s) that require investigation(s). Their IDs are listed below:"
           - "{{ warn_control_list }}"
   when: warn_count != 0
