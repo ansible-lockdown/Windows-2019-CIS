@@ -14,7 +14,24 @@
       - patch
       - userrights
 
-- name: "2.2.2 & 2.2.3 | PATCH | Ensure Access this computer from the network is set to Administrators, Authenticated Users, & ENTERPRISE DOMAIN CONTROLLERS DC only."
+- name: "2.2.2 | PATCH | Ensure Access this computer from the network is set to Administrators, Authenticated Users, & ENTERPRISE DOMAIN CONTROLLERS DC only | Domain Controller"
+  ansible.windows.win_user_right:
+      name: SeNetworkLogonRight
+      users:
+          - Administrators
+          - Authenticated Users
+          - ENTERPRISE DOMAIN CONTROLLERS
+      action: set
+  when:
+      - win19cis_rule_2_2_2
+      - win2019cis_is_domain_controller
+  tags:
+      - level1-domaincontroller
+      - rule_2.2.2
+      - patch
+      - userrights
+
+- name: "2.2.3 | PATCH | Ensure Access this computer from the network is set to Administrators, Authenticated Users, & ENTERPRISE DOMAIN CONTROLLERS MS only | Member Server"
   ansible.windows.win_user_right:
       name: SeNetworkLogonRight
       users:
@@ -22,12 +39,10 @@
           - Authenticated Users
       action: set
   when:
-      - win19cis_rule_2_2_2 or
-        win19cis_rule_2_2_3
+      - win19cis_rule_2_2_3
+      - win2019cis_is_domain_member
   tags:
-      - level1-domaincontroller
       - level1-memberserver
-      - rule_2.2.2
       - rule_2.2.3
       - patch
       - userrights
@@ -53,7 +68,7 @@
       action: set
   when:
       - win19cis_rule_2_2_5
-      - ansible_windows_domain_role == "Primary domain controller"
+      - win2019cis_is_domain_controller
   tags:
       - level1-domaincontroller
       - rule_2.2.5
@@ -225,7 +240,7 @@
       action: set
   when:
       - win19cis_rule_2_2_17
-      - ansible_windows_domain_role == "Primary domain controller"
+      - win2019cis_is_domain_controller
   tags:
       - level1-domaincontroller
       - rule_2.2.17
@@ -252,7 +267,7 @@
         when: win19cis_hyperv_installed
   when:
       - win19cis_rule_2_2_18
-      - not ansible_windows_domain_role == "Primary domain controller"
+      - win2019cis_is_domain_member
   tags:
       - level1-memberserver
       - rule_2.2.18
@@ -282,7 +297,7 @@
       action: add
   when:
       - win19cis_rule_2_2_20
-      - ansible_windows_domain_role == "Primary domain controller"
+      - win2019cis_is_domain_controller
   tags:
       - level1-domaincontroller
       - rule_2.2.20
@@ -299,7 +314,7 @@
       action: add
   when:
       - win19cis_rule_2_2_21
-      - ansible_windows_domain_member
+      - win2019cis_is_domain_member
   tags:
       - level1-memberserver
       - rule_2.2.21
@@ -360,7 +375,7 @@
       action: add
   when:
       - win19cis_rule_2_2_25
-      - ansible_windows_domain_role == "Primary domain controller"
+      - win2019cis_is_domain_controller
   tags:
       - level1-domaincontroller
       - rule_2.2.25
@@ -376,7 +391,7 @@
       action: set
   when:
       - win19cis_rule_2_2_26
-      - ansible_windows_domain_member
+      - win2019cis_is_domain_member
   tags:
       - level1-memberserver
       - rule_2.2.26
@@ -390,8 +405,7 @@
       action: set
   when:
       - win19cis_rule_2_2_27
-      - ansible_windows_domain_role == "Primary domain controller"
-      - win2019cis_is_standalone
+      - win2019cis_is_domain_controller
   tags:
       - level1-domaincontroller
       - rule_2.2.27
@@ -406,7 +420,7 @@
       action: set
   when:
       - win19cis_rule_2_2_28
-      - ansible_windows_domain_member
+      - win2019cis_is_domain_member
   tags:
       - level1-memberserver
       - rule_2.2.28
@@ -457,7 +471,7 @@
       action: set
   when:
       - win19cis_rule_2_2_31
-      - ansible_windows_domain_role == "Primary domain controller"
+      - win2019cis_is_domain_controller
   tags:
       - level1-domaincontroller
       - rule_2.2.31
@@ -478,7 +492,7 @@
       action: set
   when:
       - win19cis_rule_2_2_32
-      - ansible_windows_domain_member
+      - win2019cis_is_domain_member
   tags:
       - level1-memberserver
       - rule_2.2.32
@@ -537,7 +551,7 @@
       action: set
   when:
       - win19cis_rule_2_2_36
-      - ansible_windows_domain_role == "Primary domain controller"
+      - win2019cis_is_domain_controller
   tags:
       - level2-domaincontroller
       - rule_2.2.36
@@ -565,7 +579,7 @@
         when: win19cis_exchange_server_running
   when:
       - win19cis_rule_2_2_37
-      - ansible_windows_domain_role == "Primary domain controller"
+      - win2019cis_is_domain_controller
   tags:
       - level1-domaincontroller
       - rule_2.2.37
@@ -725,7 +739,7 @@
       action: set
   when:
       - win19cis_rule_2_2_47
-      - ansible_windows_domain_role == "Primary domain controller"
+      - win2019cis_is_domain_controller
   tags:
       - level1-domaincontroller
       - rule_2.2.47
@@ -755,8 +769,7 @@
       value: 0
   when:
       - win19cis_rule_2_3_1_1
-      - not ansible_windows_domain_role == "Primary domain controller"
-      - not win2019cis_is_standalone
+      - win2019cis_is_domain_member
   tags:
       - level1-memberserver
       - rule_2.3.1.1
@@ -785,6 +798,7 @@
       value: 0
   when:
       - win19cis_rule_2_3_1_3
+      - win2019cis_is_domain_member
   tags:
       - level1-memberserver
       - rule_2.3.1.3
@@ -935,8 +949,7 @@
       type: dword
   when:
       - win19cis_rule_2_3_5_1
-      - ansible_windows_domain_role == "Primary domain controller"
-      - not win2019cis_is_standalone
+      - win2019cis_is_domain_controller
   tags:
       - level1-domaincontroller
       - rule_2.3.5.1
@@ -951,8 +964,7 @@
       type: dword
   when:
       - win19cis_rule_2_3_5_2
-      - ansible_windows_domain_role == "Primary domain controller"
-      - not win2019cis_is_standalone
+      - win2019cis_is_domain_controller
   tags:
       - level1-domaincontroller
       - rule_2.3.5.2
@@ -967,8 +979,7 @@
       type: dword
   when:
       - win19cis_rule_2_3_5_3
-      - ansible_windows_domain_role == "Primary domain controller"
-      - not win2019cis_is_standalone
+      - win2019cis_is_domain_controller
   tags:
       - level1-domaincontroller
       - rule_2.3.5.3
@@ -983,7 +994,7 @@
       type: dword
   when:
       - win19cis_rule_2_3_5_4
-      - ansible_windows_domain_role == "Primary domain controller"
+      - win2019cis_is_domain_controller
   tags:
       - level1-domaincontroller
       - rule_2.3.5.4
@@ -998,8 +1009,7 @@
       type: dword
   when:
       - win19cis_rule_2_3_5_5
-      - ansible_windows_domain_role == "Primary domain controller"
-      - not win2019cis_is_standalone
+      - win2019cis_is_domain_controller
   tags:
       - level1-domaincontroller
       - rule_2.3.5.5
@@ -1077,7 +1087,7 @@
       - name: "2.3.6.5 | AUDIT | Ensure Domain member Maximum machine account password age is set to 30 or fewer days but not 0. | Warning Check For Variable Standards."
         ansible.builtin.debug:
             msg:
-                - "Warning!! You have a invalid number of days set for win19cis_domain_member_maximum_password_age please read"
+                - "Warning!! You have an invalid number of days set for win19cis_domain_member_maximum_password_age please read"
                 - "the notes for the variable and make the necessary change to the variable to be in compliance."
         when:
             - win19cis_domain_member_maximum_password_age > 30 or
@@ -1161,7 +1171,7 @@
       - name: "2.3.7.3 | AUDIT | Ensure Interactive logon Machine inactivity limit is set to 900 or fewer seconds but not 0. | Warning Check For Variable Standards."
         ansible.builtin.debug:
             msg:
-                - "Warning!! You have a invalid number of seconds set for win19cis_inactivity_timeout_seconds please read"
+                - "Warning!! You have an invalid number of seconds set for win19cis_inactivity_timeout_seconds please read"
                 - "the notes for the variable and make the necessary change to the variable to be in compliance."
         when:
             - win19cis_inactivity_timeout_seconds > 900 or
@@ -1228,7 +1238,7 @@
       - name: "2.3.7.6 | AUDIT| Ensure Interactive logon Number of previous logons to cache in case domain controller is not available is set to 4 or fewer logons MS only. | Warning Check For Variable Standards."
         ansible.builtin.debug:
             msg:
-                - "Warning!! You have a invalid number of logons set for win19cis_cached_logons_count please read"
+                - "Warning!! You have an invalid number of logons set for win19cis_cached_logons_count please read"
                 - "the notes for the variable and make the necessary change to the variable to be in compliance."
         when: win19cis_cached_logons_count > 4
 
@@ -1247,6 +1257,7 @@
         when: win19cis_cached_logons_count <= 4
   when:
       - win19cis_rule_2_3_7_6
+      - win2019cis_is_domain_member
   tags:
       - level2-memberserver
       - rule_2.3.7.6
@@ -1258,7 +1269,7 @@
       - name: "2.3.7.7 | AUDIT | Ensure Interactive logon Prompt user to change password before expiration is set to between 5 and 14 days. | Warning Check For Variable Standards."
         ansible.builtin.debug:
             msg:
-                - "Warning!! You have a invalid number of days set for win19cis_password_expiry_warning_days please read"
+                - "Warning!! You have an invalid number of days set for win19cis_password_expiry_warning_days please read"
                 - "the notes for the variable and make the necessary change to the variable to be in compliance."
         when:
             - win19cis_password_expiry_warning_days < 5 or
@@ -1298,7 +1309,7 @@
       type: dword
   when:
       - win19cis_rule_2_3_7_8
-      - ansible_windows_domain_role == "Member server"
+      - win2019cis_is_domain_member
   tags:
       - level1-memberserver
       - rule_2.3.7.8
@@ -1370,7 +1381,7 @@
       - name: "2.3.9.1 | AUDIT | Ensure Microsoft network server Amount of idle time required before suspending session is set to 15 or fewer minutes. | Warning Check For Variable Standards."
         ansible.builtin.debug:
             msg:
-                - "Warning!! You have a invalid number of minutes set for win19cis_smb_auto_disconnect_time please read"
+                - "Warning!! You have an invalid number of minutes set for win19cis_smb_auto_disconnect_time please read"
                 - "the notes for the variable and make the necessary change to the variable to be in compliance."
         when: win19cis_smb_auto_disconnect_time > 15
 
@@ -1449,8 +1460,7 @@
       type: dword
   when:
       - win19cis_rule_2_3_9_5
-      - ansible_windows_domain_role == "Member server" or
-        ansible_windows_domain_role == "Stand-alone server"
+      - win2019cis_is_domain_member
   tags:
       - level1-memberserver
       - rule_2.3.9.5
@@ -1479,7 +1489,7 @@
       type: dword
   when:
       - win19cis_rule_2_3_10_2
-      - ansible_windows_domain_role == "Member server"
+      - win2019cis_is_domain_member
   tags:
       - level1-memberserver
       - rule_2.3.10.2
@@ -1494,7 +1504,7 @@
       type: dword
   when:
       - win19cis_rule_2_3_10_3
-      - ansible_windows_domain_role == "Member server"
+      - win2019cis_is_domain_member
   tags:
       - level1-memberserver
       - rule_2.3.10.3
@@ -1539,7 +1549,7 @@
       type: multistring
   when:
       - win19cis_rule_2_3_10_6
-      - ansible_windows_domain_role == "Primary domain controller"
+      - win2019cis_is_domain_controller
   tags:
       - level1-domaincontroller
       - rule_2.3.10.6
@@ -1554,7 +1564,7 @@
       type: multistring
   when:
       - win19cis_rule_2_3_10_7
-      - ansible_windows_domain_role == "Member server"
+      - win2019cis_is_domain_member
   tags:
       - level1-memberserver
       - rule_2.3.10.7
@@ -1612,6 +1622,7 @@
       type: string
   when:
       - win19cis_rule_2_3_10_11
+      - win2019cis_is_domain_member
   tags:
       - level1-memberserver
       - rule_2.3.10.11

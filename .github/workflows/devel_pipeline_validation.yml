@@ -1,13 +1,11 @@
 ---
 
-# This is a basic workflow to help you get started with Actions
-
 name: Devel Pipeline Validation
 
 # Controls when the action will run.
 # Triggers the workflow on push or pull request
 # events but only for the devel branch
-on:  # yamllint disable-line rule:truthy
+on: # yamllint disable-line rule:truthy
     pull_request_target:
         types: [opened, reopened, synchronize]
         branches:
@@ -32,16 +30,16 @@ jobs:
                   repo-token: ${{ secrets.GITHUB_TOKEN }}
                   pr-message: |-
                     Congrats on opening your first pull request and thank you for taking the time to help improve Ansible-Lockdown!
-                    Please join in the conversation happening on the [Discord Server](https://discord.io/ansible-lockdown) as well.
+                    Please join in the conversation happening on the [Discord Server](https://www.lockdownenterprise.com/discord) as well.
 
-    # This workflow will run terraform to load a instance in azure to test the playbook against a live cloud based instance.
+    # This workflow will run Terraform to load an instance in Azure to test the playbook against a live cloud-based instance.
     playbook-test:
         # The type of runner that the job will run on.
         runs-on: ubuntu-latest
 
         env:
             ENABLE_DEBUG: false
-            # Imported as a variable by terraform.
+            # Imported as a variable by Terraform.
             TF_VAR_repository: ${{ github.event.repository.name }}
             ARM_CLIENT_ID: ${{ secrets.AZURE_AD_CLIENT_ID }}
             ARM_CLIENT_SECRET: ${{ secrets.AZURE_AD_CLIENT_SECRET }}
@@ -75,7 +73,7 @@ jobs:
             - name: user details
               run: echo "{\"username\":\"${WIN_USERNAME}\",\"password\":\"${WIN_PASSWORD}\"}" >> sensitive_info.json
 
-          # Show the Os Var and Benchmark Type And Load
+          # Show the OS Var, Benchmark Type and Load
             - name: DEBUG - Show IaC files
               if: env.ENABLE_DEBUG == 'true'
               run: |
@@ -84,7 +82,7 @@ jobs:
                 pwd
                 ls
               env:
-                  # Imported from github variables this is used to load the relvent OS.tfvars file
+                  # Imported from GitHub variables this is used to load the relevant OS.tfvars file
                   OSVAR: ${{ vars.OSVAR }}
                   TF_VAR_benchmark_type: ${{ vars.BENCHMARK_TYPE }}
 
@@ -93,7 +91,7 @@ jobs:
               id: init
               run: terraform init
               env:
-                # Imported from github variables this is used to load the relvent OS.tfvars file
+                # Imported from github variables this is used to load the relevant OS.tfvars file
                   OSVAR: ${{ vars.OSVAR }}
                   TF_VAR_benchmark_type: ${{ vars.BENCHMARK_TYPE }}
 
@@ -102,7 +100,7 @@ jobs:
               id: validate
               run: terraform validate
               env:
-                # Imported from github variables this is used to load the relvent OS.tfvars file
+                # Imported from github variables this is used to load the relevant OS.tfvars file
                   OSVAR: ${{ vars.OSVAR }}
                   TF_VAR_benchmark_type: ${{ vars.BENCHMARK_TYPE }}
 
@@ -110,7 +108,7 @@ jobs:
             - name: Terraform_Apply
               id: apply
               env:
-                # Imported from github variables this is used to load the relvent OS.tfvars file
+                # Imported from GitHub variables this is used to load the relevant OS.tfvars file
                   WIN_USERNAME: ${{ secrets.WIN_USERNAME }}
                   WIN_PASSWORD: ${{ secrets.WIN_PASSWORD }}
                   OSVAR: ${{ vars.OSVAR }}
