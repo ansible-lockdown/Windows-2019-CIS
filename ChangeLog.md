@@ -3,6 +3,7 @@
 ## Release 2.0.1
 
 February 2024 Update
+- Fixes for #88, #89, #90, #91, #92, and #94
 
 ## Release 2.0.0
 
