@@ -684,6 +684,19 @@ win19cis_public_firewall_log_size: 16384
 
 # Section 18 Variables
 
+
+# 18.3.5
+# win19cis_laps_password_length is the LAPS tool password length.
+# The recommended state for this setting is: Enabled: 15 or more.
+# Default: 15
+win19cis_laps_password_length: 15
+
+# 18.3.6
+# win19cis_laps_password_age_days is the LAPS tool password age in days.
+# The recommended state for this setting is: Enabled: 30 or fewer.
+# Default: 30
+win19cis_laps_password_age_days: 30
+
 # 18.4.6
 # win19cis_netbt_nodetype is the node type value in HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\NetBT\Parameters:NodeType
 # Options are a B-node value of 1, P-node value of 2, M-node value of 4, and H-node value of 8. P-node is the recommended setting from CIS

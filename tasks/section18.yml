@@ -158,7 +158,7 @@
       - name: "18.3.6 | AUDIT | Ensure Password Settings Password Age Days is set to Enabled 30 or fewer MS only | Warning Check For Variable Standards."
         ansible.builtin.debug:
             msg:
-                - "Warning!! You have an invalid password length set for win19cis_laps_password_length please read"
+                - "Warning!! You have an invalid Password Age Days set for win19cis_laps_password_age_days please read"
                 - "the notes for the variable and make the necessary change to the variable to be in compliance."
         when: win19cis_laps_password_age_days > 30
 
