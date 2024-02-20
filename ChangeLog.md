@@ -3,7 +3,13 @@
 ## Release 2.0.1
 
 February 2024 Update
-- Fixes for #88, #89, #90, #91, #92, and #94
+- Issues Addressed:
+    - [#88](https://github.com/ansible-lockdown/Windows-2019-CIS/issues/88) - Thank you @animatco
+    - [#89](https://github.com/ansible-lockdown/Windows-2019-CIS/issues/89) - Thank you @animatco
+    - [#90](https://github.com/ansible-lockdown/Windows-2019-CIS/issues/90) - Thank you @animatco
+    - [#91](https://github.com/ansible-lockdown/Windows-2019-CIS/issues/91) - Thank you @animatco
+    - [#92](https://github.com/ansible-lockdown/Windows-2019-CIS/issues/92) - Thank you @animatco
+    - [#94](https://github.com/ansible-lockdown/Windows-2019-CIS/issues/94) - Thank you @dennisharder-alight
 
 ## Release 2.0.0
 
