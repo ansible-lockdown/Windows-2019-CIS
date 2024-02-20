@@ -65,7 +65,7 @@ This is managed using tags:
 - level2-domaincontroller
 - level2-memberserver
 
-The control found in defaults main also need to reflect this as this control the testing thet takes place if you are using the audit component.
+The control found in defaults main also need to reflect this as this control the testing that takes place if you are using the audit component.
 
 ## Coming from a previous release
 
