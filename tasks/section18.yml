@@ -523,45 +523,9 @@
       - patch
       - mss
 
-- name: "18.6.4.1 | PATCH | Ensure Configure DNS over HTTPS (DoH) name resolution is set to Enabled: Allow DoH or higher"
+- name: "18.6.4.1 | PATCH | Ensure 'Configure NetBIOS settings' is set to 'Enabled: Disable NetBIOS name resolution on public networks'"
   block:
-      - name: "18.6.4.1 | AUDIT | Ensure Configure DNS over HTTPS (DoH) name resolution is set to Enabled: Allow DoH or higher. | Warning Check For Variable Standards."
-        ansible.builtin.debug:
-            msg:
-                - "Warning!! You have an invalid setting for win19cis_doh_policy. Please read"
-                - "the notes for the variable and make the necessary change to the variable to be in compliance."
-        when:
-            - win19cis_doh_policy != 2
-            - win19cis_doh_policy != 3
-
-      - name: "18.6.4.1 | AUDIT | Ensure Configure DNS over HTTPS (DoH) name resolution is set to Enabled: Allow DoH or higher. | Warn Count."
-        ansible.builtin.import_tasks:
-            file: warning_facts.yml
-        vars:
-            warn_control_id: '18.6.4.1'
-        when:
-            - win19cis_doh_policy != 2
-            - win19cis_doh_policy != 3
-
-      - name: "18.6.4.1 | AUDIT | Ensure Configure DNS over HTTPS (DoH) name resolution is set to Enabled: Allow DoH or higher. | Set Variable."
-        ansible.windows.win_regedit:
-            path: HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\DNSClient
-            name: DoHPolicy
-            data: "{{ win19cis_doh_policy }}"
-            type: dword
-        when: win19cis_doh_policy == 2 or win19cis_doh_policy == 3
-  when:
-      - win19cis_rule_18_6_4_1
-  tags:
-      - level1-corporate-enterprise-environment
-      - rule_18.6.4.1
-      - automated
-      - patch
-      - dns-over-https
-
-- name: "18.6.4.2 | PATCH | Ensure 'Configure NetBIOS settings' is set to 'Enabled: Disable NetBIOS name resolution on public networks'"
-  block:
-      - name: "18.6.4.2 | AUDIT | Ensure 'Configure NetBIOS settings' is set to 'Enabled: Disable NetBIOS name resolution on public networks'. | Warning Check For Variable Standards."
+      - name: "18.6.4.1 | AUDIT | Ensure 'Configure NetBIOS settings' is set to 'Enabled: Disable NetBIOS name resolution on public networks'. | Warning Check For Variable Standards."
         ansible.builtin.debug:
             msg:
                 - "Warning!! You have an invalid setting for win19cis_enable_netbios_policy. Please read"
@@ -570,16 +534,16 @@
             - win19cis_enable_netbios_policy != 2
             - win19cis_enable_netbios_policy != 0
 
-      - name: "18.6.4.2 | AUDIT | Ensure 'Configure NetBIOS settings' is set to 'Enabled: Disable NetBIOS name resolution on public networks'. | Warn Count."
+      - name: "18.6.4.1 | AUDIT | Ensure 'Configure NetBIOS settings' is set to 'Enabled: Disable NetBIOS name resolution on public networks'. | Warn Count."
         ansible.builtin.import_tasks:
             file: warning_facts.yml
         vars:
-            warn_control_id: '18.6.4.2'
+            warn_control_id: '18.6.4.1'
         when:
             - win19cis_enable_netbios_policy != 2
             - win19cis_enable_netbios_policy != 0
 
-      - name: "18.6.4.2 | PATCH | Ensure 'Configure NetBIOS settings' is set to 'Enabled: Disable NetBIOS name resolution on public networks'. | Set Variable."
+      - name: "18.6.4.1 | PATCH | Ensure 'Configure NetBIOS settings' is set to 'Enabled: Disable NetBIOS name resolution on public networks'. | Set Variable."
         ansible.windows.win_regedit:
             path: HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\DNSClient
             name: EnableNetbios
@@ -587,27 +551,27 @@
             type: dword
         when: win19cis_enable_netbios_policy == 2 or win19cis_enable_netbios_policy == 0
   when:
-      - win19cis_rule_18_6_4_2
+      - win19cis_rule_18_6_4_1
   tags:
       - level1-corporate-enterprise-environment
-      - rule_18.6.4.2
+      - rule_18.6.4.1
       - automated
       - patch
       - netbios
 
-- name: "18.6.4.3 | PATCH | Ensure Turn off multicast name resolution is set to Enabled MS Only | Member Server"
+- name: "18.6.4.2 | PATCH | Ensure Turn off multicast name resolution is set to Enabled MS Only | Member Server"
   ansible.windows.win_regedit:
       path: HKLM:\Software\Policies\Microsoft\Windows NT\DNSClient
       name: EnableMulticast
-      data: 1
+      data: 0
       type: dword
   when:
-      - win19cis_rule_18_6_4_3
+      - win19cis_rule_18_6_4_2
       - win2019cis_is_domain_member
   tags:
       - level1-domaincontroller
       - level1-memberserver
-      - rule_18.6.4.3
+      - rule_18.6.4.2
       - patch
       - dns
 

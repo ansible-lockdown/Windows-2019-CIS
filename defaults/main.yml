@@ -293,7 +293,6 @@ win19cis_rule_18_5_11: true
 win19cis_rule_18_5_12: true
 win19cis_rule_18_6_4_1: true
 win19cis_rule_18_6_4_2: true
-win19cis_rule_18_6_4_3: true
 win19cis_rule_18_6_5_1: true
 win19cis_rule_18_6_8_1: true
 win19cis_rule_18_6_9_1: true
@@ -724,7 +723,7 @@ win19cis_log_threshold_audit_event: 90
 # Default: 2
 win19cis_doh_policy: 2
 
-# 18.6.4.2
+# 18.6.4.1
 # win19cis_enable_netbios_policy is the policy that setting specifies if the Domain Name System (DNS) client will perform name resolution
 # over Network Basic Input/Output System (NetBIOS).
 # The recommended state for this setting is: Enabled: Disable NetBIOS name resolution on public networks.
