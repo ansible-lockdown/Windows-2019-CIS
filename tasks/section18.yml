@@ -913,7 +913,7 @@
       - win19cis_rule_18_7_3
   tags:
       - level1-domaincontroller
-      - level2-memberserver
+      - level1-memberserver
       - rule_18.7.3
       - patch
       - printers
