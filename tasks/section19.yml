@@ -56,7 +56,7 @@
         ansible.windows.win_regedit:
             path: HKU:\{{ item }}\Software\Policies\Microsoft\Windows\Control Panel\Desktop
             name: ScreenSaveTimeOut
-            data: "{{ win10cis_screen_saver_timeout }}"
+            data: "{{ win19cis_screen_saver_timeout }}"
             type: string
         loop: "{{ hku_loaded_list }}"
         notify: change_requires_reboot

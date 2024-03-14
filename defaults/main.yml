@@ -653,6 +653,44 @@ win19cis_password_expiry_warning_days: 14
 # The recommended state for this setting is: 15 or fewer minute(s).
 win19cis_smb_auto_disconnect_time: 15
 
+# 2.3.9.5
+# win19cis_smb_server_name_hardening_level is the policy setting controls the level of validation a computer with shared
+# folders or printers (the server) performs on the service principal name (SPN) that is provided by the client computer when
+# it establishes a session using the server message block (SMB) protocol.
+# Note: Possible Valid Settings
+# 1 - Accept if provided by client
+# 2 - Required from client
+# Default: 1
+win19cis_smb_server_name_hardening_level: 1
+
+# 2.3.11.4
+# win19cis_legacy_rc4_hmac_md5_support is the setting to configure the Windows 11 machine to support older kerberos.
+# Note: Some legacy applications and OSes may still require RC4_HMAC_MD5 - we recommend you test in your environment
+# and verify whether you can safely remove it.
+# CIS prefers keeping this setting as False to satisfy the requirements.
+# Default: false
+win19cis_legacy_rc4_hmac_md5_support: false
+
+# 2.3.11.8
+# win19cis_ldap_client_integrity is the policy setting determines the level of data signing that is requested on
+# behalf of clients that issue LDAP BIND requests. Configuring this setting to Require signing also conforms to the benchmark.
+# The recommended state for this setting is: Negotiate signing.
+# Note: Possible Valid Settings
+# 1 - Negotiate signing
+# 2 - Require signing
+# Default: 1
+win19cis_ldap_client_integrity: 1
+
+# 2.3.17.2
+# win19cis_consent_prompt_behavior_admin is the policy setting controls the behavior of the elevation prompt for administrators.
+# Configuring this setting to Prompt for credentials on the secure desktop also conforms to the benchmark.
+# The recommended state for this setting is: Prompt for consent on the secure desktop.
+# Note: Possible Valid Settings
+# 1 - Prompt for credentials on the secure desktop
+# 2 - Prompt for consent on the secure desktop
+# Default: 2
+win19cis_consent_prompt_behavior_admin: 2
+
 # Section 9 Variables
 
 # 9.1.5

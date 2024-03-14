@@ -1452,12 +1452,35 @@
       - patch
       - account
 
-- name: "2.3.9.5 | PATCH | Ensure Microsoft network server Server SPN target name validation level is set to Accept if provided by client or higher MS only"
-  ansible.windows.win_regedit:
-      path: HKLM:\System\Currentcontrolset\Services\Lanmanserver\Parameters
-      name: SMBServerNameHardeningLevel
-      data: 1
-      type: dword
+- name: "2.3.9.5 | PATCH | Ensure Microsoft network server Server SPN target name validation level is set to Accept if provided by client or higher. | MS Only"
+  block:
+      - name: "2.3.9.5 | AUDIT | Ensure Microsoft network server Server SPN target name validation level is set to Accept if provided by client or higher. | Warning Check For Variable Standards. | MS Only"
+        ansible.builtin.debug:
+            msg:
+                - "Warning!! You have an invalid number variable set for win10cis_smb_server_name_hardening_level. Please read"
+                - "the notes for the variable and make the necessary change to the variable to be in compliance."
+        when:
+            - win19cis_smb_server_name_hardening_level == 0 or
+              win19cis_smb_server_name_hardening_level > 2
+
+      - name: "2.3.9.5 | AUDIT | Ensure Microsoft network server Server SPN target name validation level is set to Accept if provided by client or higher. | Warn Count."
+        ansible.builtin.import_tasks:
+            file: warning_facts.yml
+        vars:
+            warn_control_id: '2.3.9.5'
+        when:
+            - win19cis_smb_server_name_hardening_level == 0 or
+              win19cis_smb_server_name_hardening_level > 2
+
+      - name: "2.3.9.5 | PATCH | Ensure Microsoft network server Server SPN target name validation level is set to Accept if provided by client or higher. | Apply Registry Setting | Ms Only."
+        ansible.windows.win_regedit:
+            path: HKLM:\System\Currentcontrolset\Services\Lanmanserver\Parameters
+            name: SMBServerNameHardeningLevel
+            data: "{{ win19cis_smb_server_name_hardening_level }}"
+            type: dword
+        when:
+            - win19cis_smb_server_name_hardening_level == 1 or
+              win19cis_smb_server_name_hardening_level == 2
   when:
       - win19cis_rule_2_3_9_5
       - win2019cis_is_domain_member
@@ -1704,12 +1727,23 @@
       - patch
       - authentication
 
-- name: "2.3.11.4 | PATCH | Ensure Network security Configure encryption types allowed for Kerberos is set to AES128 HMAC SHA1 AES256 HMAC SHA1 Future encryption types"
-  ansible.windows.win_regedit:
-      path: HKLM:\Software\Microsoft\Windows\Currentversion\Policies\System\Kerberos\Parameters
-      name: SupportedEncryptionTypes
-      data: 2147483640
-      type: dword
+- name: "2.3.11.4 | PATCH | Ensure Network security Configure encryption types allowed for Kerberos is set to AES128 HMAC SHA1 AES256 HMAC SHA1 Future encryption types."
+  block:
+      - name: "2.3.11.4 | PATCH | Ensure Network security Configure encryption types allowed for Kerberos is set to AES128 HMAC SHA1 AES256 HMAC SHA1 Future encryption types. | Legacy App Encryption Support."
+        ansible.windows.win_regedit:
+            path: HKLM:\Software\Microsoft\Windows\Currentversion\Policies\System\Kerberos\Parameters
+            name: SupportedEncryptionTypes
+            data: 2147483644
+            type: dword
+        when: win19cis_legacy_rc4_hmac_md5_support
+
+      - name: "2.3.11.4 | PATCH | Ensure Network security Configure encryption types allowed for Kerberos is set to AES128 HMAC SHA1 AES256 HMAC SHA1 Future encryption types. | No Legacy App Encryption Support."
+        ansible.windows.win_regedit:
+            path: HKLM:\Software\Microsoft\Windows\Currentversion\Policies\System\Kerberos\Parameters
+            name: SupportedEncryptionTypes
+            data: 2147483640
+            type: dword
+        when: not win19cis_legacy_rc4_hmac_md5_support
   when:
       - win19cis_rule_2_3_11_4
   tags:
@@ -1764,12 +1798,35 @@
       - patch
       - network
 
-- name: "2.3.11.8 | PATCH | Ensure Network security LDAP client signing requirements is set to Negotiate signing or higher"
-  ansible.windows.win_regedit:
-      path: HKLM:\System\Currentcontrolset\Services\Ldap
-      name: LDAPClientIntegrity
-      data: 1
-      type: dword
+- name: "2.3.11.8 | PATCH | Ensure Network security LDAP client signing requirements is set to Negotiate signing or higher."
+  block:
+      - name: "2.3.11.8 | AUDIT | Ensure Network security LDAP client signing requirements is set to Negotiate signing or higher. | Warning Check For Variable."
+        ansible.builtin.debug:
+            msg:
+                - "Warning!! You have an invalid variable set for win19cis_ldap_client_integrity. Please read"
+                - "the notes for the variable and make the necessary change to the variable to be in compliance."
+        when:
+            - win19cis_ldap_client_integrity == 0 or
+              win19cis_ldap_client_integrity > 2
+
+      - name: "2.3.11.8 | AUDIT | Ensure Network security LDAP client signing requirements is set to Negotiate signing or higher. | Warn Count."
+        ansible.builtin.import_tasks:
+            file: warning_facts.yml
+        vars:
+            warn_control_id: '2.3.11.8'
+        when:
+            - win19cis_ldap_client_integrity == 0 or
+              win19cis_ldap_client_integrity > 2
+
+      - name: "2.3.11.8 | PATCH | Ensure Network security LDAP client signing requirements is set to Negotiate signing or higher. | Apply Variable To Regitry."
+        ansible.windows.win_regedit:
+            path: HKLM:\System\Currentcontrolset\Services\Ldap
+            name: LDAPClientIntegrity
+            data: "{{ win19cis_ldap_client_integrity }}"
+            type: dword
+        when:
+            - win19cis_ldap_client_integrity == 1 or
+              win19cis_ldap_client_integrity == 2
   when:
       - win19cis_rule_2_3_11_8
   tags:
@@ -1868,11 +1925,11 @@
       - patch
       - uac
 
-- name: "2.3.17.2 | PATCH | Ensure User Account Control Behavior of the elevation prompt for administrators in Admin Approval Mode is set to Prompt for consent on the secure desktop"
+- name: "2.3.17.2 | PATCH | Ensure 'User Account Control: Behavior of the elevation prompt for administrators in Admin Approval Mode' is set to 'Prompt for consent on the secure desktop' or higher."
   ansible.windows.win_regedit:
       path: HKLM:\Software\Microsoft\Windows\Currentversion\Policies\System
       name: ConsentPromptBehaviorAdmin
-      data: 2
+      data: "{{ win19cis_consent_prompt_behavior_admin }}"
       type: dword
   when:
       - win19cis_rule_2_3_17_2
