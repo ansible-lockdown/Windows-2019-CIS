@@ -177,7 +177,7 @@
   ansible.builtin.import_tasks:
       file: section01_cloud_lockout_order.yml
   when:
-      - win19cis_cloud_based_system or
+      - win19cis_cloud_based_system
   tags:
       - section01_cloud_lockout_order
 
