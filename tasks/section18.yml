@@ -236,7 +236,7 @@
       data: 0
       type: dword
       state: present
-  notify: reboot_windows
+  notify: change_requires_reboot
   when:
       - win19cis_rule_18_4_4
   tags:
