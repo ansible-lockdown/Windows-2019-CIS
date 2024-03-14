@@ -1,6 +1,6 @@
 ---
 
-- name: Set System Facts Based On Gather Facts Module
+- name: PRELIM | Set System Facts Based On Gather Facts Module
   block:
       - name: Set fact is system is standalone
         ansible.builtin.set_fact:
@@ -26,7 +26,7 @@
 # Current list is elastic and will be updated as we test more cloud based services.
 # Current testing is working in Azure using Hyper-V. We are currently using this for reference:
 # https://github.com/ansible/ansible/blob/905131fc76a07cf89dbc8d33e7a4910da3f10a16/lib/ansible/module_utils/facts/virtual/linux.py#L205
-- name: Set Fact If Cloud-Based System.
+- name: PRELIM | Set Fact If Cloud-Based System.
   ansible.builtin.set_fact:
       win19cis_cloud_based_system: true
   when:
@@ -36,7 +36,7 @@
   tags:
       - always
 
-- name: Get Windows installation type
+- name: PRELIM | Get Windows installation type
   ansible.windows.win_reg_stat:
       path: HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion
       name: InstallationType
@@ -44,7 +44,7 @@
   tags:
       - always
 
-- name: Set Windows installation type
+- name: PRELIM | Set Windows installation type
   ansible.builtin.set_fact:
       windows_installation_type: "{{ get_windows_installation_type.value | default('') }}"
   tags:
