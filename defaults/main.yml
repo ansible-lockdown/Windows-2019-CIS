@@ -682,7 +682,6 @@ win19cis_public_firewall_log_size: 16384
 
 # Section 18 Variables
 
-
 # 18.3.5
 # win19cis_laps_password_length is the LAPS tool password length.
 # The recommended state for this setting is: Enabled: 15 or more.
