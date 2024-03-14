@@ -44,6 +44,11 @@ min_ansible_version: "2.10.1"
 # win19cis_rule_18_9_103_1
 win_skip_for_test: false
 
+# Changes will be made that will require a system reboot.
+# The following option will allow whether or not to skip the reboot.
+# Default: true
+skip_reboot: true
+
 # These variables correspond with the CIS rule IDs or paragraph numbers defined in
 # the CIS benchmark documents.
 # PLEASE NOTE: These work in coordination with the section # group variables and tags.
