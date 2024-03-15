@@ -647,6 +647,15 @@ win19cis_cached_logons_count: 1
 # The recommended state for this setting is: between 5 and 14 days.
 win19cis_password_expiry_warning_days: 14
 
+# 2.3.7.9
+# win19cis_sc_remove_option is the setting determines what happens when the smart card for a logged-on user is removed from the smart card reader.
+# Note: Possible Valid Settings
+# 1 - Lock Workstation
+# 2 - Force Loggoff
+# 3 - Disconnect if a Remote Desktop Services session
+# Default: 1
+win19cis_sc_remove_option: 1
+
 # 2.3.9.1
 # win19cis_smb_auto_disconnect_time is the policy setting that allows you to specify the amount of continuous idle time that must pass in an
 # SMB session before the session is suspended because of inactivity.
