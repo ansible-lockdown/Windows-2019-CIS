@@ -42,6 +42,7 @@ min_ansible_version: "2.10.1"
 # win19cis_rule_18_9_102_2_2
 # win19cis_rule_18_9_102_2_3
 # win19cis_rule_18_9_103_1
+# win19cis_rule_18_10_89_2_2 # Breaks WinRM Connection
 win_skip_for_test: false
 
 # Changes will be made that will require a system reboot.

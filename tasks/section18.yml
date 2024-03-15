@@ -3511,6 +3511,7 @@
       type: dword
   when:
       - win19cis_rule_18_10_89_1_3
+      - not win_skip_for_test
   tags:
       - level1-domaincontroller
       - level1-memberserver
@@ -3539,7 +3540,7 @@
   ansible.windows.win_regedit:
       path: HKLM:\Software\Policies\Microsoft\Windows\Winrm\Service
       name: AllowAutoConfig
-      data: 1
+      data: 0
       type: dword
   when:
       - win19cis_rule_18_10_89_2_2
