@@ -1226,18 +1226,18 @@
       - patch
       - vbs
 
-- name: "18.8.7.2 | PATCH | Ensure Prevent device metadata retrieval from the Internet is set to Enabled"
+- name: "18.9.7.2 | PATCH | Ensure Prevent device metadata retrieval from the Internet is set to Enabled"
   ansible.windows.win_regedit:
       path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\Device Metadata
       name: PreventDeviceMetadataFromNetwork
       data: 1
       type: dword
   when:
-      - win19cis_rule_18_8_7_2
+      - win19cis_rule_18_9_7_2
   tags:
       - level1-domaincontroller
       - level1-memberserver
-      - rule_18.8.7.2
+      - rule_18.9.7.2
       - patch
       - metadata
 
