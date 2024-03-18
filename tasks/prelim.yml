@@ -1,6 +1,6 @@
 ---
 
-- name: Set System Facts Based On Gather Facts Module
+- name: PRELIM | Set System Facts Based On Gather Facts Module
   block:
       - name: Set fact is system is standalone
         ansible.builtin.set_fact:
@@ -26,7 +26,7 @@
 # Current list is elastic and will be updated as we test more cloud based services.
 # Current testing is working in Azure using Hyper-V. We are currently using this for reference:
 # https://github.com/ansible/ansible/blob/905131fc76a07cf89dbc8d33e7a4910da3f10a16/lib/ansible/module_utils/facts/virtual/linux.py#L205
-- name: Set Fact If Cloud-Based System.
+- name: PRELIM | Set Fact If Cloud-Based System.
   ansible.builtin.set_fact:
       win19cis_cloud_based_system: true
   when:
@@ -36,7 +36,7 @@
   tags:
       - always
 
-- name: Get Windows installation type
+- name: PRELIM | Get Windows installation type
   ansible.windows.win_reg_stat:
       path: HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion
       name: InstallationType
@@ -44,8 +44,44 @@
   tags:
       - always
 
-- name: Set Windows installation type
+- name: PRELIM | Set Windows installation type
   ansible.builtin.set_fact:
       windows_installation_type: "{{ get_windows_installation_type.value | default('') }}"
+  tags:
+      - always
+
+- name: PRELIM | Obtatin And Load Default Hive As Well As User Hives
+  block:
+      - name: PRELIM | Load Default User Hive (Account That All New Users Get Created From Profile)
+        ansible.windows.win_shell: REG LOAD HKU\DEFAULT C:\Users\Default\NTUSER.DAT
+        changed_when: false
+        failed_when: false
+
+      - name: PRELIM | Pull All Username and SIDs
+        ansible.windows.win_shell: Get-CimInstance -Class Win32_UserAccount -Filter "SID LIKE 'S-1-5-%'" | ForEach-Object { $_.Name + " " + $_.SID }
+        changed_when: false
+        failed_when: false
+        register: all_users
+
+      - name: PRELIM | Create Results List Fact For Username And SIDs
+        ansible.builtin.set_fact:
+            username_and_sid_results_list: "{{ all_users.stdout_lines | map('split', ' ') | list }}"
+
+      - name: PRELIM | Load All User Hives From Username And SIDs List
+        ansible.windows.win_shell: REG LOAD HKU\{{ item.1 }} C:\Users\{{ item.0 }}\NTUSER.DAT
+        changed_when: false
+        failed_when: false
+        loop: "{{ username_and_sid_results_list }}"
+
+      - name: PRELIM | Retrieve Current Users SIDs from HKEY_USERS
+        ansible.windows.win_shell: (Get-ChildItem "REGISTRY::HKEY_USERS").name | Where-Object {$_ -notlike "*_classes"}
+        changed_when: false
+        failed_when: false
+        register: current_users_loaded_hku
+
+      - name: PRELIM | Create List Fact For Current Users SIDs from HKEY_USERS
+        ansible.builtin.set_fact:
+            hku_loaded_list: "{{ current_users_loaded_hku.stdout | regex_replace('HKEY_USERS\\\\','') | split }}"
+  when: win19cis_section19
   tags:
       - always

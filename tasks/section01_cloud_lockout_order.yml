@@ -80,6 +80,7 @@
       value: "{{ win19cis_allow_admin_account_lockout }}"
   when:
       - win19cis_rule_1_2_3
+      - win2019cis_is_domain_member
   tags:
       - level1-memberserver
       - rule_1.2.3
