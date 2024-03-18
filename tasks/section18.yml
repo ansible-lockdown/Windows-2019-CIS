@@ -3411,10 +3411,10 @@
       - patch
       - ie
 
-- name: "18.10.82.1 | PATCH | Ensure Enable MPR notifications for the system is set to Disabled"
+- name: "18.10.82.1 | PATCH | Ensure 'Sign-in and lock last interactive user automatically after a restart' is set to 'Disabled'"
   ansible.windows.win_regedit:
       path: HKLM:\Software\Microsoft\Windows\Currentversion\Policies\System
-      name: EnableMPR
+      name: DisableAutomaticRestartSignOn
       data: 1
       type: dword
   when:
@@ -3423,21 +3423,6 @@
       - level1-domaincontroller
       - level1-memberserver
       - rule_18.10.82.1
-      - patch
-      - logon
-
-- name: "18.10.82.2 | PATCH | Ensure Sign-in last interactive user automatically after a system-initiated restart is set to Disabled"
-  ansible.windows.win_regedit:
-      path: HKLM:\Software\Microsoft\Windows\Currentversion\Policies\System
-      name: DisableAutomaticRestartSignOn
-      data: 1
-      type: dword
-  when:
-      - win19cis_rule_18_10_82_2
-  tags:
-      - level1-domaincontroller
-      - level1-memberserver
-      - rule_18.10.82.2
       - patch
       - logon
 
