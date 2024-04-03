@@ -1,0 +1,36 @@
+---
+
+- name: "POST | Flush Handlers"
+  ansible.builtin.meta: flush_handlers
+  tags:
+      - always
+
+- name: "POST | Reboot System Options"
+  block:
+      - name: "POST | Rebooting System................. Skip Reboot Has Been Set To: False"
+        ansible.windows.win_reboot:
+            reboot_timeout: 3600
+        when:
+            - reboot_host
+            - not skip_reboot
+
+      - name: "POST | Warning A Reboot Is Required, Skip Reboot Has Been Set"
+        ansible.builtin.debug:
+            msg:
+                - "Warning!! Changes Have Been Made That Require A Reboot To Be Implemented Manually."
+                - "Skip Reboot Was Set To: True - This Can Affect Compliance Check Results."
+        changed_when: true
+        when:
+            - reboot_host
+            - skip_reboot
+
+      - name: "POST | Warning A Reboot Is Required, Skip Reboot Has Been Set | Warning Count"
+        ansible.builtin.import_tasks:
+            file: warning_facts.yml
+        when:
+            - reboot_host
+            - skip_reboot
+  vars:
+      warn_control_id: Reboot_Required
+  tags:
+      - always

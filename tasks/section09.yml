@@ -422,7 +422,7 @@
             warn_control_id: '9.3.8'
         when: win19cis_public_firewall_log_size < 16384
 
-      - name: Apply Settings To Registry."
+      - name: "9.3.8 | PATCH | Ensure 'Windows Firewall: Public: Logging: Size limit (KB)' is set to '16,384 KB or greater' | Apply Settings To Registry."
         ansible.windows.win_regedit:
             path: HKLM:\SOFTWARE\Policies\Microsoft\WindowsFirewall\PublicProfile\Logging
             name: LogFileSize
