@@ -34,14 +34,15 @@ min_ansible_version: "2.10.1"
 
 # win_skip_for_test is the setting that will skip tasks that may cause changes that will affect the system.
 # Controls that will be skipped:
-# win19cis_rule_2_3_1_5
-# win19cis_rule_9_3_5
+# win19cis_rule_2_3_1_4
+# win19cis_rule_9_3_5 - Enables Firewall Public Rules *Breaks Reboot*
 # win19cis_rule_18_9_102_1_1
 # win19cis_rule_18_9_102_1_2
 # win19cis_rule_18_9_102_2_1
 # win19cis_rule_18_9_102_2_2
 # win19cis_rule_18_9_102_2_3
 # win19cis_rule_18_9_103_1
+# win19cis_rule_18_10_89_2_2 - Disables Remote Server Management through WinRM
 win_skip_for_test: false
 
 # These variables correspond with the CIS rule IDs or paragraph numbers defined in
@@ -120,10 +121,9 @@ win19cis_rule_2_3_1_1: true
 win19cis_rule_2_3_1_2: true
 win19cis_rule_2_3_1_3: true
 win19cis_rule_2_3_1_4: true
-# Setting win19cis_rule_2_3_1_5 Control To True Will Break Ansible Connection
+# Setting win19cis_rule_2_3_1_4 Control To True Will Break Ansible Connection
 # Setting win_skip_for_test: true -- will skip the controls here even if they are set to true.
 win19cis_rule_2_3_1_5: true
-win19cis_rule_2_3_1_6: true
 win19cis_rule_2_3_2_1: true
 win19cis_rule_2_3_2_2: true
 win19cis_rule_2_3_4_1: true
