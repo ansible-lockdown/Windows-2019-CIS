@@ -1761,7 +1761,7 @@
       data: 0
       type: dword
   when:
-      - win19cis_rule_18_3_32_6_2
+      - win19cis_rule_18_9_32_6_2
   tags:
       - level2-domaincontroller
       - level2-memberserver
