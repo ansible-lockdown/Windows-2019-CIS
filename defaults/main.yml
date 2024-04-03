@@ -363,7 +363,7 @@ win19cis_rule_18_9_27_7: true
 win19cis_rule_18_9_30_1: true
 win19cis_rule_18_9_30_2: true
 win19cis_rule_18_9_32_6_1: true
-win19cis_rule_18_3_32_6_2: true
+win19cis_rule_18_9_32_6_2: true
 win19cis_rule_18_9_32_6_3: true
 win19cis_rule_18_9_32_6_4: true
 win19cis_rule_18_9_34_1: true
@@ -386,7 +386,6 @@ win19cis_rule_18_10_10_1: true
 win19cis_rule_18_10_12_1: true
 win19cis_rule_18_10_12_2: true
 win19cis_rule_18_10_12_3: true
-win19cis_rule_18_9_14_3: true
 win19cis_rule_18_10_13_1: true
 win19cis_rule_18_10_14_1: true
 win19cis_rule_18_10_14_2: true
@@ -475,12 +474,12 @@ win19cis_rule_18_10_87_2: true
 # win19cis_rule_18_10_89_2_3
 win19cis_rule_18_10_89_1_1: true
 win19cis_rule_18_10_89_1_2: true
-win19cis_rule_18_10_89_2_1: true
-win19cis_rule_18_10_89_2_2: true
-win19cis_rule_18_10_89_2_3: true
 # This control will have to be set to Enabled (1) to allow for continued remote management via Ansible following
 # machine restart. The CIS standard calls for 0 but doing so will break all remote connections to the system.
 win19cis_rule_18_10_89_1_3: true
+win19cis_rule_18_10_89_2_1: true
+win19cis_rule_18_10_89_2_2: true
+win19cis_rule_18_10_89_2_3: true
 win19cis_rule_18_10_89_2_4: true
 win19cis_rule_18_10_90_1: true
 # WINRM CONTROLS END #
