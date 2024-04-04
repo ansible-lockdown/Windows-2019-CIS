@@ -588,11 +588,11 @@ win19cis_increase_scheduling_priority_users: '{{ ["Administrators"] if (windows_
 # The recommended state for this setting is: Administrators and when Exchange is running in the environment) Exchange Servers.
 win19cis_exchange_server_running: false
 
-# 2.3.1.5
+# 2.3.1.4
 # win19cis_admin_username is the name the administrator account will be renamed to
 win19cis_admin_username: adminchangethis
 
-# 2.3.1.6
+# 2.3.1.5
 # win19cis_guest_username is the name the guest account will be renamed to
 win19cis_guest_username: guestchangethis
 
