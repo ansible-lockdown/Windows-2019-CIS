@@ -50,7 +50,7 @@
   tags:
       - always
 
-- name: PRELIM | Obtatin And Load Default Hive As Well As User Hives
+- name: PRELIM | Obtain And Load Default Hive As Well As User Hives
   block:
       - name: PRELIM | Load Default User Hive (Account That All New Users Get Created From Profile)
         ansible.windows.win_shell: REG LOAD HKU\DEFAULT C:\Users\Default\NTUSER.DAT
