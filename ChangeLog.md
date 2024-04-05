@@ -2,6 +2,12 @@
 
 ## Release 2.0.1
 
+April 2024 Update
+- Thank you @MrSteve81 for the enhancements to this release!
+    - Improved 19.x section logic for Windows local user SIDs and HKU support.
+    - Reboot handler and logic Improvement with skip_reboot var feature.
+    - win_skip_for_test var update with additional description and supported controls of 18.10.89.2.2
+
 February 2024 Update
 - Issues Addressed:
     - [#88](https://github.com/ansible-lockdown/Windows-2019-CIS/issues/88) - Thank you @animatco

@@ -20,7 +20,7 @@
             start_mode: disabled
             state: stopped
         when: spooler_service_info.exists
-  notify: reboot_windows
+  notify: change_requires_reboot
   when:
       - win19cis_rule_5_1 or
         win19cis_rule_5_2

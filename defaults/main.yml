@@ -34,15 +34,20 @@ min_ansible_version: "2.10.1"
 
 # win_skip_for_test is the setting that will skip tasks that may cause changes that will affect the system.
 # Controls that will be skipped:
-# win19cis_rule_2_3_1_5
-# win19cis_rule_9_3_5
-# win19cis_rule_18_9_102_1_1
-# win19cis_rule_18_9_102_1_2
-# win19cis_rule_18_9_102_2_1
-# win19cis_rule_18_9_102_2_2
-# win19cis_rule_18_9_102_2_3
-# win19cis_rule_18_9_103_1
+# win19cis_rule_2_3_1_4 - Rename default administrator account
+# win19cis_rule_9_3_5 - Enables Firewall Public Rules *Breaks Reboot*
+# win19cis_rule_18_10_89_1_1 - Disables WinRM Allow Client Basic Auth
+# win19cis_rule_18_10_89_1_2 - Disables Client Ensure Allow unencrypted traffic is set to Disabled Control.
+# win19cis_rule_18_10_89_2_1 - Disables WinRM Allow Service Basic Auth
+# win19cis_rule_18_10_89_2_2 - Disables Remote Server Management through WinRM
+# win19cis_rule_18_10_89_2_3 - Disables Service Ensure Allow unencrypted traffic is set to Disabled Control.
+# win19cis_rule_18_10_90_1 - Disables Remote Shell Access
 win_skip_for_test: false
+
+# Changes will be made that will require a system reboot.
+# The following option will allow whether or not to skip the reboot.
+# Default: true
+skip_reboot: true
 
 # These variables correspond with the CIS rule IDs or paragraph numbers defined in
 # the CIS benchmark documents.
@@ -120,10 +125,9 @@ win19cis_rule_2_3_1_1: true
 win19cis_rule_2_3_1_2: true
 win19cis_rule_2_3_1_3: true
 win19cis_rule_2_3_1_4: true
-# Setting win19cis_rule_2_3_1_5 Control To True Will Break Ansible Connection
+# Setting win19cis_rule_2_3_1_4 Control To True Will Break Ansible Connection
 # Setting win_skip_for_test: true -- will skip the controls here even if they are set to true.
 win19cis_rule_2_3_1_5: true
-win19cis_rule_2_3_1_6: true
 win19cis_rule_2_3_2_1: true
 win19cis_rule_2_3_2_2: true
 win19cis_rule_2_3_4_1: true
@@ -329,7 +333,7 @@ win19cis_rule_18_9_5_4: true
 win19cis_rule_18_9_5_5: true
 win19cis_rule_18_9_5_6: true
 win19cis_rule_18_9_5_7: true
-win19cis_rule_18_8_7_2: true
+win19cis_rule_18_9_7_2: true
 win19cis_rule_18_9_13_1: true
 win19cis_rule_18_9_19_2: true
 win19cis_rule_18_9_19_3: true
@@ -461,7 +465,6 @@ win19cis_rule_18_10_81_1: true
 win19cis_rule_18_10_81_2: true
 win19cis_rule_18_10_81_3: true
 win19cis_rule_18_10_82_1: true
-win19cis_rule_18_10_82_2: true
 win19cis_rule_18_10_87_1: true
 win19cis_rule_18_10_87_2: true
 # WINRM CONTROLS #
@@ -474,11 +477,9 @@ win19cis_rule_18_10_87_2: true
 # win19cis_rule_18_10_89_2_3
 win19cis_rule_18_10_89_1_1: true
 win19cis_rule_18_10_89_1_2: true
-# This control will have to be set to Enabled (1) to allow for continued remote management via Ansible following
-# machine restart. The CIS standard calls for 0 but doing so will break all remote connections to the system.
 win19cis_rule_18_10_89_1_3: true
 win19cis_rule_18_10_89_2_1: true
-win19cis_rule_18_10_89_2_2: true
+win19cis_rule_18_10_89_2_2: true # This control will have to be set to Enabled (1) to allow for continued remote management via Ansible following machine restart. We have it set to skip for testing.
 win19cis_rule_18_10_89_2_3: true
 win19cis_rule_18_10_89_2_4: true
 win19cis_rule_18_10_90_1: true
@@ -586,11 +587,11 @@ win19cis_increase_scheduling_priority_users: '{{ ["Administrators"] if (windows_
 # The recommended state for this setting is: Administrators and when Exchange is running in the environment) Exchange Servers.
 win19cis_exchange_server_running: false
 
-# 2.3.1.5
+# 2.3.1.4
 # win19cis_admin_username is the name the administrator account will be renamed to
 win19cis_admin_username: adminchangethis
 
-# 2.3.1.6
+# 2.3.1.5
 # win19cis_guest_username is the name the guest account will be renamed to
 win19cis_guest_username: guestchangethis
 
@@ -641,11 +642,58 @@ win19cis_cached_logons_count: 1
 # The recommended state for this setting is: between 5 and 14 days.
 win19cis_password_expiry_warning_days: 14
 
+# 2.3.7.9
+# win19cis_sc_remove_option is the setting determines what happens when the smart card for a logged-on user is removed from the smart card reader.
+# Note: Possible Valid Settings
+# 1 - Lock Workstation
+# 2 - Force Loggoff
+# 3 - Disconnect if a Remote Desktop Services session
+# Default: 1
+win19cis_sc_remove_option: 1
+
 # 2.3.9.1
 # win19cis_smb_auto_disconnect_time is the policy setting that allows you to specify the amount of continuous idle time that must pass in an
 # SMB session before the session is suspended because of inactivity.
 # The recommended state for this setting is: 15 or fewer minute(s).
 win19cis_smb_auto_disconnect_time: 15
+
+# 2.3.9.5
+# win19cis_smb_server_name_hardening_level is the policy setting controls the level of validation a computer with shared
+# folders or printers (the server) performs on the service principal name (SPN) that is provided by the client computer when
+# it establishes a session using the server message block (SMB) protocol.
+# Note: Possible Valid Settings
+# 1 - Accept if provided by client
+# 2 - Required from client
+# Default: 1
+win19cis_smb_server_name_hardening_level: 1
+
+# 2.3.11.4
+# win19cis_legacy_rc4_hmac_md5_support is the setting to configure the Windows 11 machine to support older kerberos.
+# Note: Some legacy applications and OSes may still require RC4_HMAC_MD5 - we recommend you test in your environment
+# and verify whether you can safely remove it.
+# CIS prefers keeping this setting as False to satisfy the requirements.
+# Default: false
+win19cis_legacy_rc4_hmac_md5_support: false
+
+# 2.3.11.8
+# win19cis_ldap_client_integrity is the policy setting determines the level of data signing that is requested on
+# behalf of clients that issue LDAP BIND requests. Configuring this setting to Require signing also conforms to the benchmark.
+# The recommended state for this setting is: Negotiate signing.
+# Note: Possible Valid Settings
+# 1 - Negotiate signing
+# 2 - Require signing
+# Default: 1
+win19cis_ldap_client_integrity: 1
+
+# 2.3.17.2
+# win19cis_consent_prompt_behavior_admin is the policy setting controls the behavior of the elevation prompt for administrators.
+# Configuring this setting to Prompt for credentials on the secure desktop also conforms to the benchmark.
+# The recommended state for this setting is: Prompt for consent on the secure desktop.
+# Note: Possible Valid Settings
+# 1 - Prompt for credentials on the secure desktop
+# 2 - Prompt for consent on the secure desktop
+# Default: 2
+win19cis_consent_prompt_behavior_admin: 2
 
 # Section 9 Variables
 
@@ -681,7 +729,6 @@ win19cis_public_firewall_log_size: 16384
 
 # Section 18 Variables
 
-
 # 18.3.5
 # win19cis_laps_password_length is the LAPS tool password length.
 # The recommended state for this setting is: Enabled: 15 or more.
@@ -710,16 +757,6 @@ win19cis_screen_saver_grace_period: 5
 # log reaches a user-defined threshold.
 # The recommended state for this setting is: Enabled: 90% or less.
 win19cis_log_threshold_audit_event: 90
-
-# 18.6.4.1
-# win19cis_doh_policy os the setting determines if DNS over HTTPS (DoH) is used by the system. DNS over HTTPS (DoH) is a protocol
-# for performing remote Domain Name System (DNS) resolution over the Hypertext Transfer Protocol Secure (HTTPS).
-# The recommended state for this setting is: Enabled: Allow DoH.
-# Note: Possible Valid Settings
-# 2 - Enabled: Allow DoH
-# 3 - Enabled: Require DoH
-# Default: 2
-win19cis_doh_policy: 2
 
 # 18.6.4.1
 # win19cis_enable_netbios_policy is the policy that setting specifies if the Domain Name System (DNS) client will perform name resolution

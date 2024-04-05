@@ -87,6 +87,12 @@
   tags:
       - section19
 
+- name: Run Post Tasks
+  ansible.builtin.import_tasks:
+      file: post.yml
+  tags:
+      - always
+
 - name: If Warnings found Output count and control IDs affected
   ansible.builtin.debug:
       msg:
