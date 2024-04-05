@@ -177,9 +177,7 @@
   ansible.builtin.import_tasks:
       file: section01_cloud_lockout_order.yml
   when:
-      - win19cis_cloud_based_system or
-        win2019cis_is_domain_controller or
-        win2019cis_is_domain_member
+      - win19cis_cloud_based_system
   tags:
       - section01_cloud_lockout_order
 
@@ -254,9 +252,7 @@
             - win19cis_account_lockout_counter_reset <= win19cis_account_lockout_duration
   when:
       - win19cis_rule_1_2_4
-      - not win19cis_cloud_based_system or
-        win2019cis_is_domain_controller or
-        win2019cis_is_domain_member
+      - not win19cis_cloud_based_system
   tags:
       - level1-domaincontroller
       - level1-memberserver
@@ -288,9 +284,7 @@
         when: win19cis_account_lockout_duration >= 15
   when:
       - win19cis_rule_1_2_1
-      - not win19cis_cloud_based_system or
-        win2019cis_is_domain_controller or
-        win2019cis_is_domain_member
+      - not win19cis_cloud_based_system
   tags:
       - level1-domaincontroller
       - level1-memberserver

@@ -236,7 +236,7 @@
       data: 0
       type: dword
       state: present
-  notify: reboot_windows
+  notify: change_requires_reboot
   when:
       - win19cis_rule_18_4_4
   tags:
@@ -1226,18 +1226,18 @@
       - patch
       - vbs
 
-- name: "18.8.7.2 | PATCH | Ensure Prevent device metadata retrieval from the Internet is set to Enabled"
+- name: "18.9.7.2 | PATCH | Ensure Prevent device metadata retrieval from the Internet is set to Enabled"
   ansible.windows.win_regedit:
       path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\Device Metadata
       name: PreventDeviceMetadataFromNetwork
       data: 1
       type: dword
   when:
-      - win19cis_rule_18_8_7_2
+      - win19cis_rule_18_9_7_2
   tags:
       - level1-domaincontroller
       - level1-memberserver
-      - rule_18.8.7.2
+      - rule_18.9.7.2
       - patch
       - metadata
 
@@ -1761,7 +1761,7 @@
       data: 0
       type: dword
   when:
-      - win19cis_rule_18_3_32_6_2
+      - win19cis_rule_18_9_32_6_2
   tags:
       - level2-domaincontroller
       - level2-memberserver
@@ -3411,10 +3411,10 @@
       - patch
       - ie
 
-- name: "18.10.82.1 | PATCH | Ensure Enable MPR notifications for the system is set to Disabled"
+- name: "18.10.82.1 | PATCH | Ensure 'Sign-in and lock last interactive user automatically after a restart' is set to 'Disabled'"
   ansible.windows.win_regedit:
       path: HKLM:\Software\Microsoft\Windows\Currentversion\Policies\System
-      name: EnableMPR
+      name: DisableAutomaticRestartSignOn
       data: 1
       type: dword
   when:
@@ -3423,21 +3423,6 @@
       - level1-domaincontroller
       - level1-memberserver
       - rule_18.10.82.1
-      - patch
-      - logon
-
-- name: "18.10.82.2 | PATCH | Ensure Sign-in last interactive user automatically after a system-initiated restart is set to Disabled"
-  ansible.windows.win_regedit:
-      path: HKLM:\Software\Microsoft\Windows\Currentversion\Policies\System
-      name: DisableAutomaticRestartSignOn
-      data: 1
-      type: dword
-  when:
-      - win19cis_rule_18_10_82_2
-  tags:
-      - level1-domaincontroller
-      - level1-memberserver
-      - rule_18.10.82.2
       - patch
       - logon
 
@@ -3511,6 +3496,7 @@
       type: dword
   when:
       - win19cis_rule_18_10_89_1_3
+      - not win_skip_for_test
   tags:
       - level1-domaincontroller
       - level1-memberserver
@@ -3539,7 +3525,7 @@
   ansible.windows.win_regedit:
       path: HKLM:\Software\Policies\Microsoft\Windows\Winrm\Service
       name: AllowAutoConfig
-      data: 1
+      data: 0
       type: dword
   when:
       - win19cis_rule_18_10_89_2_2
