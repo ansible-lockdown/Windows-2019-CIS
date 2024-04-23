@@ -30,6 +30,7 @@
   ansible.builtin.set_fact:
       win19cis_cloud_based_system: true
   when:
+      - ansible_system_vendor == 'Microsoft Corporation'
       - ansible_virtualization_type == 'Hyper-V' or
         ansible_virtualization_type == 'hvm' or
         ansible_virtualization_type == 'kvm'
