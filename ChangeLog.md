@@ -2,6 +2,10 @@
 
 ## Release 2.0.1
 
+June 2024 Update
+- Issue Addressed:
+    - [#101] (https://github.com/ansible-lockdown/Windows-2019-CIS/issues/101) - Thank you @dennisharder-alight
+
 April 2024 Update
 - Thank you @MrSteve81 for the enhancements to this release!
     - Improved 19.x section logic for Windows local user SIDs and HKU support.
