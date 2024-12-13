@@ -1605,7 +1605,7 @@
       - rule_18.9.26.1
       - patch
 
-- name: "18.9.17.1 | PATCH | Ensure Block user from showing account details on sign-in is set to Enabled"
+- name: "18.9.27.1 | PATCH | Ensure Block user from showing account details on sign-in is set to Enabled"
   ansible.windows.win_regedit:
       path: HKLM:\Software\Policies\Microsoft\Windows\System
       name: BlockUserFromShowingAccountDetailsOnSignin

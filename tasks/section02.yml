@@ -862,7 +862,7 @@
       - win19cis_rule_2_3_1_5
   tags:
       - level1-domaincontroller
-      - level1-memberservers
+      - level1-memberserver
       - rule_2.3.1.5
       - patch
       - securitypolicy
@@ -1618,11 +1618,49 @@
       - patch
 
 - name: "2.3.10.9 | PATCH | Configure Network access Remotely accessible registry paths and sub-paths"
-  ansible.windows.win_regedit:
-      path: HKLM:\System\Currentcontrolset\Control\Securepipeservers\Winreg\Allowedpaths
-      name: "Machine"
-      data: ['System\CurrentControlSet\Control\Print\Printers', 'System\CurrentControlSet\Services\Eventlog', 'Software\Microsoft\OLAP Server', 'Software\Microsoft\Windows NT\CurrentVersion\Print', 'Software\Microsoft\Windows NT\CurrentVersion\Windows', 'System\CurrentControlSet\Control\ContentIndex', 'System\CurrentControlSet\Control\Terminal Server', 'System\CurrentControlSet\Control\Terminal Server\UserConfig', 'System\CurrentControlSet\Control\Terminal Server\DefaultUserConfiguration', 'Software\Microsoft\Windows NT\CurrentVersion\Perflib', 'System\CurrentControlSet\Services\WINS', 'System\CurrentControlSet\Services\CertSvc', 'System\CurrentControlSet\Services\SysmonLog']
-      type: multistring
+  block:
+      - name: "2.3.10.9 | PATCH | Configure Network access Remotely accessible registry paths and sub-paths | Set Fact"
+        ansible.builtin.set_fact:
+            rule_2_3_10_9_remote_registry_paths: [
+                'System\CurrentControlSet\Control\Print\Printers',
+                'System\CurrentControlSet\Services\Eventlog',
+                'Software\Microsoft\OLAP Server',
+                'Software\Microsoft\Windows NT\CurrentVersion\Print',
+                'Software\Microsoft\Windows NT\CurrentVersion\Windows',
+                'System\CurrentControlSet\Control\ContentIndex',
+                'System\CurrentControlSet\Control\Terminal Server',
+                'System\CurrentControlSet\Control\Terminal Server\UserConfig',
+                'System\CurrentControlSet\Control\Terminal Server\DefaultUserConfiguration',
+                'Software\Microsoft\Windows NT\CurrentVersion\Perflib',
+                'System\CurrentControlSet\Services\SysmonLog'
+            ]
+
+      - name: "2.3.10.9 | AUDIT | Configure Network access Remotely accessible registry paths and sub-paths | Check if AD Certificate Services feature is installed."
+        community.windows.win_feature_info:
+            name: AD-Certificate
+        register: rule_2_3_10_9_adcs_feature
+
+      - name: 2.3.10.9 | PATCH | Configure Network access Remotely accessible registry paths and sub-paths | Add CertSvc to paths."
+        ansible.builtin.set_fact:
+            rule_2_3_10_9_remote_registry_paths: "{{ remote_registry_paths + ['System\\CurrentControlSet\\Services\\CertSvc'] }}"
+        when: rule_2_3_10_9_adcs_feature.features[0].installed
+
+      - name: 2.3.10.9 | AUDIT | Configure Network access Remotely accessible registry paths and sub-paths | Check if WINS feature is installed."
+        community.windows.win_feature_info:
+            name: WINS
+        register: rule_2_3_10_9_wins_feature
+
+      - name: 2.3.10.9 | PATCH | Configure Network access Remotely accessible registry paths and sub-paths | Add WINS to paths."
+        ansible.builtin.set_fact:
+            rule_2_3_10_9_remote_registry_paths: "{{ remote_registry_paths + ['System\\CurrentControlSet\\Services\\WINS'] }}"
+        when: rule_2_3_10_9_wins_feature.features[0].installed
+
+      - name: "2.3.10.9 | PATCH | Configure Network access Remotely accessible registry paths and sub-paths | Apply "
+        ansible.windows.win_regedit:
+            path: HKLM:\SYSTEM\Currentcontrolset\Control\Securepipeservers\Winreg\Allowedpaths
+            name: "Machine"
+            data: '{{ rule_2_3_10_9_remote_registry_paths }}'
+            type: multistring
   when:
       - win19cis_rule_2_3_10_9
   tags:

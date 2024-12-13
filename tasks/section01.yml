@@ -109,6 +109,19 @@
       - patch
       - password
 
+- name: "1.1.6 | PATCH | Ensure Relax minimum password length limits is set to Enabled."
+  community.windows.win_security_policy:
+      section: System Access
+      key: RelaxMinimumPasswordLengthLimits
+      value: 1
+  when:
+      - win19cis_rule_1_1_6
+  tags:
+      - level1-memberserver
+      - rule_1.1.6
+      - patch
+      - password
+
 - name: "1.1.4 | PATCH | Ensure Minimum password length is set to 14 or more characters"
   block:
       - name: "1.1.4 | AUDIT | Ensure Minimum password length is set to 14 or more characters | Warning Check For Variable Standards."
@@ -151,19 +164,6 @@
       - level1-domaincontroller
       - level1-memberserver
       - rule_1.1.5
-      - patch
-      - password
-
-- name: "1.1.6 | PATCH | Ensure Relax minimum password length limits is set to Enabled."
-  community.windows.win_security_policy:
-      section: System Access
-      key: RelaxMinimumPasswordLengthLimits
-      value: 1
-  when:
-      - win19cis_rule_1_1_6
-  tags:
-      - level1-memberserver
-      - rule_1.1.6
       - patch
       - password
 
