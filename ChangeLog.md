@@ -5,6 +5,7 @@
 December 2024 Update
 - Fixed title for 18.9.27.1
 - Issue Addressed:
+    - [#107](https://github.com/ansible-lockdown/Windows-2022-CIS/issues/107) - Thanks @animatco & @kpi-nourman
     - [#106](https://github.com/ansible-lockdown/Windows-2019-CIS/issues/105) - Thanks @animatco
     - [#104](https://github.com/ansible-lockdown/Windows-2019-CIS/issues/104) - Thanks @devallan
     - [#103](https://github.com/ansible-lockdown/Windows-2019-CIS/issues/103) - Thanks @Crombell95
