@@ -30,7 +30,7 @@
   ansible.builtin.set_fact:
       win19cis_cloud_based_system: true
   when:
-      - ansible_virtualization_type == 'VMware' or
+      - not ansible_virtualization_type == 'VMware' or
         (ansible_system_vendor == 'Microsoft Corporation' and
         ansible_virtualization_type in ['Hyper-V', 'hvm', 'kvm'])
   tags:
