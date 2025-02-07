@@ -3671,7 +3671,7 @@
         ansible.windows.win_regedit:
             path: HKLM:\Software\Policies\Microsoft\Windows\WindowsUpdate
             name: ManagePreviewBuildsPolicyValue
-            data: 1
+            data: 0
             type: dword
   when:
       - win19cis_rule_18_10_93_4_1
