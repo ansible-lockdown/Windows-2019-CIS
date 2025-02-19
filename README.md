@@ -21,7 +21,6 @@
 [![Main Pipeline Status](https://github.com/ansible-lockdown/Windows-2019-CIS/actions/workflows/main_pipeline_validation.yml/badge.svg?)](https://github.com/ansible-lockdown/Windows-2019-CIS/actions/workflows/main_pipeline_validation.yml)
 [![GPO Main Pipeline Status](https://github.com/ansible-lockdown/Windows-2019-CIS/actions/workflows/main_pipeline_validation_gpo.yml/badge.svg?)](https://github.com/ansible-lockdown/Windows-2019-CIS/actions/workflows/main_pipeline_validation_gpo.yml)
 
-
 [![Devel Pipeline Status](https://github.com/ansible-lockdown/Windows-2019-CIS/actions/workflows/devel_pipeline_validation.yml/badge.svg?)](https://github.com/ansible-lockdown/Windows-2019-CIS/actions/workflows/devel_pipeline_validation.yml)
 [![GPO Devel Pipeline Status](https://github.com/ansible-lockdown/Windows-2019-CIS/actions/workflows/devel_pipeline_validation_gpo.yml/badge.svg?)](https://github.com/ansible-lockdown/Windows-2019-CIS/actions/workflows/devel_pipeline_validation_gpo.yml)
 ![Devel Commits](https://img.shields.io/github/commit-activity/m/ansible-lockdown/Windows-2019-CIS/devel?color=dark%20green&label=Devel%20Branch%20Commits)
