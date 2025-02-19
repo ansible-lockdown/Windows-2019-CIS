@@ -1,0 +1,717 @@
+---
+
+- name: "1.1.1 | GPO | Ensure Enforce password history is set to 24 or more passwords."
+  when:
+    - win19cis_rule_1_1_1
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_1.1.1
+    - patch
+    - password
+    - gpo
+    - NIST800-171_3.5.2
+    - NIST800-53_IA-5_1
+    - NIST800-53R5_IA-5_1
+  block:
+    - name: "1.1.1 | GPO | Ensure Enforce password history is set to 24 or more passwords. | Set Variable Line In GptTmpl.inf."
+      when:
+        - win19cis_max_passwords_saved == 24
+        - "'Skipped' not in item.gpo_guid"
+      community.windows.win_lineinfile:
+        path: "C:\\Windows\\SYSVOL\\sysvol\\{{ prelim_discovered_domain_name }}\\Policies\\{{ item.gpo_guid }}\\Machine\\Microsoft\\Windows NT\\SecEdit\\GptTmpl.inf"
+        regexp: "^PasswordHistorySize =.*$"
+        line: 'PasswordHistorySize = {{ win19cis_max_passwords_saved }}'
+        insertafter: "^\\[System Access\\]$"
+      loop:
+        - gpo_guid: "{{ win19cis_default_domain_gpo_guid | default('') ~ ( '(Skipped)' if not win19cis_default_domain_policy_gpo else '' ) }}"
+          gpo_name: "{{ win19cis_default_domain_policy_gpo_name }}"
+      loop_control:
+        label: "{{ item.gpo_name }} - {{ item.gpo_guid }}"
+
+    - name: "1.1.1 | GPO | Ensure Enforce password history is set to 24 or more passwords. | Set Variable Line In Registry."
+      when:
+        - win19cis_max_passwords_saved == 24
+        - "'Skipped' not in item.gpo_guid"
+      ansible.windows.win_shell: |
+        $gpoName = "{{ item.gpo_name }}"
+        $registryKeyPath = "HKLM\SYSTEM\CurrentControlSet\Services\Netlogon\Parameters"
+        $registryValueName = "EnforcePasswordHistory"
+        $type = "DWORD"
+        $desiredValue = {{ win19cis_max_passwords_saved }}
+
+        # Get the current value of the registry key in the GPO
+        $currentValue = (Get-GPRegistryValue -Name $gpoName -Key $registryKeyPath -ValueName $registryValueName -ErrorAction SilentlyContinue).Value
+
+        # Check if the current value is equal to the desired value
+        if ($currentValue -ne $desiredValue) {
+            # If not, set the registry value to the desired value
+            Set-GPRegistryValue -Name $gpoName -Key $registryKeyPath -ValueName $registryValueName -Type $type -Value $desiredValue
+            Write-Output "Patched"
+        } else {
+            Write-Output "No Change Needed"
+        }
+      loop:
+        - gpo_guid: "{{ win19cis_default_domain_gpo_guid | default('') ~ ( '(Skipped)' if not win19cis_default_domain_policy_gpo else '' ) }}"
+          gpo_name: "{{ win19cis_default_domain_policy_gpo_name }}"
+      loop_control:
+        label: "{{ item.gpo_name }} - {{ item.gpo_guid }}"
+      changed_when: '"Patched" in rule_1_1_1_results.stdout'
+      register: rule_1_1_1_results
+
+    - name: "1.1.1 | AUDIT | Ensure Enforce password history is set to 24 or more passwords. | Check for more than 24 saved passwords warning."
+      when:
+        - win19cis_max_passwords_saved > 24 or
+          win19cis_max_passwords_saved <= 23
+      ansible.builtin.debug:
+        msg:
+          - "Warning!! You have an invalid number of maximum passwords set in win19cis_max_passwords_saved please read"
+          - "the notes for the variable and make the necessary change to the variable to be in compliance."
+
+    - name: "1.1.1 | AUDIT | Ensure Enforce password history is set to 24 or more passwords. | Set warning count"
+      vars:
+        warn_control_id: '1.1.1'
+      when:
+        - win19cis_max_passwords_saved > 24 or
+          win19cis_max_passwords_saved <= 23
+      ansible.builtin.import_tasks: warning_facts.yml
+
+- name: "1.1.2 | GPO | Ensure Maximum password age is set to 365 or fewer days but not 0."
+  when:
+    - win19cis_rule_1_1_2
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_1.1.2
+    - patch
+    - password
+    - gpo
+    - NIST800-171_3.5.2
+    - NIST800-53_IA-5_1
+    - NIST800-53R5_IA-5_1
+  block:
+    - name: "1.1.2 | GPO | Ensure Maximum password age is set to 365 or fewer days but not 0. | Set Variable Line In GptTmpl.inf."
+      when:
+        - win19cis_maximum_password_age <= 365
+        - win19cis_maximum_password_age > 0
+        - win19cis_maximum_password_age > win19cis_minimum_password_age
+        - "'Skipped' not in item.gpo_guid"
+      community.windows.win_lineinfile:
+        path: "C:\\Windows\\SYSVOL\\sysvol\\{{ prelim_discovered_domain_name }}\\Policies\\{{ item.gpo_guid }}\\Machine\\Microsoft\\Windows NT\\SecEdit\\GptTmpl.inf"
+        regexp: "^MaximumPasswordAge =.*$"
+        line: 'MaximumPasswordAge = {{ win19cis_maximum_password_age }}'
+        insertafter: "^\\[System Access\\]$"
+      loop:
+        - gpo_guid: "{{ win19cis_default_domain_gpo_guid | default('') ~ ( '(Skipped)' if not win19cis_default_domain_policy_gpo else '' ) }}"
+          gpo_name: "{{ win19cis_default_domain_policy_gpo_name }}"
+      loop_control:
+        label: "{{ item.gpo_name }} - {{ item.gpo_guid }}"
+
+    - name: "1.1.2 | GPO | Ensure Maximum password age is set to 365 or fewer days but not 0. | Set Variable Line Registry."
+      when:
+        - win19cis_maximum_password_age <= 365
+        - win19cis_maximum_password_age > 0
+        - win19cis_maximum_password_age > win19cis_minimum_password_age
+        - "'Skipped' not in item.gpo_guid"
+      ansible.windows.win_shell: |
+        $gpoName = "{{ item.gpo_name }}"
+        $registryKeyPath = "HKLM\SYSTEM\CurrentControlSet\Services\Netlogon\Parameters"
+        $registryValueName = "MaximumPasswordAge"
+        $type = "DWORD"
+        $desiredValue = {{ win19cis_maximum_password_age }}
+
+        # Get the current value of the registry key in the GPO
+        $currentValue = (Get-GPRegistryValue -Name $gpoName -Key $registryKeyPath -ValueName $registryValueName -ErrorAction SilentlyContinue).Value
+
+        # Check if the current value is equal to the desired value
+        if ($currentValue -ne $desiredValue) {
+            # If not, set the registry value to the desired value
+            Set-GPRegistryValue -Name $gpoName -Key $registryKeyPath -ValueName $registryValueName -Type $type -Value $desiredValue
+            Write-Output "Patched"
+        } else {
+            Write-Output "No Change Needed"
+        }
+      loop:
+        - gpo_guid: "{{ win19cis_default_domain_gpo_guid | default('') ~ ( '(Skipped)' if not win19cis_default_domain_policy_gpo else '' ) }}"
+          gpo_name: "{{ win19cis_default_domain_policy_gpo_name }}"
+      loop_control:
+        label: "{{ item.gpo_name }} - {{ item.gpo_guid }}"
+      changed_when: '"Patched" in rule_1_1_2_results.stdout'
+      register: rule_1_1_2_results
+
+    - name: "1.1.2 | AUDIT | Ensure Maximum password age is set to 365 or fewer days but not 0. | Warning check for maximum password age time."
+      when:
+        - win19cis_maximum_password_age > 365 or
+          win19cis_maximum_password_age == 0
+        - win19cis_maximum_password_age < win19cis_minimum_password_age
+      ansible.builtin.debug:
+        msg:
+          - "Warning!! You have an invalid age set for win19cis_maximum_password_age please read"
+          - "the notes for the variable and make the necessary change to the variable to be in compliance."
+          - "Also verify your win19cis_maximum_password_age is more than the win19cis_minimum_password_age."
+
+    - name: "1.1.2 | AUDIT | Ensure Maximum password age is set to 365 or fewer days but not 0. | Set warning count."
+      vars:
+        warn_control_id: '1.1.2'
+      when:
+        - win19cis_maximum_password_age > 365 or
+          win19cis_maximum_password_age == 0
+        - win19cis_maximum_password_age < win19cis_minimum_password_age
+      ansible.builtin.import_tasks: warning_facts.yml
+
+- name: "1.1.3 | GPO | Ensure Minimum password age is set to 1 or more days"
+  when:
+    - win19cis_rule_1_1_3
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_1.1.3
+    - patch
+    - password
+    - gpo
+    - NIST800-171_3.5.2
+    - NIST800-53_IA-5_1
+    - NIST800-53R5_IA-5_1
+  block:
+    - name: "1.1.3 | GPO | Ensure Minimum password age is set to 1 or more days. | Set Variable Line In GptTmpl.inf."
+      when:
+        - win19cis_minimum_password_age <= 364 or
+          win19cis_minimum_password_age > 0
+        - win19cis_minimum_password_age < win19cis_maximum_password_age
+        - "'Skipped' not in item.gpo_guid"
+      community.windows.win_lineinfile:
+        path: "C:\\Windows\\SYSVOL\\sysvol\\{{ prelim_discovered_domain_name }}\\Policies\\{{ item.gpo_guid }}\\Machine\\Microsoft\\Windows NT\\SecEdit\\GptTmpl.inf"
+        regexp: "^MinimumPasswordAge =.*$"
+        line: 'MinimumPasswordAge = {{ win19cis_minimum_password_age }}'
+        insertafter: "^\\[System Access\\]$"
+      loop:
+        - gpo_guid: "{{ win19cis_default_domain_gpo_guid | default('') ~ ( '(Skipped)' if not win19cis_default_domain_policy_gpo else '' ) }}"
+          gpo_name: "{{ win19cis_default_domain_policy_gpo_name }}"
+      loop_control:
+        label: "{{ item.gpo_name }} - {{ item.gpo_guid }}"
+
+    - name: "1.1.3 | GPO | Ensure Minimum password age is set to 1 or more days. | Set Variable Line In Registry."
+      when:
+        - win19cis_minimum_password_age <= 364 or
+          win19cis_minimum_password_age > 0
+        - win19cis_minimum_password_age < win19cis_maximum_password_age
+        - "'Skipped' not in item.gpo_guid"
+      ansible.windows.win_shell: |
+        $gpoName = "{{ item.gpo_name }}"
+        $registryKeyPath = "HKLM\SYSTEM\CurrentControlSet\Services\Netlogon\Parameters"
+        $registryValueName = "MinimumPasswordAge"
+        $type = "DWORD"
+        $desiredValue = {{ win19cis_minimum_password_age }}
+
+        # Get the current value of the registry key in the GPO
+        $currentValue = (Get-GPRegistryValue -Name $gpoName -Key $registryKeyPath -ValueName $registryValueName -ErrorAction SilentlyContinue).Value
+
+        # Check if the current value is equal to the desired value
+        if ($currentValue -ne $desiredValue) {
+            # If not, set the registry value to the desired value
+            Set-GPRegistryValue -Name $gpoName -Key $registryKeyPath -ValueName $registryValueName -Type $type -Value $desiredValue
+            Write-Output "Patched"
+        } else {
+            Write-Output "No Change Needed"
+        }
+      loop:
+        - gpo_guid: "{{ win19cis_default_domain_gpo_guid | default('') ~ ( '(Skipped)' if not win19cis_default_domain_policy_gpo else '' ) }}"
+          gpo_name: "{{ win19cis_default_domain_policy_gpo_name }}"
+      loop_control:
+        label: "{{ item.gpo_name }} - {{ item.gpo_guid }}"
+      changed_when: '"Patched" in rule_1_1_3_results.stdout'
+      register: rule_1_1_3_results
+
+    - name: "1.1.3 | AUDIT | Ensure Minimum password age is set to 1 or more days. | Warning check for minimum password age."
+      when:
+        - win19cis_minimum_password_age > 364 or
+          win19cis_minimum_password_age == 0
+        - win19cis_minimum_password_age > win19cis_maximum_password_age
+      ansible.builtin.debug:
+        msg:
+          - "Warning!! You have an invalid length set for win19cis_minimum_password_age please read"
+          - "the notes for the variable and make the necessary change to the variable to be in compliance."
+          - "Also verify your win19cis_minimum_password_age is less than the win19cis_maximum_password_age."
+
+    - name: "1.1.3 | AUDIT | Ensure Minimum password age is set to 1 or more days. | Set warning count."
+      vars:
+        warn_control_id: '1.1.3'
+      when:
+        - win19cis_minimum_password_age > 364 or
+          win19cis_minimum_password_age == 0
+        - win19cis_minimum_password_age > win19cis_maximum_password_age
+      ansible.builtin.import_tasks: warning_facts.yml
+
+- name: "1.1.4 | GPO | Ensure Minimum password length is set to 14 or more characters."
+  when: win19cis_rule_1_1_4
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_1.1.4
+    - patch
+    - password
+    - gpo
+    - NIST800-171_3.5.2
+    - NIST800-53_IA-5_1
+    - NIST800-53R5_IA-5_1
+  block:
+    - name: "1.1.4 | GPO | Ensure Minimum password length is set to 14 or more characters. | Set Variable Line In GptTmpl.inf."
+      when:
+        - win19cis_minimum_password_length >= 14
+        - "'Skipped' not in item.gpo_guid"
+      community.windows.win_lineinfile:
+        path: "C:\\Windows\\SYSVOL\\sysvol\\{{ prelim_discovered_domain_name }}\\Policies\\{{ item.gpo_guid }}\\Machine\\Microsoft\\Windows NT\\SecEdit\\GptTmpl.inf"
+        regexp: "^MinimumPasswordLength =.*$"
+        line: 'MinimumPasswordLength = {{ win19cis_minimum_password_length }}'
+        insertafter: "^\\[System Access\\]$"
+      loop:
+        - gpo_guid: "{{ win19cis_default_domain_gpo_guid | default('') ~ ( '(Skipped)' if not win19cis_default_domain_policy_gpo else '' ) }}"
+          gpo_name: "{{ win19cis_default_domain_policy_gpo_name }}"
+      loop_control:
+        label: "{{ item.gpo_name }} - {{ item.gpo_guid }}"
+
+    - name: "1.1.4 | GPO | Ensure Minimum password length is set to 14 or more characters. | Set Variable Line In Registry."
+      when:
+        - win19cis_minimum_password_length >= 14
+        - "'Skipped' not in item.gpo_guid"
+      ansible.windows.win_shell: |
+        $gpoName = "{{ item.gpo_name }}"
+        $registryKeyPath = "HKLM\SYSTEM\CurrentControlSet\Services\Netlogon\Parameters"
+        $registryValueName = "MinimumPasswordLength"
+        $type = "DWORD"
+        $desiredValue = {{ win19cis_minimum_password_length }}
+
+        # Get the current value of the registry key in the GPO
+        $currentValue = (Get-GPRegistryValue -Name $gpoName -Key $registryKeyPath -ValueName $registryValueName -ErrorAction SilentlyContinue).Value
+
+        # Check if the current value is equal to the desired value
+        if ($currentValue -ne $desiredValue) {
+            # If not, set the registry value to the desired value
+            Set-GPRegistryValue -Name $gpoName -Key $registryKeyPath -ValueName $registryValueName -Type $type -Value $desiredValue
+            Write-Output "Patched"
+        } else {
+            Write-Output "No Change Needed"
+        }
+      loop:
+        - gpo_guid: "{{ win19cis_default_domain_gpo_guid | default('') ~ ( '(Skipped)' if not win19cis_default_domain_policy_gpo else '' ) }}"
+          gpo_name: "{{ win19cis_default_domain_policy_gpo_name }}"
+      loop_control:
+        label: "{{ item.gpo_name }} - {{ item.gpo_guid }}"
+      changed_when: '"Patched" in rule_1_1_4_results.stdout'
+      register: rule_1_1_4_results
+
+    - name: "1.1.4 | AUDIT | Ensure Minimum password length is set to 14 or more characters. | Warning Check For Variable Standards."
+      when: win19cis_minimum_password_length < 14
+      ansible.builtin.debug:
+        msg:
+          - "Warning!! You have an invalid length set for win19cis_minimum_password_length please read"
+          - "the notes for the variable and make the necessary change to the variable to be in compliance."
+
+    - name: "1.1.4 | AUDIT | Ensure Minimum password length is set to 14 or more characters. | Set warning count."
+      vars:
+        warn_control_id: '1.1.4'
+      when: win19cis_minimum_password_length < 14
+      ansible.builtin.import_tasks: warning_facts.yml
+
+- name: "1.1.5 | GPO | Ensure Password must meet complexity requirements is set to Enabled."
+  when: win19cis_rule_1_1_5
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_1.1.5
+    - patch
+    - password
+    - gpo
+    - NIST800-171_3.5.2
+    - NIST800-53_IA-5_1
+    - NIST800-53R5_IA-5_1
+  block:
+    - name: "1.1.5 | GPO | Ensure Password must meet complexity requirements is set to Enabled. | Set Variable In GptTmpl.inf."
+      when: "'Skipped' not in item.gpo_guid"
+      community.windows.win_lineinfile:
+        path: "C:\\Windows\\SYSVOL\\sysvol\\{{ prelim_discovered_domain_name }}\\Policies\\{{ item.gpo_guid }}\\Machine\\Microsoft\\Windows NT\\SecEdit\\GptTmpl.inf"
+        regexp: "^PasswordComplexity =.*$"
+        line: 'PasswordComplexity = 1'
+        insertafter: "^\\[System Access\\]$"
+      loop:
+        - gpo_guid: "{{ win19cis_default_domain_gpo_guid | default('') ~ ( '(Skipped)' if not win19cis_default_domain_policy_gpo else '' ) }}"
+          gpo_name: "{{ win19cis_default_domain_policy_gpo_name }}"
+      loop_control:
+        label: "{{ item.gpo_name }} - {{ item.gpo_guid }}"
+
+    - name: "1.1.5 | GPO | Ensure Password must meet complexity requirements is set to Enabled. | Set Variable Line In Registry."
+      when: "'Skipped' not in item.gpo_guid"
+      ansible.windows.win_shell: |
+        $gpoName = "{{ item.gpo_name }}"
+        $registryKeyPath = "HKLM\SYSTEM\CurrentControlSet\Services\Netlogon\Parameters"
+        $registryValueName = "PasswordComplexity"
+        $type = "DWORD"
+        $desiredValue = 1
+
+        # Get the current value of the registry key in the GPO
+        $currentValue = (Get-GPRegistryValue -Name $gpoName -Key $registryKeyPath -ValueName $registryValueName -ErrorAction SilentlyContinue).Value
+
+        # Check if the current value is equal to the desired value
+        if ($currentValue -ne $desiredValue) {
+            # If not, set the registry value to the desired value
+            Set-GPRegistryValue -Name $gpoName -Key $registryKeyPath -ValueName $registryValueName -Type $type -Value $desiredValue
+            Write-Output "Patched"
+        } else {
+            Write-Output "No Change Needed"
+        }
+      loop:
+        - gpo_guid: "{{ win19cis_default_domain_gpo_guid | default('') ~ ( '(Skipped)' if not win19cis_default_domain_policy_gpo else '' ) }}"
+          gpo_name: "{{ win19cis_default_domain_policy_gpo_name }}"
+      loop_control:
+        label: "{{ item.gpo_name }} - {{ item.gpo_guid }}"
+      changed_when: '"Patched" in rule_1_1_5_results.stdout'
+      register: rule_1_1_5_results
+
+- name: "1.1.6 | GPO | Ensure 'Store passwords using reversible encryption' is set to 'Disabled'."
+  when: win19cis_rule_1_1_6
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_1.1.6
+    - patch
+    - password
+    - gpo
+    - NIST800-171_3.5.2
+    - NIST800-171_3.13.16
+    - NIST800-53_IA-5_1
+    - NIST800-53_SC-28
+    - NIST800-53_SC-28_1
+    - NIST800-53R5_IA-5_1
+    - NIST800-53R5_SC-28
+    - NIST800-53R5_SC-28_1
+  block:
+    - name: "1.1.6 | GPO | Ensure 'Store passwords using reversible encryption' is set to 'Disabled'. | Set Variable In GptTmpl.inf."
+      when: "'Skipped' not in item.gpo_guid"
+      community.windows.win_lineinfile:
+        path: "C:\\Windows\\SYSVOL\\sysvol\\{{ prelim_discovered_domain_name }}\\Policies\\{{ item.gpo_guid }}\\Machine\\Microsoft\\Windows NT\\SecEdit\\GptTmpl.inf"
+        regexp: "^ClearTextPassword =.*$"
+        line: 'ClearTextPassword = 0'
+        insertafter: "^\\[System Access\\]$"
+      loop:
+        - gpo_guid: "{{ win19cis_default_domain_gpo_guid | default('') ~ ( '(Skipped)' if not win19cis_default_domain_policy_gpo else '' ) }}"
+          gpo_name: "{{ win19cis_default_domain_policy_gpo_name }}"
+      loop_control:
+        label: "{{ item.gpo_name }} - {{ item.gpo_guid }}"
+
+    - name: "1.1.6 | GPO | Ensure 'Store passwords using reversible encryption' is set to 'Disabled'. | Set Variable Line In Registry."
+      when: "'Skipped' not in item.gpo_guid"
+      ansible.windows.win_shell: |
+        $gpoName = "{{ item.gpo_name }}"
+        $registryKeyPath = "HKLM\SYSTEM\CurrentControlSet\Services\Netlogon\Parameters"
+        $registryValueName = "ClearTextPassword"
+        $type = "DWORD"
+        $desiredValue = 0
+
+        # Get the current value of the registry key in the GPO
+        $currentValue = (Get-GPRegistryValue -Name $gpoName -Key $registryKeyPath -ValueName $registryValueName -ErrorAction SilentlyContinue).Value
+
+        # Check if the current value is equal to the desired value
+        if ($currentValue -ne $desiredValue) {
+            # If not, set the registry value to the desired value
+            Set-GPRegistryValue -Name $gpoName -Key $registryKeyPath -ValueName $registryValueName -Type $type -Value $desiredValue
+            Write-Output "Patched"
+        } else {
+            Write-Output "No Change Needed"
+        }
+      loop:
+        - gpo_guid: "{{ win19cis_default_domain_gpo_guid | default('') ~ ( '(Skipped)' if not win19cis_default_domain_policy_gpo else '' ) }}"
+          gpo_name: "{{ win19cis_default_domain_policy_gpo_name }}"
+      loop_control:
+        label: "{{ item.gpo_name }} - {{ item.gpo_guid }}"
+      changed_when: '"Patched" in rule_1_1_6_results.stdout'
+      register: rule_1_1_6_results
+
+- name: "1.2.1 | GPO | Ensure Account lockout duration is set to 15 or more minutes."
+  when: win19cis_rule_1_2_1
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_1.2.1
+    - patch
+    - account
+    - gpo
+    - NIST800-171_3.1.8
+    - NIST800-171_3.1.18
+    - NIST800-53_AC-7
+    - NIST800-53_AC-19
+    - NIST800-53R5_AC-7
+    - NIST800-53R5_AC-19
+  block:
+    - name: "1.2.1 | GPO | Ensure Account lockout duration is set to 15 or more minutes. | Set Variable In GptTmpl.inf."
+      when:
+        - win19cis_account_lockout_duration >= 15
+        - "'Skipped' not in item.gpo_guid"
+      community.windows.win_lineinfile:
+        path: "C:\\Windows\\SYSVOL\\sysvol\\{{ prelim_discovered_domain_name }}\\Policies\\{{ item.gpo_guid }}\\Machine\\Microsoft\\Windows NT\\SecEdit\\GptTmpl.inf"
+        regexp: "^LockoutDuration =.*$"
+        line: 'LockoutDuration = {{ win19cis_account_lockout_duration }}'
+        insertafter: "^\\[System Access\\]$"
+      loop:
+        - gpo_guid: "{{ win19cis_default_domain_gpo_guid | default('') ~ ( '(Skipped)' if not win19cis_default_domain_policy_gpo else '' ) }}"
+          gpo_name: "{{ win19cis_default_domain_policy_gpo_name }}"
+      loop_control:
+        label: "{{ item.gpo_name }} - {{ item.gpo_guid }}"
+
+    - name: "1.2.1 | GPO | Ensure Account lockout duration is set to 15 or more minutes. | Set Variable Line In Registry."
+      when:
+        - win19cis_account_lockout_duration >= 15
+        - "'Skipped' not in item.gpo_guid"
+      ansible.windows.win_shell: |
+        $gpoName = "{{ item.gpo_name }}"
+        $registryKeyPath = "HKLM\SYSTEM\CurrentControlSet\Services\Netlogon\Parameters"
+        $registryValueName = "LockoutDuration"
+        $type = "DWORD"
+        $desiredValue = {{ win19cis_account_lockout_duration }}
+
+        # Get the current value of the registry key in the GPO
+        $currentValue = (Get-GPRegistryValue -Name $gpoName -Key $registryKeyPath -ValueName $registryValueName -ErrorAction SilentlyContinue).Value
+
+        # Check if the current value is equal to the desired value
+        if ($currentValue -ne $desiredValue) {
+            # If not, set the registry value to the desired value
+            Set-GPRegistryValue -Name $gpoName -Key $registryKeyPath -ValueName $registryValueName -Type $type -Value $desiredValue
+            Write-Output "Patched"
+        } else {
+            Write-Output "No Change Needed"
+        }
+      loop:
+        - gpo_guid: "{{ win19cis_default_domain_gpo_guid | default('') ~ ( '(Skipped)' if not win19cis_default_domain_policy_gpo else '' ) }}"
+          gpo_name: "{{ win19cis_default_domain_policy_gpo_name }}"
+      loop_control:
+        label: "{{ item.gpo_name }} - {{ item.gpo_guid }}"
+      changed_when: '"Patched" in rule_1_2_1_results.stdout'
+      register: rule_1_2_1_results
+
+    - name: "1.2.1 | AUDIT | Ensure Account lockout duration is set to 15 or more minutes. | Verify variable set to 15 or more minutes warning."
+      when: win19cis_account_lockout_duration < 15
+      ansible.builtin.debug:
+        msg:
+          - "Warning!! You have an invalid number of minutes set for win19cis_account_lockout_duration please read"
+          - "the notes for the variable and make the necessary change to the variable to be in compliance."
+
+    - name: "1.2.1 | AUDIT | Ensure Account lockout duration is set to 15 or more minutes. | Set warning count."
+      vars:
+        warn_control_id: '1.2.1'
+      when: win19cis_account_lockout_duration < 15
+      ansible.builtin.import_tasks: warning_facts.yml
+
+- name: "1.2.2 | GPO | Ensure Account lockout threshold is set to 5 or fewer invalid logon attempt(s), but not 0."
+  when: win19cis_rule_1_2_2
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_1.2.2
+    - patch
+    - account
+    - gpo
+    - NIST800-171_3.1.8
+    - NIST800-171_3.1.18
+    - NIST800-53_AC-7
+    - NIST800-53_AC-19
+    - NIST800-53R5_AC-7
+    - NIST800-53R5_AC-19
+  block:
+    - name: "1.2.2 | GPO | Ensure Account lockout threshold is set to 5 or fewer invalid logon attempt(s), but not 0. | Set Variable."
+      when:
+        - win19cis_bad_login_lockout_count <= 5
+        - win19cis_bad_login_lockout_count > 0
+        - "'Skipped' not in item.gpo_guid"
+      community.windows.win_lineinfile:
+        path: "C:\\Windows\\SYSVOL\\sysvol\\{{ prelim_discovered_domain_name }}\\Policies\\{{ item.gpo_guid }}\\Machine\\Microsoft\\Windows NT\\SecEdit\\GptTmpl.inf"
+        regexp: "^LockoutBadCount =.*$"
+        line: 'LockoutBadCount = {{ win19cis_bad_login_lockout_count }}'
+        insertafter: "^\\[System Access\\]$"
+      loop:
+        - gpo_guid: "{{ win19cis_default_domain_gpo_guid | default('') ~ ( '(Skipped)' if not win19cis_default_domain_policy_gpo else '' ) }}"
+          gpo_name: "{{ win19cis_default_domain_policy_gpo_name }}"
+      loop_control:
+        label: "{{ item.gpo_name }} - {{ item.gpo_guid }}"
+
+    - name: "1.2.2 | GPO | Ensure Account lockout threshold is set to 5 or fewer invalid logon attempt(s), but not 0. | Set Variable Line In Registry."
+      when:
+        - win19cis_bad_login_lockout_count <= 5
+        - win19cis_bad_login_lockout_count > 0
+        - "'Skipped' not in item.gpo_guid"
+      ansible.windows.win_shell: |
+        $gpoName = "{{ item.gpo_name }}"
+        $registryKeyPath = "HKLM\SYSTEM\CurrentControlSet\Services\Netlogon\Parameters"
+        $registryValueName = "LockoutThreshold"
+        $type = "DWORD"
+        $desiredValue = {{ win19cis_bad_login_lockout_count }}
+
+        # Get the current value of the registry key in the GPO
+        $currentValue = (Get-GPRegistryValue -Name $gpoName -Key $registryKeyPath -ValueName $registryValueName -ErrorAction SilentlyContinue).Value
+
+        # Check if the current value is equal to the desired value
+        if ($currentValue -ne $desiredValue) {
+            # If not, set the registry value to the desired value
+            Set-GPRegistryValue -Name $gpoName -Key $registryKeyPath -ValueName $registryValueName -Type $type -Value $desiredValue
+            Write-Output "Patched"
+        } else {
+            Write-Output "No Change Needed"
+        }
+      loop:
+        - gpo_guid: "{{ win19cis_default_domain_gpo_guid | default('') ~ ( '(Skipped)' if not win19cis_default_domain_policy_gpo else '' ) }}"
+          gpo_name: "{{ win19cis_default_domain_policy_gpo_name }}"
+      loop_control:
+        label: "{{ item.gpo_name }} - {{ item.gpo_guid }}"
+      changed_when: '"Patched" in rule_1_2_2_results.stdout'
+      register: rule_1_2_2_results
+
+    - name: "1.2.2 | AUDIT | Ensure Account lockout threshold is set to 5 or fewer invalid logon attempt(s), but not 0. | Verify Variable Not 0 or More Than 5 Warning."
+      when:
+        - win19cis_bad_login_lockout_count > 5 or
+          win19cis_bad_login_lockout_count == 0
+      ansible.builtin.debug:
+        msg:
+          - "Warning!! You have an invalid number of attempts set for win19cis_bad_login_lockout_count please read"
+          - "the notes for the variable and make the necessary change to the variable to be in compliance."
+
+    - name: "1.2.2 | AUDIT | Ensure Account lockout threshold is set to 5 or fewer invalid logon attempt(s), but not 0. | Set warning count."
+      vars:
+        warn_control_id: '1.2.2'
+      when:
+        - win19cis_bad_login_lockout_count > 5 or
+          win19cis_bad_login_lockout_count == 0
+      ansible.builtin.import_tasks: warning_facts.yml
+
+- name: "1.2.3 | GPO | Ensure Allow Administrator account lockout is set to Enabled."
+  when: win19cis_rule_1_2_3
+  tags:
+    - level1-memberserver
+    - rule_1.2.3
+    - patch
+    - password
+    - gpo
+    - NIST800-171_3.1.8
+    - NIST800-171_3.1.18
+    - NIST800-53_AC-7
+    - NIST800-53_AC-19
+    - NIST800-53R5_AC-7
+    - NIST800-53R5_AC-19
+  block:
+    - name: "1.2.3 | GPO | Ensure Allow Administrator account lockout is set to Enabled. | Set Variable In GptTmpl.inf."
+      when: "'Skipped' not in item.gpo_guid"
+      community.windows.win_lineinfile:
+        path: "C:\\Windows\\SYSVOL\\sysvol\\{{ prelim_discovered_domain_name }}\\Policies\\{{ item.gpo_guid }}\\Machine\\Microsoft\\Windows NT\\SecEdit\\GptTmpl.inf"
+        regexp: "^AllowAdministratorLockout =.*$"
+        line: 'AllowAdministratorLockout = {{ win19cis_allow_admin_account_lockout }}'
+        insertafter: "^\\[System Access\\]$"
+      loop:
+        - gpo_guid: "{{ win19cis_l1_ms_gpo_guid | default('') ~ ( '(Skipped)' if not win19cis_l1_ms_gpo else '' ) }}"
+          gpo_name: "{{ win19cis_l1_ms_gpo_name }}"
+      loop_control:
+        label: "{{ item.gpo_name }} - {{ item.gpo_guid }}"
+
+    - name: "1.2.3 | GPO | Ensure Allow Administrator account lockout is set to Enabled. | Set Variable Line In Registry."
+      when: "'Skipped' not in item.gpo_guid"
+      ansible.windows.win_shell: |
+        $gpoName = "{{ item.gpo_name }}"
+        $registryKeyPath = "HKLM\SYSTEM\CurrentControlSet\Services\Netlogon\Parameters"
+        $registryValueName = "AllowAdminLockout"
+        $type = "DWORD"
+        $desiredValue = {{ win19cis_allow_admin_account_lockout }}
+
+        # Get the current value of the registry key in the GPO
+        $currentValue = (Get-GPRegistryValue -Name $gpoName -Key $registryKeyPath -ValueName $registryValueName -ErrorAction SilentlyContinue).Value
+
+        # Check if the current value is equal to the desired value
+        if ($currentValue -ne $desiredValue) {
+            # If not, set the registry value to the desired value
+            Set-GPRegistryValue -Name $gpoName -Key $registryKeyPath -ValueName $registryValueName -Type $type -Value $desiredValue
+            Write-Output "Patched"
+        } else {
+            Write-Output "No Change Needed"
+        }
+      loop:
+        - gpo_guid: "{{ win19cis_l1_ms_gpo_guid | default('') ~ ( '(Skipped)' if not win19cis_l1_ms_gpo else '' ) }}"
+          gpo_name: "{{ win19cis_l1_ms_gpo_name }}"
+      loop_control:
+        label: "{{ item.gpo_name }} - {{ item.gpo_guid }}"
+      changed_when: '"Patched" in rule_1_2_3_results.stdout'
+      register: rule_1_2_3_results
+
+- name: "1.2.4 | GPO | Ensure Reset account lockout counter after is set to 15 or more minutes."
+  when: win19cis_rule_1_2_4
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_1.2.4
+    - patch
+    - account
+    - gpo
+    - NIST800-171_3.1.8
+    - NIST800-171_3.1.18
+    - NIST800-53_AC-7
+    - NIST800-53_AC-19
+    - NIST800-53R5_AC-7
+    - NIST800-53R5_AC-19
+  block:
+    - name: "1.2.4 | GPO | Ensure Reset account lockout counter after is set to 15 or more minutes. | Set Variable In GptTmpl.inf."
+      when:
+        - win19cis_account_lockout_counter_reset >= 15
+        - win19cis_account_lockout_counter_reset <= win19cis_account_lockout_duration
+        - "'Skipped' not in item.gpo_guid"
+      community.windows.win_lineinfile:
+        path: "C:\\Windows\\SYSVOL\\sysvol\\{{ prelim_discovered_domain_name }}\\Policies\\{{ item.gpo_guid }}\\Machine\\Microsoft\\Windows NT\\SecEdit\\GptTmpl.inf"
+        regexp: "^ResetLockoutCount =.*$"
+        line: 'ResetLockoutCount = {{ win19cis_account_lockout_counter_reset }}'
+        insertafter: "^\\[System Access\\]$"
+      loop:
+        - gpo_guid: "{{ win19cis_default_domain_gpo_guid | default('') ~ ( '(Skipped)' if not win19cis_default_domain_policy_gpo else '' ) }}"
+          gpo_name: "{{ win19cis_default_domain_policy_gpo_name }}"
+      loop_control:
+        label: "{{ item.gpo_name }} - {{ item.gpo_guid }}"
+
+    - name: "1.2.4 | GPO | Ensure Reset account lockout counter after is set to 15 or more minutes. | Set Variable Line In Registry."
+      when:
+        - win19cis_account_lockout_counter_reset >= 15
+        - win19cis_account_lockout_counter_reset <= win19cis_account_lockout_duration
+        - "'Skipped' not in item.gpo_guid"
+      ansible.windows.win_shell: |
+        $gpoName = "{{ item.gpo_name }}"
+        $registryKeyPath = "HKLM\SYSTEM\CurrentControlSet\Services\Netlogon\Parameters"
+        $registryValueName = "ResetLockoutCount"
+        $type = "DWORD"
+        $desiredValue = {{ win19cis_account_lockout_counter_reset }}
+
+        # Get the current value of the registry key in the GPO
+        $currentValue = (Get-GPRegistryValue -Name $gpoName -Key $registryKeyPath -ValueName $registryValueName -ErrorAction SilentlyContinue).Value
+
+        # Check if the current value is equal to the desired value
+        if ($currentValue -ne $desiredValue) {
+            # If not, set the registry value to the desired value
+            Set-GPRegistryValue -Name $gpoName -Key $registryKeyPath -ValueName $registryValueName -Type $type -Value $desiredValue
+            Write-Output "Patched"
+        } else {
+            Write-Output "No Change Needed"
+        }
+      loop:
+        - gpo_guid: "{{ win19cis_default_domain_gpo_guid | default('') ~ ( '(Skipped)' if not win19cis_default_domain_policy_gpo else '' ) }}"
+          gpo_name: "{{ win19cis_default_domain_policy_gpo_name }}"
+      loop_control:
+        label: "{{ item.gpo_name }} - {{ item.gpo_guid }}"
+      changed_when: '"Patched" in rule_1_2_4_results.stdout'
+      register: rule_1_2_4_results
+
+    - name: "1.2.4 | AUDIT | Ensure Reset account lockout counter after is set to 15 or more minutes. | Verify variable set to 15 or more minutes warning."
+      when:
+        - win19cis_account_lockout_counter_reset > win19cis_account_lockout_duration or
+          win19cis_account_lockout_counter_reset < 15
+      ansible.builtin.debug:
+        msg:
+          - "Warning!! You have an invalid number of minutes set for win19cis_account_lockout_counter_reset please read"
+          - "the notes for the variable and make the necessary change to the variable to be in compliance."
+
+    - name: "1.2.4 | AUDIT | Ensure Reset account lockout counter after is set to 15 or more minutes. | Set warning count."
+      vars:
+        warn_control_id: '1.2.4'
+      when:
+        - win19cis_account_lockout_counter_reset > win19cis_account_lockout_duration or
+          win19cis_account_lockout_counter_reset < 15
+      ansible.builtin.import_tasks: warning_facts.yml

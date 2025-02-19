@@ -1,14 +1,14 @@
 ---
 
 collections:
-    - name: ansible.windows
-      type: git
-      source: https://github.com/ansible-collections/ansible.windows
+  - name: ansible.windows
+    type: git
+    source: https://github.com/ansible-collections/ansible.windows
 
-    - name: community.windows
-      type: git
-      source: https://github.com/ansible-collections/community.windows
+  - name: community.windows
+    type: git
+    source: https://github.com/ansible-collections/community.windows
 
-    - name: community.general
-      type: git
-      source: https://github.com/ansible-collections/community.general
+  - name: community.general
+    type: git
+    source: https://github.com/ansible-collections/community.general

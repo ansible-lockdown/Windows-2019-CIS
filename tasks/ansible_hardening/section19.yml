@@ -1,0 +1,243 @@
+---
+
+- name: "19.5.1.1 | PATCH | Ensure Turn off toast notifications on the lock screen is set to Enabled"
+  notify: Change_Requires_Reboot
+  when: win19cis_rule_19_5_1_1
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_19.5.1.1
+    - patch
+    - toast
+  ansible.windows.win_regedit:
+    path: HKU:\{{ item }}\SOFTWARE\Policies\Microsoft\Windows\Currentversion\Pushnotifications
+    name: NoToastApplicationNotificationOnLockScreen
+    data: 1
+    type: dword
+  loop: "{{ prelim_hku_loaded_list }}"
+
+- name: "19.6.6.1.1 | PATCH | Ensure Turn off Help Experience Improvement Program is set to Enabled"
+  notify: Change_Requires_Reboot
+  when: win19cis_rule_19_6_6_1_1
+  tags:
+    - level2-domaincontroller
+    - level2-memberserver
+    - rule_19.6.6.1.1
+    - patch
+    - help
+    - NIST800-171_3.4.2
+    - NIST800-171_3.4.6
+    - NIST800-171_3.4.7
+    - NIST800-53_CM-6
+    - NIST800-53_CM-7
+    - NIST800-53R5_CM-6
+    - NIST800-53R5_CM-7
+  ansible.windows.win_regedit:
+    path: HKU:\{{ item }}\SOFTWARE\Policies\Microsoft\Assistance\Client\1.0
+    name: NoImplicitFeedback
+    data: 1
+    type: dword
+  loop: "{{ prelim_hku_loaded_list }}"
+
+- name: "19.7.5.1 | PATCH | Ensure Do not preserve zone information in file attachments is set to Disabled"
+  notify: Change_Requires_Reboot
+  when: win19cis_rule_19_7_5_1
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_19.7.5.1
+    - patch
+    - attachments
+    - NIST800-171_3.4.2
+    - NIST800-53_CM-6_b.
+    - NIST800-53R5_CM-6_b.
+  ansible.windows.win_regedit:
+    path: HKU:\{{ item }}\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Attachments
+    name: SaveZoneInformation
+    data: 2
+    type: dword
+  loop: "{{ prelim_hku_loaded_list }}"
+
+- name: "19.7.5.2 | PATCH | Ensure Notify antivirus programs when opening attachments is set to Enabled"
+  notify: Change_Requires_Reboot
+  when: win19cis_rule_19_7_5_2
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_19.7.5.2
+    - patch
+    - antivirus
+    - NIST800-171_3.14.2
+    - NIST800-171_3.14.4
+    - NIST800-171_3.14.5
+    - NIST800-53_SI-3
+    - NIST800-53R5_SI-3
+  ansible.windows.win_regedit:
+    path: HKU:\{{ item }}\SOFTWARE\Microsoft\Windows\Currentversion\Policies\Attachments
+    name: ScanWithAntiVirus
+    data: 3
+    type: dword
+  loop: "{{ prelim_hku_loaded_list }}"
+
+- name: "19.7.8.1 | PATCH | Ensure Configure Windows spotlight on lock screen is set to Disabled"
+  notify: Change_Requires_Reboot
+  when: win19cis_rule_19_7_8_1
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_19.7.8.1
+    - patch
+    - cloudcontent
+    - NIST800-171_3.1.10
+    - NIST800-53_AC-11
+    - NIST800-53R5_AC-11
+  ansible.windows.win_regedit:
+    path: HKU:\{{ item }}\SOFTWARE\Policies\Microsoft\Windows\CloudContent
+    name: ConfigureWindowsSpotlight
+    data: 2
+    type: dword
+  loop: "{{ prelim_hku_loaded_list }}"
+
+- name: "19.7.8.2 | PATCH | Ensure Do not suggest third-party content in Windows spotlight is set to Enabled"
+  notify: Change_Requires_Reboot
+  when: win19cis_rule_19_7_8_2
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_19.7.8.2
+    - patch
+    - cloudcontent
+    - NIST800-171_3.4.6
+    - NIST800-171_3.4.7
+    - NIST800-53_CM-6_b
+    - NIST800-53R5_CM-6_b
+  ansible.windows.win_regedit:
+    path: HKU:\{{ item }}\SOFTWARE\Policies\Microsoft\Windows\CloudContent
+    name: DisableThirdPartySuggestions
+    data: 1
+    type: dword
+  loop: "{{ prelim_hku_loaded_list }}"
+
+- name: "19.7.8.3 | PATCH | Ensure Do not use diagnostic data for tailored experiences is set to Enabled"
+  notify: Change_Requires_Reboot
+  when: win19cis_rule_19_7_8_3
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_19.7.8.3
+    - patch
+    - cloudcontent
+    - NIST800-171_3.4.6
+    - NIST800-171_3.4.7
+    - NIST800-53_SI-4
+    - NIST800-53R5_SI-4
+  ansible.windows.win_regedit:
+    path: HKU:\{{ item }}\SOFTWARE\Policies\Microsoft\Windows\CloudContent
+    name: DisableTailoredExperiencesWithDiagnosticData
+    data: 1
+    type: dword
+  loop: "{{ prelim_hku_loaded_list }}"
+
+- name: "19.7.8.4 | PATCH | Ensure Turn off all Windows spotlight features is set to Enabled"
+  notify: Change_Requires_Reboot
+  when: win19cis_rule_19_7_8_4
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_19.7.8.4
+    - patch
+    - cloudcontent
+    - NIST800-171_3.4.2
+    - NIST800-171_3.4.6
+    - NIST800-171_3.4.7
+    - NIST800-53_CM-6
+    - NIST800-53_CM-7
+    - NIST800-53R5_CM-6
+    - NIST800-53R5_CM-7
+  ansible.windows.win_regedit:
+    path: HKU:\{{ item }}\SOFTWARE\Policies\Microsoft\Windows\CloudContent
+    name: DisableWindowsSpotlightFeatures
+    data: 1
+    type: dword
+  loop: "{{ prelim_hku_loaded_list }}"
+
+- name: "19.7.8.5 | PATCH | Ensure Turn off Spotlight collection on Desktop is set to Enabled"
+  notify: Change_Requires_Reboot
+  when: win19cis_rule_19_7_8_5
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_19.7.8.5
+    - patch
+    - cloudcontent
+    - NIST800-171_3.4.2
+    - NIST800-171_3.4.6
+    - NIST800-171_3.4.7
+    - NIST800-53_CM-6
+    - NIST800-53_CM-7
+    - NIST800-53R5_CM-6
+    - NIST800-53R5_CM-7
+  ansible.windows.win_regedit:
+    path: HKU:\{{ item }}\SOFTWARE\Policies\Microsoft\Windows\CloudContent
+    name: DisableSpotlightCollectionOnDesktop
+    data: 1
+    type: dword
+  loop: "{{ prelim_hku_loaded_list }}"
+
+- name: "19.7.26.1 | PATCH | Ensure Prevent users from sharing files within their profile is set to Enabled"
+  notify: Change_Requires_Reboot
+  when: win19cis_rule_19_7_26_1
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_19.7.26.1
+    - patch
+    - profiles
+    - sharing
+    - NIST800-171_3.1.1
+    - NIST800-53_AC-3
+    - NIST800-53R5_AC-3
+  ansible.windows.win_regedit:
+    path: HKU:\{{ item }}\SOFTWARE\Microsoft\Windows\Currentversion\Policies\Explorer
+    name: NoInplaceSharing
+    data: 1
+    type: dword
+  loop: "{{ prelim_hku_loaded_list }}"
+
+- name: "19.7.42.1 | PATCH | Ensure Always install with elevated privileges is set to Disabled"
+  notify: Change_Requires_Reboot
+  when: win19cis_rule_19_7_42_1
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_19.7.42.1
+    - patch
+    - permissions
+    - NIST800-171_3.1.1
+    - NIST800-53_AC-2_9
+    - NIST800-53R5_AC-2_9
+  ansible.windows.win_regedit:
+    path: HKU:\{{ item }}\SOFTWARE\Policies\Microsoft\Windows\Installer
+    name: AlwaysInstallElevated
+    data: 0
+    type: dword
+  loop: "{{ prelim_hku_loaded_list }}"
+
+- name: "19.7.44.2.1 | PATCH | Ensure Prevent Codec Download is set to Enabled"
+  notify: Change_Requires_Reboot
+  when: win19cis_rule_19_7_44_2_1
+  tags:
+    - level2-domaincontroller
+    - level2-memberserver
+    - rule_19.7.44.2.1
+    - patch
+    - codec
+    - NIST800-171_3.4.2
+    - NIST800-53_CM-6
+    - NIST800-53R5_CM-6
+  ansible.windows.win_regedit:
+    path: HKU:\{{ item }}\SOFTWARE\Policies\Microsoft\Windowsmediaplayer
+    name: PreventCodecDownload
+    data: 1
+    type: dword
+  loop: "{{ prelim_hku_loaded_list }}"

@@ -1,0 +1,1135 @@
+---
+
+- name: "17.1.1 | GPO | Ensure Audit Credential Validation is set to Success and Failure"
+  when:
+    - win19cis_rule_17_1_1
+    - "'Skipped' not in item.gpo_guid"
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_17.1.1
+    - patch
+    - gpo
+    - NIST800-171_3.3.1
+    - NIST800-171_3.3.2
+    - NIST800-171_3.3.6
+    - NIST800-53_AU-3
+    - NIST800-53_AU-3_1
+    - NIST800-53_AU-7
+    - NIST800-53_AU-12
+    - NIST800-53R5_AU-3
+    - NIST800-53R5_AU-3_1
+    - NIST800-53R5_AU-7
+    - NIST800-53R5_AU-12
+  community.windows.win_lineinfile:
+    path: "C:\\Windows\\SYSVOL\\sysvol\\{{ prelim_discovered_domain_name }}\\Policies\\{{ item.gpo_guid }}\\Machine\\Microsoft\\Windows NT\\Audit\\audit.csv"
+    regexp: "^.*?,System,Audit Credential Validation,\\{0cce923f-69ae-11d9-bed3-505054503030\\}.*$"
+    line: ",System,Audit Credential Validation,{0cce923f-69ae-11d9-bed3-505054503030},Success and Failure,,3"
+    insertafter: "^Machine Name,Policy Target,Subcategory,Subcategory GUID,Inclusion Setting,Exclusion Setting,Setting Value$"
+  loop:
+    - gpo_guid: "{{ win19cis_l1_dc_gpo_guid | default('') ~ ( '(Skipped)' if not win19cis_l1_dc_gpo else '' ) }}"
+      gpo_name: "{{ win19cis_l1_dc_gpo_name }}"
+    - gpo_guid: "{{ win19cis_l1_ms_gpo_guid | default('') ~ ( '(Skipped)' if not win19cis_l1_ms_gpo else '' ) }}"
+      gpo_name: "{{ win19cis_l1_ms_gpo_name }}"
+  loop_control:
+    label: "{{ item.gpo_name }} - {{ item.gpo_guid }}"
+
+- name: "17.1.2 | GPO | Ensure 'Audit Kerberos Authentication Service' is set to 'Success and Failure' DC Only | Domain Controller"
+  when:
+    - win19cis_rule_17_1_2
+    - "'Skipped' not in item.gpo_guid"
+  tags:
+    - level1-domaincontroller
+    - rule_17.1.2
+    - patch
+    - gpo
+    - NIST800-171_3.3.1
+    - NIST800-171_3.3.2
+    - NIST800-171_3.3.6
+    - NIST800-53_AU-3
+    - NIST800-53_AU-3_1
+    - NIST800-53_AU-7
+    - NIST800-53_AU-12
+    - NIST800-53R5_AU-3
+    - NIST800-53R5_AU-3_1
+    - NIST800-53R5_AU-7
+    - NIST800-53R5_AU-12
+  community.windows.win_lineinfile:
+    path: "C:\\Windows\\SYSVOL\\sysvol\\{{ prelim_discovered_domain_name }}\\Policies\\{{ item.gpo_guid }}\\Machine\\Microsoft\\Windows NT\\Audit\\audit.csv"
+    regexp: "^.*?,System,Audit Kerberos Authentication Service,\\{0cce9242-69ae-11d9-bed3-505054503030\\}.*$"
+    line: ",System,Audit Kerberos Authentication Service,{0cce9242-69ae-11d9-bed3-505054503030},Success and Failure,,3"
+    insertafter: "^Machine Name,Policy Target,Subcategory,Subcategory GUID,Inclusion Setting,Exclusion Setting,Setting Value$"
+  loop:
+    - gpo_guid: "{{ win19cis_l1_dc_gpo_guid | default('') ~ ( '(Skipped)' if not win19cis_l1_dc_gpo else '' ) }}"
+      gpo_name: "{{ win19cis_l1_dc_gpo_name }}"
+  loop_control:
+    label: "{{ item.gpo_name }} - {{ item.gpo_guid }}"
+
+- name: "17.1.3 | GPO | Ensure 'Audit Kerberos Service Ticket Operations' is set to 'Success and Failure'"
+  when:
+    - win19cis_rule_17_1_3
+    - "'Skipped' not in item.gpo_guid"
+  tags:
+    - level1-domaincontroller
+    - rule_17.1.3
+    - patch
+    - gpo
+    - NIST800-171_3.3.1
+    - NIST800-171_3.3.2
+    - NIST800-171_3.3.6
+    - NIST800-53_AU-3
+    - NIST800-53_AU-3_1
+    - NIST800-53_AU-7
+    - NIST800-53_AU-12
+    - NIST800-53R5_AU-3
+    - NIST800-53R5_AU-3_1
+    - NIST800-53R5_AU-7
+    - NIST800-53R5_AU-12
+  community.windows.win_lineinfile:
+    path: "C:\\Windows\\SYSVOL\\sysvol\\{{ prelim_discovered_domain_name }}\\Policies\\{{ item.gpo_guid }}\\Machine\\Microsoft\\Windows NT\\Audit\\audit.csv"
+    regexp: "^.*?,System,Audit Kerberos Service Ticket Operations,\\{0cce9240-69ae-11d9-bed3-505054503030\\}.*$"
+    line: ",System,Audit Kerberos Service Ticket Operations,{0cce9240-69ae-11d9-bed3-505054503030},Success and Failure,,3"
+    insertafter: "^Machine Name,Policy Target,Subcategory,Subcategory GUID,Inclusion Setting,Exclusion Setting,Setting Value$"
+  loop:
+    - gpo_guid: "{{ win19cis_l1_dc_gpo_guid | default('') ~ ( '(Skipped)' if not win19cis_l1_dc_gpo else '' ) }}"
+      gpo_name: "{{ win19cis_l1_dc_gpo_name }}"
+  loop_control:
+    label: "{{ item.gpo_name }} - {{ item.gpo_guid }}"
+
+- name: "17.2.1 | GPO | Ensure Audit Application Group Management is set to Success and Failure"
+  when:
+    - win19cis_rule_17_2_1
+    - "'Skipped' not in item.gpo_guid"
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_17.2.1
+    - patch
+    - gpo
+    - NIST800-171_3.3.1
+    - NIST800-171_3.3.2
+    - NIST800-171_3.3.6
+    - NIST800-53_AU-3
+    - NIST800-53_AU-3_1
+    - NIST800-53_AU-7
+    - NIST800-53_AU-12
+    - NIST800-53R5_AU-3
+    - NIST800-53R5_AU-3_1
+    - NIST800-53R5_AU-7
+    - NIST800-53R5_AU-12
+  community.windows.win_lineinfile:
+    path: "C:\\Windows\\SYSVOL\\sysvol\\{{ prelim_discovered_domain_name }}\\Policies\\{{ item.gpo_guid }}\\Machine\\Microsoft\\Windows NT\\Audit\\audit.csv"
+    regexp: "^.*?,System,Audit Application Group Management,\\{0cce9239-69ae-11d9-bed3-505054503030\\}.*$"
+    line: ",System,Audit Application Group Management,{0cce9239-69ae-11d9-bed3-505054503030},Success and Failure,,3"
+    insertafter: "^Machine Name,Policy Target,Subcategory,Subcategory GUID,Inclusion Setting,Exclusion Setting,Setting Value$"
+  loop:
+    - gpo_guid: "{{ win19cis_l1_dc_gpo_guid | default('') ~ ( '(Skipped)' if not win19cis_l1_dc_gpo else '' ) }}"
+      gpo_name: "{{ win19cis_l1_dc_gpo_name }}"
+    - gpo_guid: "{{ win19cis_l1_ms_gpo_guid | default('') ~ ( '(Skipped)' if not win19cis_l1_ms_gpo else '' ) }}"
+      gpo_name: "{{ win19cis_l1_ms_gpo_name }}"
+  loop_control:
+    label: "{{ item.gpo_name }} - {{ item.gpo_guid }}"
+
+- name: "17.2.2 | GPO | Ensure Audit Computer Account Management is set to include Success DC only | Domain Controller"
+  when:
+    - win19cis_rule_17_2_2
+    - "'Skipped' not in item.gpo_guid"
+  tags:
+    - level1-domaincontroller
+    - rule_17.2.2
+    - patch
+    - gpo
+    - NIST800-171_3.3.1
+    - NIST800-171_3.3.2
+    - NIST800-171_3.3.6
+    - NIST800-53_AU-3
+    - NIST800-53_AU-3_1
+    - NIST800-53_AU-7
+    - NIST800-53_AU-12
+    - NIST800-53R5_AU-3
+    - NIST800-53R5_AU-3_1
+    - NIST800-53R5_AU-7
+    - NIST800-53R5_AU-12
+  community.windows.win_lineinfile:
+    path: "C:\\Windows\\SYSVOL\\sysvol\\{{ prelim_discovered_domain_name }}\\Policies\\{{ item.gpo_guid }}\\Machine\\Microsoft\\Windows NT\\Audit\\audit.csv"
+    regexp: "^.*?,System,Audit Computer Account Management,\\{0cce9236-69ae-11d9-bed3-505054503030\\}.*$"
+    line: ",System,Audit Computer Account Management,{0cce9236-69ae-11d9-bed3-505054503030},Success,,1"
+    insertafter: "^Machine Name,Policy Target,Subcategory,Subcategory GUID,Inclusion Setting,Exclusion Setting,Setting Value$"
+  loop:
+    - gpo_guid: "{{ win19cis_l1_dc_gpo_guid | default('') ~ ( '(Skipped)' if not win19cis_l1_dc_gpo else '' ) }}"
+      gpo_name: "{{ win19cis_l1_dc_gpo_name }}"
+  loop_control:
+    label: "{{ item.gpo_name }} - {{ item.gpo_guid }}"
+
+- name: "17.2.3 | GPO | Ensure Audit Distribution Group Management is set to include Success DC only | Domain Controller"
+  when:
+    - win19cis_rule_17_2_3
+    - "'Skipped' not in item.gpo_guid"
+  tags:
+    - level1-domaincontroller
+    - rule_17.2.3
+    - patch
+    - gpo
+    - NIST800-171_3.3.1
+    - NIST800-171_3.3.2
+    - NIST800-171_3.3.6
+    - NIST800-53_AU-3
+    - NIST800-53_AU-3_1
+    - NIST800-53_AU-7
+    - NIST800-53_AU-12
+    - NIST800-53R5_AU-3
+    - NIST800-53R5_AU-3_1
+    - NIST800-53R5_AU-7
+    - NIST800-53R5_AU-12
+  community.windows.win_lineinfile:
+    path: "C:\\Windows\\SYSVOL\\sysvol\\{{ prelim_discovered_domain_name }}\\Policies\\{{ item.gpo_guid }}\\Machine\\Microsoft\\Windows NT\\Audit\\audit.csv"
+    regexp: "^.*?,System,Audit Distribution Group Management,\\{0cce9238-69ae-11d9-bed3-505054503030\\}.*$"
+    line: ",System,Audit Distribution Group Management,{0cce9238-69ae-11d9-bed3-505054503030},Success,,1"
+    insertafter: "^Machine Name,Policy Target,Subcategory,Subcategory GUID,Inclusion Setting,Exclusion Setting,Setting Value$"
+  loop:
+    - gpo_guid: "{{ win19cis_l1_dc_gpo_guid | default('') ~ ( '(Skipped)' if not win19cis_l1_dc_gpo else '' ) }}"
+      gpo_name: "{{ win19cis_l1_dc_gpo_name }}"
+  loop_control:
+    label: "{{ item.gpo_name }} - {{ item.gpo_guid }}"
+
+- name: "17.2.4 | GPO | Ensure Audit Other Account Management Events is set to include Success DC only | Domain Controller"
+  when:
+    - win19cis_rule_17_2_4
+    - "'Skipped' not in item.gpo_guid"
+  tags:
+    - level1-domaincontroller
+    - rule_17.2.4
+    - patch
+    - gpo
+    - NIST800-171_3.3.1
+    - NIST800-171_3.3.2
+    - NIST800-171_3.3.6
+    - NIST800-53_AU-3
+    - NIST800-53_AU-3_1
+    - NIST800-53_AU-7
+    - NIST800-53_AU-12
+    - NIST800-53R5_AU-3
+    - NIST800-53R5_AU-3_1
+    - NIST800-53R5_AU-7
+    - NIST800-53R5_AU-12
+  community.windows.win_lineinfile:
+    path: "C:\\Windows\\SYSVOL\\sysvol\\{{ prelim_discovered_domain_name }}\\Policies\\{{ item.gpo_guid }}\\Machine\\Microsoft\\Windows NT\\Audit\\audit.csv"
+    regexp: "^.*?,System,Audit Other Account Management Events,\\{0cce923a-69ae-11d9-bed3-505054503030\\}.*$"
+    line: ",System,Audit Other Account Management Events,{0cce923a-69ae-11d9-bed3-505054503030},Success,,1"
+    insertafter: "^Machine Name,Policy Target,Subcategory,Subcategory GUID,Inclusion Setting,Exclusion Setting,Setting Value$"
+  loop:
+    - gpo_guid: "{{ win19cis_l1_dc_gpo_guid | default('') ~ ( '(Skipped)' if not win19cis_l1_dc_gpo else '' ) }}"
+      gpo_name: "{{ win19cis_l1_dc_gpo_name }}"
+  loop_control:
+    label: "{{ item.gpo_name }} - {{ item.gpo_guid }}"
+
+- name: "17.2.5 | AUDIT | Ensure Audit Security Group Management is set to include Success"
+  when:
+    - win19cis_rule_17_2_5
+    - "'Skipped' not in item.gpo_guid"
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_17.2.5
+    - patch
+    - gpo
+    - NIST800-171_3.3.1
+    - NIST800-171_3.3.2
+    - NIST800-171_3.3.6
+    - NIST800-53_AU-3
+    - NIST800-53_AU-3_1
+    - NIST800-53_AU-7
+    - NIST800-53_AU-12
+    - NIST800-53R5_AU-3
+    - NIST800-53R5_AU-3_1
+    - NIST800-53R5_AU-7
+    - NIST800-53R5_AU-12
+  community.windows.win_lineinfile:
+    path: "C:\\Windows\\SYSVOL\\sysvol\\{{ prelim_discovered_domain_name }}\\Policies\\{{ item.gpo_guid }}\\Machine\\Microsoft\\Windows NT\\Audit\\audit.csv"
+    regexp: "^.*?,System,Audit Security Group Management,\\{0cce9237-69ae-11d9-bed3-505054503030\\}.*$"
+    line: ",System,Audit Security Group Management,{0cce9237-69ae-11d9-bed3-505054503030},Success,,1"
+    insertafter: "^Machine Name,Policy Target,Subcategory,Subcategory GUID,Inclusion Setting,Exclusion Setting,Setting Value$"
+  loop:
+    - gpo_guid: "{{ win19cis_l1_dc_gpo_guid | default('') ~ ( '(Skipped)' if not win19cis_l1_dc_gpo else '' ) }}"
+      gpo_name: "{{ win19cis_l1_dc_gpo_name }}"
+    - gpo_guid: "{{ win19cis_l1_ms_gpo_guid | default('') ~ ( '(Skipped)' if not win19cis_l1_ms_gpo else '' ) }}"
+      gpo_name: "{{ win19cis_l1_ms_gpo_name }}"
+  loop_control:
+    label: "{{ item.gpo_name }} - {{ item.gpo_guid }}"
+
+- name: "17.2.6 | GPO | Ensure Audit User Account Management is set to Success and Failure"
+  when:
+    - win19cis_rule_17_2_6
+    - "'Skipped' not in item.gpo_guid"
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_17.2.6
+    - patch
+    - gpo
+    - NIST800-171_3.3.1
+    - NIST800-171_3.3.2
+    - NIST800-171_3.3.6
+    - NIST800-53_AU-3
+    - NIST800-53_AU-3_1
+    - NIST800-53_AU-7
+    - NIST800-53_AU-12
+    - NIST800-53R5_AU-3
+    - NIST800-53R5_AU-3_1
+    - NIST800-53R5_AU-7
+    - NIST800-53R5_AU-12
+  community.windows.win_lineinfile:
+    path: "C:\\Windows\\SYSVOL\\sysvol\\{{ prelim_discovered_domain_name }}\\Policies\\{{ item.gpo_guid }}\\Machine\\Microsoft\\Windows NT\\Audit\\audit.csv"
+    regexp: "^.*?,System,Audit User Account Management,\\{0cce9235-69ae-11d9-bed3-505054503030\\}.*$"
+    line: ",System,Audit User Account Management,{0cce9235-69ae-11d9-bed3-505054503030},Success and Failure,,3"
+    insertafter: "^Machine Name,Policy Target,Subcategory,Subcategory GUID,Inclusion Setting,Exclusion Setting,Setting Value$"
+  loop:
+    - gpo_guid: "{{ win19cis_l1_dc_gpo_guid | default('') ~ ( '(Skipped)' if not win19cis_l1_dc_gpo else '' ) }}"
+      gpo_name: "{{ win19cis_l1_dc_gpo_name }}"
+    - gpo_guid: "{{ win19cis_l1_ms_gpo_guid | default('') ~ ( '(Skipped)' if not win19cis_l1_ms_gpo else '' ) }}"
+      gpo_name: "{{ win19cis_l1_ms_gpo_name }}"
+  loop_control:
+    label: "{{ item.gpo_name }} - {{ item.gpo_guid }}"
+
+- name: "17.3.1 | GPO | Ensure Audit PNP Activity is set to include Success"
+  when:
+    - win19cis_rule_17_3_1
+    - "'Skipped' not in item.gpo_guid"
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_17.3.1
+    - gpo
+    - NIST800-171_3.3.1
+    - NIST800-171_3.3.2
+    - NIST800-171_3.3.6
+    - NIST800-53_AU-3
+    - NIST800-53_AU-3_1
+    - NIST800-53_AU-7
+    - NIST800-53_AU-12
+    - NIST800-53R5_AU-3
+    - NIST800-53R5_AU-3_1
+    - NIST800-53R5_AU-7
+    - NIST800-53R5_AU-12
+  community.windows.win_lineinfile:
+    path: "C:\\Windows\\SYSVOL\\sysvol\\{{ prelim_discovered_domain_name }}\\Policies\\{{ item.gpo_guid }}\\Machine\\Microsoft\\Windows NT\\Audit\\audit.csv"
+    regexp: "^.*?,System,Audit PNP Activity,\\{0cce9248-69ae-11d9-bed3-505054503030\\}.*$"
+    line: ",System,Audit PNP Activity,{0cce9248-69ae-11d9-bed3-505054503030},Success,,1"
+    insertafter: "^Machine Name,Policy Target,Subcategory,Subcategory GUID,Inclusion Setting,Exclusion Setting,Setting Value$"
+  loop:
+    - gpo_guid: "{{ win19cis_l1_dc_gpo_guid | default('') ~ ( '(Skipped)' if not win19cis_l1_dc_gpo else '' ) }}"
+      gpo_name: "{{ win19cis_l1_dc_gpo_name }}"
+    - gpo_guid: "{{ win19cis_l1_ms_gpo_guid | default('') ~ ( '(Skipped)' if not win19cis_l1_ms_gpo else '' ) }}"
+      gpo_name: "{{ win19cis_l1_ms_gpo_name }}"
+  loop_control:
+    label: "{{ item.gpo_name }} - {{ item.gpo_guid }}"
+
+- name: "17.3.2 | GPO | Ensure Audit Process Creation is set to include Success"
+  when:
+    - win19cis_rule_17_3_2
+    - "'Skipped' not in item.gpo_guid"
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_17.3.2
+    - patch
+    - gpo
+    - NIST800-171_3.3.1
+    - NIST800-171_3.3.2
+    - NIST800-171_3.3.6
+    - NIST800-53_AU-3
+    - NIST800-53_AU-3_1
+    - NIST800-53_AU-7
+    - NIST800-53_AU-12
+    - NIST800-53R5_AU-3
+    - NIST800-53R5_AU-3_1
+    - NIST800-53R5_AU-7
+    - NIST800-53R5_AU-12
+  community.windows.win_lineinfile:
+    path: "C:\\Windows\\SYSVOL\\sysvol\\{{ prelim_discovered_domain_name }}\\Policies\\{{ item.gpo_guid }}\\Machine\\Microsoft\\Windows NT\\Audit\\audit.csv"
+    regexp: "^.*?,System,Audit Process Creation,\\{0cce922b-69ae-11d9-bed3-505054503030\\}.*$"
+    line: ",System,Audit Process Creation,{0cce922b-69ae-11d9-bed3-505054503030},Success,,1"
+    insertafter: "^Machine Name,Policy Target,Subcategory,Subcategory GUID,Inclusion Setting,Exclusion Setting,Setting Value$"
+  loop:
+    - gpo_guid: "{{ win19cis_l1_dc_gpo_guid | default('') ~ ( '(Skipped)' if not win19cis_l1_dc_gpo else '' ) }}"
+      gpo_name: "{{ win19cis_l1_dc_gpo_name }}"
+    - gpo_guid: "{{ win19cis_l1_ms_gpo_guid | default('') ~ ( '(Skipped)' if not win19cis_l1_ms_gpo else '' ) }}"
+      gpo_name: "{{ win19cis_l1_ms_gpo_name }}"
+  loop_control:
+    label: "{{ item.gpo_name }} - {{ item.gpo_guid }}"
+
+- name: "17.4.1 | GPO | Ensure Audit Directory Service Access is set to include Failure DC only | Domain Controller"
+  when:
+    - win19cis_rule_17_4_1
+    - "'Skipped' not in item.gpo_guid"
+  tags:
+    - level1-domaincontroller
+    - rule_17.4.1
+    - patch
+    - gpo
+    - NIST800-171_3.3.1
+    - NIST800-171_3.3.2
+    - NIST800-171_3.3.6
+    - NIST800-53_AU-3
+    - NIST800-53_AU-3_1
+    - NIST800-53_AU-7
+    - NIST800-53_AU-12
+    - NIST800-53R5_AU-3
+    - NIST800-53R5_AU-3_1
+    - NIST800-53R5_AU-7
+    - NIST800-53R5_AU-12
+  community.windows.win_lineinfile:
+    path: "C:\\Windows\\SYSVOL\\sysvol\\{{ prelim_discovered_domain_name }}\\Policies\\{{ item.gpo_guid }}\\Machine\\Microsoft\\Windows NT\\Audit\\audit.csv"
+    regexp: "^.*?,System,Audit Directory Service Access,\\{0cce923b-69ae-11d9-bed3-505054503030\\}.*$"
+    line: ",System,Audit Directory Service Access,{0cce923b-69ae-11d9-bed3-505054503030},Failure,,2"
+    insertafter: "^Machine Name,Policy Target,Subcategory,Subcategory GUID,Inclusion Setting,Exclusion Setting,Setting Value$"
+  loop:
+    - gpo_guid: "{{ win19cis_l1_dc_gpo_guid | default('') ~ ( '(Skipped)' if not win19cis_l1_dc_gpo else '' ) }}"
+      gpo_name: "{{ win19cis_l1_dc_gpo_name }}"
+  loop_control:
+    label: "{{ item.gpo_name }} - {{ item.gpo_guid }}"
+
+- name: "17.4.2 | GPO | Ensure Audit Directory Service Changes is set to include Success DC only | Domain Controller"
+  when:
+    - win19cis_rule_17_4_2
+    - "'Skipped' not in item.gpo_guid"
+  tags:
+    - level1-domaincontroller
+    - rule_17.4.2
+    - patch
+    - gpo
+    - NIST800-171_3.3.1
+    - NIST800-171_3.3.2
+    - NIST800-171_3.3.6
+    - NIST800-53_AU-3
+    - NIST800-53_AU-3_1
+    - NIST800-53_AU-7
+    - NIST800-53_AU-12
+    - NIST800-53R5_AU-3
+    - NIST800-53R5_AU-3_1
+    - NIST800-53R5_AU-7
+    - NIST800-53R5_AU-12
+  community.windows.win_lineinfile:
+    path: "C:\\Windows\\SYSVOL\\sysvol\\{{ prelim_discovered_domain_name }}\\Policies\\{{ item.gpo_guid }}\\Machine\\Microsoft\\Windows NT\\Audit\\audit.csv"
+    regexp: "^.*?,System,Audit Directory Service Changes,\\{0cce923c-69ae-11d9-bed3-505054503030\\}.*$"
+    line: ",System,Audit Directory Service Changes,{0cce923c-69ae-11d9-bed3-505054503030},Success,,1"
+    insertafter: "^Machine Name,Policy Target,Subcategory,Subcategory GUID,Inclusion Setting,Exclusion Setting,Setting Value$"
+  loop:
+    - gpo_guid: "{{ win19cis_l1_dc_gpo_guid | default('') ~ ( '(Skipped)' if not win19cis_l1_dc_gpo else '' ) }}"
+      gpo_name: "{{ win19cis_l1_dc_gpo_name }}"
+  loop_control:
+    label: "{{ item.gpo_name }} - {{ item.gpo_guid }}"
+
+- name: "17.5.1 | GPO | Ensure Audit Account Lockout is set to include Failure"
+  when:
+    - win19cis_rule_17_5_1
+    - "'Skipped' not in item.gpo_guid"
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_17.5.1
+    - patch
+    - gpo
+    - NIST800-171_3.3.1
+    - NIST800-171_3.3.2
+    - NIST800-171_3.3.6
+    - NIST800-53_AU-3
+    - NIST800-53_AU-3_1
+    - NIST800-53_AU-7
+    - NIST800-53_AU-12
+    - NIST800-53R5_AU-3
+    - NIST800-53R5_AU-3_1
+    - NIST800-53R5_AU-7
+    - NIST800-53R5_AU-12
+  community.windows.win_lineinfile:
+    path: "C:\\Windows\\SYSVOL\\sysvol\\{{ prelim_discovered_domain_name }}\\Policies\\{{ item.gpo_guid }}\\Machine\\Microsoft\\Windows NT\\Audit\\audit.csv"
+    regexp: "^.*?,System,Audit Account Lockout,\\{0cce9217-69ae-11d9-bed3-505054503030\\}.*$"
+    line: ",System,Audit Account Lockout,{0cce9217-69ae-11d9-bed3-505054503030},Failure,,2"
+    insertafter: "^Machine Name,Policy Target,Subcategory,Subcategory GUID,Inclusion Setting,Exclusion Setting,Setting Value$"
+  loop:
+    - gpo_guid: "{{ win19cis_l1_dc_gpo_guid | default('') ~ ( '(Skipped)' if not win19cis_l1_dc_gpo else '' ) }}"
+      gpo_name: "{{ win19cis_l1_dc_gpo_name }}"
+    - gpo_guid: "{{ win19cis_l1_ms_gpo_guid | default('') ~ ( '(Skipped)' if not win19cis_l1_ms_gpo else '' ) }}"
+      gpo_name: "{{ win19cis_l1_ms_gpo_name }}"
+  loop_control:
+    label: "{{ item.gpo_name }} - {{ item.gpo_guid }}"
+
+- name: "17.5.2 | GPO | Ensure Audit Group Membership is set to include Success"
+  when:
+    - win19cis_rule_17_5_2
+    - "'Skipped' not in item.gpo_guid"
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_17.5.2
+    - patch
+    - gpo
+    - NIST800-171_3.3.1
+    - NIST800-171_3.3.2
+    - NIST800-171_3.3.6
+    - NIST800-53_AU-3
+    - NIST800-53_AU-3_1
+    - NIST800-53_AU-7
+    - NIST800-53_AU-12
+    - NIST800-53R5_AU-3
+    - NIST800-53R5_AU-3_1
+    - NIST800-53R5_AU-7
+    - NIST800-53R5_AU-12
+  community.windows.win_lineinfile:
+    path: "C:\\Windows\\SYSVOL\\sysvol\\{{ prelim_discovered_domain_name }}\\Policies\\{{ item.gpo_guid }}\\Machine\\Microsoft\\Windows NT\\Audit\\audit.csv"
+    regexp: "^.*?,System,Audit Group Membership,\\{0cce9249-69ae-11d9-bed3-505054503030\\}.*$"
+    line: ",System,Audit Group Membership,{0cce9249-69ae-11d9-bed3-505054503030},Success,,1"
+    insertafter: "^Machine Name,Policy Target,Subcategory,Subcategory GUID,Inclusion Setting,Exclusion Setting,Setting Value$"
+  loop:
+    - gpo_guid: "{{ win19cis_l1_dc_gpo_guid | default('') ~ ( '(Skipped)' if not win19cis_l1_dc_gpo else '' ) }}"
+      gpo_name: "{{ win19cis_l1_dc_gpo_name }}"
+    - gpo_guid: "{{ win19cis_l1_ms_gpo_guid | default('') ~ ( '(Skipped)' if not win19cis_l1_ms_gpo else '' ) }}"
+      gpo_name: "{{ win19cis_l1_ms_gpo_name }}"
+  loop_control:
+    label: "{{ item.gpo_name }} - {{ item.gpo_guid }}"
+
+- name: "17.5.3 | GPO | Ensure Audit Logoff is set to include Success"
+  when:
+    - win19cis_rule_17_5_3
+    - "'Skipped' not in item.gpo_guid"
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_17.5.3
+    - patch
+    - gpo
+    - NIST800-171_3.3.1
+    - NIST800-171_3.3.2
+    - NIST800-171_3.3.6
+    - NIST800-53_AU-3
+    - NIST800-53_AU-3_1
+    - NIST800-53_AU-7
+    - NIST800-53_AU-12
+    - NIST800-53R5_AU-3
+    - NIST800-53R5_AU-3_1
+    - NIST800-53R5_AU-7
+    - NIST800-53R5_AU-12
+  community.windows.win_lineinfile:
+    path: "C:\\Windows\\SYSVOL\\sysvol\\{{ prelim_discovered_domain_name }}\\Policies\\{{ item.gpo_guid }}\\Machine\\Microsoft\\Windows NT\\Audit\\audit.csv"
+    regexp: "^.*?,System,Audit Logoff,\\{0cce9216-69ae-11d9-bed3-505054503030\\}.*$"
+    line: ",System,Audit Logoff,{0cce9216-69ae-11d9-bed3-505054503030},Success,,1"
+    insertafter: "^Machine Name,Policy Target,Subcategory,Subcategory GUID,Inclusion Setting,Exclusion Setting,Setting Value$"
+  loop:
+    - gpo_guid: "{{ win19cis_l1_dc_gpo_guid | default('') ~ ( '(Skipped)' if not win19cis_l1_dc_gpo else '' ) }}"
+      gpo_name: "{{ win19cis_l1_dc_gpo_name }}"
+    - gpo_guid: "{{ win19cis_l1_ms_gpo_guid | default('') ~ ( '(Skipped)' if not win19cis_l1_ms_gpo else '' ) }}"
+      gpo_name: "{{ win19cis_l1_ms_gpo_name }}"
+  loop_control:
+    label: "{{ item.gpo_name }} - {{ item.gpo_guid }}"
+
+- name: "17.5.4 | GPO | Ensure Audit Logon is set to Success and Failure"
+  when:
+    - win19cis_rule_17_5_4
+    - "'Skipped' not in item.gpo_guid"
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_17.5.4
+    - patch
+    - gpo
+    - NIST800-171_3.3.1
+    - NIST800-171_3.3.2
+    - NIST800-171_3.3.6
+    - NIST800-53_AU-3
+    - NIST800-53_AU-3_1
+    - NIST800-53_AU-7
+    - NIST800-53_AU-12
+    - NIST800-53R5_AU-3
+    - NIST800-53R5_AU-3_1
+    - NIST800-53R5_AU-7
+    - NIST800-53R5_AU-12
+  community.windows.win_lineinfile:
+    path: "C:\\Windows\\SYSVOL\\sysvol\\{{ prelim_discovered_domain_name }}\\Policies\\{{ item.gpo_guid }}\\Machine\\Microsoft\\Windows NT\\Audit\\audit.csv"
+    regexp: "^.*?,System,Audit Logon,\\{0cce9215-69ae-11d9-bed3-505054503030\\}.*$"
+    line: ",System,Audit Logon,{0cce9215-69ae-11d9-bed3-505054503030},Success and Failure,,3"
+    insertafter: "^Machine Name,Policy Target,Subcategory,Subcategory GUID,Inclusion Setting,Exclusion Setting,Setting Value$"
+  loop:
+    - gpo_guid: "{{ win19cis_l1_dc_gpo_guid | default('') ~ ( '(Skipped)' if not win19cis_l1_dc_gpo else '' ) }}"
+      gpo_name: "{{ win19cis_l1_dc_gpo_name }}"
+    - gpo_guid: "{{ win19cis_l1_ms_gpo_guid | default('') ~ ( '(Skipped)' if not win19cis_l1_ms_gpo else '' ) }}"
+      gpo_name: "{{ win19cis_l1_ms_gpo_name }}"
+  loop_control:
+    label: "{{ item.gpo_name }} - {{ item.gpo_guid }}"
+
+- name: "17.5.5 | GPO | Ensure Audit Other Logon,Logoff Events is set to Success and Failure"
+  when:
+    - win19cis_rule_17_5_5
+    - "'Skipped' not in item.gpo_guid"
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_17.5.5
+    - patch
+    - gpo
+    - NIST800-171_3.3.1
+    - NIST800-171_3.3.2
+    - NIST800-171_3.3.6
+    - NIST800-53_AU-3
+    - NIST800-53_AU-3_1
+    - NIST800-53_AU-7
+    - NIST800-53_AU-12
+    - NIST800-53R5_AU-3
+    - NIST800-53R5_AU-3_1
+    - NIST800-53R5_AU-7
+    - NIST800-53R5_AU-12
+  community.windows.win_lineinfile:
+    path: "C:\\Windows\\SYSVOL\\sysvol\\{{ prelim_discovered_domain_name }}\\Policies\\{{ item.gpo_guid }}\\Machine\\Microsoft\\Windows NT\\Audit\\audit.csv"
+    regexp: "^.*?,System,Audit Other Logon/Logoff Events,\\{0cce921c-69ae-11d9-bed3-505054503030\\}.*$"
+    line: ",System,Audit Other Logon/Logoff Events,{0cce921c-69ae-11d9-bed3-505054503030},Success and Failure,,3"
+    insertafter: "^Machine Name,Policy Target,Subcategory,Subcategory GUID,Inclusion Setting,Exclusion Setting,Setting Value$"
+  loop:
+    - gpo_guid: "{{ win19cis_l1_dc_gpo_guid | default('') ~ ( '(Skipped)' if not win19cis_l1_dc_gpo else '' ) }}"
+      gpo_name: "{{ win19cis_l1_dc_gpo_name }}"
+    - gpo_guid: "{{ win19cis_l1_ms_gpo_guid | default('') ~ ( '(Skipped)' if not win19cis_l1_ms_gpo else '' ) }}"
+      gpo_name: "{{ win19cis_l1_ms_gpo_name }}"
+  loop_control:
+    label: "{{ item.gpo_name }} - {{ item.gpo_guid }}"
+
+- name: "17.5.6 | GPO | Ensure Audit Special Logon is set to include Success"
+  when:
+    - win19cis_rule_17_5_6
+    - "'Skipped' not in item.gpo_guid"
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_17.5.6
+    - patch
+    - gpo
+    - NIST800-171_3.3.1
+    - NIST800-171_3.3.2
+    - NIST800-171_3.3.6
+    - NIST800-53_AU-3
+    - NIST800-53_AU-3_1
+    - NIST800-53_AU-7
+    - NIST800-53_AU-12
+    - NIST800-53R5_AU-3
+    - NIST800-53R5_AU-3_1
+    - NIST800-53R5_AU-7
+    - NIST800-53R5_AU-12
+  community.windows.win_lineinfile:
+    path: "C:\\Windows\\SYSVOL\\sysvol\\{{ prelim_discovered_domain_name }}\\Policies\\{{ item.gpo_guid }}\\Machine\\Microsoft\\Windows NT\\Audit\\audit.csv"
+    regexp: "^.*?,System,Audit Special Logon,\\{0cce921b-69ae-11d9-bed3-505054503030\\}.*$"
+    line: ",System,Audit Special Logon,{0cce921b-69ae-11d9-bed3-505054503030},Success,,1"
+    insertafter: "^Machine Name,Policy Target,Subcategory,Subcategory GUID,Inclusion Setting,Exclusion Setting,Setting Value$"
+  loop:
+    - gpo_guid: "{{ win19cis_l1_dc_gpo_guid | default('') ~ ( '(Skipped)' if not win19cis_l1_dc_gpo else '' ) }}"
+      gpo_name: "{{ win19cis_l1_dc_gpo_name }}"
+    - gpo_guid: "{{ win19cis_l1_ms_gpo_guid | default('') ~ ( '(Skipped)' if not win19cis_l1_ms_gpo else '' ) }}"
+      gpo_name: "{{ win19cis_l1_ms_gpo_name }}"
+  loop_control:
+    label: "{{ item.gpo_name }} - {{ item.gpo_guid }}"
+
+- name: "17.6.1 | GPO | Ensure Audit Detailed File Share is set to include Failure"
+  when:
+    - win19cis_rule_17_6_1
+    - "'Skipped' not in item.gpo_guid"
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_17.6.1
+    - patch
+    - gpo
+    - NIST800-171_3.3.1
+    - NIST800-171_3.3.2
+    - NIST800-171_3.3.6
+    - NIST800-53_AU-3
+    - NIST800-53_AU-3_1
+    - NIST800-53_AU-7
+    - NIST800-53_AU-12
+    - NIST800-53R5_AU-3
+    - NIST800-53R5_AU-3_1
+    - NIST800-53R5_AU-7
+    - NIST800-53R5_AU-12
+  community.windows.win_lineinfile:
+    path: "C:\\Windows\\SYSVOL\\sysvol\\{{ prelim_discovered_domain_name }}\\Policies\\{{ item.gpo_guid }}\\Machine\\Microsoft\\Windows NT\\Audit\\audit.csv"
+    regexp: "^.*?,System,Audit Detailed File Share,\\{0cce9244-69ae-11d9-bed3-505054503030\\}.*$"
+    line: ",System,Audit Detailed File Share,{0cce9244-69ae-11d9-bed3-505054503030},Failure,,2"
+    insertafter: "^Machine Name,Policy Target,Subcategory,Subcategory GUID,Inclusion Setting,Exclusion Setting,Setting Value$"
+  loop:
+    - gpo_guid: "{{ win19cis_l1_dc_gpo_guid | default('') ~ ( '(Skipped)' if not win19cis_l1_dc_gpo else '' ) }}"
+      gpo_name: "{{ win19cis_l1_dc_gpo_name }}"
+    - gpo_guid: "{{ win19cis_l1_ms_gpo_guid | default('') ~ ( '(Skipped)' if not win19cis_l1_ms_gpo else '' ) }}"
+      gpo_name: "{{ win19cis_l1_ms_gpo_name }}"
+  loop_control:
+    label: "{{ item.gpo_name }} - {{ item.gpo_guid }}"
+
+- name: "17.6.2 | GPO | Ensure Audit File Share is set to Success and Failure"
+  when:
+    - win19cis_rule_17_6_2
+    - "'Skipped' not in item.gpo_guid"
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_17.6.2
+    - patch
+    - gpo
+    - NIST800-171_3.3.1
+    - NIST800-171_3.3.2
+    - NIST800-171_3.3.6
+    - NIST800-53_AU-3
+    - NIST800-53_AU-3_1
+    - NIST800-53_AU-7
+    - NIST800-53_AU-12
+    - NIST800-53R5_AU-3
+    - NIST800-53R5_AU-3_1
+    - NIST800-53R5_AU-7
+    - NIST800-53R5_AU-12
+  community.windows.win_lineinfile:
+    path: "C:\\Windows\\SYSVOL\\sysvol\\{{ prelim_discovered_domain_name }}\\Policies\\{{ item.gpo_guid }}\\Machine\\Microsoft\\Windows NT\\Audit\\audit.csv"
+    regexp: "^.*?,System,Audit File Share,\\{0cce9224-69ae-11d9-bed3-505054503030\\}.*$"
+    line: ",System,Audit File Share,{0cce9224-69ae-11d9-bed3-505054503030},Success and Failure,,3"
+    insertafter: "^Machine Name,Policy Target,Subcategory,Subcategory GUID,Inclusion Setting,Exclusion Setting,Setting Value$"
+  loop:
+    - gpo_guid: "{{ win19cis_l1_dc_gpo_guid | default('') ~ ( '(Skipped)' if not win19cis_l1_dc_gpo else '' ) }}"
+      gpo_name: "{{ win19cis_l1_dc_gpo_name }}"
+    - gpo_guid: "{{ win19cis_l1_ms_gpo_guid | default('') ~ ( '(Skipped)' if not win19cis_l1_ms_gpo else '' ) }}"
+      gpo_name: "{{ win19cis_l1_ms_gpo_name }}"
+  loop_control:
+    label: "{{ item.gpo_name }} - {{ item.gpo_guid }}"
+
+- name: "17.6.3 | GPO | Ensure Audit Other Object Access Events is set to Success and Failure"
+  when:
+    - win19cis_rule_17_6_3
+    - "'Skipped' not in item.gpo_guid"
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_17.6.3
+    - patch
+    - gpo
+    - NIST800-171_3.3.1
+    - NIST800-171_3.3.2
+    - NIST800-171_3.3.6
+    - NIST800-53_AU-3
+    - NIST800-53_AU-3_1
+    - NIST800-53_AU-7
+    - NIST800-53_AU-12
+    - NIST800-53R5_AU-3
+    - NIST800-53R5_AU-3_1
+    - NIST800-53R5_AU-7
+    - NIST800-53R5_AU-12
+  community.windows.win_lineinfile:
+    path: "C:\\Windows\\SYSVOL\\sysvol\\{{ prelim_discovered_domain_name }}\\Policies\\{{ item.gpo_guid }}\\Machine\\Microsoft\\Windows NT\\Audit\\audit.csv"
+    regexp: "^.*?,System,Audit Other Object Access Events,\\{0cce9227-69ae-11d9-bed3-505054503030\\}.*$"
+    line: ",System,Audit Other Object Access Events,{0cce9227-69ae-11d9-bed3-505054503030},Success and Failure,,3"
+    insertafter: "^Machine Name,Policy Target,Subcategory,Subcategory GUID,Inclusion Setting,Exclusion Setting,Setting Value$"
+  loop:
+    - gpo_guid: "{{ win19cis_l1_dc_gpo_guid | default('') ~ ( '(Skipped)' if not win19cis_l1_dc_gpo else '' ) }}"
+      gpo_name: "{{ win19cis_l1_dc_gpo_name }}"
+    - gpo_guid: "{{ win19cis_l1_ms_gpo_guid | default('') ~ ( '(Skipped)' if not win19cis_l1_ms_gpo else '' ) }}"
+      gpo_name: "{{ win19cis_l1_ms_gpo_name }}"
+  loop_control:
+    label: "{{ item.gpo_name }} - {{ item.gpo_guid }}"
+
+- name: "17.6.4 | GPO | Ensure Audit Removable Storage is set to Success and Failure"
+  when:
+    - win19cis_rule_17_6_4
+    - "'Skipped' not in item.gpo_guid"
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_17.6.4
+    - patch
+    - gpo
+    - NIST800-171_3.3.1
+    - NIST800-171_3.3.2
+    - NIST800-171_3.3.6
+    - NIST800-53_AU-3
+    - NIST800-53_AU-3_1
+    - NIST800-53_AU-7
+    - NIST800-53_AU-12
+    - NIST800-53R5_AU-3
+    - NIST800-53R5_AU-3_1
+    - NIST800-53R5_AU-7
+    - NIST800-53R5_AU-12
+  community.windows.win_lineinfile:
+    path: "C:\\Windows\\SYSVOL\\sysvol\\{{ prelim_discovered_domain_name }}\\Policies\\{{ item.gpo_guid }}\\Machine\\Microsoft\\Windows NT\\Audit\\audit.csv"
+    regexp: "^.*?,System,Audit Removable Storage,\\{0cce9245-69ae-11d9-bed3-505054503030\\}.*$"
+    line: ",System,Audit Removable Storage,{0cce9245-69ae-11d9-bed3-505054503030},Success and Failure,,3"
+    insertafter: "^Machine Name,Policy Target,Subcategory,Subcategory GUID,Inclusion Setting,Exclusion Setting,Setting Value$"
+  loop:
+    - gpo_guid: "{{ win19cis_l1_dc_gpo_guid | default('') ~ ( '(Skipped)' if not win19cis_l1_dc_gpo else '' ) }}"
+      gpo_name: "{{ win19cis_l1_dc_gpo_name }}"
+    - gpo_guid: "{{ win19cis_l1_ms_gpo_guid | default('') ~ ( '(Skipped)' if not win19cis_l1_ms_gpo else '' ) }}"
+      gpo_name: "{{ win19cis_l1_ms_gpo_name }}"
+  loop_control:
+    label: "{{ item.gpo_name }} - {{ item.gpo_guid }}"
+
+- name: "17.7.1 | GPO | Ensure Audit Audit Policy Change is set to include Success"
+  when:
+    - win19cis_rule_17_7_1
+    - "'Skipped' not in item.gpo_guid"
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_17.7.1
+    - patch
+    - gpo
+    - NIST800-171_3.3.1
+    - NIST800-171_3.3.2
+    - NIST800-171_3.3.6
+    - NIST800-53_AU-3
+    - NIST800-53_AU-3_1
+    - NIST800-53_AU-7
+    - NIST800-53_AU-12
+    - NIST800-53R5_AU-3
+    - NIST800-53R5_AU-3_1
+    - NIST800-53R5_AU-7
+    - NIST800-53R5_AU-12
+  community.windows.win_lineinfile:
+    path: "C:\\Windows\\SYSVOL\\sysvol\\{{ prelim_discovered_domain_name }}\\Policies\\{{ item.gpo_guid }}\\Machine\\Microsoft\\Windows NT\\Audit\\audit.csv"
+    regexp: "^.*?,System,Audit Audit Policy Change,\\{0cce922f-69ae-11d9-bed3-505054503030\\}.*$"
+    line: ",System,Audit Audit Policy Change,{0cce922f-69ae-11d9-bed3-505054503030},Success,,1"
+    insertafter: "^Machine Name,Policy Target,Subcategory,Subcategory GUID,Inclusion Setting,Exclusion Setting,Setting Value$"
+  loop:
+    - gpo_guid: "{{ win19cis_l1_dc_gpo_guid | default('') ~ ( '(Skipped)' if not win19cis_l1_dc_gpo else '' ) }}"
+      gpo_name: "{{ win19cis_l1_dc_gpo_name }}"
+    - gpo_guid: "{{ win19cis_l1_ms_gpo_guid | default('') ~ ( '(Skipped)' if not win19cis_l1_ms_gpo else '' ) }}"
+      gpo_name: "{{ win19cis_l1_ms_gpo_name }}"
+  loop_control:
+    label: "{{ item.gpo_name }} - {{ item.gpo_guid }}"
+
+- name: "17.7.2 | GPO | Ensure Audit Authentication Policy Change is set to include Success"
+  when:
+    - win19cis_rule_17_7_2
+    - "'Skipped' not in item.gpo_guid"
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_17.7.2
+    - patch
+    - gpo
+    - NIST800-171_3.3.1
+    - NIST800-171_3.3.2
+    - NIST800-171_3.3.6
+    - NIST800-53_AU-3
+    - NIST800-53_AU-3_1
+    - NIST800-53_AU-7
+    - NIST800-53_AU-12
+    - NIST800-53R5_AU-3
+    - NIST800-53R5_AU-3_1
+    - NIST800-53R5_AU-7
+    - NIST800-53R5_AU-12
+  community.windows.win_lineinfile:
+    path: "C:\\Windows\\SYSVOL\\sysvol\\{{ prelim_discovered_domain_name }}\\Policies\\{{ item.gpo_guid }}\\Machine\\Microsoft\\Windows NT\\Audit\\audit.csv"
+    regexp: "^.*?,System,Audit Authentication Policy Change,\\{0cce9230-69ae-11d9-bed3-505054503030\\}.*$"
+    line: ",System,Audit Authentication Policy Change,{0cce9230-69ae-11d9-bed3-505054503030},Success,,1"
+    insertafter: "^Machine Name,Policy Target,Subcategory,Subcategory GUID,Inclusion Setting,Exclusion Setting,Setting Value$"
+  loop:
+    - gpo_guid: "{{ win19cis_l1_dc_gpo_guid | default('') ~ ( '(Skipped)' if not win19cis_l1_dc_gpo else '' ) }}"
+      gpo_name: "{{ win19cis_l1_dc_gpo_name }}"
+    - gpo_guid: "{{ win19cis_l1_ms_gpo_guid | default('') ~ ( '(Skipped)' if not win19cis_l1_ms_gpo else '' ) }}"
+      gpo_name: "{{ win19cis_l1_ms_gpo_name }}"
+  loop_control:
+    label: "{{ item.gpo_name }} - {{ item.gpo_guid }}"
+
+- name: "17.7.3 | GPO | Ensure Audit Authorization Policy Change is set to include Success"
+  when:
+    - win19cis_rule_17_7_3
+    - "'Skipped' not in item.gpo_guid"
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_17.7.3
+    - patch
+    - gpo
+    - NIST800-171_3.3.1
+    - NIST800-171_3.3.2
+    - NIST800-171_3.3.6
+    - NIST800-53_AU-3
+    - NIST800-53_AU-3_1
+    - NIST800-53_AU-7
+    - NIST800-53_AU-12
+    - NIST800-53R5_AU-3
+    - NIST800-53R5_AU-3_1
+    - NIST800-53R5_AU-7
+    - NIST800-53R5_AU-12
+  community.windows.win_lineinfile:
+    path: "C:\\Windows\\SYSVOL\\sysvol\\{{ prelim_discovered_domain_name }}\\Policies\\{{ item.gpo_guid }}\\Machine\\Microsoft\\Windows NT\\Audit\\audit.csv"
+    regexp: "^.*?,System,Audit Authorization Policy Change,\\{0cce9231-69ae-11d9-bed3-505054503030\\}.*$"
+    line: ",System,Audit Authorization Policy Change,{0cce9231-69ae-11d9-bed3-505054503030},Success,,1"
+    insertafter: "^Machine Name,Policy Target,Subcategory,Subcategory GUID,Inclusion Setting,Exclusion Setting,Setting Value$"
+  loop:
+    - gpo_guid: "{{ win19cis_l1_dc_gpo_guid | default('') ~ ( '(Skipped)' if not win19cis_l1_dc_gpo else '' ) }}"
+      gpo_name: "{{ win19cis_l1_dc_gpo_name }}"
+    - gpo_guid: "{{ win19cis_l1_ms_gpo_guid | default('') ~ ( '(Skipped)' if not win19cis_l1_ms_gpo else '' ) }}"
+      gpo_name: "{{ win19cis_l1_ms_gpo_name }}"
+  loop_control:
+    label: "{{ item.gpo_name }} - {{ item.gpo_guid }}"
+
+- name: "17.7.4 | GPO | Ensure Audit Authorization Policy Change is set to include Success and Failure"
+  when:
+    - win19cis_rule_17_7_4
+    - "'Skipped' not in item.gpo_guid"
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_17.7.4
+    - patch
+    - gpo
+    - NIST800-171_3.3.1
+    - NIST800-171_3.3.2
+    - NIST800-171_3.3.6
+    - NIST800-53_AU-3
+    - NIST800-53_AU-3_1
+    - NIST800-53_AU-7
+    - NIST800-53_AU-12
+    - NIST800-53R5_AU-3
+    - NIST800-53R5_AU-3_1
+    - NIST800-53R5_AU-7
+    - NIST800-53R5_AU-12
+  community.windows.win_lineinfile:
+    path: "C:\\Windows\\SYSVOL\\sysvol\\{{ prelim_discovered_domain_name }}\\Policies\\{{ item.gpo_guid }}\\Machine\\Microsoft\\Windows NT\\Audit\\audit.csv"
+    regexp: "^.*?,System,Audit MPSSVC Rule-Level Policy Change,\\{0cce9232-69ae-11d9-bed3-505054503030\\}.*$"
+    line: ",System,Audit MPSSVC Rule-Level Policy Change,{0cce9232-69ae-11d9-bed3-505054503030},Success and Failure,,3"
+    insertafter: "^Machine Name,Policy Target,Subcategory,Subcategory GUID,Inclusion Setting,Exclusion Setting,Setting Value$"
+  loop:
+    - gpo_guid: "{{ win19cis_l1_dc_gpo_guid | default('') ~ ( '(Skipped)' if not win19cis_l1_dc_gpo else '' ) }}"
+      gpo_name: "{{ win19cis_l1_dc_gpo_name }}"
+    - gpo_guid: "{{ win19cis_l1_ms_gpo_guid | default('') ~ ( '(Skipped)' if not win19cis_l1_ms_gpo else '' ) }}"
+      gpo_name: "{{ win19cis_l1_ms_gpo_name }}"
+  loop_control:
+    label: "{{ item.gpo_name }} - {{ item.gpo_guid }}"
+
+- name: "17.7.5 | GPO | Ensure Audit Other Policy Change Events is set to include Failure"
+  when:
+    - win19cis_rule_17_7_5
+    - "'Skipped' not in item.gpo_guid"
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_17.7.5
+    - patch
+    - gpo
+    - NIST800-171_3.3.1
+    - NIST800-171_3.3.2
+    - NIST800-171_3.3.6
+    - NIST800-53_AU-3
+    - NIST800-53_AU-3_1
+    - NIST800-53_AU-7
+    - NIST800-53_AU-12
+    - NIST800-53R5_AU-3
+    - NIST800-53R5_AU-3_1
+    - NIST800-53R5_AU-7
+    - NIST800-53R5_AU-12
+  community.windows.win_lineinfile:
+    path: "C:\\Windows\\SYSVOL\\sysvol\\{{ prelim_discovered_domain_name }}\\Policies\\{{ item.gpo_guid }}\\Machine\\Microsoft\\Windows NT\\Audit\\audit.csv"
+    regexp: "^.*?,System,Audit Other Policy Change Events,\\{0cce9234-69ae-11d9-bed3-505054503030\\}.*$"
+    line: ",System,Audit Other Policy Change Events,{0cce9234-69ae-11d9-bed3-505054503030},Failure,,2"
+    insertafter: "^Machine Name,Policy Target,Subcategory,Subcategory GUID,Inclusion Setting,Exclusion Setting,Setting Value$"
+  loop:
+    - gpo_guid: "{{ win19cis_l1_dc_gpo_guid | default('') ~ ( '(Skipped)' if not win19cis_l1_dc_gpo else '' ) }}"
+      gpo_name: "{{ win19cis_l1_dc_gpo_name }}"
+    - gpo_guid: "{{ win19cis_l1_ms_gpo_guid | default('') ~ ( '(Skipped)' if not win19cis_l1_ms_gpo else '' ) }}"
+      gpo_name: "{{ win19cis_l1_ms_gpo_name }}"
+  loop_control:
+    label: "{{ item.gpo_name }} - {{ item.gpo_guid }}"
+
+- name: "17.8.1 | GPO | Ensure Audit Sensitive Privilege Use is set to Success and Failure"
+  when:
+    - win19cis_rule_17_8_1
+    - "'Skipped' not in item.gpo_guid"
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_17.8.1
+    - patch
+    - gpo
+    - NIST800-171_3.3.1
+    - NIST800-171_3.3.2
+    - NIST800-171_3.3.6
+    - NIST800-53_AU-3
+    - NIST800-53_AU-3_1
+    - NIST800-53_AU-7
+    - NIST800-53_AU-12
+    - NIST800-53R5_AU-3
+    - NIST800-53R5_AU-3_1
+    - NIST800-53R5_AU-7
+    - NIST800-53R5_AU-12
+  community.windows.win_lineinfile:
+    path: "C:\\Windows\\SYSVOL\\sysvol\\{{ prelim_discovered_domain_name }}\\Policies\\{{ item.gpo_guid }}\\Machine\\Microsoft\\Windows NT\\Audit\\audit.csv"
+    regexp: "^.*?,System,Audit Sensitive Privilege Use,\\{0cce9228-69ae-11d9-bed3-505054503030\\}.*$"
+    line: ",System,Audit Sensitive Privilege Use,{0cce9228-69ae-11d9-bed3-505054503030},Success and Failure,,3"
+    insertafter: "^Machine Name,Policy Target,Subcategory,Subcategory GUID,Inclusion Setting,Exclusion Setting,Setting Value$"
+  loop:
+    - gpo_guid: "{{ win19cis_l1_dc_gpo_guid | default('') ~ ( '(Skipped)' if not win19cis_l1_dc_gpo else '' ) }}"
+      gpo_name: "{{ win19cis_l1_dc_gpo_name }}"
+    - gpo_guid: "{{ win19cis_l1_ms_gpo_guid | default('') ~ ( '(Skipped)' if not win19cis_l1_ms_gpo else '' ) }}"
+      gpo_name: "{{ win19cis_l1_ms_gpo_name }}"
+  loop_control:
+    label: "{{ item.gpo_name }} - {{ item.gpo_guid }}"
+
+- name: "17.9.1 | GPO | Ensure Audit IPsec Driver is set to Success and Failure"
+  when:
+    - win19cis_rule_17_9_1
+    - "'Skipped' not in item.gpo_guid"
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_17.9.1
+    - patch
+    - gpo
+    - NIST800-171_3.3.1
+    - NIST800-171_3.3.2
+    - NIST800-171_3.3.6
+    - NIST800-53_AU-3
+    - NIST800-53_AU-3_1
+    - NIST800-53_AU-7
+    - NIST800-53_AU-12
+    - NIST800-53R5_AU-3
+    - NIST800-53R5_AU-3_1
+    - NIST800-53R5_AU-7
+    - NIST800-53R5_AU-12
+  community.windows.win_lineinfile:
+    path: "C:\\Windows\\SYSVOL\\sysvol\\{{ prelim_discovered_domain_name }}\\Policies\\{{ item.gpo_guid }}\\Machine\\Microsoft\\Windows NT\\Audit\\audit.csv"
+    regexp: "^.*?,System,Audit IPsec Driver,\\{0cce9213-69ae-11d9-bed3-505054503030\\}.*$"
+    line: ",System,Audit IPsec Driver,{0cce9213-69ae-11d9-bed3-505054503030},Success and Failure,,3"
+    insertafter: "^Machine Name,Policy Target,Subcategory,Subcategory GUID,Inclusion Setting,Exclusion Setting,Setting Value$"
+  loop:
+    - gpo_guid: "{{ win19cis_l1_dc_gpo_guid | default('') ~ ( '(Skipped)' if not win19cis_l1_dc_gpo else '' ) }}"
+      gpo_name: "{{ win19cis_l1_dc_gpo_name }}"
+    - gpo_guid: "{{ win19cis_l1_ms_gpo_guid | default('') ~ ( '(Skipped)' if not win19cis_l1_ms_gpo else '' ) }}"
+      gpo_name: "{{ win19cis_l1_ms_gpo_name }}"
+  loop_control:
+    label: "{{ item.gpo_name }} - {{ item.gpo_guid }}"
+
+- name: "17.9.2 | GPO | Ensure Audit Other System Events is set to Success and Failure"
+  when:
+    - win19cis_rule_17_9_2
+    - "'Skipped' not in item.gpo_guid"
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_17.9.2
+    - patch
+    - gpo
+    - NIST800-171_3.3.1
+    - NIST800-171_3.3.2
+    - NIST800-171_3.3.6
+    - NIST800-53_AU-3
+    - NIST800-53_AU-3_1
+    - NIST800-53_AU-7
+    - NIST800-53_AU-12
+    - NIST800-53R5_AU-3
+    - NIST800-53R5_AU-3_1
+    - NIST800-53R5_AU-7
+    - NIST800-53R5_AU-12
+  community.windows.win_lineinfile:
+    path: "C:\\Windows\\SYSVOL\\sysvol\\{{ prelim_discovered_domain_name }}\\Policies\\{{ item.gpo_guid }}\\Machine\\Microsoft\\Windows NT\\Audit\\audit.csv"
+    regexp: "^.*?,System,Audit Other System Events,\\{0cce9214-69ae-11d9-bed3-505054503030\\}.*$"
+    line: ",System,Audit Other System Events,{0cce9214-69ae-11d9-bed3-505054503030},Success and Failure,,3"
+    insertafter: "^Machine Name,Policy Target,Subcategory,Subcategory GUID,Inclusion Setting,Exclusion Setting,Setting Value$"
+  loop:
+    - gpo_guid: "{{ win19cis_l1_dc_gpo_guid | default('') ~ ( '(Skipped)' if not win19cis_l1_dc_gpo else '' ) }}"
+      gpo_name: "{{ win19cis_l1_dc_gpo_name }}"
+    - gpo_guid: "{{ win19cis_l1_ms_gpo_guid | default('') ~ ( '(Skipped)' if not win19cis_l1_ms_gpo else '' ) }}"
+      gpo_name: "{{ win19cis_l1_ms_gpo_name }}"
+  loop_control:
+    label: "{{ item.gpo_name }} - {{ item.gpo_guid }}"
+
+- name: "17.9.3 | GPO | Ensure Audit Security State Change is set to include Success"
+  when:
+    - win19cis_rule_17_9_3
+    - "'Skipped' not in item.gpo_guid"
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_17.9.3
+    - patch
+    - gpo
+    - NIST800-171_3.3.1
+    - NIST800-171_3.3.2
+    - NIST800-171_3.3.6
+    - NIST800-53_AU-3
+    - NIST800-53_AU-3_1
+    - NIST800-53_AU-7
+    - NIST800-53_AU-12
+    - NIST800-53R5_AU-3
+    - NIST800-53R5_AU-3_1
+    - NIST800-53R5_AU-7
+    - NIST800-53R5_AU-12
+  community.windows.win_lineinfile:
+    path: "C:\\Windows\\SYSVOL\\sysvol\\{{ prelim_discovered_domain_name }}\\Policies\\{{ item.gpo_guid }}\\Machine\\Microsoft\\Windows NT\\Audit\\audit.csv"
+    regexp: "^.*?,System,Audit Security State Change,\\{0cce9210-69ae-11d9-bed3-505054503030\\}.*$"
+    line: ",System,Audit Security State Change,{0cce9210-69ae-11d9-bed3-505054503030},Success,,1"
+    insertafter: "^Machine Name,Policy Target,Subcategory,Subcategory GUID,Inclusion Setting,Exclusion Setting,Setting Value$"
+  loop:
+    - gpo_guid: "{{ win19cis_l1_dc_gpo_guid | default('') ~ ( '(Skipped)' if not win19cis_l1_dc_gpo else '' ) }}"
+      gpo_name: "{{ win19cis_l1_dc_gpo_name }}"
+    - gpo_guid: "{{ win19cis_l1_ms_gpo_guid | default('') ~ ( '(Skipped)' if not win19cis_l1_ms_gpo else '' ) }}"
+      gpo_name: "{{ win19cis_l1_ms_gpo_name }}"
+  loop_control:
+    label: "{{ item.gpo_name }} - {{ item.gpo_guid }}"
+
+- name: "17.9.4 | GPO | Ensure Audit Security System Extension is set to include Success"
+  when:
+    - win19cis_rule_17_9_4
+    - "'Skipped' not in item.gpo_guid"
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_17.9.4
+    - patch
+    - gpo
+    - NIST800-171_3.3.1
+    - NIST800-171_3.3.2
+    - NIST800-171_3.3.6
+    - NIST800-53_AU-3
+    - NIST800-53_AU-3_1
+    - NIST800-53_AU-7
+    - NIST800-53_AU-12
+    - NIST800-53R5_AU-3
+    - NIST800-53R5_AU-3_1
+    - NIST800-53R5_AU-7
+    - NIST800-53R5_AU-12
+  community.windows.win_lineinfile:
+    path: "C:\\Windows\\SYSVOL\\sysvol\\{{ prelim_discovered_domain_name }}\\Policies\\{{ item.gpo_guid }}\\Machine\\Microsoft\\Windows NT\\Audit\\audit.csv"
+    regexp: "^.*?,System,Audit Security System Extension,\\{0cce9211-69ae-11d9-bed3-505054503030\\}.*$"
+    line: ",System,Audit Security System Extension,{0cce9211-69ae-11d9-bed3-505054503030},Success,,1"
+    insertafter: "^Machine Name,Policy Target,Subcategory,Subcategory GUID,Inclusion Setting,Exclusion Setting,Setting Value$"
+  loop:
+    - gpo_guid: "{{ win19cis_l1_dc_gpo_guid | default('') ~ ( '(Skipped)' if not win19cis_l1_dc_gpo else '' ) }}"
+      gpo_name: "{{ win19cis_l1_dc_gpo_name }}"
+    - gpo_guid: "{{ win19cis_l1_ms_gpo_guid | default('') ~ ( '(Skipped)' if not win19cis_l1_ms_gpo else '' ) }}"
+      gpo_name: "{{ win19cis_l1_ms_gpo_name }}"
+  loop_control:
+    label: "{{ item.gpo_name }} - {{ item.gpo_guid }}"
+
+- name: "17.9.5 | GPO | Ensure Audit System Integrity is set to Success and Failure"
+  when:
+    - win19cis_rule_17_9_5
+    - "'Skipped' not in item.gpo_guid"
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_17.9.5
+    - patch
+    - gpo
+    - NIST800-171_3.3.1
+    - NIST800-171_3.3.2
+    - NIST800-171_3.3.6
+    - NIST800-53_AU-3
+    - NIST800-53_AU-3_1
+    - NIST800-53_AU-7
+    - NIST800-53_AU-12
+    - NIST800-53R5_AU-3
+    - NIST800-53R5_AU-3_1
+    - NIST800-53R5_AU-7
+    - NIST800-53R5_AU-12
+  community.windows.win_lineinfile:
+    path: "C:\\Windows\\SYSVOL\\sysvol\\{{ prelim_discovered_domain_name }}\\Policies\\{{ item.gpo_guid }}\\Machine\\Microsoft\\Windows NT\\Audit\\audit.csv"
+    regexp: "^.*?,System,Audit System Integrity,\\{0cce9212-69ae-11d9-bed3-505054503030\\}.*$"
+    line: ",System,Audit System Integrity,{0cce9212-69ae-11d9-bed3-505054503030},Success and Failure,,3"
+    insertafter: "^Machine Name,Policy Target,Subcategory,Subcategory GUID,Inclusion Setting,Exclusion Setting,Setting Value$"
+  loop:
+    - gpo_guid: "{{ win19cis_l1_dc_gpo_guid | default('') ~ ( '(Skipped)' if not win19cis_l1_dc_gpo else '' ) }}"
+      gpo_name: "{{ win19cis_l1_dc_gpo_name }}"
+    - gpo_guid: "{{ win19cis_l1_ms_gpo_guid | default('') ~ ( '(Skipped)' if not win19cis_l1_ms_gpo else '' ) }}"
+      gpo_name: "{{ win19cis_l1_ms_gpo_name }}"
+  loop_control:
+    label: "{{ item.gpo_name }} - {{ item.gpo_guid }}"

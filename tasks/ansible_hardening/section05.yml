@@ -1,0 +1,76 @@
+---
+
+- name: "5.1 | PATCH | Ensure Print Spooler (Spooler) is set to Disabled Domain Controller"
+  notify: Change_Requires_Reboot
+  when:
+    - win19cis_rule_5_1
+    - prelim_win19cis_is_domain_controller
+  tags:
+    - level1-domaincontroller
+    - rule_5.1
+    - patch
+    - printer
+    - NIST800-171_3.4.2
+    - NIST800-171_3.4.6
+    - NIST800-171_3.4.7
+    - NIST800-53_CM-6
+    - NIST800-53_CM-7
+    - NIST800-53R5_CM-6
+    - NIST800-53R5_CM-7
+  block:
+    - name: "5.1 | PATCH | Ensure Print Spooler (Spooler) is set to Disabled Domain Controller | Check to see if Spooler service exists."
+      ansible.windows.win_service_info:
+        name: Spooler
+      register: spooler_service_info
+
+    - name: "5.1 | PATCH | Ensure Print Spooler (Spooler) is set to Disabled Domain Controller RegEdit"
+      ansible.windows.win_regedit:
+        path: HKLM:\SYSTEM\CurrentControlSet\Services\Spooler
+        name: Start
+        data: 4
+        type: dword
+
+    - name: "5.1 | PATCH | Ensure Print Spooler (Spooler) is set to Disabled Domain Controller Service"
+      when: spooler_service_info.exists
+      ansible.windows.win_service:
+        name: Spooler
+        start_mode: disabled
+        state: stopped
+
+- name: "5.2 | PATCH | Ensure Print Spooler (Spooler) is set to Disabled Member Server"
+  notify: Change_Requires_Reboot
+  when:
+    - win19cis_rule_5_2
+    - not ansible_windows_domain_role == "Primary domain controller"
+    - not prelim_win19cis_is_standalone
+  tags:
+    - level2-memberserver
+    - rule_5.2
+    - patch
+    - printer
+    - NIST800-171_3.4.2
+    - NIST800-171_3.4.6
+    - NIST800-171_3.4.7
+    - NIST800-53_CM-6
+    - NIST800-53_CM-7
+    - NIST800-53R5_CM-6
+    - NIST800-53R5_CM-7
+  block:
+    - name: "5.2 | PATCH | Ensure Print Spooler (Spooler) is set to Disabled Member Server | Check to see if Spooler service exists."
+      ansible.windows.win_service_info:
+        name: Spooler
+      register: spooler_service_info
+
+    - name: "5.2 | PATCH | Ensure Print Spooler (Spooler) is set to Disabled Member Server | RegEdit"
+      ansible.windows.win_regedit:
+        path: HKLM:\SYSTEM\CurrentControlSet\Services\Spooler
+        name: Start
+        data: 4
+        type: dword
+
+    - name: "5.2 | PATCH | Ensure Print Spooler (Spooler) is set to Disabled Member Server | Service"
+      when: spooler_service_info.exists
+      ansible.windows.win_service:
+        name: Spooler
+        start_mode: disabled
+        state: stopped

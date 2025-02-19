@@ -1,0 +1,105 @@
+---
+
+- name: "Main | GPO | Create New GPOs"
+  tags:
+    - gpo_creation
+    - always
+  ansible.builtin.import_tasks:
+    file: prelim/prelim_gpo_creation.yml
+
+- name: "Main | GPO | Obtain GPO GUIDs"
+  tags:
+    - guid
+    - always
+  ansible.builtin.import_tasks:
+    file: prelim/prelim_obtain_guids.yml
+
+- name: "Main | GPO | Copy Policy Definitions To Central Store"
+  when: win19cis_copy_policy_definitions
+  tags:
+    - policy_definitions
+    - always
+  ansible.builtin.import_tasks:
+    file: prelim/prelim_policy_definitions.yml
+
+- name: "Main | GPO | Copy CIS ADMX And ADML Custom Files"
+  when: win19cis_copy_cis_custom_admx_adml
+  tags:
+    - cis_admx_adml_creation
+    - always
+  ansible.builtin.import_tasks:
+    file: prelim/prelim_cis_admx_adml.yml
+
+- name: "Main | GPO | Create Group Policy Template If Needed In GPO Or Update"
+  tags:
+    - group_policy_template_creation
+    - always
+  ansible.builtin.import_tasks:
+    file: prelim/prelim_group_policy_template.yml
+
+- name: "Main | GPO | Create Advanced Audit File If Needed In GPO"
+  tags:
+    - advanced_audit_file_creation
+    - always
+  ansible.builtin.import_tasks:
+    file: prelim/prelim_advanced_audit_creation.yml
+
+- name: "Main | GPO | Execute GPO Creation For Section 1 Tasks"
+  when: win19cis_section01
+  tags:
+    - gpo_section01
+  ansible.builtin.import_tasks:
+    file: gpo_section01.yml
+
+- name: "Main | GPO | Execute GPO Creation For Section 2 Tasks"
+  when: win19cis_section02
+  tags:
+    - gpo_section02
+  ansible.builtin.import_tasks:
+    file: gpo_section02.yml
+
+- name: "Main | GPO | Execute GPO Creation For Section 5 Tasks"
+  when: win19cis_section05
+  tags:
+    - gpo_section05
+  ansible.builtin.import_tasks:
+    file: gpo_section05.yml
+
+- name: "Main | GPO | Execute GPO Creation For Section 9 Tasks"
+  when: win19cis_section09
+  tags:
+    - gpo_section09
+  ansible.builtin.import_tasks:
+    file: gpo_section09.yml
+
+# This section is applied directly to the GptTmpl.inf file and will not be visible in the Group Policy Management Console (GPMC)
+# indicating that it is being applied. However, once the Group Policy Object (GPO) is applied and a gpresult report is generated,
+# it will take effect. Additionally, you can verify its application by running AuditPol on the machines.
+# Complete
+- name: "Main | GPO | Execute GPO Creation For Section 17 Tasks"
+  when: win19cis_section17
+  tags:
+    - gpo_section17
+  ansible.builtin.import_tasks:
+    file: gpo_section17.yml
+
+- name: "Main | GPO | Execute GPO Creation For Section 18 Tasks"
+  when: win19cis_section18
+  tags:
+    - gpo_section18
+  ansible.builtin.import_tasks:
+    file: gpo_section18.yml
+
+- name: "Main | GPO | Execute GPO Creation For Section 19 Tasks"
+  when: win19cis_section19
+  tags:
+    - gpo_section19
+  ansible.builtin.import_tasks:
+    file: gpo_section19.yml
+
+- name: "Main | GPO | Run Post Tasks"
+  tags:
+    - gpo_backup
+    - post
+  ansible.builtin.import_tasks:
+    file: post.yml

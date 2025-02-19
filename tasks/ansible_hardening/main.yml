@@ -1,0 +1,55 @@
+---
+
+- name: Main | Include The Preliminary Tasks
+  tags:
+    - always
+    - prelim_tasks
+  ansible.builtin.include_tasks:
+    file: prelim.yml
+
+- name: Main | Execute The Section 1 Tasks
+  tags: section01
+  ansible.builtin.import_tasks:
+    file: section01.yml
+  when: win19cis_section01
+
+- name: Main | Execute The Section 2 Tasks
+  tags: section02
+  ansible.builtin.import_tasks:
+    file: section02.yml
+  when: win19cis_section02
+
+- name: Main | Execute The Section 5 Tasks
+  tags: section05
+  ansible.builtin.import_tasks:
+    file: section05.yml
+  when: win19cis_section05
+
+- name: Main | Execute The Section 9 Tasks
+  tags: section09
+  ansible.builtin.import_tasks:
+    file: section09.yml
+  when: win19cis_section09
+
+- name: Main | Execute tThe Section 17 Tasks
+  tags: section17
+  ansible.builtin.import_tasks:
+    file: section17.yml
+  when: win19cis_section17
+
+- name: Main | Execute The Section 18 Tasks
+  tags: section18
+  ansible.builtin.import_tasks:
+    file: section18.yml
+  when: win19cis_section18
+
+- name: Main | Execute The Section 19 Tasks
+  tags: section19
+  ansible.builtin.import_tasks:
+    file: section19.yml
+  when: win19cis_section19
+
+- name: Main | Run Post Tasks
+  tags: always
+  ansible.builtin.import_tasks:
+    file: post.yml

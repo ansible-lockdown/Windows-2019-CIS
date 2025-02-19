@@ -1,0 +1,17 @@
+---
+
+- name: "PRELIM | GPO | Policy Definitions | Copy PolicyDefinitions.zip To The AD Store"
+  tags:
+    - policy_definitions
+  ansible.windows.win_copy:
+    src: "{{ role_path }}/templates/windows_templates/PolicyDefinitions.zip"
+    dest: "C:\\Windows\\SYSVOL\\sysvol\\{{ prelim_discovered_domain_name }}\\Policies\\"
+
+- name: "PRELIM | GPO | Policy Definitions | Unzip To Proper Folder"
+  tags:
+    - policy_definitions
+  community.windows.win_unzip:
+    src: "C:\\Windows\\SYSVOL\\sysvol\\{{ prelim_discovered_domain_name }}\\Policies\\PolicyDefinitions.zip"
+    dest: "C:\\Windows\\SYSVOL\\sysvol\\{{ prelim_discovered_domain_name }}\\Policies\\"
+    remote_src: true
+  changed_when: false

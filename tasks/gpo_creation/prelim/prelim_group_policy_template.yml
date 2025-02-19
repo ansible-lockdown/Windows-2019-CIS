@@ -1,0 +1,67 @@
+---
+
+- name: "PRELIM | GPO | Group Policy Template | Set GPO GUID List With Filtered Entries."
+  ansible.builtin.set_fact:
+    prelim_discovered_gpttmpl_gpo_list: >-
+      {{
+        [
+          { "name": win19cis_default_domain_policy_gpo_name, "guid": win19cis_default_domain_gpo_guid | default('') },
+          { "name": win19cis_l1_dc_gpo_name, "guid": win19cis_l1_dc_gpo_guid | default('') },
+          { "name": win19cis_l1_ms_gpo_name, "guid": win19cis_l1_ms_gpo_guid | default('') },
+          { "name": win19cis_l2_dc_gpo_name, "guid": win19cis_l2_dc_gpo_guid | default('') },
+          { "name": win19cis_l2_ms_gpo_name, "guid": win19cis_l2_ms_gpo_guid | default('') }
+        ] | selectattr("guid", "!=","") | list
+      }}
+
+- name: "PRELIM | GPO | Group Policy Template | Debug GPO GUID List."
+  ansible.builtin.debug:
+    var: prelim_discovered_gpttmpl_gpo_list
+
+- name: "PRELIM | GPO | Group Policy Template | Check If GptTmpl.inf File Exists In Each GPO GUID."
+  ansible.windows.win_stat:
+    path: "C:\\Windows\\SYSVOL\\sysvol\\{{ prelim_discovered_domain_name }}\\Policies\\{{ item.guid }}\\Machine\\Microsoft\\Windows NT\\SecEdit\\GptTmpl.inf"
+  loop: "{{ prelim_discovered_gpttmpl_gpo_list }}"
+  loop_control:
+    label: "GPO Name: {{ item.name }} | GUID: {{ item.guid }}"
+  register: prelim_discovered_gpttmpl_inf_check
+
+- name: "PRELIM | GPO | Group Policy Template | Create Directories For GptTmpl.inf If They Do Not Exist."
+  when: not item.stat.exists
+  ansible.windows.win_file:
+    path: "C:\\Windows\\SYSVOL\\sysvol\\{{ prelim_discovered_domain_name }}\\Policies\\{{ item.item.guid }}\\Machine\\Microsoft\\Windows NT\\SecEdit"
+    state: directory
+  loop: "{{ prelim_discovered_gpttmpl_inf_check.results }}"
+  loop_control:
+    label: "GPO Name: {{ item.item.name }} | GUID: {{ item.item.guid }}"
+
+- name: "PRELIM | GPO | Group Policy Template | Set Fact For GptTmpl.inf Items To Copy."
+  ansible.builtin.set_fact:
+    prelim_discovered_gpttmpl_to_copy: "{{ prelim_discovered_gpttmpl_inf_check.results | selectattr('stat.exists', 'eq', false) | map(attribute='item') | list }}"
+
+- name: "PRELIM | GPO | Group Policy Template | Copy GptTmpl.inf Template To The Proper Directory."
+  ansible.windows.win_copy:
+    src: "{{ role_path }}/templates/windows_templates/GptTmpl.inf"
+    dest: "C:\\Windows\\SYSVOL\\sysvol\\{{ prelim_discovered_domain_name }}\\Policies\\{{ item.guid }}\\Machine\\Microsoft\\Windows NT\\SecEdit\\GptTmpl.inf"
+  loop: "{{ prelim_discovered_gpttmpl_to_copy }}"
+  loop_control:
+    label: "GPO Name: {{ item.name }} | GUID: {{ item.guid }}"
+
+- name: "PRELIM | GPO | Group Policy Template | Ensure Sections Exist In GptTmpl.inf File For All GPOs."
+  with_nested:
+    - "{{ prelim_discovered_gpttmpl_gpo_list }}"
+    - "{{ sections | sort }}"
+  vars:
+    sections:
+      - "[System Access]"
+      - "[Kerberos Policy]"
+      - "[Registry Values]"
+      - "[Privilege Rights]"
+      - "[Audit Policy]"
+      - "[Advanced Audit Policy]"
+      - "[Event Audit]"
+  community.windows.win_lineinfile:
+    path: "C:\\Windows\\SYSVOL\\sysvol\\{{ prelim_discovered_domain_name }}\\Policies\\{{ item.0.guid }}\\Machine\\Microsoft\\Windows NT\\SecEdit\\GptTmpl.inf"
+    line: "{{ item.1 }}"
+    insertafter: "Unicode=yes"
+  loop_control:
+    label: "GPO Name: {{ item.0.name }} | Section: {{ item.1 }}"

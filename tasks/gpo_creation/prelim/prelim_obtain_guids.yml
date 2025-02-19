@@ -1,0 +1,284 @@
+---
+
+- name: PRELIM | GPO | GPO Creation | Obtain The GUID For Each Of The GPOs And Set Fact
+  block:
+    # Default DC Policy
+    #########################################################
+    - name: "PRELIM | GPO Creation | Obtain GUID For {{ win19cis_default_domain_policy_gpo_name }}."
+      when: win19cis_default_domain_policy_gpo
+      ansible.windows.win_shell: |
+        $gpoName = "{{ win19cis_default_domain_policy_gpo_name }}"
+        $gpo = Get-GPO -Name $gpoName -ErrorAction SilentlyContinue
+        if ($gpo) {
+          # Return only the GUID if the GPO exists
+            Write-Output "{$($gpo.Id)}"
+        } else {
+          Write-Error "GPO $gpoName does not exist"
+        }
+      changed_when: false
+      register: prelim_discovered_default_domain_policy_gpo_guid
+
+    - name: "PRELIM | GPO | GPO Creation | Set Fact For GUID {{ win19cis_l1_dc_gpo_name }}."
+      when: win19cis_default_domain_policy_gpo
+      ansible.builtin.set_fact:
+        win19cis_default_domain_gpo_guid: "{{ prelim_discovered_default_domain_policy_gpo_guid.stdout | regex_search('({[0-9a-fA-F-]{36}})') }}"
+
+    # L1 DC Policy
+    #########################################################
+    - name: "PRELIM | GPO | GPO Creation | Obtain GUID For {{ win19cis_l1_dc_gpo_name }}."
+      when: win19cis_l1_dc_gpo
+      ansible.windows.win_shell: |
+        $gpoName = "{{ win19cis_l1_dc_gpo_name }}"
+        $gpo = Get-GPO -Name $gpoName -ErrorAction SilentlyContinue
+        if ($gpo) {
+          # Return only the GUID if the GPO exists
+            Write-Output "{$($gpo.Id)}"
+        } else {
+          Write-Error "GPO $gpoName does not exist"
+        }
+      changed_when: false
+      register: prelim_discovered_l1_dc_gpo_guid
+
+    - name: "PRELIM | GPO | GPO Creation | Set Fact For GUID {{ win19cis_l1_dc_gpo_name }}."
+      when: win19cis_l1_dc_gpo
+      ansible.builtin.set_fact:
+        win19cis_l1_dc_gpo_guid: "{{ prelim_discovered_l1_dc_gpo_guid.stdout | regex_search('({[0-9a-fA-F-]{36}})') }}"
+
+    # L2 DC Policy
+    #########################################################
+    - name: "PRELIM | GPO | GPO Creation | Obtain GUID For {{ win19cis_l2_dc_gpo_name }}."
+      when: win19cis_l2_dc_gpo
+      ansible.windows.win_shell: |
+        $gpoName = "{{ win19cis_l2_dc_gpo_name }}"
+        $gpo = Get-GPO -Name $gpoName -ErrorAction SilentlyContinue
+        if ($gpo) {
+          # Return only the GUID if the GPO exists
+            Write-Output "{$($gpo.Id)}"
+        } else {
+          Write-Error "GPO $gpoName does not exist"
+        }
+      changed_when: false
+      register: prelim_discovered_l2_dc_gpo_guid
+
+    - name: "PRELIM | GPO | GPO Creation | Set Fact For GUID {{ win19cis_l2_dc_gpo_name }}."
+      when: win19cis_l2_dc_gpo
+      ansible.builtin.set_fact:
+        win19cis_l2_dc_gpo_guid: "{{ prelim_discovered_l2_dc_gpo_guid.stdout | regex_search('({[0-9a-fA-F-]{36}})') }}"
+
+    # SERVICES DC Policy
+    #########################################################
+    - name: "PRELIM | GPO | GPO Creation | Obtain GUID For {{ win19cis_services_dc_gpo_name }}."
+      when: win19cis_services_dc_gpo
+      ansible.windows.win_shell: |
+        $gpoName = "{{ win19cis_services_dc_gpo_name }}"
+        $gpo = Get-GPO -Name $gpoName -ErrorAction SilentlyContinue
+        if ($gpo) {
+          # Return only the GUID if the GPO exists
+            Write-Output "{$($gpo.Id)}"
+        } else {
+          Write-Error "GPO $gpoName does not exist"
+        }
+      changed_when: false
+      register: prelim_discovered_services_dc_gpo_guid
+
+    - name: "PRELIM | GPO | GPO Creation | Set Fact For GUID {{ win19cis_services_dc_gpo_name }}."
+      when: win19cis_services_dc_gpo
+      ansible.builtin.set_fact:
+        win19cis_services_dc_gpo_guid: "{{ prelim_discovered_services_dc_gpo_guid.stdout | regex_search('({[0-9a-fA-F-]{36}})') }}"
+
+    # NGWS DC Policy
+    #########################################################
+    - name: "PRELIM | GPO | GPO Creation | Obtain GUID For {{ win19cis_ngws_dc_gpo_name }}."
+      when: win19cis_ngws_dc_gpo
+      ansible.windows.win_shell: |
+        $gpoName = "{{ win19cis_ngws_dc_gpo_name }}"
+        $gpo = Get-GPO -Name $gpoName -ErrorAction SilentlyContinue
+        if ($gpo) {
+          # Return only the GUID if the GPO exists
+            Write-Output "{$($gpo.Id)}"
+        } else {
+          Write-Error "GPO $gpoName does not exist"
+        }
+      changed_when: false
+      register: prelim_discovered_ngws_dc_gpo_guid
+
+    - name: "PRELIM | GPO | GPO Creation | Set Fact For GUID {{ win19cis_ngws_dc_gpo_name }}."
+      when: win19cis_ngws_dc_gpo
+      ansible.builtin.set_fact:
+        win19cis_ngws_dc_gpo_guid: "{{ prelim_discovered_ngws_dc_gpo_guid.stdout | regex_search('({[0-9a-fA-F-]{36}})') }}"
+
+    # L1 USER Policy
+    #########################################################
+    - name: "PRELIM | GPO | GPO Creation | Obtain GUID For {{ win19cis_l1_user_gpo_name }}."
+      when: win19cis_l1_user_gpo
+      ansible.windows.win_shell: |
+        $gpoName = "{{ win19cis_l1_user_gpo_name }}"
+        $gpo = Get-GPO -Name $gpoName -ErrorAction SilentlyContinue
+        if ($gpo) {
+          # Return only the GUID if the GPO exists
+            Write-Output "{$($gpo.Id)}"
+        } else {
+          Write-Error "GPO $gpoName does not exist"
+        }
+      changed_when: false
+      register: prelim_discovered_l1_user_gpo_guid
+
+    - name: "PRELIM | GPO | GPO Creation | Set Fact For GUID {{ win19cis_l1_user_gpo_name }} ."
+      when: win19cis_l1_user_gpo
+      ansible.builtin.set_fact:
+        win19cis_l1_user_gpo_guid: "{{ prelim_discovered_l1_user_gpo_guid.stdout | regex_search('({[0-9a-fA-F-]{36}})') }}"
+
+    # L1 MS Policy
+    #########################################################
+    - name: "PRELIM | GPO | GPO Creation | Obtain GUID For {{ win19cis_l1_ms_gpo_name }}."
+      when: win19cis_l1_ms_gpo
+      ansible.windows.win_shell: |
+        $gpoName = "{{ win19cis_l1_ms_gpo_name }}"
+        $gpo = Get-GPO -Name $gpoName -ErrorAction SilentlyContinue
+        if ($gpo) {
+          # Return only the GUID if the GPO exists
+            Write-Output "{$($gpo.Id)}"
+        } else {
+          Write-Error "GPO $gpoName does not exist"
+        }
+      changed_when: false
+      register: prelim_discovered_l1_ms_gpo_guid
+
+    - name: "PRELIM | GPO | GPO Creation | Set Fact For GUID {{ win19cis_l1_ms_gpo_name }}."
+      when: win19cis_l1_ms_gpo
+      ansible.builtin.set_fact:
+        win19cis_l1_ms_gpo_guid: "{{ prelim_discovered_l1_ms_gpo_guid.stdout | regex_search('({[0-9a-fA-F-]{36}})') }}"
+
+    # L2 MS Policy
+    #########################################################
+    - name: "PRELIM | GPO | GPO Creation | Obtain GUID For {{ win19cis_l2_ms_gpo_name }}."
+      when: win19cis_l2_ms_gpo
+      ansible.windows.win_shell: |
+        $gpoName = "{{ win19cis_l2_ms_gpo_name }}"
+        $gpo = Get-GPO -Name $gpoName -ErrorAction SilentlyContinue
+        if ($gpo) {
+          # Return only the GUID if the GPO exists
+            Write-Output "{$($gpo.Id)}"
+        } else {
+          Write-Error "GPO $gpoName does not exist"
+        }
+      changed_when: false
+      register: prelim_discovered_l2_ms_gpo_guid
+
+    - name: "PRELIM | GPO | GPO Creation | Set Fact For GUID {{ win19cis_l2_ms_gpo_name }} ."
+      when: win19cis_l2_ms_gpo
+      ansible.builtin.set_fact:
+        win19cis_l2_ms_gpo_guid: "{{ prelim_discovered_l2_ms_gpo_guid.stdout | regex_search('({[0-9a-fA-F-]{36}})') }}"
+
+    # L1 DM Policy
+    #########################################################
+    - name: "PRELIM | GPO | GPO Creation | Obtain GUID For {{ win19cis_l1_dm_gpo_name }}."
+      when: win19cis_l1_dm_gpo
+      ansible.windows.win_shell: |
+        $gpoName = "{{ win19cis_l1_dm_gpo_name }}"
+        $gpo = Get-GPO -Name $gpoName -ErrorAction SilentlyContinue
+        if ($gpo) {
+          # Return only the GUID if the GPO exists
+            Write-Output "{$($gpo.Id)}"
+        } else {
+          Write-Error "GPO $gpoName does not exist"
+        }
+      changed_when: false
+      register: prelim_discovered_l1_dm_gpo_guid
+
+    - name: "PRELIM | GPO | GPO Creation | Set Fact For GUID {{ win19cis_l1_dm_gpo_name }}."
+      when: win19cis_l1_dm_gpo
+      ansible.builtin.set_fact:
+        win19cis_l1_dm_gpo_guid: "{{ prelim_discovered_l1_dm_gpo_guid.stdout | regex_search('({[0-9a-fA-F-]{36}})') }}"
+
+    # SERVICES MS Policy
+    #########################################################
+    - name: "PRELIM | GPO | GPO Creation | Obtain GUID For {{ win19cis_services_ms_gpo_name }}."
+      when: win19cis_services_ms_gpo
+      ansible.windows.win_shell: |
+        $gpoName = "{{ win19cis_services_ms_gpo_name }}"
+        $gpo = Get-GPO -Name $gpoName -ErrorAction SilentlyContinue
+        if ($gpo) {
+          # Return only the GUID if the GPO exists
+            Write-Output "{$($gpo.Id)}"
+        } else {
+          Write-Error "GPO $gpoName does not exist"
+        }
+      changed_when: false
+      register: prelim_discovered_services_ms_gpo_guid
+
+    - name: "PRELIM | GPO | GPO Creation | Set Fact For GUID {{ win19cis_services_ms_gpo_name }}."
+      when: win19cis_services_ms_gpo
+      ansible.builtin.set_fact:
+        win19cis_services_ms_gpo_guid: "{{ prelim_discovered_services_ms_gpo_guid.stdout | regex_search('({[0-9a-fA-F-]{36}})') }}"
+
+    # NGWS MS Policy
+    #########################################################
+    - name: "PRELIM | GPO | GPO Creation | Obtain GUID For {{ win19cis_ngws_ms_gpo_name }}."
+      when: win19cis_ngws_ms_gpo
+      ansible.windows.win_shell: |
+        $gpoName = "{{ win19cis_ngws_ms_gpo_name }}"
+        $gpo = Get-GPO -Name $gpoName -ErrorAction SilentlyContinue
+        if ($gpo) {
+          # Return only the GUID if the GPO exists
+            Write-Output "{$($gpo.Id)}"
+        } else {
+          Write-Error "GPO $gpoName does not exist"
+        }
+      changed_when: false
+      register: prelim_discovered_ngws_ms_gpo_guid
+
+    - name: "PRELIM | GPO | GPO Creation | Set Fact For GUID {{ win19cis_ngws_ms_gpo_name }}."
+      when: win19cis_ngws_ms_gpo
+      ansible.builtin.set_fact:
+        win19cis_ngws_ms_gpo_guid: "{{ prelim_discovered_ngws_ms_gpo_guid.stdout | regex_search('({[0-9a-fA-F-]{36}})') }}"
+
+    # L2 USER Policy
+    #########################################################
+    - name: "PRELIM | GPO | GPO Creation | Obtain GUID For {{ win19cis_l2_user_gpo_name }}."
+      when: win19cis_l2_user_gpo
+      ansible.windows.win_shell: |
+        $gpoName = "{{ win19cis_l2_user_gpo_name }}"
+        $gpo = Get-GPO -Name $gpoName -ErrorAction SilentlyContinue
+        if ($gpo) {
+          # Return only the GUID if the GPO exists
+            Write-Output "{$($gpo.Id)}"
+        } else {
+          Write-Error "GPO $gpoName does not exist"
+        }
+      changed_when: false
+      register: prelim_discovered_l2_user_gpo_guid
+
+    - name: "PRELIM | GPO | GPO Creation | Set Fact For GUID {{ win19cis_l2_user_gpo_name }}."
+      when: win19cis_l2_user_gpo
+      ansible.builtin.set_fact:
+        win19cis_l2_user_gpo_guid: "{{ prelim_discovered_l2_user_gpo_guid.stdout | regex_search('({[0-9a-fA-F-]{36}})') }}"
+
+    - name: "PRELIM | GPO | GPO Creation | Output GPO Names And GUIDs."
+      ansible.builtin.debug:
+        msg:
+          - "GPO GUID Results"
+          - "********************************************************************************************"
+          - "Domain Controller"
+          - "********************************************************************************************"
+          - "{{ win19cis_default_domain_policy_gpo_name }}: {{ win19cis_default_domain_gpo_guid | default('No GUID Available') }}"
+          - "{{ win19cis_l1_dc_gpo_name }}: {{ win19cis_l1_dc_gpo_guid | default('No GUID Available') }}"
+          - "{{ win19cis_l2_dc_gpo_name }}: {{ win19cis_l2_dc_gpo_guid | default('No GUID Available') }}"
+          - "{{ win19cis_services_dc_gpo_name }}: {{ win19cis_services_dc_gpo_guid | default('No GUID Available') }}"
+          - "{{ win19cis_ngws_dc_gpo_name }}: {{ win19cis_ngws_dc_gpo_guid | default('No GUID Available') }}"
+          - "********************************************************************************************"
+          - "Member Server"
+          - "********************************************************************************************"
+          - "{{ win19cis_l1_ms_gpo_name }}: {{ win19cis_l1_ms_gpo_guid | default('No GUID Available') }}"
+          - "{{ win19cis_l2_ms_gpo_name }}: {{ win19cis_l2_ms_gpo_guid | default('No GUID Available') }}"
+          - "{{ win19cis_services_ms_gpo_name }}: {{ win19cis_services_ms_gpo_guid | default('No GUID Available') }}"
+          - "{{ win19cis_ngws_ms_gpo_name }}: {{ win19cis_ngws_ms_gpo_guid | default('No GUID Available') }}"
+          - "********************************************************************************************"
+          - "Domain Member"
+          - "********************************************************************************************"
+          - "{{ win19cis_l1_dm_gpo_name }}: {{ win19cis_l1_dm_gpo_guid | default('No GUID Available') }}"
+          - "********************************************************************************************"
+          - "Users"
+          - "********************************************************************************************"
+          - "{{ win19cis_l1_user_gpo_name }}: {{ win19cis_l1_user_gpo_guid | default('No GUID Available') }}"
+          - "{{ win19cis_l2_user_gpo_name }}: {{ win19cis_l2_user_gpo_guid | default('No GUID Available') }}"
