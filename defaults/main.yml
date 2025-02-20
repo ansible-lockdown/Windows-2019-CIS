@@ -100,7 +100,7 @@ win19cis_section19: true
 
 # min_ansible_version is the base version of Ansible to use. This ensures compatibility and avoids execution
 # errors due to missing features or incompatible syntax in earlier versions of Ansible.
-min_ansible_version: "2.14"
+min_ansible_version: "2.16"
 
 # win_skip_for_test is the setting that will skip tasks that may cause changes that will affect the system.
 # Controls that will be skipped:
