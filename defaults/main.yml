@@ -9,7 +9,7 @@
 # and want to run the remediation directly on a Windows machine.
 win19cis_ansible_remediation: true
 
-# win2k19cis_create_gpo is the setting that will run the CIS GPO creation on a Windows Domain Controller. Please review
+# win19cis_create_gpos is the setting that will run the CIS GPO creation on a Windows Domain Controller. Please review
 # all options in the GPO section to understand what is being done.
 win19cis_create_gpos: false
 
@@ -53,7 +53,7 @@ win19cis_copy_cis_custom_admx_adml: true
 # Default: false
 win19cis_create_domain: false
 win19cis_domain: "test.com"
-# The win22cis_safe_mode_administrator_password parameter is required when running the Install-ADDSForest command, whether
+# The win19cis_safe_mode_administrator_password parameter is required when running the Install-ADDSForest command, whether
 # in a PowerShell script or through Ansible using ansible.windows.win_shell. This parameter sets the Directory Services
 # Restore Mode (DSRM) password, which is mandatory during the Active Directory Domain Services (AD DS) configuration and should
 # contain a secure and valid password that meets the domain's password policy.
@@ -168,7 +168,7 @@ win19cis_rule_2_2_22: true
 win19cis_rule_2_2_23: true
 win19cis_rule_2_2_24: true
 win19cis_rule_2_2_25: true
-# Setting win19is_rule_2_2_26 and win19cis_rule_2_2_27 Control To True Will Break Ansible Connection
+# Setting win19cis_rule_2_2_26 and win19cis_rule_2_2_27 Control To True Will Break Ansible Connection
 # Setting win_skip_for_test: true -- will skip the controls here even if they are set to true.
 win19cis_rule_2_2_26: true
 win19cis_rule_2_2_27: true
