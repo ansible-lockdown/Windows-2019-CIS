@@ -7,17 +7,43 @@ warn_control_list: ""
 warn_count: 0
 
 # This sets the variable that is created for the banner.
-lockdown_banner: "{{lookup('file', './templates/banner.txt')}}"
+lockdown_banner: "{{ lookup('file', './templates/banner.txt') }}"
 
 # This will be changed to true if discovered.
-win19cis_cloud_based_system: false
+prelim_win19cis_cloud_based_system: false
 
 # These are default values that will be changed when the prelim
 # runs and finds the correct setting.
-win2019cis_is_standalone: false
-win2019cis_is_domain_controller: false
-win2019cis_is_domain_member: false
+prelim_win19cis_is_standalone: false
+prelim_win19cis_is_domain_controller: false
+prelim_win19cis_is_domain_member: false
 
 # Default setting, this should not be changed
 # and is overridden if a task that changed sets the value if required.
 reboot_host: false
+
+# This section will change based on OS and Version of CIS that is being used.
+win19cis_gpo_hardening_version: "v3.0.1"
+win19cis_gpo_hardening_os: "Win2019"
+
+# This section will configure the names of the GPOs that are created to a variable for easier reading in the when
+# statements for each task for GPO creation.
+# THE DEFAULT SETTINGS BELOW SHOULD NOT BE CHANGED.
+win19cis_default_domain_policy_gpo_name: "CIS {{ win19cis_gpo_hardening_version }} {{ win19cis_gpo_hardening_os }} Default Domain Policy"
+
+win19cis_l1_dc_gpo_name: "CIS {{ win19cis_gpo_hardening_version }} {{ win19cis_gpo_hardening_os }} L1 DC"
+win19cis_l1_ms_gpo_name: "CIS {{ win19cis_gpo_hardening_version }} {{ win19cis_gpo_hardening_os }} L1 MS"
+
+win19cis_l2_dc_gpo_name: "CIS {{ win19cis_gpo_hardening_version }} {{ win19cis_gpo_hardening_os }} L2 DC"
+win19cis_l2_ms_gpo_name: "CIS {{ win19cis_gpo_hardening_version }} {{ win19cis_gpo_hardening_os }} L2 MS"
+
+win19cis_l1_dm_gpo_name: "CIS {{ win19cis_gpo_hardening_version }} {{ win19cis_gpo_hardening_os }} L1 DM"
+
+win19cis_services_dc_gpo_name: "CIS {{ win19cis_gpo_hardening_version }} {{ win19cis_gpo_hardening_os }} Services DC"
+win19cis_services_ms_gpo_name: "CIS {{ win19cis_gpo_hardening_version }} {{ win19cis_gpo_hardening_os }} Services MS"
+
+win19cis_ngws_dc_gpo_name: "CIS {{ win19cis_gpo_hardening_version }} {{ win19cis_gpo_hardening_os }} NGWS DC"
+win19cis_ngws_ms_gpo_name: "CIS {{ win19cis_gpo_hardening_version }} {{ win19cis_gpo_hardening_os }} NGWS MS"
+
+win19cis_l1_user_gpo_name: "CIS {{ win19cis_gpo_hardening_version }} {{ win19cis_gpo_hardening_os }} L1 User"
+win19cis_l2_user_gpo_name: "CIS {{ win19cis_gpo_hardening_version }} {{ win19cis_gpo_hardening_os }} L2 User"

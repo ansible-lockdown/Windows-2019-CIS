@@ -1,0 +1,12 @@
+[Unicode]
+Unicode=yes
+[System Access]
+[Kerberos Policy]
+[Registry Values]
+[Privilege Rights]
+[Audit Policy]
+[Advanced Audit Policy]
+[Event Audit]
+[Version]
+signature="$CHICAGO$"
+Revision=1

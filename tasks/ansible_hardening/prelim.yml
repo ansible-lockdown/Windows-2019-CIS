@@ -1,0 +1,74 @@
+---
+
+# Notes: Values Output by ansible_windows_domain_role
+# Standalone workstation - The machine is not part of a domain and operates as a standalone workstation.
+# Standalone server - The machine is not part of a domain and operates as a standalone server.
+# Member workstation - The machine is a workstation joined to a domain.
+# Member server - The machine is a server joined to a domain.
+# Backup domain controller - The machine is a backup domain controller in a domain environment (Active Directory).
+# Primary domain controller - The machine is the primary domain controller in a domain environment (Active Directory).
+- name: PRELIM | Set System Facts Based On Gather Facts Module
+  tags: always
+  block:
+    - name: PRELIM | Set System Facts Based On Gather Facts Module | Set Fact If System Is Standalone
+      when: ansible_windows_domain_role == 'Stand-alone server'
+      ansible.builtin.set_fact:
+        prelim_win19cis_is_standalone: true
+
+    - name: PRELIM | Set System Facts Based On Gather Facts Module | Set Fact If Domain Controller Role
+      when: ansible_windows_domain_role | regex_search('(domain controller)')
+      ansible.builtin.set_fact:
+        prelim_win19cis_is_domain_controller: true
+
+    - name: PRELIM | Set System Facts Based On Gather Facts Module | Set Fact If Domain Member Server
+      when: ansible_windows_domain_role == 'Member server'
+      ansible.builtin.set_fact:
+        prelim_win19cis_is_domain_member: true
+
+# HVM is Amazon AMI's, Hyper-V is Azure's, KVM is used for ('QEMU', 'Amazon EC2', 'DigitalOcean', 'Google', 'Scaleway', 'Nutanix', 'KVM', 'KVM Server', 'Bochs', 'AHV')
+# Current list is elastic and will be updated as we test more cloud based services.
+# Current testing is working in Azure using Hyper-V. We are currently using this for reference:
+# https://github.com/ansible/ansible/blob/905131fc76a07cf89dbc8d33e7a4910da3f10a16/lib/ansible/module_utils/facts/virtual/linux.py#L205
+- name: PRELIM | Set Fact If Cloud-Based System.
+  when:
+    - not ansible_virtualization_type == 'VMware' or
+      (ansible_system_vendor == 'Microsoft Corporation' and
+      ansible_virtualization_type in ['Hyper-V', 'hvm', 'kvm'])
+  tags: always
+  ansible.builtin.set_fact:
+    prelim_win19cis_cloud_based_system: true
+
+- name: PRELIM | Obtain Then Load Default And User Hives
+  when: win19cis_section19
+  tags: always
+  block:
+    - name: PRELIM | Obtain Then Load Default And User Hives | Load default user hive (Account that all new users get created from profile)
+      ansible.windows.win_shell: REG LOAD HKU\DEFAULT C:\Users\Default\NTUSER.DAT
+      changed_when: false
+      failed_when: false
+
+    - name: PRELIM | Obtain Then Load Default And User Hives | Pull all username and SIDs
+      ansible.windows.win_shell: Get-CimInstance -Class Win32_UserAccount -Filter "SID LIKE 'S-1-5-%'" | ForEach-Object { $_.Name + " " + $_.SID }
+      changed_when: false
+      failed_when: false
+      register: prelim_all_users
+
+    - name: PRELIM | Obtain Then Load Default And User Hives | Create results list fact for username and SIDs
+      ansible.builtin.set_fact:
+        prelim_username_and_sid_results_list: "{{ prelim_all_users.stdout_lines | map('split', ' ') | list }}"
+
+    - name: PRELIM | Obtain Then Load Default And User Hives | Load all user hives from username and SIDs list
+      ansible.windows.win_shell: REG LOAD HKU\{{ item.1 }} C:\Users\{{ item.0 }}\NTUSER.DAT
+      changed_when: false
+      failed_when: false
+      loop: "{{ prelim_username_and_sid_results_list }}"
+
+    - name: PRELIM | Obtain Then Load Default And User Hives | Retrieve current users SIDs from HKEY_USERS
+      ansible.windows.win_shell: (Get-ChildItem "REGISTRY::HKEY_USERS").name | Where-Object {$_ -notlike "*_classes"}
+      changed_when: false
+      failed_when: false
+      register: prelim_current_users_loaded_hku
+
+    - name: PRELIM | Obtain Then Load Default And User Hives | Create list fact for current users SIDs from HKEY_USERS
+      ansible.builtin.set_fact:
+        prelim_hku_loaded_list: "{{ prelim_current_users_loaded_hku.stdout | regex_replace('HKEY_USERS\\\\', '') | split }}"

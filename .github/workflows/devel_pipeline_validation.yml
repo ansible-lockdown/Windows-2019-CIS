@@ -1,141 +1,151 @@
 ---
 
-name: Devel Pipeline Validation
+# This is a basic workflow to help you get started with Actions
+
+name: Ansible Remediate Devel Pipeline Validation
 
 # Controls when the action will run.
 # Triggers the workflow on push or pull request
 # events but only for the devel branch
-on: # yamllint disable-line rule:truthy
-    pull_request_target:
-        types: [opened, reopened, synchronize]
-        branches:
-            - devel
-        paths:
-            - '**.yml'
-            - '**.sh'
-            - '**.j2'
-            - '**.ps1'
-            - '**.cfg'
+on:  # yamllint disable-line rule:truthy
+  pull_request_target:
+    types: [opened, reopened, synchronize]
+    branches:
+      - devel
+    paths:
+      - '**.yml'
+      - '**.sh'
+      - '**.j2'
+      - '**.ps1'
+      - '**.cfg'
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
-# This setion contains all the jobs below that are running in the workflow.
+# This section contains all the jobs below that are running in the workflow.
 jobs:
-    # This will create messages for first time contributers and direct them to the Discord server
-    welcome:
-        # The type of runner that the job will run on.
-        runs-on: ubuntu-latest
-        steps:
-            - uses: actions/first-interaction@main
-              with:
-                  repo-token: ${{ secrets.GITHUB_TOKEN }}
-                  pr-message: |-
-                    Congrats on opening your first pull request and thank you for taking the time to help improve Ansible-Lockdown!
-                    Please join in the conversation happening on the [Discord Server](https://www.lockdownenterprise.com/discord) as well.
+  # This will create messages for the first time contributors and direct them to the Discord server
+  welcome:
+    # The type of runner that the job will run on.
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/first-interaction@main
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          pr-message: |-
+            Congrats on opening your first pull request and thank you for taking the time to help improve Ansible-Lockdown!
+            Please join in the conversation happening on the [Discord Server](https://www.lockdownenterprise.com/discord) as well.
 
-    # This workflow will run Terraform to load an instance in Azure to test the playbook against a live cloud-based instance.
-    playbook-test:
-        # The type of runner that the job will run on.
-        runs-on: ubuntu-latest
+  build-azure-windows:
+    # Use the AWS self-hosted runner
+    runs-on: self-hosted
+    env:
+      # Imported as a variable by OpenTofu.
+      ARM_CLIENT_ID: ${{ secrets.AZURE_AD_CLIENT_ID }}
+      ARM_CLIENT_SECRET: ${{ secrets.AZURE_AD_CLIENT_SECRET }}
+      ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      ARM_TENANT_ID: ${{ secrets.AZURE_AD_TENANT_ID }}
+      WIN_USERNAME: ${{ secrets.WIN_USERNAME }}
+      WIN_PASSWORD: ${{ secrets.WIN_PASSWORD }}
+      OSVAR: ${{ vars.OSVAR }}
+      TF_VAR_benchmark_type: ${{ vars.BENCHMARK_TYPE }}
+      TF_VAR_repository: ${{ github.event.repository.name }}
+      ANSIBLE_VERSION: ${{ vars.ANSIBLE_RUNNER_VERSION }}
+      ENABLE_DEBUG: ${{ vars.ENABLE_DEBUG }}
 
+    defaults:
+      run:
+        shell: bash
+        working-directory: .github/workflows/github_windows_IaC
+
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it.
+      - name: Clone ${{ github.event.repository.name }}
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - name: If a variable for IAC_BRANCH is set use that branch
+        working-directory: .github/workflows
+        run: |
+          if [ ${{ vars.IAC_BRANCH }} != '' ]; then
+              echo "IAC_BRANCH=${{ vars.IAC_BRANCH }}" >> $GITHUB_ENV
+              echo "Pipeline using the following IAC branch ${{ vars.IAC_BRANCH }}"
+          else
+              echo IAC_BRANCH=main >> $GITHUB_ENV
+          fi
+
+      # Pull In OpenTofu Code For Windows Azure
+      - name: Clone IaC Repository
+        uses: actions/checkout@v4
+        with:
+          repository: ansible-lockdown/github_windows_IaC
+          path: .github/workflows/github_windows_IaC
+          ref: ${{ env.IAC_BRANCH }}
+
+      # Sensitive Data Stored And Passed To OpenTofu
+      # Default Working Dir Defined In Defaults Above.
+      - name: Save Sensitive Info
+        run: echo "{\"username\":\"${WIN_USERNAME}\",\"password\":\"${WIN_PASSWORD}\"}" >> sensitive_info.json
+
+      # Show the Os Var and Benchmark Type And Load
+      - name: DEBUG - Show IaC files
+        if: env.ENABLE_DEBUG == 'true'
+        run: |
+          echo "OSVAR = $OSVAR"
+          echo "benchmark_type = $benchmark_type"
+          pwd
+          ls
         env:
-            ENABLE_DEBUG: false
-            # Imported as a variable by Terraform.
-            TF_VAR_repository: ${{ github.event.repository.name }}
-            ARM_CLIENT_ID: ${{ secrets.AZURE_AD_CLIENT_ID }}
-            ARM_CLIENT_SECRET: ${{ secrets.AZURE_AD_CLIENT_SECRET }}
-            ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-            ARM_TENANT_ID: ${{ secrets.AZURE_AD_TENANT_ID }}
-            WIN_USERNAME: ${{ secrets.WIN_USERNAME }}
-            WIN_PASSWORD: ${{ secrets.WIN_PASSWORD }}
+          # Imported from github variables this is used to load the relevant OS.tfvars file
+          OSVAR: ${{ vars.OSVAR }}
+          TF_VAR_benchmark_type: ${{ vars.BENCHMARK_TYPE }}
 
-        defaults:
-            run:
-                shell: bash
-                working-directory: .github/workflows/github_windows_IaC
+      # Initialize The OpenTofu Working Directory
+      - name: Tofu init
+        id: init
+        run: tofu init
+        env:
+          # Imported from GitHub variables this is used to load the relevant OS.tfvars file
+          OSVAR: ${{ vars.OSVAR }}
+          TF_VAR_benchmark_type: ${{ vars.BENCHMARK_TYPE }}
 
-        # Steps represent a sequence of tasks that will be executed as part of the job.
-        steps:
-          # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it.
-            - name: Clone ${{ github.event.repository.name }}
-              uses: actions/checkout@v3
-              with:
-                  ref: ${{ github.event.pull_request.head.sha }}
+      # Validate The Syntax Of OpenTofu Files
+      - name: Tofu validate
+        id: validate
+        run: tofu validate
+        env:
+          # Imported from GitHub variables this is used to load the relevant OS.tfvars file
+          OSVAR: ${{ vars.OSVAR }}
+          TF_VAR_benchmark_type: ${{ vars.BENCHMARK_TYPE }}
 
-          # Pull In Terraform Code For Windows Azure
-            - name: Clone github IaC plan
-              uses: actions/checkout@v3
-              with:
-                  repository: ansible-lockdown/github_windows_IaC
-                  path: .github/workflows/github_windows_IaC
+      # Execute The Actions And Build Azure Server
+      - name: Tofo Apply
+        id: apply
+        env:
+          # Imported from github variables this is used to load the relevant OS.tfvars file
+          WIN_USERNAME: ${{ secrets.WIN_USERNAME }}
+          WIN_PASSWORD: ${{ secrets.WIN_PASSWORD }}
+          OSVAR: ${{ vars.OSVAR }}
+          TF_VAR_benchmark_type: ${{ vars.BENCHMARK_TYPE }}
+        run: tofu apply -var-file "${OSVAR}.tfvars" --auto-approve -input=false
 
-          # Sensitive Data Stored And Passed To Terraform
-          # Default Working Dir Defined In Defaults Above.
-            - name: user details
-              run: echo "{\"username\":\"${WIN_USERNAME}\",\"password\":\"${WIN_PASSWORD}\"}" >> sensitive_info.json
+      # Debug Section
+      - name: DEBUG - Show Ansible Hostfile
+        if: env.ENABLE_DEBUG == 'true'
+        run: cat hosts.yml
 
-          # Show the OS Var, Benchmark Type and Load
-            - name: DEBUG - Show IaC files
-              if: env.ENABLE_DEBUG == 'true'
-              run: |
-                echo "OSVAR = $OSVAR"
-                echo "benchmark_type = $benchmark_type"
-                pwd
-                ls
-              env:
-                  # Imported from GitHub variables this is used to load the relevant OS.tfvars file
-                  OSVAR: ${{ vars.OSVAR }}
-                  TF_VAR_benchmark_type: ${{ vars.BENCHMARK_TYPE }}
+      # Run the Ansible Playbook
+      - name: Run_Ansible_Playbook
+        env:
+          ANSIBLE_HOST_KEY_CHECKING: "false"
+          ANSIBLE_DEPRECATION_WARNINGS: "false"
+        run: |
+          /opt/ansible_${{ env.ANSIBLE_VERSION }}_venv/bin/ansible-playbook -i hosts.yml ../../../site.yml
 
-          # Initialize The Terraform Working Directory
-            - name: Terraform_Init
-              id: init
-              run: terraform init
-              env:
-                # Imported from github variables this is used to load the relevant OS.tfvars file
-                  OSVAR: ${{ vars.OSVAR }}
-                  TF_VAR_benchmark_type: ${{ vars.BENCHMARK_TYPE }}
-
-          # Validate The Syntax Of Terraform Files
-            - name: Terraform_Validate
-              id: validate
-              run: terraform validate
-              env:
-                # Imported from github variables this is used to load the relevant OS.tfvars file
-                  OSVAR: ${{ vars.OSVAR }}
-                  TF_VAR_benchmark_type: ${{ vars.BENCHMARK_TYPE }}
-
-          # Execute The Actions And Build Azure Server
-            - name: Terraform_Apply
-              id: apply
-              env:
-                # Imported from GitHub variables this is used to load the relevant OS.tfvars file
-                  WIN_USERNAME: ${{ secrets.WIN_USERNAME }}
-                  WIN_PASSWORD: ${{ secrets.WIN_PASSWORD }}
-                  OSVAR: ${{ vars.OSVAR }}
-                  TF_VAR_benchmark_type: ${{ vars.BENCHMARK_TYPE }}
-              run: terraform apply -var-file "${OSVAR}.tfvars" --auto-approve
-
-          # Debug Section
-            - name: DEBUG - Show Ansible Hostfile
-              if: env.ENABLE_DEBUG == 'true'
-              run: cat hosts.yml
-
-          # Run the Ansible Playbook
-            - name: Run_Ansible_Playbook
-              uses: arillso/action.playbook@master
-              with:
-                  playbook: site.yml
-                  inventory: .github/workflows/github_windows_IaC/hosts.yml
-                  galaxy_file: collections/requirements.yml
-          # verbose: 3
-              env:
-                  ANSIBLE_HOST_KEY_CHECKING: "false"
-                  ANSIBLE_DEPRECATION_WARNINGS: "false"
-
-          # Destroy The Azure Test System
-            - name: Terraform_Destroy
-              if: always() && env.ENABLE_DEBUG == 'false'
-              env:
-                  OSVAR: ${{ vars.OSVAR }}
-                  TF_VAR_benchmark_type: ${{ vars.BENCHMARK_TYPE }}
-              run: terraform destroy -var-file "${OSVAR}.tfvars" --auto-approve
+      # Destroy The Azure Test System
+      - name: Tofu Destroy
+        if: always() && env.ENABLE_DEBUG == 'false'
+        env:
+          # Imported from GitHub variables this is used to load the relevant OS.tfvars file
+          OSVAR: ${{ vars.OSVAR }}
+          TF_VAR_benchmark_type: ${{ vars.BENCHMARK_TYPE }}
+        run: tofu destroy -var-file "${OSVAR}.tfvars" --auto-approve

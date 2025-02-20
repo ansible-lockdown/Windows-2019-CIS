@@ -1,27 +1,59 @@
 # Changelog
 
-## Release 2.0.1
+## Release 3.0.1
 
-December 2024 Update
-- Fixed title for 18.9.27.1
-- Issue Addressed:
-    - [#106](https://github.com/ansible-lockdown/Windows-2019-CIS/issues/105) - Thanks @animatco
-    - [#104](https://github.com/ansible-lockdown/Windows-2019-CIS/issues/104) - Thanks @devallan
-    - [#103](https://github.com/ansible-lockdown/Windows-2019-CIS/issues/103) - Thanks @Crombell95
+February 2025 Update
+
+  - Standard GPO title and typo fixes update
+
+December 2024 Updates
+  - Added the ability create tailored Group Policy Objects (GPOs) compliant with CIS benchmarks using Ansible.
+    - Custom GPOs based around variables in defaults/main.
+    - New variables for the GPO creation.
+    - Turn on and off controls to add them to the GPOs.
+    - More flexibility in the way the GPOs are created for Lvl1 and Lvl2.
+  - Banner Update
+  - NIST Tags Added
+  - Updated prelim Set system facts based on gather facts module naming.
+  - Updated all win_regedit paths to reflect capitalized System/Software registry entries.
+  - Removed all "state: present" (Default) value from the "win_regedit" module.
+  - Updated tasks in the prelim and post to also headers matched the section.
+  - Updated when's with "primary domain controller" to "domain controller"
+  - Verified all controls meet new CIS standards for 3.0.1
+  - Updated when's with "primary domain controller" to "domain controller"
+  - Fixed meta for galaxy.
+  - Removed Control 9.2.3 and moved all tasks left from 9.2.4 - 9.2.8 to 9.2.3 - 9.2.7
+  - Removed Control 9.2.8 from Default Main
+  - Control 18.9.5.2 has a new option for variables.
+  - General Other Updates
+  - Issues Addressed:
     - [#101](https://github.com/ansible-lockdown/Windows-2019-CIS/issues/101) - Thanks @dennisharder-alight
+    - [#103](https://github.com/ansible-lockdown/Windows-2019-CIS/issues/103) - Thanks @Crombell95
+    - [#104](https://github.com/ansible-lockdown/Windows-2019-CIS/issues/104) - Thanks @devallan
+    - [#107](https://github.com/ansible-lockdown/Windows-2022-CIS/issues/107) - Thanks @animatco & @kpi-nourman
+    - [#49](https://github.com/ansible-lockdown/Windows-2022-CIS/issues/49) - Thanks @animatco
 
 June 2024 Update
-- Issue Addressed:
-    - [#101] (https://github.com/ansible-lockdown/Windows-2019-CIS/issues/101) - Thank you @dennisharder-alight
+  - Updated tasks to align with Windows2019CISv3.0.1 release
+  - Updated LegalNoticeCaption var with title fix - Thank you @rlmass
+  - Updated when's with "primary domain controller" to "domain controller"
+  - Updated PRELIM | Set Fact If Cloud Based System to include ansible_system_vendor. - Thanks @mfortin
+  - Updated Pipelines - Thanks @mfortin
+  - Updated DisableBkGndGroupPolicy To 0 "Disabled" - Thanks @dennisharder-alight
+  - Updated ManagePreviewBuildsPolicyValue To 0 "Disabled" - Thanks @dennisharder-al
+  - Removed all "state: present" (Default) value from the "win_regedit" module.
+  - Update set_fact prelim vars with prefix prelim_ throughout the playbook
+
+## Release 2.0.1
 
 April 2024 Update
-- Thank you @MrSteve81 for the enhancements to this release!
+  - Thank you @MrSteve81 for the enhancements to this release!
     - Improved 19.x section logic for Windows local user SIDs and HKU support.
     - Reboot handler and logic Improvement with skip_reboot var feature.
     - win_skip_for_test var update with additional description and supported controls of 18.10.89.2.2
 
 February 2024 Update
-- Issues Addressed:
+  - Issues Addressed:
     - [#88](https://github.com/ansible-lockdown/Windows-2019-CIS/issues/88) - Thank you @animatco
     - [#89](https://github.com/ansible-lockdown/Windows-2019-CIS/issues/89) - Thank you @animatco
     - [#90](https://github.com/ansible-lockdown/Windows-2019-CIS/issues/90) - Thank you @animatco
@@ -32,52 +64,52 @@ February 2024 Update
 ## Release 2.0.0
 
 October 2023 Update
-- Update Controls to CIS V2.0.0 released 04-05-2023
+  - Update Controls to CIS V2.0.0 released 04-05-2023
 
 ## Release 1.3.0
 
 August 2023 Update
-- Updated Workflows To Central Repo
-  - Renamed them to better run across all repos.
-- Removed Templates & PR Template from repo and adjusted to Org level.
-- Updated Readme Layout to add new pipeline badges.
-- Section1_Cloud moved from tasks/main and renamed to section1_cloud_lockout_order and in section1.yml workflow.
-- Updated Tags in tasks/main.
-- Updated When Statement Formatting For Entire Playbook.
+  - Updated Workflows To Central Repo
+    - Renamed them to better run across all repos.
+  - Removed Templates & PR Template from repo and adjusted to Org level.
+  - Updated Readme Layout to add new pipeline badges.
+  - Section1_Cloud moved from tasks/main and renamed to section1_cloud_lockout_order and in section1.yml workflow.
+  - Updated Tags in tasks/main.
+  - Updated When Statement Formatting For Entire Playbook.
 
 May 2023 Update
-- Added Additional Cloud support for tasks.
-- Fixed Pipelines
-- Major Update: All task rule names updated to add win19cis to them in default main.
-- Ansible Lockdown Banner In Playbook (Testing)
-- Finished Updating to CIS 1.3.0
-- Updated Galaxy Workflow
-- Updated module names to new standard.
-- Issues Closed
-  - [#31](https://github.com/ansible-lockdown/Windows-2019-CIS/issues/31) - Thanks @georgenalen
-  - [#64](https://github.com/ansible-lockdown/Windows-2019-CIS/issues/64) - Thanks @dimi4ik
-  - [#67](https://github.com/ansible-lockdown/Windows-2019-CIS/issues/67) - Thanks @Igor-X
-- Benchmarks 1.2.1 - 1.2.3 Put In Correct Order To Take Into Account System Defaults.
-- Benchmark 1.1.7 - Added
-- Benchmark 2.2.37 - Added Variable To Choose If Exchange Server Installed.
-- Benchmark 2.3.6.5 - Added Variable
-- Benchmark 2.3.7.3 - Added Variable
-- Benchmark 2.3.7.6 - Added Variable
-- Benchmark 2.3.7.7 - Added Variable
-- Benchmark 18.4.9 - Added Variable
-- Benchmark 18.4.12 - Added Variable
-- Benchmark 18.8.3.1 - Old setting was set to disabled, new benchmark calls for enabled. Updated registry value.
-- Benchmark 18.9.12.1 - Calls For Disabled, Updated and Changed Registry Entry To Disable.
-- Benchmark 18.9.17.2 - Calls For Enabled, Updated and Changed Registry Entry To Enable.
-- Benchmark 18.9.27.1.2 - Added Variable
-- Benchmark 18.9.27.2.2 - Added Variable
-- Benchmark 18.9.27.3.2 - Added Variable
-- Benchmark 18.9.27.4.2 - Added Variable
-- Benchmark 18.9.64.1 - Added
-- Benchmark 18.9.65.3.10.1 - Added Variable
-- Benchmark 18.9.65.3.10.2 - Updated the registry entry time to 1 Min per CIS.
-- Benchmark 19.3.3 - Added Variable
-- Benchmark 19.1.3.4 - Removed Not A Valid Control
+  - Added Additional Cloud support for tasks.
+  - Fixed Pipelines
+  - Major Update: All task rule names updated to add win19cis to them in default main.
+  - Ansible Lockdown Banner In Playbook (Testing)
+  - Finished Updating to CIS 1.3.0
+  - Updated Galaxy Workflow
+  - Updated module names to new standard.
+  - Issues Closed
+    - [#31](https://github.com/ansible-lockdown/Windows-2019-CIS/issues/31) - Thanks @georgenalen
+    - [#64](https://github.com/ansible-lockdown/Windows-2019-CIS/issues/64) - Thanks @dimi4ik
+    - [#67](https://github.com/ansible-lockdown/Windows-2019-CIS/issues/67) - Thanks @Igor-X
+  - Benchmarks 1.2.1 - 1.2.3 Put In Correct Order To Take Into Account System Defaults.
+  - Benchmark 1.1.7 - Added
+  - Benchmark 2.2.37 - Added Variable To Choose If Exchange Server Installed.
+  - Benchmark 2.3.6.5 - Added Variable
+  - Benchmark 2.3.7.3 - Added Variable
+  - Benchmark 2.3.7.6 - Added Variable
+  - Benchmark 2.3.7.7 - Added Variable
+  - Benchmark 18.4.9 - Added Variable
+  - Benchmark 18.4.12 - Added Variable
+  - Benchmark 18.8.3.1 - Old setting was set to disabled, new benchmark calls for enabled. Updated registry value.
+  - Benchmark 18.9.12.1 - Calls For Disabled, Updated and Changed Registry Entry To Disable.
+  - Benchmark 18.9.17.2 - Calls For Enabled, Updated and Changed Registry Entry To Enable.
+  - Benchmark 18.9.27.1.2 - Added Variable
+  - Benchmark 18.9.27.2.2 - Added Variable
+  - Benchmark 18.9.27.3.2 - Added Variable
+  - Benchmark 18.9.27.4.2 - Added Variable
+  - Benchmark 18.9.64.1 - Added
+  - Benchmark 18.9.65.3.10.1 - Added Variable
+  - Benchmark 18.9.65.3.10.2 - Updated the registry entry time to 1 Min per CIS.
+  - Benchmark 19.3.3 - Added Variable
+  - Benchmark 19.1.3.4 - Removed Not A Valid Control
 
 ## Release 1.2.0
 

@@ -1,0 +1,266 @@
+---
+
+- name: "PRELIM | GPO | GPO Creation | Verify Machine Part Of Domain"
+  tags:
+    - always
+  block:
+    - name: "PRELIM | GPO Creation | Verify Machine Part Of Domain | Check If The Machine Is Part Of A Domain"
+      ansible.windows.win_shell: |
+        $ComputerSystem = Get-WmiObject Win32_ComputerSystem
+        if ($ComputerSystem.PartOfDomain) {
+            Write-Output $ComputerSystem.Domain
+        } else {
+            Write-Output "NoDomain"
+        }
+      changed_when: false
+      failed_when: false
+      register: prelim_discovered_domain_status
+
+    - name: "PRELIM | GPO | GPO Creation | Verify Machine Part Of Domain | Check If The Machine Is A Domain Controller"
+      ansible.windows.win_shell: |
+        # Get the PDC Emulator's hostname
+        $PDCEmulator = (Get-ADDomain).PDCEmulator
+
+        # Get the current server's hostname
+        $CurrentHostname = $env:COMPUTERNAME
+
+        # Compare current hostname to the PDC Emulator hostname
+        if ($CurrentHostname -eq $PDCEmulator.Split('.')[0]) {
+            Write-Output "Primary DC Detected"
+        } else {
+            Write-Output "NotPDCEmulator"
+        }
+      changed_when: false
+      failed_when: false
+      register: prelim_discovered_dc_status
+
+    - name: PRELIM | GPO | GPO Creation | Verify Machine Part Of Domain | Fail If No Domain Is Detected
+      when:
+        - "'NoDomain' in prelim_discovered_domain_status.stdout"
+        # - "'NotPDCEmulator' in prelim_discovered_dc_status.stdout"
+      ansible.builtin.fail:
+        msg:
+          - "Domain detected: {{ prelim_discovered_domain_status.stdout }}"
+          - "Domain Controller Status: {{ prelim_discovered_dc_status.stdout_lines }}"
+          - "GPO creation requires the server to be part of a domain and GPO creation requires the server to be a DC."
+
+- name: "PRELIM | GPO | GPO Creation | Get The Domain Name Of The Windows Machine"
+  ansible.windows.win_shell: |
+    (Get-WmiObject Win32_ComputerSystem).Domain
+  changed_when: false
+  register: prelim_discovered_domain_name_result
+
+- name: "PRELIM | GPO | GPO Creation | Set A Variable With The Domain Name"
+  ansible.builtin.set_fact:
+    prelim_discovered_domain_name: "{{ prelim_discovered_domain_name_result.stdout_lines[0] | regex_replace('\r\n', '') }}"
+
+- name: "PRELIM | GPO | GPO Creation | Display The Domain Name Variable"
+  ansible.builtin.debug:
+    msg: "The domain name is: {{ prelim_discovered_domain_name }}"
+
+- name: "PRELIM | GPO | GPO Creation | Create or Update GPOs"
+  block:
+    # DEFAULT DOMAIN GPO CREATION
+    - name: "PRELIM | GPO | GPO Creation | Create Or Update Default Domain Level CIS GPO"
+      when: win19cis_default_domain_policy_gpo
+      ansible.windows.win_shell: |
+        $gpoName = "{{ win19cis_default_domain_policy_gpo_name }}"
+        if (-not (Get-GPO -Name $gpoName -ErrorAction SilentlyContinue)) {
+          New-GPO -Name $gpoName
+          Write-Output "Created GPO: $gpoName"
+        } else {
+          Write-Output "GPO already exists: $gpoName"
+        }
+      changed_when: "'Created GPO:' in prelim_gpo_creation_default_domain_policy.stdout"
+      failed_when: false
+      register: prelim_gpo_creation_default_domain_policy
+
+    # DOMAIN CONTROLLER L1 GPO CREATION
+    - name: "PRELIM | GPO | GPO Creation | Create Or Update Domain Controller L1 CIS GPO"
+      when: win19cis_l1_dc_gpo
+      ansible.windows.win_shell: |
+        $gpoName = "{{ win19cis_l1_dc_gpo_name }}"
+        if (-not (Get-GPO -Name $gpoName -ErrorAction SilentlyContinue)) {
+          New-GPO -Name $gpoName
+          Write-Output "Created GPO: $gpoName"
+        } else {
+          Write-Output "GPO already exists: $gpoName"
+        }
+      changed_when: "'Created GPO:' in prelim_gpo_creation_l1_dc.stdout"
+      failed_when: false
+      register: prelim_gpo_creation_l1_dc
+
+    # DOMAIN CONTROLLER L2 GPO CREATION
+    - name: "PRELIM | GPO | GPO Creation | Create Or Update Domain Controller L2 CIS GPO"
+      when: win19cis_l2_dc_gpo
+      ansible.windows.win_shell: |
+        $gpoName = "{{ win19cis_l2_dc_gpo_name }}"
+        if (-not (Get-GPO -Name $gpoName -ErrorAction SilentlyContinue)) {
+          New-GPO -Name $gpoName
+          Write-Output "Created GPO: $gpoName"
+        } else {
+          Write-Output "GPO already exists: $gpoName"
+        }
+      changed_when: "'Created GPO:' in prelim_gpo_creation_l2_dc.stdout"
+      failed_when: false
+      register: prelim_gpo_creation_l2_dc
+
+    # DOMAIN CONTROLLER SERVICES GPO CREATION
+    - name: "PRELIM | GPO | GPO Creation | Create Or Update Domain Controller Services CIS GPO"
+      when: win19cis_services_dc_gpo
+      ansible.windows.win_shell: |
+        $gpoName = "{{ win19cis_services_dc_gpo_name }}"
+        if (-not (Get-GPO -Name $gpoName -ErrorAction SilentlyContinue)) {
+          New-GPO -Name $gpoName
+          Write-Output "Created GPO: $gpoName"
+        } else {
+          Write-Output "GPO already exists: $gpoName"
+        }
+      changed_when: "'Created GPO:' in prelim_gpo_creation_services_dc.stdout"
+      failed_when: false
+      register: prelim_gpo_creation_services_dc
+
+    # DOMAIN CONTROLLER NGWS GPO CREATION
+    - name: "PRELIM | GPO | GPO Creation | Create Or Update Domain Controller NGWS CIS GPO"
+      when: win19cis_ngws_dc_gpo
+      ansible.windows.win_shell: |
+        $gpoName = "{{ win19cis_ngws_dc_gpo_name }}"
+        if (-not (Get-GPO -Name $gpoName -ErrorAction SilentlyContinue)) {
+          New-GPO -Name $gpoName
+          Write-Output "Created GPO: $gpoName"
+        } else {
+          Write-Output "GPO already exists: $gpoName"
+        }
+      changed_when: "'Created GPO:' in prelim_gpo_creation_ngws_dc.stdout"
+      failed_when: false
+      register: prelim_gpo_creation_ngws_dc
+
+    # MEMBER SERVER L1 GPO CREATION
+    - name: "PRELIM | GPO | GPO Creation | Create Or Update Member Server L1 CIS GPO"
+      when: win19cis_l1_ms_gpo
+      ansible.windows.win_shell: |
+        $gpoName = "{{ win19cis_l1_ms_gpo_name }}"
+        if (-not (Get-GPO -Name $gpoName -ErrorAction SilentlyContinue)) {
+          New-GPO -Name $gpoName
+          Write-Output "Created GPO: $gpoName"
+        } else {
+          Write-Output "GPO already exists: $gpoName"
+        }
+      changed_when: "'Created GPO:' in prelim_gpo_creation_l1_ms.stdout"
+      failed_when: false
+      register: prelim_gpo_creation_l1_ms
+
+    # MEMBER SERVER L2 GPO CREATION
+    - name: "PRELIM | GPO | GPO Creation | Create Or Update Member Server L2 CIS GPO"
+      when: win19cis_l2_ms_gpo
+      ansible.windows.win_shell: |
+        $gpoName = "{{ win19cis_l2_ms_gpo_name }}"
+        if (-not (Get-GPO -Name $gpoName -ErrorAction SilentlyContinue)) {
+          New-GPO -Name $gpoName
+          Write-Output "Created GPO: $gpoName"
+        } else {
+          Write-Output "GPO already exists: $gpoName"
+        }
+      changed_when: "'Created GPO:' in prelim_gpo_creation_l2_ms.stdout"
+      failed_when: false
+      register: prelim_gpo_creation_l2_ms
+
+    # MEMBER SERVER SERVICES GPO CREATION
+    - name: "PRELIM | GPO | GPO Creation | Create Or Update Member Server Services CIS GPO"
+      when: win19cis_services_ms_gpo
+      ansible.windows.win_shell: |
+        $gpoName = "{{ win19cis_services_ms_gpo_name }}"
+        if (-not (Get-GPO -Name $gpoName -ErrorAction SilentlyContinue)) {
+          New-GPO -Name $gpoName
+          Write-Output "Created GPO: $gpoName"
+        } else {
+          Write-Output "GPO already exists: $gpoName"
+        }
+      changed_when: "'Created GPO:' in prelim_gpo_creation_services_ms.stdout"
+      failed_when: false
+      register: prelim_gpo_creation_services_ms
+
+    # MEMBER SERVER NGWS GPO CREATION
+    - name: "PRELIM | GPO | GPO Creation | Create Or Update Member Server NGWS CIS GPO"
+      when: win19cis_ngws_ms_gpo
+      ansible.windows.win_shell: |
+        $gpoName = "{{ win19cis_ngws_ms_gpo_name }}"
+        if (-not (Get-GPO -Name $gpoName -ErrorAction SilentlyContinue)) {
+          New-GPO -Name $gpoName
+          Write-Output "Created GPO: $gpoName"
+        } else {
+          Write-Output "GPO already exists: $gpoName"
+        }
+      changed_when: "'Created GPO:' in prelim_gpo_creation_ngws_ms.stdout"
+      failed_when: false
+      register: prelim_gpo_creation_ngws_ms
+
+    # DOMAIN MEMBER L1 GPO CREATION
+    - name: "PRELIM | GPO | GPO Creation | Create Or Update Domain Member L1 CIS GPO"
+      when: win19cis_l1_dm_gpo
+      ansible.windows.win_shell: |
+        $gpoName = "{{ win19cis_l1_dm_gpo_name }}"
+        if (-not (Get-GPO -Name $gpoName -ErrorAction SilentlyContinue)) {
+          New-GPO -Name $gpoName
+          Write-Output "Created GPO: $gpoName"
+        } else {
+          Write-Output "GPO already exists: $gpoName"
+        }
+      changed_when: "'Created GPO:' in prelim_gpo_creation_l1_dm.stdout"
+      failed_when: false
+      register: prelim_gpo_creation_l1_dm
+
+    # USER GPO CREATION
+    - name: "PRELIM | GPO | GPO Creation | Create Or Update User L1 CIS GPO"
+      when: win19cis_l1_user_gpo
+      ansible.windows.win_shell: |
+        $gpoName = "{{ win19cis_l1_user_gpo_name }}"
+        if (-not (Get-GPO -Name $gpoName -ErrorAction SilentlyContinue)) {
+          New-GPO -Name $gpoName
+          Write-Output "Created GPO: $gpoName"
+        } else {
+          Write-Output "GPO already exists: $gpoName"
+        }
+      changed_when: "'Created GPO:' in prelim_gpo_creation_l1_user.stdout"
+      failed_when: false
+      register: prelim_gpo_creation_l1_user
+
+    - name: "PRELIM | GPO | GPO Creation | Create Or Update User L2 CIS GPO"
+      when: win19cis_l2_user_gpo
+      ansible.windows.win_shell: |
+        $gpoName = "{{ win19cis_l2_user_gpo_name }}"
+        if (-not (Get-GPO -Name $gpoName -ErrorAction SilentlyContinue)) {
+          New-GPO -Name $gpoName
+          Write-Output "Created GPO: $gpoName"
+        } else {
+          Write-Output "GPO already exists: $gpoName"
+        }
+      changed_when: "'Created GPO:' in prelim_gpo_creation_l2_user.stdout"
+      failed_when: false
+      register: prelim_gpo_creation_l2_user
+
+    # GPO RESULT COLLECTION AND DISPLAY
+    - name: "PRELIM | GPO | GPO Creation | Initialize GPO Creation Result List"
+      ansible.builtin.set_fact:
+        gpo_results: []
+
+    - name: "PRELIM | GPO | GPO Creation | Collect GPO Creation/Update Results"
+      ansible.builtin.set_fact:
+        gpo_results: "{{ gpo_results + [{'GPO': item.gpo_name, 'Status': (item.results | select('search', 'Created GPO:|GPO already exists:') | list | join(', ') | default('No Status Available'))}] }}"
+      loop:
+        - { gpo_name: "{{ win19cis_default_domain_policy_gpo_name }}", results: "{{ prelim_gpo_creation_default_domain_policy.stdout_lines | default(['GPO Not Created']) }}" }
+        - { gpo_name: "{{ win19cis_l1_dc_gpo_name }}", results: "{{ prelim_gpo_creation_l1_dc.stdout_lines | default(['GPO Not Created']) }}" }
+        - { gpo_name: "{{ win19cis_l2_dc_gpo_name }}", results: "{{ prelim_gpo_creation_l2_dc.stdout_lines | default(['GPO Not Created']) }}" }
+        - { gpo_name: "{{ win19cis_services_dc_gpo_name }}", results: "{{ prelim_gpo_creation_services_dc.stdout_lines | default(['GPO Not Created']) }}" }
+        - { gpo_name: "{{ win19cis_ngws_dc_gpo_name }}", results: "{{ prelim_gpo_creation_ngws_dc.stdout_lines | default(['GPO Not Created']) }}" }
+        - { gpo_name: "{{ win19cis_l1_ms_gpo_name }}", results: "{{ prelim_gpo_creation_l1_ms.stdout_lines | default(['GPO Not Created']) }}" }
+        - { gpo_name: "{{ win19cis_l2_ms_gpo_name }}", results: "{{ prelim_gpo_creation_l2_ms.stdout_lines | default(['GPO Not Created']) }}" }
+        - { gpo_name: "{{ win19cis_services_ms_gpo_name }}", results: "{{ prelim_gpo_creation_services_ms.stdout_lines | default(['GPO Not Created']) }}" }
+        - { gpo_name: "{{ win19cis_ngws_ms_gpo_name }}", results: "{{ prelim_gpo_creation_ngws_ms.stdout_lines | default(['GPO Not Created']) }}" }
+        - { gpo_name: "{{ win19cis_l1_dm_gpo_name }}", results: "{{ prelim_gpo_creation_l1_dm.stdout_lines | default(['GPO Not Created']) }}" }
+        - { gpo_name: "{{ win19cis_l1_user_gpo_name }}", results: "{{ prelim_gpo_creation_l1_user.stdout_lines | default(['GPO Not Created']) }}" }
+        - { gpo_name: "{{ win19cis_l2_user_gpo_name }}", results: "{{ prelim_gpo_creation_l2_user.stdout_lines | default(['GPO Not Created']) }}" }
+
+    - name: "PRELIM | GPO | GPO Creation | Display GPO Creation/Update Results"
+      ansible.builtin.debug:
+        msg: "{{ gpo_results }}"
