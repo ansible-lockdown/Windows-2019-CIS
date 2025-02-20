@@ -20,7 +20,7 @@ win19cis_create_gpos: false
 # The variables below will allow you to create specific GPOs based on the CIS controls. This will hopefully allow better
 # options to build out the GPOs and easier managing of the CIS standards.
 # NOTE: As of now there are no current service related GPOs that are being created and that is why the default is set to false.
-#       These were added for potential future CIS additions.
+#        These were added for potential future CIS additions.
 win19cis_default_domain_policy_gpo: true
 win19cis_l1_dc_gpo: true
 win19cis_l1_ms_gpo: true
