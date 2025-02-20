@@ -1,0 +1,177 @@
+---
+
+- name: "POST | GPO | Flush Handlers"
+  tags:
+    - always
+  ansible.builtin.meta: flush_handlers
+
+# ╔═════════════════════════════════════════════════════════════════════════════════╗
+# ║                          Backup Location Variables                              ║
+# ╚═════════════════════════════════════════════════════════════════════════════════╝
+
+- name: "POST | GPO Backup | Define Windows Backup Directories"
+  when:
+    - win19cis_backup_custom_gpos
+    - "'Windows' in win19cis_backup_location_style or 'Ansible' in win19cis_backup_location_style"
+  tags:
+    - gpo_backup
+  ansible.builtin.set_fact:
+    post_gpo_files_backup_dir: "C:\\GPO_CIS_Backup_Files\\"
+
+- name: "POST | GPO Backup | Define Windows Policy Definitions Backup Directories"
+  when:
+    - win19cis_backup_custom_gpos
+    - "'Windows' in win19cis_backup_location_style or 'Ansible' in win19cis_backup_location_style"
+  tags:
+    - gpo_backup
+  ansible.builtin.set_fact:
+    post_policy_definitions_backup_dir: "{{ post_gpo_files_backup_dir }}"
+
+- name: "POST | GPO Backup | Define Complete Zip GPO Backup Directory"
+  when:
+    - win19cis_backup_custom_gpos
+    - "'Windows' in win19cis_backup_location_style or 'Ansible' in win19cis_backup_location_style"
+  tags:
+    - gpo_backup
+    - ansible
+    - zip
+  ansible.builtin.set_fact:
+    post_gpo_backup_dir: "C:\\GPO_Backups\\"
+
+- name: "POST | GPO Backup | Define Ansible Backup Directories"
+  when:
+    - win19cis_backup_custom_gpos
+    - "'Ansible' in win19cis_backup_location_style"
+  tags:
+    - gpo_backup
+    - ansible
+    - zip
+  ansible.builtin.set_fact:
+    post_ansible_backup_dir: "{{ role_path }}/templates/gpo_backups/"
+
+- name: "POST | GPO Backup | Define ZIP File With Date And Time"
+  when:
+    - win19cis_backup_custom_gpos
+    - "'Windows' in win19cis_backup_location_style or 'Ansible' in win19cis_backup_location_style"
+  tags:
+    - gpo_backup
+    - zip
+  ansible.builtin.set_fact:
+    post_zip_file_name: CIS_{{ win19cis_gpo_hardening_version }}_{{ win19cis_gpo_hardening_os }}_GPO_Backups_{{ ansible_date_time.date }}_{{ ansible_date_time.time | replace(':', '-') }}.zip
+
+# ╔═════════════════════════════════════════════════════════════════════════════════╗
+# ║                              Backup Process                                     ║
+# ╚═════════════════════════════════════════════════════════════════════════════════╝
+
+- name: "POST | GPO Backup | Create Windows Backup Directories"
+  when:
+    - win19cis_backup_custom_gpos
+    - "'Windows' in win19cis_backup_location_style or 'Ansible' in win19cis_backup_location_style"
+  tags:
+    - gpo_backup
+  ansible.windows.win_file:
+    path: "{{ item }}"
+    state: directory
+  loop:
+    - "{{ post_gpo_files_backup_dir }}"
+    - "{{ post_gpo_backup_dir }}"
+
+- name: "POST | GPO Backup | Create GUID Backup Directories"
+  when:
+    - win19cis_backup_custom_gpos
+    - "'Windows' in win19cis_backup_location_style or 'Ansible' in win19cis_backup_location_style"
+  tags:
+    - gpo_backup
+  ansible.builtin.set_fact:
+    post_gpo_guids: >
+      {{ [
+          win19cis_default_domain_gpo_guid if win19cis_default_domain_policy_gpo | default(false) else '',
+          win19cis_l1_dc_gpo_guid if win19cis_l1_dc_gpo | default(false) else '',
+          win19cis_l1_ms_gpo_guid if win19cis_l1_ms_gpo | default(false) else '',
+          win19cis_l2_dc_gpo_guid if win19cis_l2_dc_gpo | default(false) else '',
+          win19cis_l2_ms_gpo_guid if win19cis_l2_ms_gpo | default(false) else '',
+          win19cis_l1_dm_gpo_guid if win19cis_l1_dm_gpo | default(false) else '',
+          win19cis_services_dc_gpo_guid if win19cis_services_dc_gpo | default(false) else '',
+          win19cis_services_ms_gpo_guid if win19cis_services_ms_gpo | default(false) else '',
+          win19cis_ngws_dc_gpo_guid if win19cis_ngws_dc_gpo | default(false) else '',
+          win19cis_ngws_ms_gpo_guid if win19cis_ngws_ms_gpo | default(false) else '',
+          win19cis_l1_user_gpo_guid if win19cis_l1_user_gpo | default(false) else '',
+          win19cis_l2_user_gpo_guid if win19cis_l2_user_gpo | default(false) else ''
+      ] | select('string') | select('!=', '') | list }}
+
+- name: "POST | GPO Backup | Strip Braces From GUIDs"
+  when:
+    - win19cis_backup_custom_gpos
+    - "'Windows' in win19cis_backup_location_style or 'Ansible' in win19cis_backup_location_style"
+  tags:
+    - gpo_backup
+  ansible.builtin.set_fact:
+    post_gpo_guid_no_braces: "{{ post_gpo_guids | map('regex_replace', '[{}]', '') | list }}"
+
+- name: "POST | GPO Backup | Backup Each GPO"
+  when:
+    - win19cis_backup_custom_gpos
+    - "'Windows' in win19cis_backup_location_style or 'Ansible' in win19cis_backup_location_style"
+    - post_gpo_guid_no_braces | length > 0
+  tags:
+    - gpo_backup
+  ansible.windows.win_shell: Backup-GPO -Guid "{{ item }}" -Path "{{ post_gpo_files_backup_dir }}"
+  loop: "{{ post_gpo_guid_no_braces }}"
+
+- name: "POST | GPO Backup | Backup PolicyDefinitions"
+  when:
+    - win19cis_backup_custom_gpos
+    - "'Windows' in win19cis_backup_location_style or 'Ansible' in win19cis_backup_location_style"
+  tags:
+    - gpo_backup
+  register: post_copy_status
+  ansible.windows.win_copy:
+    src: "C:\\Windows\\SYSVOL\\sysvol\\{{ prelim_discovered_domain_name }}\\Policies\\PolicyDefinitions"
+    dest: "{{ post_policy_definitions_backup_dir }}"
+    remote_src: true
+
+- name: "POST | GPO Backup | Zip The GPO Backups Folder with PowerShell"
+  when:
+    - win19cis_backup_custom_gpos
+    - "'Windows' in win19cis_backup_location_style or 'Ansible' in win19cis_backup_location_style"
+  tags:
+    - gpo_backup
+    - zip
+  ansible.windows.win_shell: Compress-Archive -Path "{{ post_gpo_files_backup_dir }}\\*" -DestinationPath "{{ post_gpo_backup_dir }}\\{{ post_zip_file_name }}"
+
+- name: "POST | GPO Backup | Remove GPO Backup Directory After Zipping with PowerShell"
+  when:
+    - win19cis_backup_custom_gpos
+    - "'Windows' in win19cis_backup_location_style or 'Ansible' in win19cis_backup_location_style"
+  tags:
+    - gpo_backup
+    - cleanup
+  ansible.windows.win_shell: Remove-Item -Path "{{ post_gpo_files_backup_dir }}" -Recurse -Force
+
+# ╔═════════════════════════════════════════════════════════════════════════════════╗
+# ║                       Ansible Location Backup Process                           ║
+# ╚═════════════════════════════════════════════════════════════════════════════════╝
+
+- name: "POST | GPO Backup | Find Files In The Backup Directory"
+  when:
+    - win19cis_backup_custom_gpos
+    - "'Ansible' in win19cis_backup_location_style"
+  tags:
+    - gpo_backup
+    - ansible
+  ansible.windows.win_find:
+    paths: "{{ post_gpo_backup_dir }}"
+  register: post_gpo_backup_files
+
+- name: "POST | GPO Backup | Copy Files to Ansible Host"
+  when:
+    - win19cis_backup_custom_gpos
+    - "'Ansible' in win19cis_backup_location_style"
+  tags:
+    - gpo_backup
+    - ansible
+  ansible.builtin.fetch:
+    src: "{{ item.path }}"           # File path on the Windows machine
+    dest: "{{ post_ansible_backup_dir }}"  # Destination directory on the Ansible controller
+    flat: true                       # Save files directly into the destination directory
+  loop: "{{ post_gpo_backup_files.files }}"

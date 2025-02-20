@@ -1,95 +1,102 @@
 ---
 
-- name: Display Banner
-  ansible.builtin.debug:
-      msg: "{{ lockdown_banner.split('\n') }}"
+- name: Main | Display Banner
   tags:
-      - always
+    - always
+  ansible.builtin.debug:
+    msg: "{{ lockdown_banner.split('\n') }}"
 
-- name: Gather Distribution Info
-  ansible.builtin.setup:
-      gather_subset: distribution,!all,!min
+- name: Main | Gather Distribution Info
   when:
-      - ansible_distribution is not defined
+    - ansible_distribution is not defined
   tags:
-      - always
+    - always
+  ansible.builtin.setup:
+    gather_subset: distribution,!all,!min
 
-- name: Check OS version and family
+- name: Main | Check OS Version And Family
+  tags:
+    - always
   ansible.builtin.assert:
-      that:
-          - ansible_os_family == 'Windows'
-          - ansible_distribution | regex_search('(Microsoft Windows Server 2019)')
-      success_msg: "{{ ansible_distribution }} {{ ansible_distribution_major_version }} is the detected operating system."
-      fail_msg: "This role can only be run against Windows Server 2019 Editions. {{ ansible_distribution }} {{ ansible_distribution_major_version }} is not supported."
-  tags:
-      - always
+    that:
+      - ansible_os_family == 'Windows'
+      - ansible_distribution | regex_search('(Microsoft Windows Server 2019)')
+    success_msg: "{{ ansible_distribution }} {{ ansible_distribution_major_version }} is the detected operating system."
+    fail_msg: "This role can only be run against Windows Server 2019 Editions. {{ ansible_distribution }} {{ ansible_distribution_major_version }} is not supported."
 
-- name: Check ansible version
+- name: Main | Assert Valid Configuration
+  tags:
+    - always
   ansible.builtin.assert:
-      that: ansible_version.full is version_compare(min_ansible_version, '>=')
-      msg: You must use Ansible {{ min_ansible_version }} or greater
-  tags:
-      - always
+    that:
+      - not (win19cis_ansible_remediation | default(false) and win19cis_create_gpos | default(false))
+    success_msg: "The configuration is valid. win19cis_ansible_remediation and win19cis_create_gpos are not enabled simultaneously."
+    fail_msg: "Invalid configuration: Both win19cis_ansible_remediation and win19cis_create_gpos are set to true, which is not allowed."
 
-- name: Include the preliminary tasks
-  ansible.builtin.include_tasks:
-      file: prelim.yml
+- name: Main | Check Ansible Version
   tags:
-      - always
-      - prelim_tasks
+    - always
+  ansible.builtin.assert:
+    that: ansible_version.full is version_compare(min_ansible_version, '>=')
+    msg: You must use Ansible {{ min_ansible_version }} or greater
 
-- name: Execute the section 1 tasks
+- name: Main | Get Windows Installation Type
+  tags:
+    - always
+  ansible.windows.win_reg_stat:
+    path: HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion
+    name: InstallationType
+  register: prelim_get_windows_installation_type
+
+- name: Main | Set Windows Installation Type
+  tags:
+    - always
+  ansible.builtin.set_fact:
+    prelim_windows_installation_type: "{{ prelim_get_windows_installation_type.value | default('') }}"
+
+- name: "Main | Build Out Domain For Testing"
+  when:
+    - win19cis_create_domain
+    - win19cis_create_gpos
+  tags:
+    - gpo
+    - create_domain
   ansible.builtin.import_tasks:
-      file: section01.yml
-  when: win19cis_section01
-  tags:
-      - section01
+    file: domain_creation/prelim_create_dc_and_promote.yml
 
-- name: Execute the section 2 tasks
+- name: "Main | Import Create GPO Tasks"
+  when:
+    - not win19cis_ansible_remediation
+    - win19cis_create_gpos
+  tags:
+    - gpo
+    - domain
   ansible.builtin.import_tasks:
-      file: section02.yml
-  when: win19cis_section02
-  tags:
-      - section02
+    file: gpo_creation/main.yml
 
-- name: Execute the section 5 tasks
+- name: "Main | Import Remediation Tasks"
+  when:
+    - win19cis_ansible_remediation
+    - not win19cis_create_gpos
+  tags:
+    - remediation
+    - local
   ansible.builtin.import_tasks:
-      file: section05.yml
-  when: win19cis_section05
-  tags:
-      - section05
+    file: ansible_hardening/main.yml
 
-- name: Execute the section 9 tasks
-  ansible.builtin.import_tasks:
-      file: section09.yml
-  when: win19cis_section09
+- name: "Main | Warnings Section"
   tags:
-      - section09
-
-- name: Execute the section 17 tasks
-  ansible.builtin.import_tasks:
-      file: section17.yml
-  when: win19cis_section17
-  tags:
-      - section17
-
-- name: Execute the section 18 tasks
-  ansible.builtin.import_tasks:
-      file: section18.yml
-  when: win19cis_section18
-  tags:
-      - section18
-
-- name: Execute the section 19 tasks
-  ansible.builtin.import_tasks:
-      file: section19.yml
-  when: win19cis_section19
-  tags:
-      - section19
-
-- name: If Warnings found Output count and control IDs affected
-  ansible.builtin.debug:
-      msg:
+    - always
+  block:
+    - name: "Main | If Warnings Found Output Count And Control IDs Affected"
+      when: warn_count != 0
+      ansible.builtin.debug:
+        msg:
           - "You have {{ warn_count }} Warning(s) that require investigation(s). Their IDs are listed below:"
           - "{{ warn_control_list }}"
-  when: warn_count != 0
+
+    - name: "Main | No Warnings Found Message"
+      when: warn_count == 0
+      ansible.builtin.debug:
+        msg:
+          - "You have no Warning(s) that require investigation(s)."

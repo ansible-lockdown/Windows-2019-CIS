@@ -1,0 +1,1076 @@
+---
+
+- name: "17.1.1 | PATCH | Ensure Audit Credential Validation is set to Success and Failure"
+  when: win19cis_rule_17_1_1
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_17_1_1
+    - patch
+    - NIST800-171_3.3.1
+    - NIST800-171_3.3.2
+    - NIST800-171_3.3.6
+    - NIST800-53_AU-3
+    - NIST800-53_AU-3_1
+    - NIST800-53_AU-7
+    - NIST800-53_AU-12
+    - NIST800-53R5_AU-3
+    - NIST800-53R5_AU-3_1
+    - NIST800-53R5_AU-7
+    - NIST800-53R5_AU-12
+  block:
+    - name: "17.1.1 | AUDIT | Ensure Audit Credential Validation is set to Success and Failure | Get current audit events for Credential Validation"
+      ansible.windows.win_shell: AuditPol /get /subcategory:"Credential Validation" -r | ConvertFrom-Csv | Select-Object -expand "Inclusion Setting"
+      changed_when: false
+      failed_when: false
+      check_mode: false
+      register: rule_17_1_1_audit
+
+    - name: "17.1.1 | PATCH | Ensure Audit Credential Validation is set to Success and Failure | Enable Success for Credential Validation"
+      when: "'Success' not in rule_17_1_1_audit.stdout"
+      ansible.windows.win_shell: AuditPol /set /subcategory:"Credential Validation" /success:enable
+
+    - name: "17.1.1 | PATCH | Ensure Audit Credential Validation is set to Success and Failure | Enable Failure for Credential Validation"
+      when: "'Failure' not in rule_17_1_1_audit.stdout"
+      ansible.windows.win_shell: AuditPol /set /subcategory:"Credential Validation" /failure:enable
+
+- name: "17.1.2 | PATCH | Ensure 'Audit Kerberos Authentication Service' is set to 'Success and Failure' DC Only | Domain Controller"
+  when:
+    - win19cis_rule_17_1_2
+    - prelim_win19cis_is_domain_controller
+  tags:
+    - level1-domaincontroller
+    - rule_17_1_2
+    - patch
+    - NIST800-171_3.3.1
+    - NIST800-171_3.3.2
+    - NIST800-171_3.3.6
+    - NIST800-53_AU-3
+    - NIST800-53_AU-3_1
+    - NIST800-53_AU-7
+    - NIST800-53_AU-12
+    - NIST800-53R5_AU-3
+    - NIST800-53R5_AU-3_1
+    - NIST800-53R5_AU-7
+    - NIST800-53R5_AU-12
+  block:
+    - name: "17.1.2 | AUDIT | Ensure 'Audit Kerberos Authentication Service' is set to 'Success and Failure' DC Only | Get current audit events for Kerberos Authentication Service | Domain Controller"
+      ansible.windows.win_shell: AuditPol /get /subcategory:"Kerberos Authentication Service" -r | ConvertFrom-Csv | Select-Object -expand "Inclusion Setting"
+      changed_when: false
+      failed_when: false
+      check_mode: false
+      register: rule_17_1_2_audit
+
+    - name: "17.1.2 | PATCH | Ensure 'Audit Kerberos Authentication Service' is set to 'Success and Failure' DC Only | Enable Success for Kerberos Authentication Service | Domain Controller"
+      when: "'Success' not in rule_17_1_2_audit.stdout"
+      ansible.windows.win_shell: AuditPol /set /subcategory:"Kerberos Authentication Service" /success:enable
+
+    - name: "17.1.2 | PATCH | Ensure 'Audit Kerberos Authentication Service' is set to 'Success and Failure' DC Only | Enable Failure for Kerberos Authentication Service | Domain Controller"
+      when: "'Failure' not in rule_17_1_2_audit.stdout"
+      ansible.windows.win_shell: AuditPol /set /subcategory:"Kerberos Authentication Service" /failure:enable
+
+- name: "17.1.3 | PATCH | Ensure 'Audit Kerberos Service Ticket Operations' is set to 'Success and Failure' DC Only"
+  when:
+    - win19cis_rule_17_1_3
+    - prelim_win19cis_is_domain_controller
+  tags:
+    - level1-domaincontroller
+    - rule_17_1_3
+    - patch
+    - NIST800-171_3.3.1
+    - NIST800-171_3.3.2
+    - NIST800-171_3.3.6
+    - NIST800-53_AU-3
+    - NIST800-53_AU-3_1
+    - NIST800-53_AU-7
+    - NIST800-53_AU-12
+    - NIST800-53R5_AU-3
+    - NIST800-53R5_AU-3_1
+    - NIST800-53R5_AU-7
+    - NIST800-53R5_AU-12
+  block:
+    - name: "17.1.3 | AUDIT | Ensure 'Audit Kerberos Service Ticket Operations' is set to 'Success and Failure' DC Only | Get current audit events for Kerberos Service Ticket Operations | Domain Controller"
+      ansible.windows.win_shell: AuditPol /get /subcategory:"Kerberos Service Ticket Operations" -r | ConvertFrom-Csv | Select-Object -expand "Inclusion Setting"
+      changed_when: false
+      failed_when: false
+      check_mode: false
+      register: rule_17_1_3_audit
+
+    - name: "17.1.3 | PATCH | Ensure 'Audit Kerberos Service Ticket Operations' is set to 'Success and Failure' DC Only | Enable Success for Kerberos Service Ticket Operations | Domain Controller"
+      when: "'Success' not in rule_17_1_3_audit.stdout"
+      ansible.windows.win_shell: AuditPol /set /subcategory:"Kerberos Service Ticket Operations" /success:enable
+
+    - name: "17.1.3 | PATCH | Ensure 'Audit Kerberos Service Ticket Operations' is set to 'Success and Failure' DC Only | Enable Failure for Kerberos Service Ticket Operations | Domain Controller"
+      when: "'Failure' not in rule_17_1_3_audit.stdout"
+      ansible.windows.win_shell: AuditPol /set /subcategory:"Kerberos Service Ticket Operations" /failure:enable
+
+- name: "17.2.1 | PATCH | Ensure Audit Application Group Management is set to Success and Failure"
+  when: win19cis_rule_17_2_1
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_17_2_1
+    - patch
+    - NIST800-171_3.3.1
+    - NIST800-171_3.3.2
+    - NIST800-171_3.3.6
+    - NIST800-53_AU-3
+    - NIST800-53_AU-3_1
+    - NIST800-53_AU-7
+    - NIST800-53_AU-12
+    - NIST800-53R5_AU-3
+    - NIST800-53R5_AU-3_1
+    - NIST800-53R5_AU-7
+    - NIST800-53R5_AU-12
+  block:
+    - name: "17.2.1 | AUDIT | Ensure Audit Application Group Management is set to Success and Failure | Get current audit events for Application Group Management"
+      ansible.windows.win_shell: AuditPol /get /subcategory:"Application Group Management" -r | ConvertFrom-Csv | Select-Object -expand "Inclusion Setting"
+      changed_when: false
+      failed_when: false
+      check_mode: false
+      register: rule_17_2_1_audit
+
+    - name: "17.2.1 | PATCH | Ensure Audit Application Group Management is set to Success and Failure | Enable Success for Application Group Management"
+      when: "'Success' not in rule_17_2_1_audit.stdout"
+      ansible.windows.win_shell: AuditPol /set /subcategory:"Application Group Management" /success:enable
+
+    - name: "17.2.1 | PATCH | Ensure Audit Application Group Management is set to Success and Failure | Enable Failure for Application Group Management"
+      when: "'Failure' not in rule_17_2_1_audit.stdout"
+      ansible.windows.win_shell: AuditPol /set /subcategory:"Application Group Management" /failure:enable
+
+- name: "17.2.2 | PATCH | Ensure Audit Computer Account Management is set to include Success DC only | Domain Controller"
+  when:
+    - win19cis_rule_17_2_2
+    - prelim_win19cis_is_domain_controller
+  tags:
+    - level1-domaincontroller
+    - rule_17_2_2
+    - patch
+    - NIST800-171_3.3.1
+    - NIST800-171_3.3.2
+    - NIST800-171_3.3.6
+    - NIST800-53_AU-3
+    - NIST800-53_AU-3_1
+    - NIST800-53_AU-7
+    - NIST800-53_AU-12
+    - NIST800-53R5_AU-3
+    - NIST800-53R5_AU-3_1
+    - NIST800-53R5_AU-7
+    - NIST800-53R5_AU-12
+  block:
+    - name: "17.2.2 | AUDIT | Ensure Audit Computer Account Management is set to include Success DC only | Get current audit events for Computer Account Management | Domain Controller"
+      ansible.windows.win_shell: AuditPol /get /subcategory:"Computer Account Management" -r | ConvertFrom-Csv | Select-Object -expand "Inclusion Setting"
+      changed_when: false
+      failed_when: false
+      check_mode: false
+      register: rule_17_2_2_audit
+
+    - name: "17.2.2 | PATCH | Ensure Audit Computer Account Management is set to include Success DC only | Enable Success for Computer Account Management | Domain Controller"
+      when: "'Success' not in rule_17_2_2_audit.stdout"
+      ansible.windows.win_shell: AuditPol /set /subcategory:"Computer Account Management" /success:enable
+
+- name: "17.2.3 | PATCH | Ensure Audit Distribution Group Management is set to include Success DC only | Domain Controller"
+  when:
+    - win19cis_rule_17_2_3
+    - prelim_win19cis_is_domain_controller
+  tags:
+    - level1-domaincontroller
+    - rule_17_2_3
+    - patch
+    - NIST800-171_3.3.1
+    - NIST800-171_3.3.2
+    - NIST800-171_3.3.6
+    - NIST800-53_AU-3
+    - NIST800-53_AU-3_1
+    - NIST800-53_AU-7
+    - NIST800-53_AU-12
+    - NIST800-53R5_AU-3
+    - NIST800-53R5_AU-3_1
+    - NIST800-53R5_AU-7
+    - NIST800-53R5_AU-12
+  block:
+    - name: "17.2.3 | AUDIT | Ensure Audit Distribution Group Management is set to include Success DC only | Get current audit events for Distribution Group Management | Domain Controller"
+      ansible.windows.win_shell: AuditPol /get /subcategory:"Distribution Group Management" -r | ConvertFrom-Csv | Select-Object -expand "Inclusion Setting"
+      changed_when: false
+      failed_when: false
+      check_mode: false
+      register: rule_17_2_3_audit
+
+    - name: "17.2.3 | PATCH | Ensure Audit Distribution Group Management is set to include Success DC only | Enable Success for Distribution Group Management | Domain Controller"
+      when: "'Success' not in rule_17_2_3_audit.stdout"
+      ansible.windows.win_shell: AuditPol /set /subcategory:"Distribution Group Management" /success:enable
+
+- name: "17.2.4 | PATCH | Ensure Audit Other Account Management Events is set to include Success DC only | Domain Controller"
+  when:
+    - win19cis_rule_17_2_4
+    - prelim_win19cis_is_domain_controller
+  tags:
+    - level1-domaincontroller
+    - rule_17_2_4
+    - patch
+    - NIST800-171_3.3.1
+    - NIST800-171_3.3.2
+    - NIST800-171_3.3.6
+    - NIST800-53_AU-3
+    - NIST800-53_AU-3_1
+    - NIST800-53_AU-7
+    - NIST800-53_AU-12
+    - NIST800-53R5_AU-3
+    - NIST800-53R5_AU-3_1
+    - NIST800-53R5_AU-7
+    - NIST800-53R5_AU-12
+  block:
+    - name: "17.2.4 | AUDIT | Ensure Audit Other Account Management Events is set to include Success DC only | Get current audit events for Other Account Management Events | Domain Controller"
+      ansible.windows.win_shell: AuditPol /get /subcategory:"Other Account Management Events" -r | ConvertFrom-Csv | Select-Object -expand "Inclusion Setting"
+      changed_when: false
+      failed_when: false
+      check_mode: false
+      register: rule_17_2_4_audit
+
+    - name: "17.2.4 | PATCH | Ensure Audit Other Account Management Events is set to include Success DC only | Enable Success for Other Account Management Events | Domain Controller"
+      when: "'Success' not in rule_17_2_4_audit.stdout"
+      ansible.windows.win_shell: AuditPol /set /subcategory:"Other Account Management Events" /success:enable
+
+- name: "17.2.5 | PATCH | Ensure Audit Security Group Management is set to include Success"
+  when: win19cis_rule_17_2_5
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_17_2_5
+    - patch
+    - NIST800-171_3.3.1
+    - NIST800-171_3.3.2
+    - NIST800-171_3.3.6
+    - NIST800-53_AU-3
+    - NIST800-53_AU-3_1
+    - NIST800-53_AU-7
+    - NIST800-53_AU-12
+    - NIST800-53R5_AU-3
+    - NIST800-53R5_AU-3_1
+    - NIST800-53R5_AU-7
+    - NIST800-53R5_AU-12
+  block:
+    - name: "17.2.5 | AUDIT | Ensure Audit Security Group Management is set to include Success | Get current audit events for Security Group Management"
+      ansible.windows.win_shell: AuditPol /get /subcategory:"Security Group Management" -r | ConvertFrom-Csv | Select-Object -expand "Inclusion Setting"
+      changed_when: false
+      failed_when: false
+      check_mode: false
+      register: rule_17_2_5_audit
+
+    - name: "17.2.5 | PATCH | Ensure Audit Security Group Management is set to include Success | Enable Success for Security Group Management"
+      when: "'Success' not in rule_17_2_5_audit.stdout"
+      ansible.windows.win_shell: AuditPol /set /subcategory:"Security Group Management" /success:enable
+
+- name: "17.2.6 | PATCH | Ensure Audit User Account Management is set to Success and Failure"
+  when: win19cis_rule_17_2_6
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_17_2_6
+    - patch
+    - NIST800-171_3.3.1
+    - NIST800-171_3.3.2
+    - NIST800-171_3.3.6
+    - NIST800-53_AU-3
+    - NIST800-53_AU-3_1
+    - NIST800-53_AU-7
+    - NIST800-53_AU-12
+    - NIST800-53R5_AU-3
+    - NIST800-53R5_AU-3_1
+    - NIST800-53R5_AU-7
+    - NIST800-53R5_AU-12
+  block:
+    - name: "17.2.6 | AUDIT | Ensure Audit User Account Management is set to Success and Failure | Get current audit events for User Account Management"
+      ansible.windows.win_shell: AuditPol /get /subcategory:"User Account Management" -r | ConvertFrom-Csv | Select-Object -expand "Inclusion Setting"
+      changed_when: false
+      failed_when: false
+      check_mode: false
+      register: rule_17_2_6_audit
+
+    - name: "17.2.6 | PATCH | Ensure Audit User Account Management is set to Success and Failure | Enable Success for User Account Management"
+      when: "'Success' not in rule_17_2_6_audit.stdout"
+      ansible.windows.win_shell: AuditPol /set /subcategory:"User Account Management" /success:enable
+
+    - name: "17.2.6 | PATCH | Ensure Audit User Account Management is set to Success and Failure | Enable Failure for User Account Management"
+      when: "'Failure' not in rule_17_2_6_audit.stdout"
+      ansible.windows.win_shell: AuditPol /set /subcategory:"User Account Management" /failure:enable
+
+- name: "17.3.1 | PATCH | Ensure Audit PNP Activity is set to include Success"
+  when: win19cis_rule_17_3_1
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_17_3_1
+    - patch
+    - NIST800-171_3.3.1
+    - NIST800-171_3.3.2
+    - NIST800-171_3.3.6
+    - NIST800-53_AU-3
+    - NIST800-53_AU-3_1
+    - NIST800-53_AU-7
+    - NIST800-53_AU-12
+    - NIST800-53R5_AU-3
+    - NIST800-53R5_AU-3_1
+    - NIST800-53R5_AU-7
+    - NIST800-53R5_AU-12
+  block:
+    - name: "17.3.1 | AUDIT | Ensure Audit PNP Activity is set to include Success | Get current audit events for Plug and Play Events"
+      ansible.windows.win_shell: AuditPol /get /subcategory:"Plug and Play Events" -r | ConvertFrom-Csv | Select-Object -expand "Inclusion Setting"
+      changed_when: false
+      failed_when: false
+      check_mode: false
+      register: rule_17_3_1_audit
+
+    - name: "17.3.1 | PATCH | Ensure Audit PNP Activity is set to include Success | Enable Success for Plug and Play Events"
+      when: "'Success' not in rule_17_3_1_audit.stdout"
+      ansible.windows.win_shell: AuditPol /set /subcategory:"Plug and Play Events" /success:enable
+
+- name: "17.3.2 | PATCH | Ensure Audit Process Creation is set to include Success"
+  when: win19cis_rule_17_3_2
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_17_3_2
+    - patch
+    - NIST800-171_3.3.1
+    - NIST800-171_3.3.2
+    - NIST800-171_3.3.6
+    - NIST800-53_AU-3
+    - NIST800-53_AU-3_1
+    - NIST800-53_AU-7
+    - NIST800-53_AU-12
+    - NIST800-53R5_AU-3
+    - NIST800-53R5_AU-3_1
+    - NIST800-53R5_AU-7
+    - NIST800-53R5_AU-12
+  block:
+    - name: "17.3.2 | AUDIT | Ensure Audit Process Creation is set to include Success | Get current audit events for Process Creation"
+      ansible.windows.win_shell: AuditPol /get /subcategory:"Process Creation" -r | ConvertFrom-Csv | Select-Object -expand "Inclusion Setting"
+      changed_when: false
+      failed_when: false
+      check_mode: false
+      register: rule_17_3_2_audit
+
+    - name: "17.3.2 | PATCH | Ensure Audit Process Creation is set to include Success | Enable Success for Process Creation"
+      when: "'Success' not in rule_17_3_2_audit.stdout"
+      ansible.windows.win_shell: AuditPol /set /subcategory:"Process Creation" /success:enable
+
+- name: "17.4.1 | PATCH | Ensure Audit Directory Service Access is set to include Failure DC only | Domain Controller"
+  when:
+    - win19cis_rule_17_4_1
+    - prelim_win19cis_is_domain_controller
+  tags:
+    - level1-domaincontroller
+    - rule_17_4_1
+    - patch
+    - NIST800-171_3.3.1
+    - NIST800-171_3.3.2
+    - NIST800-171_3.3.6
+    - NIST800-53_AU-3
+    - NIST800-53_AU-3_1
+    - NIST800-53_AU-7
+    - NIST800-53_AU-12
+    - NIST800-53R5_AU-3
+    - NIST800-53R5_AU-3_1
+    - NIST800-53R5_AU-7
+    - NIST800-53R5_AU-12
+  block:
+    - name: "17.4.1 | AUDIT | Ensure Audit Directory Service Access is set to include Failure DC only | Get current audit events for Directory Service Access | Domain Controller"
+      ansible.windows.win_shell: AuditPol /get /subcategory:"Directory Service Access" -r | ConvertFrom-Csv | Select-Object -expand "Inclusion Setting"
+      changed_when: false
+      failed_when: false
+      check_mode: false
+      register: rule_17_4_1_audit
+
+    - name: "17.4.1 | PATCH | Ensure Audit Directory Service Access is set to include Failure DC only | Enable Failure for Directory Service Access | Domain Controller"
+      when: "'Failure' not in rule_17_4_1_audit.stdout"
+      ansible.windows.win_shell: AuditPol /set /subcategory:"Directory Service Access" /failure:enable
+
+- name: "17.4.2 | PATCH | Ensure Audit Directory Service Changes is set to include Success DC only | Domain Controller"
+  when:
+    - win19cis_rule_17_4_2
+    - prelim_win19cis_is_domain_controller
+  tags:
+    - level1-domaincontroller
+    - rule_17_4_2
+    - patch
+    - NIST800-171_3.3.1
+    - NIST800-171_3.3.2
+    - NIST800-171_3.3.6
+    - NIST800-53_AU-3
+    - NIST800-53_AU-3_1
+    - NIST800-53_AU-7
+    - NIST800-53_AU-12
+    - NIST800-53R5_AU-3
+    - NIST800-53R5_AU-3_1
+    - NIST800-53R5_AU-7
+    - NIST800-53R5_AU-12
+  block:
+    - name: "17.4.2 | AUDIT | Ensure Audit Directory Service Changes is set to include Success DC only | Get current audit events for Directory Service Changes | Domain Controller"
+      ansible.windows.win_shell: AuditPol /get /subcategory:"Directory Service Changes" -r | ConvertFrom-Csv | Select-Object -expand "Inclusion Setting"
+      changed_when: false
+      failed_when: false
+      check_mode: false
+      register: rule_17_4_2_audit
+
+    - name: "17.4.2 | PATCH | Ensure Audit Directory Service Changes is set to include Success DC only | Enable Success for Directory Service Changes | Domain Controller"
+      when: "'Success' not in rule_17_4_2_audit.stdout"
+      ansible.windows.win_shell: AuditPol /set /subcategory:"Directory Service Changes" /success:enable
+
+- name: "17.5.1 | PATCH | Ensure Audit Account Lockout is set to include Failure"
+  when: win19cis_rule_17_5_1
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_17_5_1
+    - patch
+    - NIST800-171_3.3.1
+    - NIST800-171_3.3.2
+    - NIST800-171_3.3.6
+    - NIST800-53_AU-3
+    - NIST800-53_AU-3_1
+    - NIST800-53_AU-7
+    - NIST800-53_AU-12
+    - NIST800-53R5_AU-3
+    - NIST800-53R5_AU-3_1
+    - NIST800-53R5_AU-7
+    - NIST800-53R5_AU-12
+  block:
+    - name: "17.5.1 | AUDIT | Ensure Audit Account Lockout is set to include Failure | Get current audit events for Account Lockout"
+      ansible.windows.win_shell: AuditPol /get /subcategory:"Account Lockout" -r | ConvertFrom-Csv | Select-Object -expand "Inclusion Setting"
+      changed_when: false
+      failed_when: false
+      check_mode: false
+      register: rule_17_5_1_audit
+
+    - name: "17.5.1 | PATCH | Ensure Audit Account Lockout is set to include Failure | Enable Failure for Account Lockout"
+      when: "'Failure' not in rule_17_5_1_audit.stdout"
+      ansible.windows.win_shell: AuditPol /set /subcategory:"Account Lockout" /failure:enable
+
+- name: "17.5.2 | PATCH | Ensure Audit Group Membership is set to include Success"
+  when: win19cis_rule_17_5_2
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_17_5_2
+    - patch
+    - NIST800-171_3.3.1
+    - NIST800-171_3.3.2
+    - NIST800-171_3.3.6
+    - NIST800-53_AU-3
+    - NIST800-53_AU-3_1
+    - NIST800-53_AU-7
+    - NIST800-53_AU-12
+    - NIST800-53R5_AU-3
+    - NIST800-53R5_AU-3_1
+    - NIST800-53R5_AU-7
+    - NIST800-53R5_AU-12
+  block:
+    - name: "17.5.2 | AUDIT | Ensure Audit Group Membership is set to include Success | Get current audit events for Group Membership"
+      ansible.windows.win_shell: AuditPol /get /subcategory:"Group Membership" -r | ConvertFrom-Csv | Select-Object -expand "Inclusion Setting"
+      changed_when: false
+      failed_when: false
+      check_mode: false
+      register: rule_17_5_2_audit
+
+    - name: "17.5.2 | PATCH | Ensure Audit Group Membership is set to include Success | Enable Success for Group Membership"
+      when: "'Success' not in rule_17_5_2_audit.stdout"
+      ansible.windows.win_shell: AuditPol /set /subcategory:"Group Membership" /success:enable
+
+- name: "17.5.3 | PATCH | Ensure Audit Logoff is set to include Success"
+  when: win19cis_rule_17_5_3
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_17_5_3
+    - patch
+    - NIST800-171_3.3.1
+    - NIST800-171_3.3.2
+    - NIST800-171_3.3.6
+    - NIST800-53_AU-3
+    - NIST800-53_AU-3_1
+    - NIST800-53_AU-7
+    - NIST800-53_AU-12
+    - NIST800-53R5_AU-3
+    - NIST800-53R5_AU-3_1
+    - NIST800-53R5_AU-7
+    - NIST800-53R5_AU-12
+  block:
+    - name: "17.5.3 | AUDIT | Ensure Audit Logoff is set to include Success | Get current audit events for Logoff"
+      ansible.windows.win_shell: AuditPol /get /subcategory:"Logoff" -r | ConvertFrom-Csv | Select-Object -expand "Inclusion Setting"
+      changed_when: false
+      failed_when: false
+      check_mode: false
+      register: rule_17_5_3_audit
+
+    - name: "17.5.3 | PATCH | Ensure Audit Logoff is set to include Success | Enable Success for Logoff"
+      when: "'Success' not in rule_17_5_3_audit.stdout"
+      ansible.windows.win_shell: AuditPol /set /subcategory:"Logoff" /success:enable
+
+- name: "17.5.4 | PATCH | Ensure Audit Logon is set to Success and Failure"
+  when: win19cis_rule_17_5_4
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_17.5.4
+    - patch
+    - NIST800-171_3.3.1
+    - NIST800-171_3.3.2
+    - NIST800-171_3.3.6
+    - NIST800-53_AU-3
+    - NIST800-53_AU-3_1
+    - NIST800-53_AU-7
+    - NIST800-53_AU-12
+    - NIST800-53R5_AU-3
+    - NIST800-53R5_AU-3_1
+    - NIST800-53R5_AU-7
+    - NIST800-53R5_AU-12
+  block:
+    - name: "17.5.4 | AUDIT | Ensure Audit Logon is set to Success and Failure | Get current audit events for Logon"
+      ansible.windows.win_shell: AuditPol /get /subcategory:"Logon" -r | ConvertFrom-Csv | Select-Object -expand "Inclusion Setting"
+      changed_when: false
+      failed_when: false
+      check_mode: false
+      register: rule_17_5_4_audit
+
+    - name: "17.5.4 | PATCH | Ensure Audit Logon is set to Success and Failure | Enable Success for Logon"
+      when: "'Success' not in rule_17_5_4_audit.stdout"
+      ansible.windows.win_shell: AuditPol /set /subcategory:"Logon" /success:enable
+
+    - name: "17.5.4 | PATCH | Ensure Audit Logon is set to Success and Failure | Enable Failure for Logon"
+      when: "'Failure' not in rule_17_5_4_audit.stdout"
+      ansible.windows.win_shell: AuditPol /set /subcategory:"Logon" /failure:enable
+
+- name: "17.5.5 | PATCH | Ensure Audit Other Logon,Logoff Events is set to Success and Failure"
+  when: win19cis_rule_17_5_5
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_17.5.5
+    - patch
+    - NIST800-171_3.3.1
+    - NIST800-171_3.3.2
+    - NIST800-171_3.3.6
+    - NIST800-53_AU-3
+    - NIST800-53_AU-3_1
+    - NIST800-53_AU-7
+    - NIST800-53_AU-12
+    - NIST800-53R5_AU-3
+    - NIST800-53R5_AU-3_1
+    - NIST800-53R5_AU-7
+    - NIST800-53R5_AU-12
+  block:
+    - name: "17.5.5 | AUDIT | Ensure Audit Other Logon,Logoff Events is set to Success and Failure | Get current audit events for Other Logon/Logoff Events"
+      ansible.windows.win_shell: AuditPol /get /subcategory:"Other Logon/Logoff Events" -r | ConvertFrom-Csv | Select-Object -expand "Inclusion Setting"
+      changed_when: false
+      failed_when: false
+      check_mode: false
+      register: rule_17_5_5_audit
+
+    - name: "17.5.5 | PATCH | Ensure Audit Other Logon,Logoff Events is set to Success and Failure | Enable Success for Other Logon/Logoff Events"
+      when: "'Success' not in rule_17_5_5_audit.stdout"
+      ansible.windows.win_shell: AuditPol /set /subcategory:"Other Logon/Logoff Events" /success:enable
+
+    - name: "17.5.5 | PATCH | Ensure Audit Other Logon,Logoff Events is set to Success and Failure | Enable Failure for Other Logon/Logoff Events"
+      when: "'Failure' not in rule_17_5_5_audit.stdout"
+      ansible.windows.win_shell: AuditPol /set /subcategory:"Other Logon/Logoff Events" /failure:enable
+
+- name: "17.5.6 | PATCH | Ensure Audit Special Logon is set to include Success"
+  when: win19cis_rule_17_5_6
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_17.5.6
+    - patch
+    - NIST800-171_3.3.1
+    - NIST800-171_3.3.2
+    - NIST800-171_3.3.6
+    - NIST800-53_AU-3
+    - NIST800-53_AU-3_1
+    - NIST800-53_AU-7
+    - NIST800-53_AU-12
+    - NIST800-53R5_AU-3
+    - NIST800-53R5_AU-3_1
+    - NIST800-53R5_AU-7
+    - NIST800-53R5_AU-12
+  block:
+    - name: "17.5.6 | AUDIT | Ensure Audit Special Logon is set to include Success | Get current audit events for Special Logon"
+      ansible.windows.win_shell: AuditPol /get /subcategory:"Special Logon" -r | ConvertFrom-Csv | Select-Object -expand "Inclusion Setting"
+      changed_when: false
+      failed_when: false
+      check_mode: false
+      register: rule_17_5_6_audit
+
+    - name: "17.5.6 | PATCH | Ensure Audit Special Logon is set to include Success | Enable Success for Special Logon"
+      when: "'Success' not in rule_17_5_6_audit.stdout"
+      ansible.windows.win_shell: AuditPol /set /subcategory:"Special Logon" /success:enable
+
+- name: "17.6.1 | PATCH | Ensure Audit Detailed File Share is set to include Failure"
+  when: win19cis_rule_17_6_1
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_17.6.1
+    - patch
+    - NIST800-171_3.3.1
+    - NIST800-171_3.3.2
+    - NIST800-171_3.3.6
+    - NIST800-53_AU-3
+    - NIST800-53_AU-3_1
+    - NIST800-53_AU-7
+    - NIST800-53_AU-12
+    - NIST800-53R5_AU-3
+    - NIST800-53R5_AU-3_1
+    - NIST800-53R5_AU-7
+    - NIST800-53R5_AU-12
+  block:
+    - name: "17.6.1 | AUDIT | Ensure Audit Detailed File Share is set to include Failure | Get current audit events for Detailed File Share"
+      ansible.windows.win_shell: AuditPol /get /subcategory:"Detailed File Share" -r | ConvertFrom-Csv | Select-Object -expand "Inclusion Setting"
+      changed_when: false
+      failed_when: false
+      check_mode: false
+      register: rule_17_6_1_audit
+
+    - name: "17.6.1 | PATCH | Ensure Audit Detailed File Share is set to include Failure | Enable Failure for Detailed File Share"
+      when: "'Failure' not in rule_17_6_1_audit.stdout"
+      ansible.windows.win_shell: AuditPol /set /subcategory:"Detailed File Share" /failure:enable
+
+- name: "17.6.2 | PATCH | Ensure Audit File Share is set to Success and Failure"
+  when: win19cis_rule_17_6_2
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_17_6_2
+    - patch
+    - NIST800-171_3.3.1
+    - NIST800-171_3.3.2
+    - NIST800-171_3.3.6
+    - NIST800-53_AU-3
+    - NIST800-53_AU-3_1
+    - NIST800-53_AU-7
+    - NIST800-53_AU-12
+    - NIST800-53R5_AU-3
+    - NIST800-53R5_AU-3_1
+    - NIST800-53R5_AU-7
+    - NIST800-53R5_AU-12
+  block:
+    - name: "17.6.2 | AUDIT | Ensure Audit File Share is set to Success and Failure | Get current audit events for File Share"
+      ansible.windows.win_shell: AuditPol /get /subcategory:"File Share" -r | ConvertFrom-Csv | Select-Object -expand "Inclusion Setting"
+      changed_when: false
+      failed_when: false
+      check_mode: false
+      register: rule_17_6_2_audit
+
+    - name: "17.6.2 | PATCH | Ensure Audit File Share is set to Success and Failure | Enable Success for File Share"
+      when: "'Success' not in rule_17_6_2_audit.stdout"
+      ansible.windows.win_shell: AuditPol /set /subcategory:"File Share" /success:enable
+
+    - name: "17.6.2 | PATCH | Ensure Audit File Share is set to Success and Failure | Enable Failure for File Share"
+      when: "'Failure' not in rule_17_6_2_audit.stdout"
+      ansible.windows.win_shell: AuditPol /set /subcategory:"File Share" /failure:enable
+
+- name: "17.6.3 | PATCH | Ensure Audit Other Object Access Events is set to Success and Failure"
+  when: win19cis_rule_17_6_3
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_17_6_3
+    - patch
+    - NIST800-171_3.3.1
+    - NIST800-171_3.3.2
+    - NIST800-171_3.3.6
+    - NIST800-53_AU-3
+    - NIST800-53_AU-3_1
+    - NIST800-53_AU-7
+    - NIST800-53_AU-12
+    - NIST800-53R5_AU-3
+    - NIST800-53R5_AU-3_1
+    - NIST800-53R5_AU-7
+    - NIST800-53R5_AU-12
+  community.windows.win_audit_policy_system:
+    subcategory: Other Object Access Events
+    audit_type: success, failure
+
+- name: "17.6.4 | PATCH | Ensure Audit Removable Storage is set to Success and Failure"
+  when: win19cis_rule_17_6_4
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_17_6_4
+    - patch
+    - NIST800-171_3.3.1
+    - NIST800-171_3.3.2
+    - NIST800-171_3.3.6
+    - NIST800-53_AU-3
+    - NIST800-53_AU-3_1
+    - NIST800-53_AU-7
+    - NIST800-53_AU-12
+    - NIST800-53R5_AU-3
+    - NIST800-53R5_AU-3_1
+    - NIST800-53R5_AU-7
+    - NIST800-53R5_AU-12
+  block:
+    - name: "17.6.4 | AUDIT | Ensure Audit Removable Storage is set to Success and Failure | Get current audit events for Removable Storage"
+      ansible.windows.win_shell: AuditPol /get /subcategory:"Removable Storage" -r | ConvertFrom-Csv | Select-Object -expand "Inclusion Setting"
+      changed_when: false
+      failed_when: false
+      check_mode: false
+      register: rule_17_6_4_audit
+
+    - name: "17.6.4 | PATCH | Ensure Audit Removable Storage is set to Success and Failure | Enable Success for Removable Storage"
+      when: "'Success' not in rule_17_6_4_audit.stdout"
+      ansible.windows.win_shell: AuditPol /set /subcategory:"Removable Storage" /success:enable
+
+    - name: "17.6.4 | PATCH | Ensure Audit Removable Storage is set to Success and Failure | Enable Failure for Removable Storage"
+      when: "'Failure' not in rule_17_6_4_audit.stdout"
+      ansible.windows.win_shell: AuditPol /set /subcategory:"Removable Storage" /failure:enable
+
+- name: "17.7.1 | PATCH | Ensure Audit Audit Policy Change is set to include Success"
+  when: win19cis_rule_17_7_1
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_17_7_1
+    - patch
+    - NIST800-171_3.3.1
+    - NIST800-171_3.3.2
+    - NIST800-171_3.3.6
+    - NIST800-53_AU-3
+    - NIST800-53_AU-3_1
+    - NIST800-53_AU-7
+    - NIST800-53_AU-12
+    - NIST800-53R5_AU-3
+    - NIST800-53R5_AU-3_1
+    - NIST800-53R5_AU-7
+    - NIST800-53R5_AU-12
+  block:
+    - name: "17.7.1 | AUDIT | Ensure Audit Audit Policy Change is set to include Success | Get current audit events for Audit Policy Change"
+      ansible.windows.win_shell: AuditPol /get /subcategory:"Audit Policy Change" -r | ConvertFrom-Csv | Select-Object -expand "Inclusion Setting"
+      changed_when: false
+      failed_when: false
+      check_mode: false
+      register: rule_17_7_1_audit
+
+    - name: "17.7.1 | PATCH | Ensure Audit Audit Policy Change is set to include Success | Enable Success for Audit Policy Change"
+      when: "'Success' not in rule_17_7_1_audit.stdout"
+      ansible.windows.win_shell: AuditPol /set /subcategory:"Audit Policy Change" /success:enable
+
+- name: "17.7.2 | PATCH | Ensure Audit Authentication Policy Change is set to include Success"
+  when: win19cis_rule_17_7_2
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_17_7_2
+    - patch
+    - NIST800-171_3.3.1
+    - NIST800-171_3.3.2
+    - NIST800-171_3.3.6
+    - NIST800-53_AU-3
+    - NIST800-53_AU-3_1
+    - NIST800-53_AU-7
+    - NIST800-53_AU-12
+    - NIST800-53R5_AU-3
+    - NIST800-53R5_AU-3_1
+    - NIST800-53R5_AU-7
+    - NIST800-53R5_AU-12
+  block:
+    - name: "17.7.2 | AUDIT | Ensure Audit Authentication Policy Change is set to include Success | Get current audit events for Authentication Policy Change"
+      ansible.windows.win_shell: AuditPol /get /subcategory:"Authentication Policy Change" -r | ConvertFrom-Csv | Select-Object -expand "Inclusion Setting"
+      changed_when: false
+      failed_when: false
+      check_mode: false
+      register: rule_17_7_2_audit
+
+    - name: "17.7.2 | PATCH | Ensure Audit Authentication Policy Change is set to include Success | Enable Success for Authentication Policy Change"
+      when: "'Success' not in rule_17_7_2_audit.stdout"
+      ansible.windows.win_shell: AuditPol /set /subcategory:"Authentication Policy Change" /success:enable
+
+- name: "17.7.3 | PATCH | Ensure Audit Authorization Policy Change is set to include Success"
+  when: win19cis_rule_17_7_3
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_17_7_3
+    - patch
+    - NIST800-171_3.3.1
+    - NIST800-171_3.3.2
+    - NIST800-171_3.3.6
+    - NIST800-53_AU-3
+    - NIST800-53_AU-3_1
+    - NIST800-53_AU-7
+    - NIST800-53_AU-12
+    - NIST800-53R5_AU-3
+    - NIST800-53R5_AU-3_1
+    - NIST800-53R5_AU-7
+    - NIST800-53R5_AU-12
+  block:
+    - name: "17.7.3 | AUDIT | Ensure Audit Authorization Policy Change is set to include Success | Get current audit events for Authorization Policy Change"
+      ansible.windows.win_shell: AuditPol /get /subcategory:"Authorization Policy Change" -r | ConvertFrom-Csv | Select-Object -expand "Inclusion Setting"
+      changed_when: false
+      failed_when: false
+      check_mode: false
+      register: rule_17_7_3_audit
+
+    - name: "17.7.3 | PATCH | Ensure Audit Authorization Policy Change is set to include Success | Enable Success for Authorization Policy Change"
+      when: "'Success' not in rule_17_7_3_audit.stdout"
+      ansible.windows.win_shell: AuditPol /set /subcategory:"Authorization Policy Change" /success:enable
+
+- name: "17.7.4 | PATCH | Ensure Audit MPSSVC Rule-Level Policy Change is set to Success and Failure"
+  when: win19cis_rule_17_7_4
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_17_7_4
+    - patch
+    - NIST800-171_3.3.1
+    - NIST800-171_3.3.2
+    - NIST800-171_3.3.6
+    - NIST800-53_AU-3
+    - NIST800-53_AU-3_1
+    - NIST800-53_AU-7
+    - NIST800-53_AU-12
+    - NIST800-53R5_AU-3
+    - NIST800-53R5_AU-3_1
+    - NIST800-53R5_AU-7
+    - NIST800-53R5_AU-12
+  block:
+    - name: "17.7.4 | AUDIT | Ensure Audit MPSSVC Rule-Level Policy Change is set to Success and Failure | Get current audit events for MPSSVC Rule-Level Policy Change"
+      ansible.windows.win_shell: AuditPol /get /subcategory:"MPSSVC Rule-Level Policy Change" -r | ConvertFrom-Csv | Select-Object -expand "Inclusion Setting"
+      changed_when: false
+      failed_when: false
+      check_mode: false
+      register: rule_17_7_4_audit
+
+    - name: "17.7.4 | PATCH | Ensure Audit MPSSVC Rule-Level Policy Change is set to Success and Failure | Enable Success for MPSSVC Rule-Level Policy Change"
+      when: "'Success' not in rule_17_7_4_audit.stdout"
+      ansible.windows.win_shell: AuditPol /set /subcategory:"MPSSVC Rule-Level Policy Change" /success:enable
+
+    - name: "17.7.4 | PATCH | Ensure Audit MPSSVC Rule-Level Policy Change is set to Success and Failure | Enable Failure for MPSSVC Rule-Level Policy Change"
+      when: "'Failure' not in rule_17_7_4_audit.stdout"
+      ansible.windows.win_shell: AuditPol /set /subcategory:"MPSSVC Rule-Level Policy Change" /failure:enable
+
+- name: "17.7.5 | PATCH | Ensure Audit Other Policy Change Events is set to include Failure"
+  when: win19cis_rule_17_7_5
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_17_7_5
+    - patch
+    - NIST800-171_3.3.1
+    - NIST800-171_3.3.2
+    - NIST800-171_3.3.6
+    - NIST800-53_AU-3
+    - NIST800-53_AU-3_1
+    - NIST800-53_AU-7
+    - NIST800-53_AU-12
+    - NIST800-53R5_AU-3
+    - NIST800-53R5_AU-3_1
+    - NIST800-53R5_AU-7
+    - NIST800-53R5_AU-12
+  block:
+    - name: "17.7.5 | AUDIT | Ensure Audit Other Policy Change Events is set to include Failure | Get current audit events for Other Policy Change Events"
+      ansible.windows.win_shell: AuditPol /get /subcategory:"Other Policy Change Events" -r | ConvertFrom-Csv | Select-Object -expand "Inclusion Setting"
+      changed_when: false
+      failed_when: false
+      check_mode: false
+      register: rule_17_7_5_audit
+
+    - name: "17.7.5 | PATCH | Ensure Audit Other Policy Change Events is set to include Failure | Enable Failure for Other Policy Change Events"
+      when: "'Failure' not in rule_17_7_5_audit.stdout"
+      ansible.windows.win_shell: AuditPol /set /subcategory:"Other Policy Change Events" /failure:enable
+
+- name: "17.8.1 | PATCH | Ensure Audit Sensitive Privilege Use is set to Success and Failure"
+  when: win19cis_rule_17_8_1
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_17_8_1
+    - patch
+    - NIST800-171_3.3.1
+    - NIST800-171_3.3.2
+    - NIST800-171_3.3.6
+    - NIST800-53_AU-3
+    - NIST800-53_AU-3_1
+    - NIST800-53_AU-7
+    - NIST800-53_AU-12
+    - NIST800-53R5_AU-3
+    - NIST800-53R5_AU-3_1
+    - NIST800-53R5_AU-7
+    - NIST800-53R5_AU-12
+  block:
+    - name: "17.8.1 | AUDIT | Ensure Audit Sensitive Privilege Use is set to Success and Failure | Get current audit events for Sensitive Privilege Use"
+      ansible.windows.win_shell: AuditPol /get /subcategory:"Sensitive Privilege Use" -r | ConvertFrom-Csv | Select-Object -expand "Inclusion Setting"
+      changed_when: false
+      failed_when: false
+      check_mode: false
+      register: rule_17_8_1_audit
+
+    - name: "17.8.1 | PATCH | Ensure Audit Sensitive Privilege Use is set to Success and Failure | Enable Success for Sensitive Privilege Use"
+      when: "'Success' not in rule_17_8_1_audit.stdout"
+      ansible.windows.win_shell: AuditPol /set /subcategory:"Sensitive Privilege Use" /success:enable
+
+    - name: "17.8.1 | PATCH | Ensure Audit Sensitive Privilege Use is set to Success and Failure | Enable Failure for Sensitive Privilege Use"
+      when: "'Failure' not in rule_17_8_1_audit.stdout"
+      ansible.windows.win_shell: AuditPol /set /subcategory:"Sensitive Privilege Use" /failure:enable
+
+- name: "17.9.1 | PATCH | Ensure Audit IPsec Driver is set to Success and Failure"
+  when: win19cis_rule_17_9_1
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_17_9_1
+    - patch
+    - NIST800-171_3.3.1
+    - NIST800-171_3.3.2
+    - NIST800-171_3.3.6
+    - NIST800-53_AU-3
+    - NIST800-53_AU-3_1
+    - NIST800-53_AU-7
+    - NIST800-53_AU-12
+    - NIST800-53R5_AU-3
+    - NIST800-53R5_AU-3_1
+    - NIST800-53R5_AU-7
+    - NIST800-53R5_AU-12
+  block:
+    - name: "17.9.1 | AUDIT | Ensure Audit IPsec Driver is set to Success and Failure | Get current audit events for IPsec Driver"
+      ansible.windows.win_shell: AuditPol /get /subcategory:"IPsec Driver" -r | ConvertFrom-Csv | Select-Object -expand "Inclusion Setting"
+      changed_when: false
+      failed_when: false
+      check_mode: false
+      register: rule_17_9_1_audit
+
+    - name: "17.9.1 | PATCH | Ensure Audit IPsec Driver is set to Success and Failure | Enable Success for IPsec Driver"
+      when: "'Success' not in rule_17_9_1_audit.stdout"
+      ansible.windows.win_shell: AuditPol /set /subcategory:"IPsec Driver" /success:enable
+
+    - name: "17.9.1 | PATCH | Ensure Audit IPsec Driver is set to Success and Failure | Enable Failure for IPsec Driver"
+      when: "'Failure' not in rule_17_9_1_audit.stdout"
+      ansible.windows.win_shell: AuditPol /set /subcategory:"IPsec Driver" /failure:enable
+
+- name: "17.9.2 | PATCH | Ensure Audit Other System Events is set to Success and Failure"
+  when: win19cis_rule_17_9_2
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_17_9_2
+    - patch
+    - NIST800-171_3.3.1
+    - NIST800-171_3.3.2
+    - NIST800-171_3.3.6
+    - NIST800-53_AU-3
+    - NIST800-53_AU-3_1
+    - NIST800-53_AU-7
+    - NIST800-53_AU-12
+    - NIST800-53R5_AU-3
+    - NIST800-53R5_AU-3_1
+    - NIST800-53R5_AU-7
+    - NIST800-53R5_AU-12
+  block:
+    - name: "17.9.2 | AUDIT | Ensure Audit Other System Events is set to Success and Failure | Get current audit events for Other System Events"
+      ansible.windows.win_shell: AuditPol /get /subcategory:"Other System Events" -r | ConvertFrom-Csv | Select-Object -expand "Inclusion Setting"
+      changed_when: false
+      failed_when: false
+      check_mode: false
+      register: rule_17_9_2_audit
+
+    - name: "17.9.2 | PATCH | Ensure Audit Other System Events is set to Success and Failure | Enable Success for Other System Events"
+      when: "'Success' not in rule_17_9_2_audit.stdout"
+      ansible.windows.win_shell: AuditPol /set /subcategory:"Other System Events" /success:enable
+
+    - name: "17.9.2 | PATCH | Ensure Audit Other System Events is set to Success and Failure | Enable Failure for Other System Events"
+      when: "'Failure' not in rule_17_9_2_audit.stdout"
+      ansible.windows.win_shell: AuditPol /set /subcategory:"Other System Events" /failure:enable
+
+- name: "17.9.3 | PATCH | Ensure Audit Security State Change is set to include Success"
+  when: win19cis_rule_17_9_3
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_17_9_3
+    - patch
+    - NIST800-171_3.3.1
+    - NIST800-171_3.3.2
+    - NIST800-171_3.3.6
+    - NIST800-53_AU-3
+    - NIST800-53_AU-3_1
+    - NIST800-53_AU-7
+    - NIST800-53_AU-12
+    - NIST800-53R5_AU-3
+    - NIST800-53R5_AU-3_1
+    - NIST800-53R5_AU-7
+    - NIST800-53R5_AU-12
+  block:
+    - name: "17.9.3 | AUDIT | Ensure Audit Security State Change is set to include Success | Get current audit events for Security State Change"
+      ansible.windows.win_shell: AuditPol /get /subcategory:"Security State Change" -r | ConvertFrom-Csv | Select-Object -expand "Inclusion Setting"
+      changed_when: false
+      failed_when: false
+      check_mode: false
+      register: rule_17_9_3_audit
+
+    - name: "17.9.3 | PATCH | Ensure Audit Security State Change is set to include Success | Enable Success for Security State Change"
+      when: "'Success' not in rule_17_9_3_audit.stdout"
+      ansible.windows.win_shell: AuditPol /set /subcategory:"Security State Change" /success:enable
+
+- name: "17.9.4 | PATCH | Ensure Audit Security System Extension is set to include Success"
+  when: win19cis_rule_17_9_4
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_17_9_4
+    - patch
+    - NIST800-171_3.3.1
+    - NIST800-171_3.3.2
+    - NIST800-171_3.3.6
+    - NIST800-53_AU-3
+    - NIST800-53_AU-3_1
+    - NIST800-53_AU-7
+    - NIST800-53_AU-12
+    - NIST800-53R5_AU-3
+    - NIST800-53R5_AU-3_1
+    - NIST800-53R5_AU-7
+    - NIST800-53R5_AU-12
+  block:
+    - name: "17.9.4 | AUDIT | Ensure Audit Security System Extension is set to include Success | Get current audit events for Security System Extension"
+      ansible.windows.win_shell: AuditPol /get /subcategory:"Security System Extension" -r | ConvertFrom-Csv | Select-Object -expand "Inclusion Setting"
+      changed_when: false
+      failed_when: false
+      check_mode: false
+      register: rule_17_9_4_audit
+
+    - name: "17.9.4 | PATCH | Ensure Audit Security System Extension is set to include Success | Enable Success for Security System Extension"
+      when: "'Success' not in rule_17_9_4_audit.stdout"
+      ansible.windows.win_shell: AuditPol /set /subcategory:"Security System Extension" /success:enable
+
+- name: "17.9.5 | PATCH | Ensure Audit System Integrity is set to Success and Failure"
+  when: win19cis_rule_17_9_5
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_17_9_5
+    - patch
+    - NIST800-171_3.3.1
+    - NIST800-171_3.3.2
+    - NIST800-171_3.3.6
+    - NIST800-53_AU-3
+    - NIST800-53_AU-3_1
+    - NIST800-53_AU-7
+    - NIST800-53_AU-12
+    - NIST800-53R5_AU-3
+    - NIST800-53R5_AU-3_1
+    - NIST800-53R5_AU-7
+    - NIST800-53R5_AU-12
+  block:
+    - name: "17.9.5 | AUDIT | Ensure Audit System Integrity is set to Success and Failure | Get current audit events for System Integrity"
+      ansible.windows.win_shell: AuditPol /get /subcategory:"System Integrity" -r | ConvertFrom-Csv | Select-Object -expand "Inclusion Setting"
+      changed_when: false
+      failed_when: false
+      check_mode: false
+      register: rule_17_9_5_audit
+
+    - name: "17.9.5 | PATCH | Ensure Audit System Integrity is set to Success and Failure | Enable Success for System Integrity"
+      when: "'Success' not in rule_17_9_5_audit.stdout"
+      ansible.windows.win_shell: AuditPol /set /subcategory:"System Integrity" /success:enable
+
+    - name: "17.9.5 | PATCH | Ensure Audit System Integrity is set to Success and Failure | Enable Failure for System Integrity"
+      when: "'Failure' not in rule_17_9_5_audit.stdout"
+      ansible.windows.win_shell: AuditPol /set /subcategory:"System Integrity" /failure:enable

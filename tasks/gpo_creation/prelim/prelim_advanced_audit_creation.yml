@@ -1,0 +1,35 @@
+---
+
+- name: PRELIM | GPO | Advanced Audit Policy | Set GPO GUID List
+  ansible.builtin.set_fact:
+    prelim_discovered_advanced_audit_gpo_list: >
+      {{ [win19cis_l1_dc_gpo_guid | default(''), win19cis_l1_ms_gpo_guid | default('')] | select('string') | select('!=', '') | list }}
+
+- name: "PRELIM | GPO | Advanced Audit Policy | Check If Audit.csv File Exists In Each GPO GUID"
+  ansible.windows.win_stat:
+    path: "C:\\Windows\\SYSVOL\\sysvol\\{{ prelim_discovered_domain_name }}\\Policies\\{{ item }}\\Machine\\Microsoft\\Windows NT\\Audit\\audit.csv"
+  loop: "{{ prelim_discovered_advanced_audit_gpo_list }}"
+  loop_control:
+    label: "{{ item }}"
+  register: prelim_discovered_audit_csv_status
+
+- name: "PRELIM | GPO | Advanced Audit Policy | Create Directories For Audit.csv If They Do Not Exist"
+  when: not item.stat.exists
+  ansible.windows.win_file:
+    path: "C:\\Windows\\SYSVOL\\sysvol\\{{ prelim_discovered_domain_name }}\\Policies\\{{ item.item }}\\Machine\\Microsoft\\Windows NT\\Audit"
+    state: directory
+  loop: "{{ prelim_discovered_audit_csv_status.results }}"
+  loop_control:
+    label: "{{ item.item }}"
+
+- name: "PRELIM | GPO | Advanced Audit Policy | Set Fact For Audit.csv Items To Copy"
+  ansible.builtin.set_fact:
+    prelim_audit_csv_to_copy: "{{ prelim_discovered_audit_csv_status.results | selectattr('stat.exists', 'eq', false) | map(attribute='item') | list }}"
+
+- name: "PRELIM | GPO | Advanced Audit Policy | Copy Audit.csv Template To The Proper Directory"
+  ansible.windows.win_copy:
+    src: "{{ role_path }}/templates/windows_templates/audit.csv"
+    dest: "C:\\Windows\\SYSVOL\\sysvol\\{{ prelim_discovered_domain_name }}\\Policies\\{{ item }}\\Machine\\Microsoft\\Windows NT\\Audit\\audit.csv"
+  loop: "{{ prelim_audit_csv_to_copy }}"
+  loop_control:
+    label: "{{ item }}"

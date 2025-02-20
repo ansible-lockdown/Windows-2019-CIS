@@ -1,5 +1,7 @@
 ---
 
-- name: reboot_windows
-  ansible.windows.win_reboot:
-      reboot_timeout: 3600
+- name: Change_Requires_Reboot
+  ansible.builtin.set_fact:
+    reboot_host: true
+  tags:
+    - always

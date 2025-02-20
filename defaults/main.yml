@@ -1,64 +1,139 @@
 ---
 
+# ╔═════════════════════════════════════════════════════════════════════════════════╗
+# ║                              Select Playbook Style                              ║
+# ╚═════════════════════════════════════════════════════════════════════════════════╝
+# Only one of these will be able to run at a time. Setting both to true will not allow them to run.
+
+# win19cis_ansible_remediation is the setting that will run the CIS remediation if you are connecting to a host directly
+# and want to run the remediation directly on a Windows machine.
+win19cis_ansible_remediation: true
+
+# win19cis_create_gpos is the setting that will run the CIS GPO creation on a Windows Domain Controller. Please review
+# all options in the GPO section to understand what is being done.
+win19cis_create_gpos: false
+
+# ╔═════════════════════════════════════════════════════════════════════════════════╗
+# ║                             GPO Creation Variables                              ║
+# ╚═════════════════════════════════════════════════════════════════════════════════╝
+
+# The variables below will allow you to create specific GPOs based on the CIS controls. This will hopefully allow better
+# options to build out the GPOs and easier managing of the CIS standards.
+# NOTE: As of now there are no current service related GPOs that are being created and that is why the default is set to false.
+#       These were added for potential future CIS additions.
+win19cis_default_domain_policy_gpo: true
+win19cis_l1_dc_gpo: true
+win19cis_l1_ms_gpo: true
+win19cis_l2_dc_gpo: true
+win19cis_l2_ms_gpo: true
+win19cis_l1_dm_gpo: true
+win19cis_services_dc_gpo: false
+win19cis_services_ms_gpo: false
+win19cis_ngws_dc_gpo: true
+win19cis_ngws_ms_gpo: true
+win19cis_l1_user_gpo: true
+win19cis_l2_user_gpo: true
+
+# win19cis_copy_policy_definitions gives you the option to copy over the policy definitions that are
+# currently attached to this Remediation / GPO. If set to false you will need to import your own Definitions
+# to the central store.
+# Default: true
+win19cis_copy_policy_definitions: true
+
+# win19cis_copy_cis_custom_admx_adml is the setting that copies over the custom CIS ADMX / ADML that was needed
+# when applying the settings from CIS. Some items did not apply correctly with the standard issued ADMX / ADML
+# provided by Microsoft. This was created to help show what the settings were related to in the CIS documentation.
+# Default: true
+win19cis_copy_cis_custom_admx_adml: true
+
+# We have built in the ability to create a test domain so that you can test the building of the GPOs.
+# win19cis_create_domain: true will run the prelim_create_dc_and_promote.yml that is in the default root of the
+# Ansible folder. The variable win19cis_domain lets you set the domain to have the Ansible build out the test domain
+# without intervention.
+# Default: false
+win19cis_create_domain: false
+win19cis_domain: "test.com"
+# The win19cis_safe_mode_administrator_password parameter is required when running the Install-ADDSForest command, whether
+# in a PowerShell script or through Ansible using ansible.windows.win_shell. This parameter sets the Directory Services
+# Restore Mode (DSRM) password, which is mandatory during the Active Directory Domain Services (AD DS) configuration and should
+# contain a secure and valid password that meets the domain's password policy.
+# Default: MpgTestP@ssw0rd123!
+win19cis_safe_mode_administrator_password: MpgTestP@ssw0rd123!
+
+# win19cis_backup_custom_gpos is designed to create backups off all the CIS GPOs that are created during the Playbook
+# and we will give you the option to back them up locally to the Windows Machine or the Ansible Node.
+# Note: This will always run unless you set it to false, each Backup will have date and time created
+#       attached to file name. Also when copying to the Ansible node it will only grab all files in the folder
+#       and copy them over.
+# Default: true
+win19cis_backup_custom_gpos: true
+# Backup locations are already built into the playbook.
+# Ansible - Backup to Ansible Host. ( {{ role_path }}/templates/GPOBackups )
+# Windows - Backup to Windows Location. ( C:\GPOBackups )
+# Default: Windows
+win19cis_backup_location_style: Windows
+
+# ╔═════════════════════════════════════════════════════════════════════════════════╗
+# ║                      Remediation / GPO Section Variables                        ║
+# ╚═════════════════════════════════════════════════════════════════════════════════╝
+
 # Section 1 Account Policies
-# 1.1.x Password Policy, 1.2.x Account Lockout Policy
 win19cis_section01: true
 
 # Section 2 Local Policies
-# 2.2.x User Rights Assignment, 2.3.x Security Options
 win19cis_section02: true
 
 # Section 5 System Services
-# 5.x Printers
 win19cis_section05: true
 
 # Section 9 Windows Defender Firewall with Advanced Security (formerly Windows Firewall with Advanced Security)
-# 9.1.x Domain Profile, 9.2.x Private Profile, 9.3.x Public Profile
 win19cis_section09: true
 
 # Section 17 Advanced Audit Policy Configuration
-# 17.1.x Account Logon, 17.2.x Account Management, 17.3.x Detailed Tracking, 17.4.x DS Access, 17.5.x Logon/Logoff
-# 17.6.x Object Access, 17.7.x Policy Change, 17.8.x Privilege Use, 17.9.x System
 win19cis_section17: true
 
 # Section 18 Administrative Templates (Computer)
-# 18.1.x Control Panel, 18.2.x LAPS, 18.3.x MS Security Guide, 18.4.x MSS (Legacy), 18.5.x Network, 18.6.x Printers
-# 18.7.x Start Menu and Taskbar, 18.8.x System, 18.9.x Windows Components
 win19cis_section18: true
 
 # Section 19 Administrative Templates (User)
-# 19.1.x Control Panel, 19.5.x Start Menu and Taskbar, 19.6.x System, 19.7.x Windows Components
 win19cis_section19: true
 
-min_ansible_version: "2.10.1"
+# min_ansible_version is the base version of Ansible to use. This ensures compatibility and avoids execution
+# errors due to missing features or incompatible syntax in earlier versions of Ansible.
+min_ansible_version: "2.16"
 
 # win_skip_for_test is the setting that will skip tasks that may cause changes that will affect the system.
 # Controls that will be skipped:
-# win19cis_rule_2_3_1_5
-# win19cis_rule_9_3_5
-# win19cis_rule_18_9_102_1_1
-# win19cis_rule_18_9_102_1_2
-# win19cis_rule_18_9_102_2_1
-# win19cis_rule_18_9_102_2_2
-# win19cis_rule_18_9_102_2_3
-# win19cis_rule_18_9_103_1
+# win19cis_rule_2_2_26 - Breaks Local Admin Connection
+# win19cis_rule_2_2_27 - Breaks Local Admin Connection
+# win19cis_rule_2_3_1_4 - Rename default administrator account
+# win19cis_rule_9_3_4 - Enables Firewall Public Rules *Breaks Reboot*
+# win19cis_rule_18_10_88_1_1 - Disables WinRM Allow Client Basic Auth
+# win19cis_rule_18_10_88_1_2 - Disables Client Ensure Allow unencrypted traffic is set to Disabled Control.
+# win19cis_rule_18_10_88_1_3 - Ensure Disallow Digest authentication is set to Enabled
+# win19cis_rule_18_10_88_2_1 - Disables WinRM Allow Service Basic Auth
+# win19cis_rule_18_10_88_2_2 - Disables Remote Server Management through WinRM
+# win19cis_rule_18_10_88_2_3 - Disables Service Ensure Allow unencrypted traffic is set to Disabled Control.
+# win19cis_rule_18_10_89_1 - Disables Remote Shell Access
 win_skip_for_test: false
+
+# Changes will be made that will require a system reboot.
+# The following option will allow whether or not to skip the reboot.
+# Default: true
+skip_reboot: true
 
 # These variables correspond with the CIS rule IDs or paragraph numbers defined in
 # the CIS benchmark documents.
 # PLEASE NOTE: These work in coordination with the section # group variables and tags.
 # You must enable an entire section in order for the variables below to take effect.
 
-# section01
+# Section01
 win19cis_rule_1_1_1: true
 win19cis_rule_1_1_2: true
 win19cis_rule_1_1_3: true
 win19cis_rule_1_1_4: true
 win19cis_rule_1_1_5: true
-# win19cis_rule_1_1_6 set To false this control cannot be implemented in 2022.
-# This setting is only available within the built-in OS security template of
-# Windows 10 Release 2004 and Server 2022 (or newer). Control is Commented out for now.
-win19cis_rule_1_1_6: false
+win19cis_rule_1_1_6: true
 # We have found the order of these three tasks below varies between cloud-based instances
 # and VM-based instances locally. The task below breaks out to run in a different order
 # for cloud-based systems and local-based systems. Notes are applied in the section01.yml file.
@@ -67,7 +142,7 @@ win19cis_rule_1_2_2: true
 win19cis_rule_1_2_3: true
 win19cis_rule_1_2_4: true
 
-# section02
+# Section02
 win19cis_rule_2_2_1: true
 win19cis_rule_2_2_2: true
 win19cis_rule_2_2_3: true
@@ -93,6 +168,8 @@ win19cis_rule_2_2_22: true
 win19cis_rule_2_2_23: true
 win19cis_rule_2_2_24: true
 win19cis_rule_2_2_25: true
+# Setting win19cis_rule_2_2_26 and win19cis_rule_2_2_27 Control To True Will Break Ansible Connection
+# Setting win_skip_for_test: true -- will skip the controls here even if they are set to true.
 win19cis_rule_2_2_26: true
 win19cis_rule_2_2_27: true
 win19cis_rule_2_2_28: true
@@ -116,18 +193,17 @@ win19cis_rule_2_2_45: true
 win19cis_rule_2_2_46: true
 win19cis_rule_2_2_47: true
 win19cis_rule_2_2_48: true
+win19cis_rule_2_2_49: true
 win19cis_rule_2_3_1_1: true
 win19cis_rule_2_3_1_2: true
 win19cis_rule_2_3_1_3: true
-win19cis_rule_2_3_1_4: true
-# Setting win19cis_rule_2_3_1_5 Control To True Will Break Ansible Connection
+# Setting win19cis_rule_2_3_1_4 Control To True Will Break Ansible Connection
 # Setting win_skip_for_test: true -- will skip the controls here even if they are set to true.
+win19cis_rule_2_3_1_4: true
 win19cis_rule_2_3_1_5: true
-win19cis_rule_2_3_1_6: true
 win19cis_rule_2_3_2_1: true
 win19cis_rule_2_3_2_2: true
 win19cis_rule_2_3_4_1: true
-win19cis_rule_2_3_4_2: true
 win19cis_rule_2_3_5_1: true
 win19cis_rule_2_3_5_2: true
 win19cis_rule_2_3_5_3: true
@@ -179,6 +255,9 @@ win19cis_rule_2_3_11_7: true
 win19cis_rule_2_3_11_8: true
 win19cis_rule_2_3_11_9: true
 win19cis_rule_2_3_11_10: true
+win19cis_rule_2_3_11_11: true
+win19cis_rule_2_3_11_12: true
+win19cis_rule_2_3_11_13: true
 win19cis_rule_2_3_13_1: true
 win19cis_rule_2_3_15_1: true
 win19cis_rule_2_3_15_2: true
@@ -191,11 +270,12 @@ win19cis_rule_2_3_17_6: true
 win19cis_rule_2_3_17_7: true
 win19cis_rule_2_3_17_8: true
 
-# section05
+# Section05
 win19cis_rule_5_1: true
 win19cis_rule_5_2: true
 
-# section09
+# Section09
+# Domain Profile (Firewall)
 win19cis_rule_9_1_1: true
 win19cis_rule_9_1_2: true
 win19cis_rule_9_1_3: true
@@ -203,7 +283,7 @@ win19cis_rule_9_1_4: true
 win19cis_rule_9_1_5: true
 win19cis_rule_9_1_6: true
 win19cis_rule_9_1_7: true
-win19cis_rule_9_1_8: true
+# Private Profile (Firewall)
 win19cis_rule_9_2_1: true
 win19cis_rule_9_2_2: true
 win19cis_rule_9_2_3: true
@@ -211,21 +291,20 @@ win19cis_rule_9_2_4: true
 win19cis_rule_9_2_5: true
 win19cis_rule_9_2_6: true
 win19cis_rule_9_2_7: true
-win19cis_rule_9_2_8: true
+# Public Profile (Firewall)
 win19cis_rule_9_3_1: true
 win19cis_rule_9_3_2: true
 win19cis_rule_9_3_3: true
-win19cis_rule_9_3_4: true
-# Setting win19cis_rule_9_3_5 Control To True Will Break Ansible Connection
+# Setting win19cis_rule_9_3_4 Control To True Will Break Ansible Connection
 # Setting win_skip_for_test: true -- will skip the controls here even if they are set to true.
+win19cis_rule_9_3_4: true
 win19cis_rule_9_3_5: true
 win19cis_rule_9_3_6: true
 win19cis_rule_9_3_7: true
 win19cis_rule_9_3_8: true
 win19cis_rule_9_3_9: true
-win19cis_rule_9_3_10: true
 
-# section17
+# Section17
 win19cis_rule_17_1_1: true
 win19cis_rule_17_1_2: true
 win19cis_rule_17_1_3: true
@@ -261,17 +340,11 @@ win19cis_rule_17_9_3: true
 win19cis_rule_17_9_4: true
 win19cis_rule_17_9_5: true
 
-# section18
+# Section18
 win19cis_rule_18_1_1_1: true
 win19cis_rule_18_1_1_2: true
 win19cis_rule_18_1_2_2: true
 win19cis_rule_18_1_3: true
-win19cis_rule_18_3_1: true
-win19cis_rule_18_3_2: true
-win19cis_rule_18_3_3: true
-win19cis_rule_18_3_4: true
-win19cis_rule_18_3_5: true
-win19cis_rule_18_3_6: true
 win19cis_rule_18_4_1: true
 win19cis_rule_18_4_2: true
 win19cis_rule_18_4_3: true
@@ -279,6 +352,8 @@ win19cis_rule_18_4_4: true
 win19cis_rule_18_4_5: true
 win19cis_rule_18_4_6: true
 win19cis_rule_18_4_7: true
+win19cis_rule_18_4_8: true
+win19cis_rule_18_4_9: true
 win19cis_rule_18_5_1: true
 win19cis_rule_18_5_2: true
 win19cis_rule_18_5_3: true
@@ -293,14 +368,13 @@ win19cis_rule_18_5_11: true
 win19cis_rule_18_5_12: true
 win19cis_rule_18_6_4_1: true
 win19cis_rule_18_6_4_2: true
-win19cis_rule_18_6_4_3: true
 win19cis_rule_18_6_5_1: true
 win19cis_rule_18_6_8_1: true
 win19cis_rule_18_6_9_1: true
 win19cis_rule_18_6_9_2: true
 win19cis_rule_18_6_10_2: true
 win19cis_rule_18_6_11_2: true
-win19cis_rule_18_5_11_3: true
+win19cis_rule_18_6_11_3: true
 win19cis_rule_18_6_11_4: true
 win19cis_rule_18_6_14_1: true
 win19cis_rule_18_6_19_2_1: true
@@ -330,12 +404,14 @@ win19cis_rule_18_9_5_4: true
 win19cis_rule_18_9_5_5: true
 win19cis_rule_18_9_5_6: true
 win19cis_rule_18_9_5_7: true
-win19cis_rule_18_8_7_2: true
+win19cis_rule_18_9_7_2: true
 win19cis_rule_18_9_13_1: true
 win19cis_rule_18_9_19_2: true
 win19cis_rule_18_9_19_3: true
 win19cis_rule_18_9_19_4: true
 win19cis_rule_18_9_19_5: true
+win19cis_rule_18_9_19_6: true
+win19cis_rule_18_9_19_7: true
 win19cis_rule_18_9_20_1_1: true
 win19cis_rule_18_9_20_1_2: true
 win19cis_rule_18_9_20_1_3: true
@@ -353,30 +429,35 @@ win19cis_rule_18_9_23_1: true
 win19cis_rule_18_9_24_1: true
 win19cis_rule_18_9_25_1: true
 win19cis_rule_18_9_25_2: true
-win19cis_rule_18_9_26_1: true
+win19cis_rule_18_9_25_3: true
+win19cis_rule_18_9_25_4: true
+win19cis_rule_18_9_25_5: true
+win19cis_rule_18_9_25_6: true
+win19cis_rule_18_9_25_7: true
+win19cis_rule_18_9_25_8: true
 win19cis_rule_18_9_27_1: true
-win19cis_rule_18_9_27_2: true
-win19cis_rule_18_9_27_3: true
-win19cis_rule_18_9_27_4: true
-win19cis_rule_18_9_27_5: true
-win19cis_rule_18_9_27_6: true
-win19cis_rule_18_9_27_7: true
-win19cis_rule_18_9_30_1: true
-win19cis_rule_18_9_30_2: true
-win19cis_rule_18_9_32_6_1: true
-win19cis_rule_18_3_32_6_2: true
-win19cis_rule_18_9_32_6_3: true
-win19cis_rule_18_9_32_6_4: true
-win19cis_rule_18_9_34_1: true
-win19cis_rule_18_9_34_2: true
+win19cis_rule_18_9_28_1: true
+win19cis_rule_18_9_28_2: true
+win19cis_rule_18_9_28_3: true
+win19cis_rule_18_9_28_4: true
+win19cis_rule_18_9_28_5: true
+win19cis_rule_18_9_28_6: true
+win19cis_rule_18_9_28_7: true
+win19cis_rule_18_9_31_1: true
+win19cis_rule_18_9_31_2: true
+win19cis_rule_18_9_33_6_1: true
+win19cis_rule_18_9_33_6_2: true
+win19cis_rule_18_9_33_6_3: true
+win19cis_rule_18_9_33_6_4: true
 win19cis_rule_18_9_35_1: true
 win19cis_rule_18_9_35_2: true
-win19cis_rule_18_9_38_1: true
-win19cis_rule_18_9_46_5_1: true
-win19cis_rule_18_9_46_11_1: true
-win19cis_rule_18_9_48_1: true
-win19cis_rule_18_9_50_1_1: true
-win19cis_rule_18_9_50_1_2: true
+win19cis_rule_18_9_36_1: true
+win19cis_rule_18_9_36_2: true
+win19cis_rule_18_9_47_5_1: true
+win19cis_rule_18_9_47_11_1: true
+win19cis_rule_18_9_49_1: true
+win19cis_rule_18_9_51_1_1: true
+win19cis_rule_18_9_51_1_2: true
 win19cis_rule_18_10_3_1: true
 win19cis_rule_18_10_5_1: true
 win19cis_rule_18_10_7_1: true
@@ -386,8 +467,6 @@ win19cis_rule_18_10_8_1_1: true
 win19cis_rule_18_10_10_1: true
 win19cis_rule_18_10_12_1: true
 win19cis_rule_18_10_12_2: true
-win19cis_rule_18_10_12_3: true
-win19cis_rule_18_9_14_3: true
 win19cis_rule_18_10_13_1: true
 win19cis_rule_18_10_14_1: true
 win19cis_rule_18_10_14_2: true
@@ -403,113 +482,110 @@ win19cis_rule_18_10_17_1: true
 win19cis_rule_18_10_17_2: true
 win19cis_rule_18_10_17_3: true
 win19cis_rule_18_10_17_4: true
-win19cis_rule_18_10_26_1_1: true
-win19cis_rule_18_10_26_1_2: true
-win19cis_rule_18_10_26_2_1: true
-win19cis_rule_18_10_26_2_2: true
-win19cis_rule_18_10_26_3_1: true
-win19cis_rule_18_10_26_3_2: true
-win19cis_rule_18_10_26_4_1: true
-win19cis_rule_18_10_26_4_2: true
-win19cis_rule_18_10_29_2: true
-win19cis_rule_18_10_29_3: true
-win19cis_rule_18_10_29_4: true
-win19cis_rule_18_10_37_1: true
+win19cis_rule_18_10_25_1_1: true
+win19cis_rule_18_10_25_1_2: true
+win19cis_rule_18_10_25_2_1: true
+win19cis_rule_18_10_25_2_2: true
+win19cis_rule_18_10_25_3_1: true
+win19cis_rule_18_10_25_3_2: true
+win19cis_rule_18_10_25_4_1: true
+win19cis_rule_18_10_25_4_2: true
+win19cis_rule_18_10_28_2: true
+win19cis_rule_18_10_28_3: true
+win19cis_rule_18_10_28_4: true
+win19cis_rule_18_10_36_1: true
+win19cis_rule_18_10_40_1: true
 win19cis_rule_18_10_41_1: true
-win19cis_rule_18_10_42_1: true
-win19cis_rule_18_10_43_5_1: true
-win19cis_rule_18_10_43_5_2: true
-win19cis_rule_18_10_43_6_1_1: true
-win19cis_rule_18_10_43_6_1_2: true
-win19cis_rule_18_10_43_6_3_1: true
-win19cis_rule_18_10_43_7_1: true
-win19cis_rule_18_10_43_10_1: true
-win19cis_rule_18_10_43_10_2: true
-win19cis_rule_18_10_43_10_3: true
-win19cis_rule_18_10_43_10_4: true
-win19cis_rule_18_10_43_12_1: true
-win19cis_rule_18_10_43_13_1: true
-win19cis_rule_18_10_43_13_2: true
-win19cis_rule_18_10_43_16: true
-win19cis_rule_18_10_43_17: true
-win19cis_rule_18_10_51_1: true
-win19cis_rule_18_10_56_1: true
-win19cis_rule_18_10_57_2_2: true
-win19cis_rule_18_10_57_3_2_1: true
-win19cis_rule_18_10_57_3_3_1: true
-win19cis_rule_18_10_57_3_3_2: true
-win19cis_rule_18_10_57_3_3_3: true
-win19cis_rule_18_10_57_3_3_4: true
-win19cis_rule_18_10_57_3_3_5: true
-win19cis_rule_18_10_57_3_3_6: true
-win19cis_rule_18_10_57_3_9_1: true
-win19cis_rule_18_10_57_3_9_2: true
-win19cis_rule_18_10_57_3_9_3: true
-win19cis_rule_18_10_57_3_9_4: true
-win19cis_rule_18_10_57_3_9_5: true
-win19cis_rule_18_10_57_3_10_1: true
-win19cis_rule_18_10_57_3_10_2: true
-win19cis_rule_18_10_57_3_11_1: true
-win19cis_rule_18_10_57_3_11_2: true
-win19cis_rule_18_10_58_1: true
-win19cis_rule_18_10_59_2: true
-win19cis_rule_18_10_59_3: true
-win19cis_rule_18_10_59_4: true
-win19cis_rule_18_10_63_1: true
-win19cis_rule_18_10_76_2_1: true
+win19cis_rule_18_10_42_5_1: true
+win19cis_rule_18_10_42_5_2: true
+win19cis_rule_18_10_42_6_1_1: true
+win19cis_rule_18_10_42_6_1_2: true
+win19cis_rule_18_10_42_6_3_1: true
+win19cis_rule_18_10_42_7_1: true
+win19cis_rule_18_10_42_10_1: true
+win19cis_rule_18_10_42_10_2: true
+win19cis_rule_18_10_42_10_3: true
+win19cis_rule_18_10_42_10_4: true
+win19cis_rule_18_10_42_12_1: true
+win19cis_rule_18_10_42_13_1: true
+win19cis_rule_18_10_42_13_2: true
+win19cis_rule_18_10_42_13_3: true
+win19cis_rule_18_10_42_16: true
+win19cis_rule_18_10_42_17: true
+win19cis_rule_18_10_50_1: true
+win19cis_rule_18_10_55_1: true
+win19cis_rule_18_10_56_2_2: true
+win19cis_rule_18_10_56_3_2_1: true
+win19cis_rule_18_10_56_3_3_1: true
+win19cis_rule_18_10_56_3_3_2: true
+win19cis_rule_18_10_56_3_3_3: true
+win19cis_rule_18_10_56_3_3_4: true
+win19cis_rule_18_10_56_3_9_1: true
+win19cis_rule_18_10_56_3_9_2: true
+win19cis_rule_18_10_56_3_9_3: true
+win19cis_rule_18_10_56_3_9_4: true
+win19cis_rule_18_10_56_3_9_5: true
+win19cis_rule_18_10_56_3_10_1: true
+win19cis_rule_18_10_56_3_10_2: true
+win19cis_rule_18_10_56_3_11_1: true
+win19cis_rule_18_10_56_3_11_2: true
+win19cis_rule_18_10_57_1: true
+win19cis_rule_18_10_58_2: true
+win19cis_rule_18_10_58_3: true
+win19cis_rule_18_10_58_4: true
+win19cis_rule_18_10_62_1: true
+win19cis_rule_18_10_75_2_1: true
+win19cis_rule_18_10_79_1: true
+win19cis_rule_18_10_79_2: true
 win19cis_rule_18_10_80_1: true
 win19cis_rule_18_10_80_2: true
+win19cis_rule_18_10_80_3: true
 win19cis_rule_18_10_81_1: true
-win19cis_rule_18_10_81_2: true
-win19cis_rule_18_10_81_3: true
-win19cis_rule_18_10_82_1: true
-win19cis_rule_18_10_82_2: true
-win19cis_rule_18_10_87_1: true
-win19cis_rule_18_10_87_2: true
+win19cis_rule_18_10_86_1: true
+win19cis_rule_18_10_86_2: true
 # WINRM CONTROLS #
 # Setting The Following Controls To True Will Break the Ansible Connection
 # Setting win_skip_for_test: true -- will skip the controls here even if they are set to true.
-# win19cis_rule_18_10_89_1_1
-# win19cis_rule_18_10_89_1_2
-# win19cis_rule_18_10_89_2_1
-# win19cis_rule_18_10_89_2_2
-# win19cis_rule_18_10_89_2_3
-win19cis_rule_18_10_89_1_1: true
-win19cis_rule_18_10_89_1_2: true
-win19cis_rule_18_10_89_2_1: true
-win19cis_rule_18_10_89_2_2: true
-win19cis_rule_18_10_89_2_3: true
-# This control will have to be set to Enabled (1) to allow for continued remote management via Ansible following
-# machine restart. The CIS standard calls for 0 but doing so will break all remote connections to the system.
-win19cis_rule_18_10_89_1_3: true
-win19cis_rule_18_10_89_2_4: true
-win19cis_rule_18_10_90_1: true
+# win19cis_rule_18_10_88_1_1
+# win19cis_rule_18_10_88_1_2
+# win19cis_rule_18_10_88_1_3
+# win19cis_rule_18_10_88_2_1
+# win19cis_rule_18_10_88_2_2
+# win19cis_rule_18_10_88_2_3
+win19cis_rule_18_10_88_1_1: true
+win19cis_rule_18_10_88_1_2: true
+win19cis_rule_18_10_88_1_3: true
+win19cis_rule_18_10_88_2_1: true
+# This control will have to be set to Enabled (1) to allow for continued remote management via Ansible
+# following machine restart. We have it set to skip for testing.
+win19cis_rule_18_10_88_2_2: true
+win19cis_rule_18_10_88_2_3: true
+win19cis_rule_18_10_88_2_4: true
+# Setting win19cis_rule_18_10_89_1 To True Will Break the Ansible Connection
+# Setting win_skip_for_test: true -- will skip the controls here even if they are set to true.
+win19cis_rule_18_10_89_1: true
 # WINRM CONTROLS END #
+win19cis_rule_18_10_91_2_1: true
+win19cis_rule_18_10_92_1_1: true
 win19cis_rule_18_10_92_2_1: true
-win19cis_rule_18_10_93_1_1: true
-win19cis_rule_18_10_93_2_1: true
-win19cis_rule_18_10_93_2_2: true
-win19cis_rule_18_10_93_4_1: true
-win19cis_rule_18_10_93_4_2: true
-win19cis_rule_18_10_93_4_3: true
+win19cis_rule_18_10_92_2_2: true
+win19cis_rule_18_10_92_4_1: true
+win19cis_rule_18_10_92_4_2: true
+win19cis_rule_18_10_92_4_3: true
 
-
-# section19
-win19cis_rule_19_1_3_1: true
-win19cis_rule_19_1_3_2: true
-win19cis_rule_19_1_3_3: true
+# Section19
 win19cis_rule_19_5_1_1: true
 win19cis_rule_19_6_6_1_1: true
-win19cis_rule_19_7_4_1: true
-win19cis_rule_19_7_4_2: true
-win19cis_rule_19_7_7_1: true
-win19cis_rule_19_7_7_2: true
-win19cis_rule_19_7_7_3: true
-win19cis_rule_19_7_7_4: true
-win19cis_rule_19_7_7_5: true
-win19cis_rule_19_7_25_1: true
-win19cis_rule_19_7_40_1: true
-win19cis_rule_19_7_42_2_1: true
+win19cis_rule_19_7_5_1: true
+win19cis_rule_19_7_5_2: true
+win19cis_rule_19_7_8_1: true
+win19cis_rule_19_7_8_2: true
+win19cis_rule_19_7_8_3: true
+win19cis_rule_19_7_8_4: true
+win19cis_rule_19_7_8_5: true
+win19cis_rule_19_7_26_1: true
+win19cis_rule_19_7_42_1: true
+win19cis_rule_19_7_44_2_1: true
 
 # Section 1 Variables
 
@@ -519,12 +595,14 @@ win19cis_rule_19_7_42_2_1: true
 # The recommended state for this setting is 24 Or More passwords.
 # NOTE: As Of the publication of this benchmark, Microsoft has a maximum limit of 24 saved passwords.
 # This may change at a later date but we have left it set up as a variable for that reason.
+# Default: 24
 win19cis_max_passwords_saved: 24
 
 # 1.1.2
 # win19cis_maximum_password_age is the policy setting that defines how long a user can use their
 # password before it expires.
 # The recommended state for this setting is 365 or fewer days, but not 0 (zero).
+# Default: 365
 win19cis_maximum_password_age: 365
 
 # 1.1.3
@@ -533,12 +611,14 @@ win19cis_maximum_password_age: 365
 # between 1 and 999 days. (You may also set the value to 0 to allow immediate password changes.)
 # The default value for this setting is 0 days.
 # The recommended state for this setting is: 1 or more day(s)
+# Default: 1
 win19cis_minimum_password_age: 1
 
 # 1.1.4
 # win19cis_minimum_password_length is the policy setting that determines the least number of characters
 # that make up a password for a user account.
 # The recommended state for this setting is: 14 or more character(s).
+# Default: 14
 win19cis_minimum_password_length: 14
 
 # 1.2.1
@@ -547,18 +627,21 @@ win19cis_minimum_password_length: 14
 # NOTE: If the value for this policy setting is configured to 0, locked-out accounts will remain locked-out
 # until an administrator manually unlocks them.
 # The recommended state for this setting is: 15 or more minute(s).
+# Default: 15
 win19cis_account_lockout_duration: 15
 
 # 1.2.2
 # win19cis_lockout_bad_count is the policy setting that determines the number of failed logon
 # attempts before the account is locked.
 # The recommended state for this setting is: 5 or fewer invalid logon attempt(s), but not 0.
+# Default: 5
 win19cis_bad_login_lockout_count: 5
 
 # 1.2.3
 # win19cis_allow_admin_account_lockout is the policy setting that determines whether the built-in
 # Administrator account is subject to the following Account Lockout Policy settings.
 # 1 = enabled or 0 = disabled
+# Default: 1
 win19cis_allow_admin_account_lockout: 1
 
 # 1.2.4
@@ -567,46 +650,59 @@ win19cis_allow_admin_account_lockout: 1
 # NOTE: If the Account lockout threshold is defined (win19cis_account_lockout_duration), this reset
 # time must be less than or equal to the value for the Account lockout duration setting.
 # The recommended state for this setting is: 15 or more minute(s).
+# Default: 15
 win19cis_account_lockout_counter_reset: 15
 
 # Section 2 Variables
 
-# 2.2.18
-# is_hyperv_installed is Hyper-V installed
+# 2.2.19
+# win19cis_hyperv_installed is Hyper-V installed
+# Default: false
 win19cis_hyperv_installed: false
 
 # 2.2.33
-# Window Manager\Window Manager Group only exists on non-Core installations
-# windows_installation_type should be 'Server Core' for Core installations
-# This is a variable to determine if Windows Manager should be included in this step
-win19cis_increase_scheduling_priority_users: '{{ ["Administrators"] if (windows_installation_type=="Server Core") else (["Administrators","Window Manager\Window Manager Group"]) }}'
+# win19cis_iis_and_web_services_installed allows the Ansible to properly configure the member server with
+# IIS_IUSRS' (MS only) (when the Web Server (IIS) Role with Web Services Role Service is installed)'
+# Default: false
+win19cis_iis_and_web_services_installed: false
 
-# 2.2.37
+# 2.2.34
+# Window Manager\Window Manager Group only exists on non-Core installations
+# prelim_windows_installation_type should be 'Server Core' for Core installations
+# This is a variable to determine if Windows Manager should be included in this step
+win19cis_increase_scheduling_priority_users: '{{ ["Administrators"] if (prelim_windows_installation_type == "Server Core") else (["Administrators", "Window Manager\Window Manager Group"]) }}'
+
+# 2.2.38
 # win19cis_exchange_server_running is the policy setting that determines which users can change the auditing options for
 # files and directories and clear the Security log. Setting to true will set both groups to be added.
 # False will only add Administrators.
 # True will add administrators and (when Exchange is running in the environment) Exchange Servers.
 # The recommended state for this setting is: Administrators and when Exchange is running in the environment) Exchange Servers.
+# Default: false
 win19cis_exchange_server_running: false
 
 # 2.3.1.4
 # win19cis_admin_username is the name the administrator account will be renamed to
+# Default: adminchangethis
 win19cis_admin_username: adminchangethis
 
 # 2.3.1.5
 # win19cis_guest_username is the name the guest account will be renamed to
+# Default: guestchangethis
 win19cis_guest_username: guestchangethis
 
 # 2.3.6.5
 # win19cis_domain_member_maximum_password_age is the policy setting that determines the maximum allowable age for a
 # computer account password. By default, domain members automatically change their domain passwords every 30 days.
 # The recommended state for this setting is: 30 or fewer days, but not 0.
+# Default: 30
 win19cis_domain_member_maximum_password_age: 30
 
 # 2.3.7.3
 # win19cis_inactivity_timeout_seconds is the variable used to set when Windows notices inactivity of a logon session,
 # and if the amount of inactive time exceeds the inactivity limit, then the screen saver will run, locking the session.
 # The recommended state for this setting is: 900 or fewer second(s), but not 0.
+# Default: 900
 win19cis_inactivity_timeout_seconds: 900
 
 # 2.3.7.4
@@ -637,81 +733,130 @@ win19cis_legal_notice_caption: "DoD Notice and Consent Banner"
 # win19cis_cached_logons_count is the number that is assigned to this policy setting and indicates the number of users whose
 # logon information the computer will cache locally. If this value is set to 0, the logon cache feature is disabled.
 # The recommended state for this setting is: 4 or fewer logon(s).
+# Default: 1
 win19cis_cached_logons_count: 1
 
 # 2.3.7.7
 # win19cis_password_expiry_warning_days is the policy setting that determines how far in advance users are warned that their password will expire.
 # The recommended state for this setting is: between 5 and 14 days.
+# Default: 14
 win19cis_password_expiry_warning_days: 14
+
+# 2.3.7.9
+# win19cis_sc_remove_option is the setting determines what happens when the smart card for a logged-on user is removed from the smart card reader.
+# Note: Possible Valid Settings
+# 1 - Lock Workstation
+# 2 - Force Logoff
+# 3 - Disconnect if a Remote Desktop Services session
+# Default: 1
+win19cis_sc_remove_option: 1
 
 # 2.3.9.1
 # win19cis_smb_auto_disconnect_time is the policy setting that allows you to specify the amount of continuous idle time that must pass in an
 # SMB session before the session is suspended because of inactivity.
 # The recommended state for this setting is: 15 or fewer minute(s).
+# Default: 15
 win19cis_smb_auto_disconnect_time: 15
+
+# 2.3.9.5
+# win19cis_smb_server_name_hardening_level is the policy setting controls the level of validation a computer with shared
+# folders or printers (the server) performs on the service principal name (SPN) that is provided by the client computer when
+# it establishes a session using the server message block (SMB) protocol.
+# Note: Possible Valid Settings
+# 1 - Accept if provided by client
+# 2 - Required from client
+# Default: 1
+win19cis_smb_server_name_hardening_level: 1
+
+# 2.3.11.4
+# win19cis_legacy_rc4_hmac_md5_support is the setting to configure the machine to support older kerberos.
+# Note: Some legacy applications and OSes may still require RC4_HMAC_MD5 - we recommend you test in your environment
+# and verify whether you can safely remove it.
+# CIS prefers keeping this setting as False to satisfy the requirements.
+# Default: false
+win19cis_legacy_rc4_hmac_md5_support: false
+
+# 2.3.11.8
+# win19cis_ldap_client_integrity is the policy setting determines the level of data signing that is requested on
+# behalf of clients that issue LDAP BIND requests. Configuring this setting to Require signing also conforms to the benchmark.
+# The recommended state for this setting is: Negotiate signing.
+# Note: Possible Valid Settings
+# 1 - Negotiate signing
+# 2 - Require signing
+# Default: 1
+win19cis_ldap_client_integrity: 1
+
+# 2.3.17.2
+# win19cis_consent_prompt_behavior_admin is the policy setting controls the behavior of the elevation prompt for administrators.
+# Configuring this setting to Prompt for credentials on the secure desktop also conforms to the benchmark.
+# The recommended state for this setting is: Prompt for consent on the secure desktop.
+# Note: Possible Valid Settings
+# 1 - Prompt for credentials on the secure desktop
+# 2 - Prompt for consent on the secure desktop
+# Default: 2
+win19cis_consent_prompt_behavior_admin: 2
 
 # Section 9 Variables
 
-# 9.1.5
+# 9.1.4
 # win19cis_domain_firewall_log_path is the path to the domain firewall log files. The control suggests %SystemRoot%\System32\logfiles\firewall\domainfw.log
 # This is a variable to give some leeway on where to store these log files
+# Default: '%SystemRoot%\System32\logfiles\firewall\domainfw.log'
 win19cis_domain_firewall_log_path: '%SystemRoot%\System32\logfiles\firewall\domainfw.log'
 
-# 9.1.6
+# 9.1.5
 # win19cis_domain_firewall_log_size is the size of the log file generated
 # To conform to CIS standards the value should be 16,384 or greater. Value is in KB
+# Default: 16384
 win19cis_domain_firewall_log_size: 16384
 
-# 9.2.5
+# 9.2.4
 # private_firewall_log_path is the path to the private firewall log files. The control suggests %SystemRoot%\System32\logfiles\firewall\privatefw.log
 # This is a variable to give some leeway on where to store these log files
+# Default: '%SystemRoot%\System32\logfiles\firewall\privatefw.log'
 win19cis_private_firewall_log_path: '%SystemRoot%\System32\logfiles\firewall\privatefw.log'
 
-# 9.2.6
+# 9.2.5
 # private_firewall_log_size is the size of the log file
 # To conform to CIS standards the value should be 16,384 or greater. Value is in KB
+# Default: 16384
 win19cis_private_firewall_log_size: 16384
 
-# 9.3.7
+# 9.3.6
 # win19cis_public_firewall_log_path is the path to the public firewall log file. The control suggests %SystemRoot%\System32\logfiles\firewall\publicfw.log
 # This is a variable to give some leeway on where to store these log files
+# Default: '%SystemRoot%\System32\logfiles\firewall\publicfw.log'
 win19cis_public_firewall_log_path: '%SystemRoot%\System32\logfiles\firewall\publicfw.log'
 
-# 9.3.8
+# 9.3.7
 # public_firewall_log_size is the size of the log file
 # To conform to CIS standards the value should be 16,384 or greater. Value is in KB
+# Default: 16384
 win19cis_public_firewall_log_size: 16384
 
 # Section 18 Variables
 
-# 18.4.6
+# 18.4.8
 # win19cis_netbt_nodetype is the node type value in HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\NetBT\Parameters:NodeType
 # Options are a B-node value of 1, P-node value of 2, M-node value of 4, and H-node value of 8. P-node is the recommended setting from CIS
+# Default: 2
 win19cis_netbt_nodetype: 2
 
 # 18.5.9
 # win19cis_screen_saver_grace_period is the grace period between when the screen saver is launched and when the console is actually
 # locked automatically when screen saver locking is enabled.
 # The recommended state for this setting is: Enabled: 5 or fewer seconds.
+# Default: 5
 win19cis_screen_saver_grace_period: 5
 
 # 18.5.12
 # win19cis_log_threshold_audit_event is the setting that can generate a security audit in the Security event log when the
 # log reaches a user-defined threshold.
 # The recommended state for this setting is: Enabled: 90% or less.
+# Default: 90
 win19cis_log_threshold_audit_event: 90
 
 # 18.6.4.1
-# win19cis_doh_policy os the setting determines if DNS over HTTPS (DoH) is used by the system. DNS over HTTPS (DoH) is a protocol
-# for performing remote Domain Name System (DNS) resolution over the Hypertext Transfer Protocol Secure (HTTPS).
-# The recommended state for this setting is: Enabled: Allow DoH.
-# Note: Possible Valid Settings
-# 2 - Enabled: Allow DoH
-# 3 - Enabled: Require DoH
-# Default: 2
-win19cis_doh_policy: 2
-
-# 18.6.4.2
 # win19cis_enable_netbios_policy is the policy that setting specifies if the Domain Name System (DNS) client will perform name resolution
 # over Network Basic Input/Output System (NetBIOS).
 # The recommended state for this setting is: Enabled: Disable NetBIOS name resolution on public networks.
@@ -730,6 +875,55 @@ win19cis_enable_netbios_policy: 2
 # Default: 0
 win19cis_force_kerberos_for_rpc: 0
 
+# 18.9.5.2
+# win19cis_virtualization_based_security_level is the the policy setting specifies whether Virtualization Based Security (VBS) is enabled.
+# VBS uses the Windows Hypervisor to provide support for security services.
+# The recommended state for this setting is: Secure Boot or Secure Boot and DMA Protection.
+# 1 - Secure Boot
+# 3 - Secure Boot and DMA Protection
+# Default: 3
+win19cis_virtualization_based_security_level: 3
+
+# 18.9.25.1
+# win19cis_laps_backupdirectory_value is the policy setting configures which directory Windows LAPS will
+# use to back up the local admin account password. The recommended state for this setting is:
+# Enabled: Active Directory or Enabled: Azure Active Directory.
+# This group policy setting is backed by the following registry location with a REG_DWORD value of 1 or 2.
+# 1 - Enabled: Active Directory
+# 2 - Enabled: Azure Active Directory
+# Default: 1
+win19cis_laps_backupdirectory_value: 1
+
+# 18.9.25.5
+# win19cis_laps_passwordlength_value is the value backed by the following registry REG_DWORD value of 15 or more.
+# Use this setting to configure the length of the password of the managed local administrator account.
+# The recommended state for this setting is: Enabled: 15 or more.
+# Default: 15
+win19cis_laps_passwordlength_value: 15
+
+# 18.9.25.6
+# win19cis_laps_passwordagedays_value is the value backed by the following registry REG_DWORD value of 30 or fewer.
+# This setting controls the maximum password age of the managed local administrator account. The defaults setting is 30 days.
+# The recommended state for this setting is: Enabled: 30 or fewer.
+# Default: 30
+win19cis_laps_passwordagedays_value: 30
+
+# 18.9.25.7
+# win19cis_laps_postauthenticationresetdelay_value is the value backed by the following registry REG_DWORD value of 8 or less, but not 0.
+# Use this setting to specify the amount of time (in hours) to wait after an authentication before executing the specified post-authentication actions.
+# The recommended state for this setting is: Enabled: 8 or fewer hours, but not 0.
+# Default: 8
+win19cis_laps_postauthenticationresetdelay_value: 8
+
+# 18.9.25.8
+# win19cis_laps_postauthenticationactions_value is the value backed by the following registry REG_DWORD value of 3 or 5.
+# Use this setting to specify the actions to take upon expiration of the configured grace period.
+# The recommended state for this setting is: Enabled: Reset the password and logoff the managed account or higher.
+# 3 - Reset the password and logoff the managed account
+# 5 - Reset the password and reboot the device
+# Default: 3
+win19cis_laps_postauthenticationactions_value: 3
+
 # 18.10.13.1
 # win19cis_require_pin_for_pairing is the policy setting that controls whether or not a PIN is required for pairing to a wireless display device.
 # The recommended state for this setting is: Enabled: First Time OR Enabled: Always.
@@ -746,42 +940,48 @@ win19cis_require_pin_for_pairing: 1
 # Default: 1
 win19cis_allow_telemetry: 1
 
-# 18.10.26.1.2
+# 18.10.25.1.2
 # win19cis_application_max_log_file_size is the setting that specifies the maximum size of the log file in kilobytes. The maximum log file size can be
 # configured between 1 megabyte (1,024 kilobytes) and 4 terabytes (4,194,240 kilobytes) in kilobyte increments.
 # The recommended state for this setting is: Enabled: 32,768 or greater
+# Default: 32768
 win19cis_application_max_log_file_size: 32768
 
-# 18.10.26.2.2
+# 18.10.25.2.2
 # win19cis_security_max_log_file_size is the setting that specifies the maximum size of the log file in kilobytes. The maximum log file size can
 # be configured between 1 megabyte (1,024 kilobytes) and 4 terabytes (4,194,240 kilobytes) in kilobyte increments.
 # The recommended state for this setting is: Enabled: 196,608 or greater.
+# Default: 196608
 win19cis_security_max_log_file_size: 196608
 
-# 18.10.26.3.2
+# 18.10.25.3.2
 # win19cis_setup_max_log_file_size is the setting that specifies the maximum size of the log file in kilobytes. The maximum log file size can be
 # configured between 1 megabyte (1,024 kilobytes) and 4 terabytes (4,194,240 kilobytes) in kilobyte increments.#
 # The recommended state for this setting is: Enabled: 32,768 or greater.
+# Default: 32768
 win19cis_setup_max_log_file_size: 32768
 
-# 18.10.26.4.2
+# 18.10.25.4.2
 # win19cis_system_max_log_file_size is the setting that specifies the maximum size of the log file in kilobytes. The maximum log file size
 # can be configured between 1 megabyte (1,024 kilobytes) and 4 terabytes (4,194,240 kilobytes) in kilobyte increments.
 # The recommended state for this setting is: Enabled: 32,768 or greater.
+# Default: 32768
 win19cis_system_max_log_file_size: 32768
 
-# 18.10.57.3.10.1
+# 18.10.56.3.10.1
 # win19cis_idle_rdp_session_disconnect_time is the setting that allows you to specify the maximum amount of time that an active Remote Desktop
 # Services session can be idle (without user input) before it is automatically disconnected.
 # The recommended state for this setting is: Enabled: 15 minutes or less, but not Never (0).
 # 1 min = 60000, 5 min = 300000, 10 min = 600000, 15 min = 900000
+# Default: 900000
 win19cis_idle_rdp_session_disconnect_time: 900000
 
-# 18.10.80.2
+# 18.10.79.2
 # win19cis_allow_windows_ink_workspace is the policy setting that determines whether Windows Ink items are allowed above the lock screen.
 # The recommended state for this setting is: Enabled: On, but disallow access above lock OR Enabled: Disabled.
 # 0 - Enabled: Disabled
 # 1 - Enabled: On, but disallow access above lock
+# Default: 1
 win19cis_allow_windows_ink_workspace: 1
 
 # 18.10.93.4.2
@@ -789,10 +989,3 @@ win19cis_allow_windows_ink_workspace: 1
 # Recommended setting: Enabled: 180 or more days
 # Default: 180
 win19cis_defer_feature_updates_period_in_days: 180
-
-# Section 19 Variables
-
-# 19.1.3.3
-# win19cis_screen_saver_timeout is the setting that specifies how much user idle time must elapse before the screen saver is launched.
-# The recommended state for this setting is: Enabled: 900 seconds or fewer, but not 0.
-win19cis_screen_saver_timeout: 900

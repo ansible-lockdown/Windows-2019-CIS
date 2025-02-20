@@ -1,0 +1,490 @@
+---
+
+- name: "19.5.1.1 | GPO | Ensure Turn off toast notifications on the lock screen is set to Enabled."
+  when:
+    - win19cis_rule_19_5_1_1
+    - "'(Skipped)' not in item"
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_19.5.1.1
+    - patch
+    - toast
+    - gpo
+    - NIST800-171_3.4.2
+    - NIST800-171_3.4.6
+    - NIST800-171_3.4.7
+    - NIST800-53_CM-6
+    - NIST800-53_CM-7
+    - NIST800-53R5_CM-6
+    - NIST800-53R5_CM-7
+  ansible.windows.win_shell: |
+    $gpoName = "{{ item }}"
+    $registryKeyPath = "HKCU\SOFTWARE\Policies\Microsoft\Windows\CurrentVersion\PushNotifications"
+    $registryValueName = "NoToastApplicationNotificationOnLockScreen"
+    $type = "DWORD"
+    $desiredValue = 1
+
+    # Get the current value of the registry key in the GPO
+    $currentValue = (Get-GPRegistryValue -Name $gpoName -Key $registryKeyPath -ValueName $registryValueName -ErrorAction SilentlyContinue).Value
+
+    # Check if the current value is equal to the desired value
+    if ($currentValue -ne $desiredValue) {
+        # If not, set the registry value to the desired value
+        Set-GPRegistryValue -Name $gpoName -Key $registryKeyPath -ValueName $registryValueName -Type $type -Value $desiredValue
+        Write-Output "Patched"
+    } else {
+        Write-Output "No Change Needed"
+    }
+  loop:
+    - "{{ win19cis_l1_user_gpo_name ~ ( '(Skipped)' if not win19cis_l1_user_gpo else '' ) }}"
+  loop_control:
+    label: "{{ item }}"
+  changed_when: '"Patched" in rule_19_5_1_1_results.stdout'
+  register: rule_19_5_1_1_results
+
+- name: "19.6.6.1.1 | GPO | Ensure Turn off Help Experience Improvement Program is set to Enabled."
+  when:
+    - win19cis_rule_19_6_6_1_1
+    - "'(Skipped)' not in item"
+  tags:
+    - level2-domaincontroller
+    - level2-memberserver
+    - rule_19.6.6.1.1
+    - patch
+    - help
+    - gpo
+    - NIST800-171_3.4.2
+    - NIST800-171_3.4.6
+    - NIST800-171_3.4.7
+    - NIST800-53_CM-6
+    - NIST800-53_CM-7
+    - NIST800-53R5_CM-6
+    - NIST800-53R5_CM-7
+  ansible.windows.win_shell: |
+    $gpoName = "{{ item }}"
+    $registryKeyPath = "HKCU\SOFTWARE\Policies\Microsoft\Assistance\Client\1.0"
+    $registryValueName = "NoImplicitFeedback"
+    $type = "DWORD"
+    $desiredValue = 1
+
+    # Get the current value of the registry key in the GPO
+    $currentValue = (Get-GPRegistryValue -Name $gpoName -Key $registryKeyPath -ValueName $registryValueName -ErrorAction SilentlyContinue).Value
+
+    # Check if the current value is equal to the desired value
+    if ($currentValue -ne $desiredValue) {
+        # If not, set the registry value to the desired value
+        Set-GPRegistryValue -Name $gpoName -Key $registryKeyPath -ValueName $registryValueName -Type $type -Value $desiredValue
+        Write-Output "Patched"
+    } else {
+        Write-Output "No Change Needed"
+    }
+  loop:
+    - "{{ win19cis_l2_user_gpo_name ~ ( '(Skipped)' if not win19cis_l2_user_gpo else '' ) }}"
+  loop_control:
+    label: "{{ item }}"
+  changed_when: '"Patched" in rule_19_6_6_1_1_results.stdout'
+  register: rule_19_6_6_1_1_results
+
+- name: "19.7.5.1 | GPO | Ensure 'Do not preserve zone information in file attachments' is set to Disabled."
+  when:
+    - win19cis_rule_19_7_5_1
+    - "'(Skipped)' not in item"
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_19.7.5.1
+    - patch
+    - attachments
+    - gpo
+    - NIST800-171_3.4.2
+    - NIST800-53_CM-6_b
+    - NIST800-53R5_CM-6_b
+  ansible.windows.win_shell: |
+    $gpoName = "{{ item }}"
+    $registryKeyPath = "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Attachments"
+    $registryValueName = "SaveZoneInformation"
+    $type = "DWORD"
+    $desiredValue = 2
+
+    # Get the current value of the registry key in the GPO
+    $currentValue = (Get-GPRegistryValue -Name $gpoName -Key $registryKeyPath -ValueName $registryValueName -ErrorAction SilentlyContinue).Value
+
+    # Check if the current value is equal to the desired value
+    if ($currentValue -ne $desiredValue) {
+        # If not, set the registry value to the desired value
+        Set-GPRegistryValue -Name $gpoName -Key $registryKeyPath -ValueName $registryValueName -Type $type -Value $desiredValue
+        Write-Output "Patched"
+    } else {
+        Write-Output "No Change Needed"
+    }
+  loop:
+    - "{{ win19cis_l1_user_gpo_name ~ ( '(Skipped)' if not win19cis_l1_user_gpo else '' ) }}"
+  loop_control:
+    label: "{{ item }}"
+  changed_when: '"Patched" in rule_19_7_5_1_results.stdout'
+  register: rule_19_7_5_1_results
+
+- name: "19.7.5.2 | GPO | Ensure Notify antivirus programs when opening attachments is set to Enabled."
+  when:
+    - win19cis_rule_19_7_5_2
+    - "'(Skipped)' not in item"
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_19.7.5.2
+    - patch
+    - antivirus
+    - gpo
+    - NIST800-171_3.14.2
+    - NIST800-171_3.14.4
+    - NIST800-171_3.14.5
+    - NIST800-53_SI-3
+    - NIST800-53R5_SI-3
+  ansible.windows.win_shell: |
+    $gpoName = "{{ item }}"
+    $registryKeyPath = "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Attachments"
+    $registryValueName = "ScanWithAntiVirus"
+    $type = "DWORD"
+    $desiredValue = 3
+
+    # Get the current value of the registry key in the GPO
+    $currentValue = (Get-GPRegistryValue -Name $gpoName -Key $registryKeyPath -ValueName $registryValueName -ErrorAction SilentlyContinue).Value
+
+    # Check if the current value is equal to the desired value
+    if ($currentValue -ne $desiredValue) {
+        # If not, set the registry value to the desired value
+        Set-GPRegistryValue -Name $gpoName -Key $registryKeyPath -ValueName $registryValueName -Type $type -Value $desiredValue
+        Write-Output "Patched"
+    } else {
+        Write-Output "No Change Needed"
+    }
+  loop:
+    - "{{ win19cis_l1_user_gpo_name ~ ( '(Skipped)' if not win19cis_l1_user_gpo else '' ) }}"
+  loop_control:
+    label: "{{ item }}"
+  changed_when: '"Patched" in rule_19_7_5_2_results.stdout'
+  register: rule_19_7_5_2_results
+
+- name: "19.7.8.1 | GPO | Ensure Configure Windows spotlight on lock screen is set to Disabled."
+  when:
+    - win19cis_rule_19_7_8_1
+    - "'(Skipped)' not in item"
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_19.7.8.1
+    - patch
+    - cloudcontent
+    - gpo
+    - NIST800-171_3.1.10
+    - NIST800-53_AC-11
+    - NIST800-53R5_AC-11
+  ansible.windows.win_shell: |
+    $gpoName = "{{ item }}"
+    $registryKeyPath = "HKCU\SOFTWARE\Policies\Microsoft\Windows\CloudContent"
+    $registryValueName = "ConfigureWindowsSpotlight"
+    $type = "DWORD"
+    $desiredValue = 2
+
+    # Get the current value of the registry key in the GPO
+    $currentValue = (Get-GPRegistryValue -Name $gpoName -Key $registryKeyPath -ValueName $registryValueName -ErrorAction SilentlyContinue).Value
+
+    # Check if the current value is equal to the desired value
+    if ($currentValue -ne $desiredValue) {
+        # If not, set the registry value to the desired value
+        Set-GPRegistryValue -Name $gpoName -Key $registryKeyPath -ValueName $registryValueName -Type $type -Value $desiredValue
+        Write-Output "Patched"
+    } else {
+        Write-Output "No Change Needed"
+    }
+  loop:
+    - "{{ win19cis_l1_user_gpo_name ~ ( '(Skipped)' if not win19cis_l1_user_gpo else '' ) }}"
+  loop_control:
+    label: "{{ item }}"
+  changed_when: '"Patched" in rule_19_7_8_1_results.stdout'
+  register: rule_19_7_8_1_results
+
+- name: "19.7.8.2 | GPO | Ensure Do not suggest third-party content in Windows spotlight is set to Enabled."
+  when:
+    - win19cis_rule_19_7_8_2
+    - "'(Skipped)' not in item"
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_19.7.8.2
+    - patch
+    - cloudcontent
+    - gpo
+    - NIST800-171_3.4.6
+    - NIST800-171_3.4.7
+    - NIST800-53_CM-6_b
+    - NIST800-53R5_CM-6_b
+  ansible.windows.win_shell: |
+    $gpoName = "{{ item }}"
+    $registryKeyPath = "HKCU\SOFTWARE\Policies\Microsoft\Windows\CloudContent"
+    $registryValueName = "DisableThirdPartySuggestions"
+    $type = "DWORD"
+    $desiredValue = 1
+
+    # Get the current value of the registry key in the GPO
+    $currentValue = (Get-GPRegistryValue -Name $gpoName -Key $registryKeyPath -ValueName $registryValueName -ErrorAction SilentlyContinue).Value
+
+    # Check if the current value is equal to the desired value
+    if ($currentValue -ne $desiredValue) {
+        # If not, set the registry value to the desired value
+        Set-GPRegistryValue -Name $gpoName -Key $registryKeyPath -ValueName $registryValueName -Type $type -Value $desiredValue
+        Write-Output "Patched"
+    } else {
+        Write-Output "No Change Needed"
+    }
+  loop:
+    - "{{ win19cis_l1_user_gpo_name ~ ( '(Skipped)' if not win19cis_l1_user_gpo else '' ) }}"
+  loop_control:
+    label: "{{ item }}"
+  changed_when: '"Patched" in rule_19_7_8_2_results.stdout'
+  register: rule_19_7_8_2_results
+
+- name: "19.7.8.3 | GPO | Ensure Do not use diagnostic data for tailored experiences is set to Enabled."
+  when:
+    - win19cis_rule_19_7_8_3
+    - "'(Skipped)' not in item"
+  tags:
+    - level2-domaincontroller
+    - level2-memberserver
+    - rule_19.7.8.3
+    - patch
+    - cloudcontent
+    - gpo
+    - NIST800-171_3.4.6
+    - NIST800-171_3.4.7
+    - NIST800-53_SI-4
+    - NIST800-53R5_SI-4
+  ansible.windows.win_shell: |
+    $gpoName = "{{ item }}"
+    $registryKeyPath = "HKCU\SOFTWARE\Policies\Microsoft\Windows\CloudContent"
+    $registryValueName = "DisableTailoredExperiencesWithDiagnosticData"
+    $type = "DWORD"
+    $desiredValue = 1
+
+    # Get the current value of the registry key in the GPO
+    $currentValue = (Get-GPRegistryValue -Name $gpoName -Key $registryKeyPath -ValueName $registryValueName -ErrorAction SilentlyContinue).Value
+
+    # Check if the current value is equal to the desired value
+    if ($currentValue -ne $desiredValue) {
+        # If not, set the registry value to the desired value
+        Set-GPRegistryValue -Name $gpoName -Key $registryKeyPath -ValueName $registryValueName -Type $type -Value $desiredValue
+        Write-Output "Patched"
+    } else {
+        Write-Output "No Change Needed"
+    }
+  loop:
+    - "{{ win19cis_l2_user_gpo_name ~ ( '(Skipped)' if not win19cis_l2_user_gpo else '' ) }}"
+  loop_control:
+    label: "{{ item }}"
+  changed_when: '"Patched" in rule_19_7_8_3_results.stdout'
+  register: rule_19_7_8_3_results
+
+- name: "19.7.8.4 | GPO | Ensure Turn off all Windows spotlight features is set to Enabled."
+  when:
+    - win19cis_rule_19_7_8_4
+    - "'(Skipped)' not in item"
+  tags:
+    - level2-domaincontroller
+    - level2-memberserver
+    - rule_19.7.8.4
+    - patch
+    - cloudcontent
+    - gpo
+    - NIST800-171_3.4.2
+    - NIST800-171_3.4.6
+    - NIST800-171_3.4.7
+    - NIST800-53_CM-6
+    - NIST800-53_CM-7
+    - NIST800-53R5_CM-6
+    - NIST800-53R5_CM-7
+  ansible.windows.win_shell: |
+    $gpoName = "{{ item }}"
+    $registryKeyPath = "HKCU\SOFTWARE\Policies\Microsoft\Windows\CloudContent"
+    $registryValueName = "DisableWindowsSpotlightFeatures"
+    $type = "DWORD"
+    $desiredValue = 1
+
+    # Get the current value of the registry key in the GPO
+    $currentValue = (Get-GPRegistryValue -Name $gpoName -Key $registryKeyPath -ValueName $registryValueName -ErrorAction SilentlyContinue).Value
+
+    # Check if the current value is equal to the desired value
+    if ($currentValue -ne $desiredValue) {
+        # If not, set the registry value to the desired value
+        Set-GPRegistryValue -Name $gpoName -Key $registryKeyPath -ValueName $registryValueName -Type $type -Value $desiredValue
+        Write-Output "Patched"
+    } else {
+        Write-Output "No Change Needed"
+    }
+  loop:
+    - "{{ win19cis_l2_user_gpo_name ~ ( '(Skipped)' if not win19cis_l2_user_gpo else '' ) }}"
+  loop_control:
+    label: "{{ item }}"
+  changed_when: '"Patched" in rule_19_7_8_4_results.stdout'
+  register: rule_19_7_8_4_results
+
+- name: "19.7.8.5 | GPO | Ensure Turn off Spotlight collection on Desktop is set to Enabled."
+  when:
+    - win19cis_rule_19_7_8_5
+    - "'(Skipped)' not in item"
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_19.7.8.5
+    - patch
+    - cloudcontent
+    - gpo
+    - NIST800-171_3.4.2
+    - NIST800-171_3.4.6
+    - NIST800-171_3.4.7
+    - NIST800-53_CM-6
+    - NIST800-53_CM-7
+    - NIST800-53R5_CM-6
+    - NIST800-53R5_CM-7
+  ansible.windows.win_shell: |
+    $gpoName = "{{ item }}"
+    $registryKeyPath = "HKCU\SOFTWARE\Policies\Microsoft\Windows\CloudContent"
+    $registryValueName = "DisableSpotlightCollectionOnDesktop"
+    $type = "DWORD"
+    $desiredValue = 1
+
+    # Get the current value of the registry key in the GPO
+    $currentValue = (Get-GPRegistryValue -Name $gpoName -Key $registryKeyPath -ValueName $registryValueName -ErrorAction SilentlyContinue).Value
+
+    # Check if the current value is equal to the desired value
+    if ($currentValue -ne $desiredValue) {
+        # If not, set the registry value to the desired value
+        Set-GPRegistryValue -Name $gpoName -Key $registryKeyPath -ValueName $registryValueName -Type $type -Value $desiredValue
+        Write-Output "Patched"
+    } else {
+        Write-Output "No Change Needed"
+    }
+  loop:
+    - "{{ win19cis_l1_user_gpo_name ~ ( '(Skipped)' if not win19cis_l1_user_gpo else '' ) }}"
+  loop_control:
+    label: "{{ item }}"
+  changed_when: '"Patched" in rule_19_7_8_5_results.stdout'
+  register: rule_19_7_8_5_results
+
+- name: "19.7.26.1 | GPO | Ensure Prevent users from sharing files within their profile is set to Enabled."
+  when:
+    - win19cis_rule_19_7_26_1
+    - "'(Skipped)' not in item"
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_19.7.26.1
+    - patch
+    - profiles
+    - sharing
+    - gpo
+    - NIST800-171_3.1.1
+    - NIST800-53_AC-3
+    - NIST800-53R5_AC-3
+  ansible.windows.win_shell: |
+    $gpoName = "{{ item }}"
+    $registryKeyPath = "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer"
+    $registryValueName = "NoInplaceSharing"
+    $type = "DWORD"
+    $desiredValue = 1
+
+    # Get the current value of the registry key in the GPO
+    $currentValue = (Get-GPRegistryValue -Name $gpoName -Key $registryKeyPath -ValueName $registryValueName -ErrorAction SilentlyContinue).Value
+
+    # Check if the current value is equal to the desired value
+    if ($currentValue -ne $desiredValue) {
+        # If not, set the registry value to the desired value
+        Set-GPRegistryValue -Name $gpoName -Key $registryKeyPath -ValueName $registryValueName -Type $type -Value $desiredValue
+        Write-Output "Patched"
+    } else {
+        Write-Output "No Change Needed"
+    }
+  loop:
+    - "{{ win19cis_l1_user_gpo_name ~ ( '(Skipped)' if not win19cis_l1_user_gpo else '' ) }}"
+  loop_control:
+    label: "{{ item }}"
+  changed_when: '"Patched" in rule_19_7_26_1_results.stdout'
+  register: rule_19_7_26_1_results
+
+- name: "19.7.42.1 | GPO | Ensure Always install with elevated privileges is set to Disabled."
+  when:
+    - win19cis_rule_19_7_42_1
+    - "'(Skipped)' not in item"
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_19.7.42.1
+    - patch
+    - permissions
+    - gpo
+    - NIST800-171_3.1.1
+    - NIST800-53_AC-2_9
+    - NIST800-53R5_AC-2_9
+  ansible.windows.win_shell: |
+    $gpoName = "{{ item }}"
+    $registryKeyPath = "HKCU\SOFTWARE\Policies\Microsoft\Windows\Installer"
+    $registryValueName = "AlwaysInstallElevated"
+    $type = "DWORD"
+    $desiredValue = 0
+
+    # Get the current value of the registry key in the GPO
+    $currentValue = (Get-GPRegistryValue -Name $gpoName -Key $registryKeyPath -ValueName $registryValueName -ErrorAction SilentlyContinue).Value
+
+    # Check if the current value is equal to the desired value
+    if ($currentValue -ne $desiredValue) {
+        # If not, set the registry value to the desired value
+        Set-GPRegistryValue -Name $gpoName -Key $registryKeyPath -ValueName $registryValueName -Type $type -Value $desiredValue
+        Write-Output "Patched"
+    } else {
+        Write-Output "No Change Needed"
+    }
+  loop:
+    - "{{ win19cis_l1_user_gpo_name ~ ( '(Skipped)' if not win19cis_l1_user_gpo else '' ) }}"
+  loop_control:
+    label: "{{ item }}"
+  changed_when: '"Patched" in rule_19_7_42_1_results.stdout'
+  register: rule_19_7_42_1_results
+
+- name: "19.7.44.2.1 | GPO | Ensure Prevent Codec Download is set to Enabled."
+  when:
+    - win19cis_rule_19_7_44_2_1
+    - "'(Skipped)' not in item"
+  tags:
+    - level2-domaincontroller
+    - level2-memberserver
+    - rule_19.7.44.2.1
+    - patch
+    - codec
+    - gpo
+    - NIST800-171_3.4.2
+    - NIST800-53_CM-6
+    - NIST800-53R5_CM-6
+  ansible.windows.win_shell: |
+    $gpoName = "{{ item }}"
+    $registryKeyPath = "HKCU\SOFTWARE\Policies\Microsoft\WindowsMediaPlayer"
+    $registryValueName = "PreventCodecDownload"
+    $type = "DWORD"
+    $desiredValue = 1
+
+    # Get the current value of the registry key in the GPO
+    $currentValue = (Get-GPRegistryValue -Name $gpoName -Key $registryKeyPath -ValueName $registryValueName -ErrorAction SilentlyContinue).Value
+
+    # Check if the current value is equal to the desired value
+    if ($currentValue -ne $desiredValue) {
+        # If not, set the registry value to the desired value
+        Set-GPRegistryValue -Name $gpoName -Key $registryKeyPath -ValueName $registryValueName -Type $type -Value $desiredValue
+        Write-Output "Patched"
+    } else {
+        Write-Output "No Change Needed"
+    }
+  loop:
+    - "{{ win19cis_l2_user_gpo_name ~ ( '(Skipped)' if not win19cis_l2_user_gpo else '' ) }}"
+  loop_control:
+    label: "{{ item }}"
+  changed_when: '"Patched" in rule_19_7_44_2_1_results.stdout'
+  register: rule_19_7_44_2_1_results

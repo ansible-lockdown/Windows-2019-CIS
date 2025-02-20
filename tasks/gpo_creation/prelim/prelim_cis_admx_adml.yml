@@ -1,0 +1,11 @@
+---
+
+- name: PRELIM | GPO | CIS ADMX And ADML Custom Files | Copy the CIS ADMX From Ansible Folder
+  ansible.windows.win_copy:
+    src: "{{ role_path }}/templates/cis_templates/CISPolicies.admx"
+    dest: "C:\\Windows\\SYSVOL\\sysvol\\{{ prelim_discovered_domain_name }}\\Policies\\PolicyDefinitions\\"
+
+- name: PRELIM | GPO | CIS ADMX And ADML Custom Files | Copy The CIS ADML From Ansible Folder
+  ansible.windows.win_copy:
+    src: "{{ role_path }}/templates/cis_templates/CISPolicies.adml"
+    dest: "C:\\Windows\\SYSVOL\\sysvol\\{{ prelim_discovered_domain_name }}\\Policies\\PolicyDefinitions\\en-US\\"

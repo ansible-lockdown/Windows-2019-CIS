@@ -1,0 +1,85 @@
+---
+
+- name: "5.1 | GPO | Ensure Print Spooler (Spooler) is set to Disabled Domain Controller."
+  when:
+    - win19cis_rule_5_1
+    - "'(Skipped)' not in item"
+  tags:
+    - level1-domaincontroller
+    - rule_5.1
+    - patch
+    - printer
+    - gpo
+    - NIST800-171_3.4.2
+    - NIST800-171_3.4.6
+    - NIST800-171_3.4.7
+    - NIST800-53_CM-6
+    - NIST800-53_CM-7
+    - NIST800-53R5_CM-6
+    - NIST800-53R5_CM-7
+  ansible.windows.win_shell: |
+    $gpoName = "{{ item }}"
+    $registryKeyPath = "HKLM\SYSTEM\CurrentControlSet\Services\Spooler"
+    $registryValueName = "Start"
+    $type = "DWORD"
+    $desiredValue = 4
+
+    # Get the current value of the registry key in the GPO
+    $currentValue = (Get-GPRegistryValue -Name $gpoName -Key $registryKeyPath -ValueName $registryValueName -ErrorAction SilentlyContinue).Value
+
+    # Check if the current value is equal to the desired value
+    if ($currentValue -ne $desiredValue) {
+        # If not, set the registry value to the desired value
+        Set-GPRegistryValue -Name $gpoName -Key $registryKeyPath -ValueName $registryValueName -Type $type -Value $desiredValue
+        Write-Output "Patched"
+    } else {
+        Write-Output "No Change Needed"
+    }
+  loop:
+    - "{{ win19cis_l1_dc_gpo_name ~ ( '(Skipped)' if not win19cis_l1_dc_gpo else '' ) }}"
+  loop_control:
+    label: "{{ item }}"
+  changed_when: '"Patched" in rule_5_1_results.stdout'
+  register: rule_5_1_results
+
+- name: "5.2 | GPO | Ensure Print Spooler (Spooler) is set to Disabled Member Server."
+  when:
+    - win19cis_rule_5_2
+    - "'(Skipped)' not in item"
+  tags:
+    - level2-memberserver
+    - rule_5.2
+    - patch
+    - printer
+    - gpo
+    - NIST800-171_3.4.2
+    - NIST800-171_3.4.6
+    - NIST800-171_3.4.7
+    - NIST800-53_CM-6
+    - NIST800-53_CM-7
+    - NIST800-53R5_CM-6
+    - NIST800-53R5_CM-7
+  ansible.windows.win_shell: |
+    $gpoName = "{{ item }}"
+    $registryKeyPath = "HKLM\SYSTEM\CurrentControlSet\Services\Spooler"
+    $registryValueName = "Start"
+    $type = "DWORD"
+    $desiredValue = 4
+
+    # Get the current value of the registry key in the GPO
+    $currentValue = (Get-GPRegistryValue -Name $gpoName -Key $registryKeyPath -ValueName $registryValueName -ErrorAction SilentlyContinue).Value
+
+    # Check if the current value is equal to the desired value
+    if ($currentValue -ne $desiredValue) {
+        # If not, set the registry value to the desired value
+        Set-GPRegistryValue -Name $gpoName -Key $registryKeyPath -ValueName $registryValueName -Type $type -Value $desiredValue
+        Write-Output "Patched"
+    } else {
+        Write-Output "No Change Needed"
+    }
+  loop:
+    - "{{ win19cis_l2_ms_gpo_name ~ ( '(Skipped)' if not win19cis_l2_ms_gpo else '' ) }}"
+  loop_control:
+    label: "{{ item }}"
+  changed_when: '"Patched" in rule_5_2_results.stdout'
+  register: rule_5_2_results
