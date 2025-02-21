@@ -29,7 +29,7 @@
 # Current list is elastic and will be updated as we test more cloud based services.
 # Current testing is working in Azure using Hyper-V. We are currently using this for reference:
 # https://github.com/ansible/ansible/blob/905131fc76a07cf89dbc8d33e7a4910da3f10a16/lib/ansible/module_utils/facts/virtual/linux.py#L205
-- name: PRELIM | Set Fact If Cloud-Based System.
+- name: "PRELIM | Set Fact If Cloud-Based System."
   when:
     - not ansible_virtualization_type == 'VMware' or
       (ansible_system_vendor == 'Microsoft Corporation' and
