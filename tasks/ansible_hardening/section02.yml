@@ -2746,7 +2746,7 @@
   tags:
     - level1-domaincontroller
     - level1-memberserver
-    - rule_2.3_10_9
+    - rule_2.3.10.9
     - patch
     - NIST800-171_3.1.5
     - NIST800-53_AC-6_7_b

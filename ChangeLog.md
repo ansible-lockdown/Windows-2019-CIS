@@ -1,9 +1,17 @@
 # Changelog
 
+## Release 3.1.0
+
+February 2025 Update
+  - Added new Readme Badges
+  - General Typos and Fixes
+  - All Workflows Updated
+  - Fixed Control Tag for rule_2.3.10.9
+  - Added the cloud lockout cloud tasks import that was removed last release.
+
 ## Release 3.0.1
 
 February 2025 Update
-
   - Standard GPO title and typo fixes update
 
 December 2024 Updates
