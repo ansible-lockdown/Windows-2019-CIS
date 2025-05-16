@@ -45,3 +45,4 @@ benchparse/
 .github/
 .github/.ansible/.lock
 .ansible/
+.DS_Store

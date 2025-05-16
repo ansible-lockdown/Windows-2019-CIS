@@ -6,12 +6,13 @@ name: Ansible Remediate Main Pipeline Validation
 
 # Controls when the action will run.
 # Triggers the workflow on push or pull request
-# events but only for the devel branch
+# events but only for the main or latest branch
 on:  # yamllint disable-line rule:truthy
   pull_request_target:
     types: [opened, reopened, synchronize]
     branches:
       - main
+      - latest
     paths:
       - '**.yml'
       - '**.sh'

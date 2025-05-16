@@ -8623,7 +8623,7 @@
     $registryKeyPath = "HKLM\SOFTWARE\Policies\Microsoft\Windows NT\Terminal Services"
     $registryValueName = "MaxDisconnectionTime"
     $type = "DWORD"
-    $desiredValue = 6000
+    $desiredValue = 60000
 
     # Get the current value of the registry key in the GPO
     $currentValue = (Get-GPRegistryValue -Name $gpoName -Key $registryKeyPath -ValueName $registryValueName -ErrorAction SilentlyContinue).Value
@@ -9954,7 +9954,7 @@
         $registryKeyPath = "HKLM\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate"
         $registryValueName2 = "ManagePreviewBuildsPolicyValue"
         $type2 = "DWORD"
-        $desiredValue2 = 0
+        $desiredValue2 = 1
 
         # Get the current value of the registry key in the GPO
         $currentValue2 = (Get-GPRegistryValue -Name $gpoName -Key $registryKeyPath -ValueName $registryValueName2 -ErrorAction SilentlyContinue).Value
