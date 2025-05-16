@@ -53,7 +53,7 @@
       failed_when: false
       register: prelim_all_users
 
-    - name: PRELIM | Obtain Then Load Default And User Hives | Create results list fact for username and SIDs
+    - name: PRELIM | Obtain Then Load Default And User Hives | Create Results list fact for username and SIDs
       ansible.builtin.set_fact:
         prelim_username_and_sid_results_list: "{{ prelim_all_users.stdout_lines | map('split', ' ') | list }}"
 

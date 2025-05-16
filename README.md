@@ -6,30 +6,54 @@
 
 ---
 
+## Public Repository 📣
+
 ![Org Stars](https://img.shields.io/github/stars/ansible-lockdown?label=Org%20Stars&style=social)
 ![Stars](https://img.shields.io/github/stars/ansible-lockdown/Windows-2019-CIS?label=Repo%20Stars&style=social)
 ![Forks](https://img.shields.io/github/forks/ansible-lockdown/Windows-2019-CIS?style=social)
-![followers](https://img.shields.io/github/followers/ansible-lockdown?style=social)
+![Followers](https://img.shields.io/github/followers/ansible-lockdown?style=social)
 [![Twitter URL](https://img.shields.io/twitter/url/https/twitter.com/AnsibleLockdown.svg?style=social&label=Follow%20%40AnsibleLockdown)](https://twitter.com/AnsibleLockdown)
-
 ![Discord Badge](https://img.shields.io/discord/925818806838919229?logo=discord)
+
+![License](https://img.shields.io/github/license/ansible-lockdown/Windows-2019-CIS?label=License)
+
+## Lint & Pre-Commit Tools 🔧
+
+[![Pre-Commit.ci](https://img.shields.io/endpoint?url=https://ansible-lockdown.github.io/github_windows_IaC/badges/Windows-2019-CIS/pre-commit-ci.json)](https://results.pre-commit.ci/latest/github/ansible-lockdown/Windows-2019-CIS/devel)
+![YamlLint](https://img.shields.io/badge/yamllint-Present-brightgreen?style=flat&logo=yaml&logoColor=white)
+![Ansible-Lint](https://img.shields.io/badge/ansible--lint-Present-brightgreen?style=flat&logo=ansible&logoColor=white)
+
+## Community Release Information 📂
 
 ![Release Branch](https://img.shields.io/badge/Release%20Branch-Main-brightgreen)
 ![Release Tag](https://img.shields.io/github/v/tag/ansible-lockdown/Windows-2019-CIS?label=Release%20Tag&&color=success)
 ![Main Release Date](https://img.shields.io/github/release-date/ansible-lockdown/Windows-2019-CIS?label=Release%20Date)
+![Benchmark Version Main](https://img.shields.io/endpoint?url=https://ansible-lockdown.github.io/github_windows_IaC/badges/Windows-2019-CIS/benchmark-version-main.json)
+![Benchmark Version Devel](https://img.shields.io/endpoint?url=https://ansible-lockdown.github.io/github_windows_IaC/badges/Windows-2019-CIS/benchmark-version-devel.json)
 
 [![Main Pipeline Status](https://github.com/ansible-lockdown/Windows-2019-CIS/actions/workflows/main_pipeline_validation.yml/badge.svg?)](https://github.com/ansible-lockdown/Windows-2019-CIS/actions/workflows/main_pipeline_validation.yml)
 [![GPO Main Pipeline Status](https://github.com/ansible-lockdown/Windows-2019-CIS/actions/workflows/main_pipeline_validation_gpo.yml/badge.svg?)](https://github.com/ansible-lockdown/Windows-2019-CIS/actions/workflows/main_pipeline_validation_gpo.yml)
 
 [![Devel Pipeline Status](https://github.com/ansible-lockdown/Windows-2019-CIS/actions/workflows/devel_pipeline_validation.yml/badge.svg?)](https://github.com/ansible-lockdown/Windows-2019-CIS/actions/workflows/devel_pipeline_validation.yml)
 [![GPO Devel Pipeline Status](https://github.com/ansible-lockdown/Windows-2019-CIS/actions/workflows/devel_pipeline_validation_gpo.yml/badge.svg?)](https://github.com/ansible-lockdown/Windows-2019-CIS/actions/workflows/devel_pipeline_validation_gpo.yml)
-![Devel Commits](https://img.shields.io/github/commit-activity/m/ansible-lockdown/Windows-2019-CIS/devel?color=dark%20green&label=Devel%20Branch%20Commits)
 
-![Issues Open](https://img.shields.io/github/issues-raw/ansible-lockdown/Windows-2019-CIS?label=Open%20Issues)
-![Issues Closed](https://img.shields.io/github/issues-closed-raw/ansible-lockdown/Windows-2019-CIS?label=Closed%20Issues&&color=success)
+![Devel Commits](https://img.shields.io/github/commit-activity/m/ansible-lockdown/Windows-2019-CIS/devel?color=dark%20green&label=Devel%20Branch%20Commits)
+![Open Issues](https://img.shields.io/github/issues-raw/ansible-lockdown/Windows-2019-CIS?label=Open%20Issues)
+![Closed Issues](https://img.shields.io/github/issues-closed-raw/ansible-lockdown/Windows-2019-CIS?label=Closed%20Issues&&color=success)
 ![Pull Requests](https://img.shields.io/github/issues-pr/ansible-lockdown/Windows-2019-CIS?label=Pull%20Requests)
 
-![License](https://img.shields.io/github/license/ansible-lockdown/Windows-2019-CIS?label=License)
+---
+
+## Subscriber Release Information 🔐
+
+![Private Release Branch](https://img.shields.io/endpoint?url=https://ansible-lockdown.github.io/github_windows_IaC/badges/Private-Windows-2019-CIS/release-branch.json)
+![Benchmark Version](https://img.shields.io/endpoint?url=https://ansible-lockdown.github.io/github_windows_IaC/badges/Private-Windows-2019-CIS/benchmark-version.json)
+
+[![Private Remediate Pipeline](https://img.shields.io/endpoint?url=https://ansible-lockdown.github.io/github_windows_IaC/badges/Private-Windows-2019-CIS/remediate.json)](https://github.com/ansible-lockdown/Private-Windows-2019-CIS/actions/workflows/main_pipeline_validation.yml)
+[![Private GPO Pipeline](https://img.shields.io/endpoint?url=https://ansible-lockdown.github.io/github_windows_IaC/badges/Private-Windows-2019-CIS/gpo.json)](https://github.com/ansible-lockdown/Private-Windows-2019-CIS/actions/workflows/main_pipeline_validation_gpo.yml)
+
+![Private Pull Requests](https://img.shields.io/endpoint?url=https://ansible-lockdown.github.io/github_windows_IaC/badges/Private-Windows-2019-CIS/prs.json)
+![Private Closed Issues](https://img.shields.io/endpoint?url=https://ansible-lockdown.github.io/github_windows_IaC/badges/Private-Windows-2019-CIS/issues-closed.json)
 
 ---
 
