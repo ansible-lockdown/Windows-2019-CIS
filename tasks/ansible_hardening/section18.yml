@@ -902,7 +902,7 @@
     data: 1
     type: dword
 
-- name: "18.6.14.1 | PATCH | Ensure Hardened UNC Paths is set to Enabled with Require Mutual Authentication and Require Integrity set for all NETLOGON and SYSVOL shares"
+- name: "18.6.14.1 | PATCH | Ensure 'Hardened UNC Paths' is set to 'Enabled, with Require Mutual Authentication, Require Integrity, and Require Privacy set for all NETLOGON and SYSVOL shares"
   when: win19cis_rule_18_6_14_1
   tags:
     - level1-domaincontroller
@@ -914,18 +914,18 @@
     - NIST800-53_IA-3_1
     - NIST800-53R5_IA-3_1
   block:
-    - name: "18.6.14.1 | PATCH | Ensure Hardened UNC Paths is set to Enabled with Require Mutual Authentication and Require Integrity set for all NETLOGON shares"
+    - name: "18.6.14.1 | PATCH | Ensure 'Hardened UNC Paths' is set to 'Enabled, with Require Mutual Authentication, Require Integrity, and Require Privacy set for all NETLOGON and SYSVOL shares"
       ansible.windows.win_regedit:
         path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\Networkprovider\Hardenedpaths
         name: "\\\\*\\NETLOGON"
-        data: "RequireMutualAuthentication=1, RequireIntegrity=1"
+        data: "RequireMutualAuthentication=1, RequireIntegrity=1, RequirePrivacy=1"
         type: string
 
-    - name: "18.6.14.1 | PATCH | Ensure Hardened UNC Paths is set to Enabled with Require Mutual Authentication and Require Integrity set for all SYSVOL shares"
+    - name: "18.6.14.1 | PATCH | Ensure 'Hardened UNC Paths' is set to 'Enabled, with Require Mutual Authentication, Require Integrity, and Require Privacy set for all NETLOGON and SYSVOL shares"
       ansible.windows.win_regedit:
         path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\Networkprovider\Hardenedpaths
         name: "\\\\*\\SYSVOL"
-        data: "RequireMutualAuthentication=1, RequireIntegrity=1"
+        data: "RequireMutualAuthentication=1, RequireIntegrity=1, RequirePrivacy=1"
         type: string
 
 - name: "18.6.19.2.1 | PATCH | Disable IPv6 Ensure TCPIP6 Parameter DisabledComponents is set to 0xff 255"
@@ -4285,7 +4285,7 @@
   ansible.windows.win_regedit:
     path: HKLM:\SOFTWARE\Policies\Microsoft\Windows Nt\Terminal Services
     name: MaxDisconnectionTime
-    data: 6000
+    data: 60000
     type: dword
 
 - name: "18.10.56.3.11.1 | PATCH | Ensure Do not delete temp folders upon exit is set to Disabled"
@@ -4488,7 +4488,7 @@
     - name: "18.10.79.2 | PATCH | Ensure 'Allow suggested apps in Windows Ink Workspace' is set to 'Disabled' | Set Variable."
       when: win19cis_allow_windows_ink_workspace == 0 or win19cis_allow_windows_ink_workspace == 1
       ansible.windows.win_regedit:
-        path: HKLM:\SOFTWARE\Microsoft\Policies\Microsoft\WindowsInkWorkspace
+        path: HKLM:\SOFTWARE\Policies\Microsoft\WindowsInkWorkspace
         name: AllowWindowsInkWorkspace
         data: "{{ win19cis_allow_windows_ink_workspace }}"
         type: dword
@@ -4936,7 +4936,7 @@
       ansible.windows.win_regedit:
         path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate
         name: ManagePreviewBuildsPolicyValue
-        data: 0
+        data: 1
         type: dword
 
 - name: "18.10.92.4.2 | PATCH | Ensure 'Select when Preview Builds and Feature Updates are received' is set to 'Enabled: 180 or more days'"
