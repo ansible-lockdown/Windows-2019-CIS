@@ -6,12 +6,13 @@ name: Ansible Remediate Devel Pipeline Validation
 
 # Controls when the action will run.
 # Triggers the workflow on push or pull request
-# events but only for the devel branch
+# events but only for the devel branch and any branch that contains benchmark in name.
 on:  # yamllint disable-line rule:truthy
   pull_request_target:
     types: [opened, reopened, synchronize]
     branches:
       - devel
+      - benchmark*
     paths:
       - '**.yml'
       - '**.sh'
