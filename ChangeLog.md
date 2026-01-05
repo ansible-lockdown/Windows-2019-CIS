@@ -1,14 +1,122 @@
 # Changelog
 
+## Release 4.0.0
+
+September 2025
+  - This Release is based on CIS Benchmark v4.0.0
+  - Internal 90 Auto Promotion Workflows Added
+  - PR's Addressed:
+    - [#79](https://github.com/ansible-lockdown/Windows-2022-CIS/pull/79/files) - Thanks @ShawnHardwick This applied here as well. Great Catch!
+  - CIS Control Changes Summary (v4.0.0 vs v3.0.0) - Please review them in the CIS documentation and adjust your playbooks.
+    - Added (New In v4.0.0)
+      - 18.6.4.1
+      - 18.6.4.3
+      - 18.7.8
+      - 18.10.18.4
+      - 18.10.18.6
+      - 18.10.18.7
+      - 18.10.29.2
+      - 18.10.43.4.1
+      - 18.10.43.8.1
+      - 18.10.43.10.1
+      - 18.10.43.11.1.1.1
+      - 18.10.43.11.1.1.2
+      - 18.10.43.11.1.2.1
+      - 18.10.43.13.1
+      - 18.10.43.13.4
+      - 18.10.43.17
+      - 18.10.58.2
+    - Updated
+      - 2.2.38 - Title Update
+      - 2.3.6.5 - Updated Entire Task To Use Registry
+      - 2.3.11.8 - Added Variable
+      - 2.3.10.6 - Title Update
+      - 2.3.10.7 - Title Update
+      - 2.3.10.8 - Title Update
+      - 2.3.10.9 - Title Update
+      - 2.3.10.10 - Title Update
+      - 19.7.8.3 - Updated to L2 In Remediate
+      - 19.7.8.4 - Updated to L2 In Remediate
+      - 18.4.4 - Updated to include 32-bit subsystem on 64-bit OS
+      - 18.4.7 - Updated Variable Checks
+      - 18.10.18.1 - Updated to L2 In Remediate / GPO
+    - Re-Numbered / Moved
+      - 2.3.1.2 v3.0.0 → 2.3.1.1 v4.0.0
+      - 2.3.1.3 v3.0.0 → 2.3.1.2 v4.0.0
+      - 2.3.1.4 v3.0.0 → 2.3.1.3 v4.0.0
+      - 2.3.1.5 v3.0.0 → 2.3.1.4 v4.0.0
+      - 19.7.42.1 v3.0.0 → 19.7.44.1 v4.0.0
+      - 18.4.3 v3.0.0 → 18.4.2 v4.0.0
+      - 18.4.4 v3.0.0 → 18.4.3 v4.0.0
+      - 18.4.5 v3.0.0 → 18.4.4 v4.0.0
+      - 18.4.6 v3.0.0 → 18.4.5 v4.0.0
+      - 18.4.7 v3.0.0 → 18.4.6 v4.0.0
+      - 18.4.8 v3.0.0 → 18.4.7 v4.0.0
+      - 18.4.9 v3.0.0 → 18.4.8 v4.0.0
+      - 18.6.4.1 v3.0.0 → 18.6.4.2 v4.0.0
+      - 18.6.4.2 v3.0.0 → 18.6.4.4 v4.0.0
+      - 18.7.8 v3.0.0 → 18.7.9 v4.0.0
+      - 18.7.9 v3.0.0 → 18.7.10 v4.0.0
+      - 18.7.10 v3.0.0 → 18.7.11 v4.0.0
+      - 18.7.11 v3.0.0 → 18.7.12 v4.0.0
+      - 18.10.3.1 v3.0.0 → 18.10.4.1 v4.0.0
+      - 18.10.5.1 v3.0.0 → 18.10.6.1 v4.0.0
+      - 18.10.7.1 v3.0.0 → 18.10.8.1 v4.0.0
+      - 18.10.8.1.1 v3.0.0 → 18.10.9.1.1 v4.0.0
+      - 18.10.10.1 v3.0.0 → 18.10.11.1 v4.0.0
+      - 18.10.12.x v3.0.0 → 18.10.13.x v4.0.0
+      - 18.10.13.x v3.0.0 → 18.10.14.x v4.0.0
+      - 18.10.14.x v3.0.0 → 18.10.15.x v4.0.0
+      - 18.10.15.x v3.0.0 → 18.10.16.x v4.0.0
+      - 18.10.17.x v3.0.0 → 18.10.18.x v4.0.0
+      - 18.10.25.x.x v3.0.0 → 18.10.26.x.x v4.0.0
+      - 18.10.28.x v3.0.0 → 18.10.29.x v4.0.0
+      - 18.10.36.x v3.0.0 → 18.10.37.x v4.0.0
+      - 18.10.40.x v3.0.0 → 18.10.41.x v4.0.0
+      - 18.10.41.x v3.0.0 → 18.10.42.x v4.0.0
+      - 18.10.42.x.x v3.0.0 → 18.10.43.x.x
+      - 18.10.50.x v3.0.0 → 18.10.51.x v4.0.0
+      - 18.10.55.x v3.0.0 → 18.10.56.x v4.0.0
+      - 18.10.56.x v3.0.0 → 18.10.57.x v4.0.0
+      - 18.10.57.x v3.0.0 → 18.10.58.x v4.0.0
+      - 18.10.58.x v3.0.0 → 18.10.59.x v4.0.0
+      - 18.10.62.x v3.0.0 → 18.10.63.x v4.0.0
+      - 18.10.75.x v3.0.0 → 18.10.76.x v4.0.0
+      - 18.10.79.x v3.0.0 → 18.10.80.x v4.0.0
+      - 18.10.80.x v3.0.0 → 18.10.81.x v4.0.0
+      - 18.10.81.x v3.0.0 → 18.10.82.x v4.0.0
+      - 18.10.86.x v3.0.0 → 18.10.87.x v4.0.0
+      - 18.10.88.x v3.0.0 → 18.10.89.x v4.0.0
+      - 18.10.89.x v3.0.0 → 18.10.90.x v4.0.0
+      - 18.10.91.x v3.0.0 → 18.10.92.x v4.0.0
+      - 18.10.92.x v3.0.0 → 18.10.93.x v4.0.0
+    - Removed
+      - 18.10.43.17 v3.0.0 Removed In v4.0.0
+      - 18.10.15.8 v3.0.0 Removed In v4.0.0
+      - 18.4.2 v3.0.0 Removed In v4.0.0
+      - 18.4.9 v3.0.0 Removed In v4.0.0
+      - Control 2.3.1.5 Removed from default main In v4.0.0
+      - 2.3.1.1: Accounts: Block Microsoft accounts removed; all controls in the section shifted up In v4.0.0
+    - Structural Changes
+      - Section 17: Credential Validation auditing now uses the GUID {0CCE923F-69AE-11D9-BED3-505054503030}
+        - This makes auditing language-agnostic and more consistent across regional builds.
+  - PR's Addressed:
+    - [#79](https://github.com/ansible-lockdown/Windows-2022-CIS/pull/79/files) - Thanks @ShawnHardwick
+
+June 2025 Update
+  - Prepared for v4.0.0 Release
+  - Add new benchmark tracking workflows.
+
 ## Release 3.1.1
 
 May 2025 Update
   - Fixed Control 18.6.14.1 For Missing RequirePrivacy=1 in Ansible Hardening And title. - Thanks @mfortin
   - Updated 18.10.56.3.10.2 value to 60000 from 6000 in remediate and GPO - Thanks @mfortin
-  - Updated 18.10.79.2 Path In Remediate - Thanks @mfortin
+  - Updated 18.10.80.2 Path In Remediate - Thanks @mfortin
   - Updated 18.10.92.4.1 ManagePreviewBuildsPolicyValue to 1. - Thanks @mfortin
   - Updated Pipelines Branches Trigger
   - Updated Readme with New Badges
+  - Fixed Tags  from _ to . in he control numbers to align with other controls.
 
 ## Release 3.1.0
 

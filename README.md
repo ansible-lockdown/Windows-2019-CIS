@@ -2,7 +2,7 @@
 
 ## Configure A Windows 2019 System To Be [CIS](https://www.cisecurity.org/cis-benchmarks/) Compliant
 
-### Based on [ Microsoft Windows Server 2019 Benchmark v3.0.1 - 05-24-2024 ](https://www.cisecurity.org/cis-benchmarks/)
+### Based on [ Microsoft Windows Server 2019 Benchmark v4.0.0 - 06-23-2025 ](https://workbench.cisecurity.org/files/6056/download/9248)
 
 ---
 
@@ -263,7 +263,7 @@ uses:
 ## Local Testing 💻
 
   - Ansible
-    - ansible-core 2.15.0 - python 3.11
+    - ansible-core 2.18.2 - python 3.13
 
 ## Credits and Thanks 🙏
 
