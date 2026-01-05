@@ -1492,7 +1492,7 @@
   loop_control:
     label: "{{ item.gpo_name }} - {{ item.gpo_guid }}"
 
-- name: "2.2.38 | GPO | Ensure Manage auditing and security log is set to Administrators and Exchange Servers if Exchange is running (DC only)."
+- name: "2.2.38 | GPO | Ensure 'Manage auditing and security log' is set to 'Administrators' (DC only)."
   when: win19cis_rule_2_2_38
   tags:
     - level1-domaincontroller
@@ -1518,7 +1518,7 @@
     - NIST800-53R5_AC-6_7
     - NIST800-53R5_AU-9_4
   block:
-    - name: "2.2.38 | GPO | Ensure Manage auditing and security log is set to Administrators and Exchange Servers if Exchange is running (DC only) | Exchange Not Running."
+    - name: "2.2.38 | GPO | Ensure 'Manage auditing and security log' is set to 'Administrators' (DC only) | Exchange Not Running."
       when:
         - not win19cis_exchange_server_running
         - "'Skipped' not in item.gpo_guid"
@@ -1533,7 +1533,7 @@
       loop_control:
         label: "{{ item.gpo_name }} - {{ item.gpo_guid }}"
 
-    - name: "2.2.38 | GPO | Ensure Manage auditing and security log is set to Administrators and Exchange Servers if Exchange is running (DC only) | Exchange Running."
+    - name: "2.2.38 | GPO | Ensure 'Manage auditing and security log' is set to 'Administrators' (DC only) | Exchange Running."
       when:
         - win19cis_exchange_server_running
         - "'Skipped' not in item.gpo_guid"
@@ -1992,48 +1992,7 @@
   loop_control:
     label: "{{ item.gpo_name }} - {{ item.gpo_guid }}"
 
-- name: "2.3.1.1 | GPO | Ensure Accounts Block Microsoft accounts is set to Users cant add or log on with Microsoft accounts."
-  when:
-    - win19cis_rule_2_3_1_1
-    - "'(Skipped)' not in item"
-  tags:
-    - level1-domaincontroller
-    - level1-memberserver
-    - rule_2.3.1.1
-    - patch
-    - securitypolicy
-    - gpo
-    - NIST800-171_3.1.1
-    - NIST800-53_AC-2_1
-    - NIST800-53R5_AC-2_1
-  ansible.windows.win_shell: |
-    $gpoName = "{{ item }}"
-    $registryKeyPath = "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System"
-    $registryValueName = "NoConnectedUser"
-    $type = "DWORD"
-    $desiredValue = 3
-
-    # Adding The GPO Registry Entry Commands.
-    # Get the current value of the registry key in the GPO
-    $currentValue = (Get-GPRegistryValue -Name $gpoName -Key $registryKeyPath -ValueName $registryValueName -ErrorAction SilentlyContinue).Value
-
-    # Check if the current value is equal to the desired value
-    if ($currentValue -ne $desiredValue) {
-        # If not, set the registry value to the desired value
-        Set-GPRegistryValue -Name $gpoName -Key $registryKeyPath -ValueName $registryValueName -Type $type -Value $desiredValue
-        Write-Output "Patched"
-    } else {
-        Write-Output "No Change Needed"
-    }
-  loop:
-    - "{{ win19cis_l1_dc_gpo_name ~ ( '(Skipped)' if not win19cis_l1_dc_gpo else '' ) }}"
-    - "{{ win19cis_l1_ms_gpo_name ~ ( '(Skipped)' if not win19cis_l1_ms_gpo else '' ) }}"
-  loop_control:
-    label: "{{ item }}"
-  changed_when: '"Patched" in rule_2_3_1_1_results.stdout'
-  register: rule_2_3_1_1_results
-
-- name: "2.3.1.2 | GPO | Ensure Accounts Guest account status is set to Disabled MS only"
+- name: "2.3.1.1 | GPO | Ensure Accounts Guest account status is set to Disabled MS only"
   when: win19cis_rule_2_3_1_2
   tags:
     - level1-memberserver
@@ -2045,7 +2004,7 @@
     - NIST800-53_IA-5
     - NIST800-53R55_IA-5
   block:
-    - name: "2.3.1.2 | GPO | Ensure Accounts Guest account status is set to Disabled MS only | Set Variable In GptTmpl.inf"
+    - name: "2.3.1.1 | GPO | Ensure Accounts Guest account status is set to Disabled MS only | Set Variable In GptTmpl.inf"
       when: "'Skipped' not in item.gpo_guid"
       community.windows.win_lineinfile:
         path: "C:\\Windows\\SYSVOL\\sysvol\\{{ prelim_discovered_domain_name }}\\Policies\\{{ item.gpo_guid }}\\Machine\\Microsoft\\Windows NT\\SecEdit\\GptTmpl.inf"
@@ -2058,7 +2017,7 @@
       loop_control:
         label: "{{ item.gpo_name }} - {{ item.gpo_guid }}"
 
-    - name: "2.3.1.2 | GPO | Ensure Accounts Guest account status is set to Disabled MS only | Set Variable In Registry"
+    - name: "2.3.1.1 | GPO | Ensure Accounts Guest account status is set to Disabled MS only | Set Variable In Registry"
       when: "'Skipped' not in item.gpo_guid"
       ansible.windows.win_shell: |
         $gpoName = "{{ item.gpo_name }}"
@@ -2083,17 +2042,17 @@
           gpo_name: "{{ win19cis_l1_ms_gpo_name }}"
       loop_control:
         label: "{{ item.gpo_name }} - {{ item.gpo_guid }}"
-      changed_when: '"Patched" in rule_2_3_1_2_results.stdout'
-      register: rule_2_3_1_2_results
+      changed_when: '"Patched" in rule_2_3_1_1_results.stdout'
+      register: rule_2_3_1_1_results
 
-- name: "2.3.1.3 | GPO | Ensure Accounts Limit local account use of blank passwords to console logon only is set to Enabled"
+- name: "2.3.1.2 | GPO | Ensure Accounts Limit local account use of blank passwords to console logon only is set to Enabled"
   when:
-    - win19cis_rule_2_3_1_3
+    - win19cis_rule_2_3_1_2
     - "'(Skipped)' not in item"
   tags:
     - level1-domaincontroller
     - level1-memberserver
-    - rule_2.3.1.3
+    - rule_2.3.1.2
     - patch
     - account
     - gpo
@@ -2124,15 +2083,15 @@
     - "{{ win19cis_l1_ms_gpo_name ~ ( '(Skipped)' if not win19cis_l1_ms_gpo else '' ) }}"
   loop_control:
     label: "{{ item }}"
-  changed_when: '"Patched" in rule_2_3_1_3_results.stdout'
-  register: rule_2_3_1_3_results
+  changed_when: '"Patched" in rule_2_3_1_2_results.stdout'
+  register: rule_2_3_1_2_results
 
-- name: "2.3.1.4 | GPO | Configure Accounts Rename administrator account"
-  when: win19cis_rule_2_3_1_4
+- name: "2.3.1.3 | GPO | Configure Accounts Rename administrator account"
+  when: win19cis_rule_2_3_1_3
   tags:
     - level1-domaincontroller
     - level1-memberserver
-    - rule_2.3.1.4
+    - rule_2.3.1.3
     - patch
     - securitypolicy
     - gpo
@@ -2140,7 +2099,7 @@
     - NIST800-53_IA-5
     - NIST800-53R5_IA-5
   block:
-    - name: "2.3.1.4 | GPO | Configure Accounts Rename administrator account. | Make Changes To Admin Name."
+    - name: "2.3.1.3 | GPO | Configure Accounts Rename administrator account. | Make Changes To Admin Name."
       when:
         - "'adminchangethis' not in win19cis_admin_username"
         - "'Skipped' not in item.gpo_guid"
@@ -2157,25 +2116,25 @@
       loop_control:
         label: "{{ item.gpo_name }} - {{ item.gpo_guid }}"
 
-    - name: "2.3.1.4 | AUDIT | Configure Accounts Rename administrator account. | Warning Msg For Default Variable Not Edited."
+    - name: "2.3.1.3 | AUDIT | Configure Accounts Rename administrator account. | Warning Msg For Default Variable Not Edited."
       when: "'adminchangethis' in win19cis_admin_username"
       ansible.builtin.debug:
         msg:
           - "Warning!! You have not changed the default admin username in win19cis_admin_username please"
           - "make the necessary change to the variable to be in compliance."
 
-    - name: "2.3.1.4 | AUDIT | Configure Accounts Rename administrator account. | Add Warn Count."
+    - name: "2.3.1.3 | AUDIT | Configure Accounts Rename administrator account. | Add Warn Count."
       vars:
-        warn_control_id: '2.3.1.4'
+        warn_control_id: '2.3.1.3'
       when: "'adminchangethis' in win19cis_admin_username"
       ansible.builtin.import_tasks: warning_facts.yml
 
-- name: "2.3.1.5 | GPO | Configure Accounts Rename guest account"
-  when: win19cis_rule_2_3_1_5
+- name: "2.3.1.4 | GPO | Configure Accounts Rename guest account"
+  when: win19cis_rule_2_3_1_4
   tags:
     - level1-domaincontroller
     - level1-memberserver
-    - rule_2.3.1.5
+    - rule_2.3.1.4
     - patch
     - securitypolicy
     - gpo
@@ -2183,7 +2142,7 @@
     - NIST800-53_IA-5
     - NIST800-53R5_IA-5
   block:
-    - name: "2.3.1.5 | GPO | Configure Accounts Rename guest account. | Make Changes To Guest Name."
+    - name: "2.3.1.4 | GPO | Configure Accounts Rename guest account. | Make Changes To Guest Name."
       when:
         - "'guestchangethis' not in win19cis_guest_username"
         - "'Skipped' not in item.gpo_guid"
@@ -2200,16 +2159,16 @@
       loop_control:
         label: "{{ item.gpo_name }} - {{ item.gpo_guid }}"
 
-    - name: "2.3.1.5 | AUDIT | Configure Accounts Rename guest account. | Warning Msg For Default Variable Not Edited."
+    - name: "2.3.1.4 | AUDIT | Configure Accounts Rename guest account. | Warning Msg For Default Variable Not Edited."
       when: "'guestchangethis' in win19cis_guest_username"
       ansible.builtin.debug:
         msg:
           - "Warning!! You have not changed the default guest name in win19cis_guest_username please"
           - "make the necessary change to the variable to be in compliance."
 
-    - name: "2.3.1.5 | AUDIT | Configure Accounts Rename guest account. | Add Warn Count."
+    - name: "2.3.1.4 | AUDIT | Configure Accounts Rename guest account. | Add Warn Count."
       vars:
-        warn_control_id: '2.3.1.5'
+        warn_control_id: '2.3.1.4'
       when: "'guestchangethis' in win19cis_guest_username"
       ansible.builtin.import_tasks: warning_facts.yml
 
@@ -2309,7 +2268,7 @@
   tags:
     - level1-domaincontroller
     - level1-memberserver
-    - rule_2_3_4.1
+    - rule_2.3.4.1
     - patch
     - devices
     - gpo
@@ -2362,7 +2321,7 @@
     - "'(Skipped)' not in item"
   tags:
     - level1-domaincontroller
-    - rule_2_3_5_1
+    - rule_2.3.5.1
     - patch
     - scheduledtasks
     - gpo
@@ -2533,7 +2492,7 @@
     - "'(Skipped)' not in item"
   tags:
     - level1-domaincontroller
-    - rule_2_3_5_5
+    - rule_2.3.5.5
     - patch
     - account
     - gpo
@@ -3128,7 +3087,7 @@
   when: win19cis_rule_2_3_7_6
   tags:
     - level2-memberserver
-    - rule_2_3_7_6
+    - rule_2.3.7.6
     - patch
     - logon
     - gpo
@@ -3605,7 +3564,7 @@
   tags:
     - level1-domaincontroller
     - level1-memberserver
-    - rule_2_3_9_3
+    - rule_2.3.9.3
     - patch
     - account
     - gpo
@@ -3884,7 +3843,7 @@
   tags:
     - level2-domaincontroller
     - level2-memberserver
-    - rule_2_3_10_4
+    - rule_2.3.10.4
     - patch
     - accounts
     - gpo
@@ -3957,7 +3916,7 @@
   changed_when: '"Patched" in rule_2_3_10_5_results.stdout'
   register: rule_2_3_10_5_results
 
-- name: "2.3.10.6 | GPO | Configure Network access Named Pipes that can be accessed anonymously DC only"
+- name: "2.3.10.6 | GPO | Ensure Network access Named Pipes that can be accessed anonymously is configured (DC only)"
   when:
     - win19cis_rule_2_3_10_6
     - "'(Skipped)' not in item"
@@ -4009,7 +3968,7 @@
   changed_when: '"Patched" in rule_2_3_10_6_results.stdout'
   register: rule_2_3_10_6_results
 
-- name: "2.3.10.7 | GPO | Configure Network access Named Pipes that can be accessed anonymously MS only"
+- name: "2.3.10.7 | GPO | Ensure Network access Named Pipes that can be accessed anonymously is configured (MS only)"
   when:
     - win19cis_rule_2_3_10_7
     - "'(Skipped)' not in item"
@@ -4047,7 +4006,7 @@
   changed_when: '"Patched" in rule_2_3_10_7_results.stdout'
   register: rule_2_3_10_7_results
 
-- name: "2.3.10.8 | GPO | Configure Network access Remotely accessible registry paths"
+- name: "2.3.10.8 | GPO | Ensure Network access Remotely accessible registry paths is configured"
   when:
     - win19cis_rule_2_3_10_8
     - "'(Skipped)' not in item"
@@ -4103,7 +4062,7 @@
   changed_when: '"Patched" in rule_2_3_10_8_results.stdout'
   register: rule_2_3_10_8_results
 
-- name: "2.3.10.9 | GPO | Configure Network access Remotely accessible registry paths and sub-paths using PowerShell"
+- name: "2.3.10.9 | GPO | Ensure Network access Remotely accessible registry paths and sub-paths is configured"
   when:
     - win19cis_rule_2_3_10_9
     - "'(Skipped)' not in item"
@@ -4935,7 +4894,6 @@
 - name: "2.3.11.13 | GPO | Ensure Network security: Restrict NTLM: Outgoing NTLM traffic to remote servers is set to Audit all or higher"
   when:
     - win19cis_rule_2_3_11_13
-    - "'(Skipped)' not in item"
   tags:
     - level1-domaincontroller
     - level1-memberserver
@@ -4954,31 +4912,55 @@
     - NIST800-53R5_AU-3_1
     - NIST800-53R5_AU-7
     - NIST800-53R5_AU-12
-  ansible.windows.win_shell: |
-    $gpoName = "{{ item }}"
-    $registryKeyPath = "HKLM\SYSTEM\Currentcontrolset\Control\Lsa\MSV1_0"
-    $registryValueName = "RestrictSendingNTLMTraffic"
-    $type = "DWORD"
-    $desiredValue = 2
+  block:
+    - name: "2.3.11.13 | AUDIT | Ensure Network security: Restrict NTLM: Outgoing NTLM traffic to remote servers is set to Audit all or higher. | Set GPO Value.."
+      when:
+        - "'(Skipped)' not in item"
+        - win19cis_restrict_sending_ntlm_traffic == 1 or
+          win19cis_restrict_sending_ntlm_traffic == 2
+      ansible.windows.win_shell: |
+        $gpoName = "{{ item }}"
+        $registryKeyPath = "HKLM\SYSTEM\CurrentControlSet\Control\Lsa\MSV1_0"
+        $registryValueName = "RestrictSendingNTLMTraffic"
+        $type = "DWORD"
+        $desiredValue = {{ win19cis_restrict_sending_ntlm_traffic }}
 
-    # Get the current value of the registry key in the GPO
-    $currentValue = (Get-GPRegistryValue -Name $gpoName -Key $registryKeyPath -ValueName $registryValueName -ErrorAction SilentlyContinue).Value
+        # Get the current value of the registry key in the GPO
+        $currentValue = (Get-GPRegistryValue -Name $gpoName -Key $registryKeyPath -ValueName $registryValueName -ErrorAction SilentlyContinue).Value
 
-    # Check if the current value is equal to the desired value
-    if ($currentValue -ne $desiredValue) {
-        # If not, set the registry value to the desired value
-        Set-GPRegistryValue -Name $gpoName -Key $registryKeyPath -ValueName $registryValueName -Type $type -Value $desiredValue
-        Write-Output "Patched"
-    } else {
-        Write-Output "No Change Needed"
-    }
-  loop:
-    - "{{ win19cis_l1_dc_gpo_name ~ ( '(Skipped)' if not win19cis_l1_dc_gpo else '' ) }}"
-    - "{{ win19cis_l1_ms_gpo_name ~ ( '(Skipped)' if not win19cis_l1_ms_gpo else '' ) }}"
-  loop_control:
-    label: "{{ item }}"
-  changed_when: '"Patched" in rule_2_3_11_13_results.stdout'
-  register: rule_2_3_11_13_results
+        # Check if the current value is equal to the desired value
+        if ($currentValue -ne $desiredValue) {
+            # If not, set the registry value to the desired value
+            Set-GPRegistryValue -Name $gpoName -Key $registryKeyPath -ValueName $registryValueName -Type $type -Value $desiredValue
+            Write-Output "Patched"
+        } else {
+            Write-Output "No Change Needed"
+        }
+      loop:
+        - "{{ win19cis_l1_dc_gpo_name ~ ( '(Skipped)' if not win19cis_l1_dc_gpo else '' ) }}"
+        - "{{ win19cis_l1_ms_gpo_name ~ ( '(Skipped)' if not win19cis_l1_ms_gpo else '' ) }}"
+      loop_control:
+        label: "{{ item }}"
+      changed_when: '"Patched" in rule_2_3_11_13_results.stdout'
+      register: rule_2_3_11_13_results
+
+    - name: "2.3.11.13 | AUDIT | Ensure Network security: Restrict NTLM: Outgoing NTLM traffic to remote servers is set to Audit all or higher. | Warning Check For Variable."
+      ansible.builtin.debug:
+        msg:
+          - "Warning!! You have an invalid variable set for win19cis_restrict_sending_ntlm_traffic. Please read"
+          - "the notes for the variable and make the necessary change to the variable to be in compliance."
+      when:
+        - win19cis_restrict_sending_ntlm_traffic == 0 or
+          win19cis_restrict_sending_ntlm_traffic > 2
+
+    - name: "2.3.11.13 | AUDIT | Ensure Network security: Restrict NTLM: Outgoing NTLM traffic to remote servers is set to Audit all or higher. | Warn Count."
+      ansible.builtin.import_tasks:
+        file: warning_facts.yml
+      vars:
+        warn_control_id: '2.3.11.13'
+      when:
+        - win19cis_restrict_sending_ntlm_traffic == 0 or
+          win19cis_restrict_sending_ntlm_traffic > 2
 
 - name: "2.3.13.1 | GPO | Ensure Shutdown Allow system to be shut down without having to log on is set to Disabled"
   when:
