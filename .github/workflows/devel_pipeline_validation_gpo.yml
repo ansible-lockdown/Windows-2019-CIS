@@ -60,7 +60,7 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it.
       - name: Clone ${{ github.event.repository.name }}
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6.0.2
         with:
           ref: ${{ github.event.pull_request.head.sha }}
 
@@ -76,7 +76,7 @@ jobs:
 
       # Pull In OpenTofu Code For Windows Azure
       - name: Clone IaC Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6.0.2
         with:
           repository: ansible-lockdown/github_windows_IaC
           path: .github/workflows/github_windows_IaC

@@ -635,7 +635,6 @@
   when:
     - win19cis_rule_2_2_21
     - prelim_win19cis_is_domain_controller
-    - not win_skip_for_test
   tags:
     - level1-domaincontroller
     - rule_2.2.21
@@ -790,7 +789,8 @@
   when:
     - win19cis_rule_2_2_26
     - prelim_win19cis_is_domain_controller
-    - not win_skip_for_test
+    - not (win_skip_for_test | bool)
+
   tags:
     - level1-domaincontroller
     - rule_2.2.26
@@ -822,7 +822,8 @@
   when:
     - win19cis_rule_2_2_27
     - prelim_win19cis_is_domain_member
-    - not win_skip_for_test
+    - not (win_skip_for_test | bool)
+
   tags:
     - level1-memberserver
     - rule_2.2.27
@@ -1604,7 +1605,8 @@
 - name: "2.3.1.3 | PATCH | Configure Accounts Rename administrator account"
   when:
     - win19cis_rule_2_3_1_3
-    - not win_skip_for_test
+    - not (win_skip_for_test | bool)
+
   tags:
     - level1-domaincontroller
     - level1-memberserver

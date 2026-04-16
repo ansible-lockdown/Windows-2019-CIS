@@ -4686,10 +4686,8 @@
   block:
     - name: "18.10.57.3.10.1 | PATCH | Ensure Set time limit for active but idle Remote Desktop Services sessions is set to Enabled 15 minutes or less | Set Variable."
       when:
-        - win19cis_idle_rdp_session_disconnect_time == 60000 or
-          win19cis_idle_rdp_session_disconnect_time == 300000 or
-          win19cis_idle_rdp_session_disconnect_time == 600000 or
-          win19cis_idle_rdp_session_disconnect_time == 900000
+        - win19cis_idle_rdp_session_disconnect_time > 0 
+        - win19cis_idle_rdp_session_disconnect_time <= 900000
       ansible.windows.win_regedit:
         path: HKLM:\SOFTWARE\Policies\Microsoft\Windows Nt\Terminal Services
         name: MaxIdleTime
@@ -5081,7 +5079,8 @@
 - name: "18.10.89.1.1 | PATCH | Ensure Allow Basic authentication is set to Disabled"
   when:
     - win19cis_rule_18_10_89_1_1
-    - not win_skip_for_test
+    - not (win_skip_for_test | bool)
+
   tags:
     - level1-domaincontroller
     - level1-memberserver
@@ -5110,7 +5109,8 @@
 - name: "18.10.89.1.2 | PATCH | Ensure Allow unencrypted traffic is set to Disabled"
   when:
     - win19cis_rule_18_10_89_1_2
-    - not win_skip_for_test
+    - not (win_skip_for_test | bool)
+
   tags:
     - level1-domaincontroller
     - level1-memberserver
@@ -5139,7 +5139,8 @@
 - name: "18.10.89.1.3 | PATCH | Ensure Disallow Digest authentication is set to Enabled"
   when:
     - win19cis_rule_18_10_89_1_3
-    - not win_skip_for_test
+    - not (win_skip_for_test | bool)
+
   tags:
     - level1-domaincontroller
     - level1-memberserver
@@ -5168,7 +5169,8 @@
 - name: "18.10.89.2.1 | PATCH | Ensure Allow Basic authentication is set to Disabled"
   when:
     - win19cis_rule_18_10_89_2_1
-    - not win_skip_for_test
+    - not (win_skip_for_test | bool)
+
   tags:
     - level1-domaincontroller
     - level1-memberserver
@@ -5198,7 +5200,8 @@
 - name: "18.10.89.2.2 | PATCH | Ensure Allow remote server management through WinRM is set to Disabled"
   when:
     - win19cis_rule_18_10_89_2_2
-    - not win_skip_for_test
+    - not (win_skip_for_test | bool)
+
   tags:
     - level2-domaincontroller
     - level2-memberserver
@@ -5221,7 +5224,8 @@
 - name: "18.10.89.2.3 | PATCH | Ensure Allow unencrypted traffic is set to Disabled"
   when:
     - win19cis_rule_18_10_89_2_3
-    - not win_skip_for_test
+    - not (win_skip_for_test | bool)
+
   tags:
     - level1-domaincontroller
     - level1-memberserver
@@ -5269,7 +5273,8 @@
 - name: "18.10.90.1 | PATCH | Ensure Allow Remote Shell Access is set to Disabled"
   when:
     - win19cis_rule_18_10_90_1
-    - not win_skip_for_test
+    - not (win_skip_for_test | bool)
+
   tags:
     - level2-domaincontroller
     - level2-memberserver
