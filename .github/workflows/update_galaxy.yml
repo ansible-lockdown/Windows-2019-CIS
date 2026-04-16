@@ -16,7 +16,7 @@ jobs:
 
     steps:
       - name: Checkout V4
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6.0.2
 
       - name: Update Galaxy
         uses: ansible-actions/ansible-galaxy-action@main
