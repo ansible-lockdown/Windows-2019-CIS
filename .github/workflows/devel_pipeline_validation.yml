@@ -31,9 +31,12 @@ jobs:
       - uses: actions/first-interaction@main
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
-          pr-message: |-
-            Congrats on opening your first pull request and thank you for taking the time to help improve Ansible-Lockdown!
-            Please join in the conversation happening on the [Discord Server](https://www.lockdownenterprise.com/discord) as well.
+          issue_message: |-
+              Congrats on opening your first issue and thank you for taking the time to help improve Ansible-Lockdown!
+              Please join in the conversation happening on the [Discord Server](https://www.lockdownenterprise.com/discord) as well.
+          pr_message: |-
+              Congrats on opening your first pull request and thank you for taking the time to help improve Ansible-Lockdown!
+              Please join in the conversation happening on the [Discord Server](https://www.lockdownenterprise.com/discord) as well.
 
   build-azure-windows:
     # Use the AWS self-hosted runner
