@@ -149,7 +149,7 @@ win_skip_for_test: true
 # ║  If you encounter this error, set the override below to force the correct     ║
 # ║  order for your environment manually.                                         ║
 # ║                                                                               ║
-# ║    true = treat as hosted/cloud virtual system                                ║
+# ║    true  = treat as hosted/cloud virtual system                               ║
 # ║    false = treat as bare-metal or local VM                                    ║
 # ╚═══════════════════════════════════════════════════════════════════════════════╝
 # hosted_virtual_system_override: true
