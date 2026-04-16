@@ -102,25 +102,57 @@ win19cis_section19: true
 # errors due to missing features or incompatible syntax in earlier versions of Ansible.
 min_ansible_version: "2.16"
 
-# win_skip_for_test is the setting that will skip tasks that may cause changes that will affect the system.
-# Controls that will be skipped:
-# win19cis_rule_2_2_26 - Breaks Local Admin Connection
-# win19cis_rule_2_2_27 - Breaks Local Admin Connection
-# win19cis_rule_2_3_1_3 - Rename default administrator account
-# win19cis_rule_9_3_4 - Enables Firewall Public Rules *Breaks Reboot*
-# win19cis_rule_18_10_89_1_1 - Disables WinRM Allow Client Basic Auth
-# win19cis_rule_18_10_89_1_2 - Disables Client Ensure Allow unencrypted traffic is set to Disabled Control.
-# win19cis_rule_18_10_89_1_3 - Ensure Disallow Digest authentication is set to Enabled
-# win19cis_rule_18_10_89_2_1 - Disables WinRM Allow Service Basic Auth
-# win19cis_rule_18_10_89_2_2 - Disables Remote Server Management through WinRM
-# win19cis_rule_18_10_89_2_3 - Disables Service Ensure Allow unencrypted traffic is set to Disabled Control.
-# win19cis_rule_18_10_90_1 - Disables Remote Shell Access
-win_skip_for_test: false
-
 # Changes will be made that will require a system reboot.
 # The following option will allow whether or not to skip the reboot.
 # Default: true
 skip_reboot: true
+
+# ╔═══════════════════════════════════════════════════════════════════════════════╗
+# ║                          win_skip_for_test                                    ║
+# ║                                                                               ║
+# ║  Skips tasks that may cause disruptive changes to the system during testing.  ║
+# ║                                                                               ║
+# ║  NOTE: When set to true, the corresponding GPO entries for the controls       ║
+# ║  listed below will also not be created. This applies to both the Ansible      ║
+# ║  remediation path and the GPO creation path.                                  ║
+# ║                                                                               ║
+# ║  Controls that will be skipped:                                               ║
+# ║    win22cis_rule_2_2_26       - Breaks Local Admin Connection                 ║
+# ║    win22cis_rule_2_2_27       - Breaks Local Admin Connection                 ║
+# ║    win22cis_rule_2_3_1_3      - Rename default administrator account          ║
+# ║    win22cis_rule_9_3_4        - Enables Firewall Public Rules *Breaks Reboot* ║
+# ║    win22cis_rule_18_10_89_1_1 - Disables WinRM Allow Client Basic Auth        ║
+# ║    win22cis_rule_18_10_89_1_2 - Disables Client Allow Unencrypted Traffic     ║
+# ║    win22cis_rule_18_10_89_1_3 - Disallow Digest Authentication                ║
+# ║    win22cis_rule_18_10_89_2_1 - Disables WinRM Allow Service Basic Auth       ║
+# ║    win22cis_rule_18_10_89_2_2 - Disables Remote Server Management via WinRM   ║
+# ║    win22cis_rule_18_10_89_2_3 - Disables Service Allow Unencrypted Traffic    ║
+# ║    win22cis_rule_18_10_90_1   - Disables Remote Shell Access                  ║
+# ╚═══════════════════════════════════════════════════════════════════════════════╝
+win_skip_for_test: true
+
+# ╔═══════════════════════════════════════════════════════════════════════════════╗
+# ║                     Hosted Virtual System Override                            ║
+# ║                                                                               ║
+# ║  By default, the role auto-detects whether the target is a cloud-based        ║
+# ║  hosted virtual system (Azure, AWS, GCE, DigitalOcean, etc.).                 ║
+# ║                                                                               ║
+# ║  The auto-detection when condition covers the most common combinations of     ║
+# ║  ansible_virtualization_type and ansible_system_vendor, however the number    ║
+# ║  of possible hypervisor/cloud combinations makes it impossible to account     ║
+# ║  for every environment. Known cases where auto-detection has produced         ║
+# ║  incorrect results include VMware vSphere on-prem, AWS GovCloud EC2, and      ║
+# ║  standalone (non-domain) VMware instances where virtualization_type           ║
+# ║  returns 'NA'. In these cases the secedit lockout control order (1.2.1-1.2.4) ║
+# ║  will fail with 'The parameter is incorrect' from secedit.                    ║
+# ║                                                                               ║
+# ║  If you encounter this error, set the override below to force the correct     ║
+# ║  order for your environment manually.                                         ║
+# ║                                                                               ║
+# ║    true  = treat as hosted/cloud virtual system                               ║
+# ║    false = treat as bare-metal or local VM                                    ║
+# ╚═══════════════════════════════════════════════════════════════════════════════╝
+# hosted_virtual_system_override: true
 
 # These variables correspond with the CIS rule IDs or paragraph numbers defined in
 # the CIS benchmark documents.
@@ -805,10 +837,10 @@ win19cis_ldap_client_integrity: 1
 # Log\Microsoft\Windows\NTLM). Configuring this setting to Deny All also conforms to the benchmark.
 # The recommended state for this setting is: Audit All.
 # Note: Possible Valid Settings
-# 1 - Deny All
-# 2 - Audit All
-# Default: 2
-win19cis_restrict_sending_ntlm_traffic: 2
+# 1 - Audit All
+# 2 - Deny All
+# Default: 1
+win19cis_restrict_sending_ntlm_traffic: 1
 
 # 2.3.17.2
 # win19cis_consent_prompt_behavior_admin is the policy setting controls the behavior of the elevation prompt for administrators.
@@ -1020,7 +1052,7 @@ win19cis_remote_encryption_protection_aggressiveness: 1
 # win19cis_idle_rdp_session_disconnect_time is the setting that allows you to specify the maximum amount of time that an active Remote Desktop
 # Services session can be idle (without user input) before it is automatically disconnected.
 # The recommended state for this setting is: Enabled: 15 minutes or less, but not Never (0).
-# 1 min = 60000, 5 min = 300000, 10 min = 600000, 15 min = 900000
+# This now accepts any value between 1 and 900000.
 # Default: 900000
 win19cis_idle_rdp_session_disconnect_time: 900000
 

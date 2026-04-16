@@ -847,7 +847,8 @@
   when:
     - win19cis_rule_9_3_4
     - "'(Skipped)' not in item"
-    - not win_skip_for_test
+    - not (win_skip_for_test | bool)
+
   tags:
     - level1-domaincontroller
     - level1-memberserver

@@ -9241,10 +9241,8 @@
     - name: "18.10.57.3.10.1 | GPO | Ensure Set time limit for active but idle Remote Desktop Services sessions is set to Enabled 15 minutes or less | Set 'Time Limit for Active but Idle RDP Sessions' to 15 minutes or less."
       when:
         - "'(Skipped)' not in item"
-        - win19cis_idle_rdp_session_disconnect_time == 60000 or
-          win19cis_idle_rdp_session_disconnect_time == 300000 or
-          win19cis_idle_rdp_session_disconnect_time == 600000 or
-          win19cis_idle_rdp_session_disconnect_time == 900000
+        - win19cis_idle_rdp_session_disconnect_time > 0 
+        - win19cis_idle_rdp_session_disconnect_time <= 900000
       ansible.windows.win_shell: |
         $gpoName = "{{ item }}"
         $registryKeyPath = "HKLM\SOFTWARE\Policies\Microsoft\Windows NT\Terminal Services"
@@ -10067,7 +10065,8 @@
   when:
     - win19cis_rule_18_10_89_1_1
     - "'(Skipped)' not in item"
-    - not win_skip_for_test
+    - not (win_skip_for_test | bool)
+
   tags:
     - level1-domaincontroller
     - level1-memberserver
@@ -10118,7 +10117,8 @@
   when:
     - win19cis_rule_18_10_89_1_2
     - "'(Skipped)' not in item"
-    - not win_skip_for_test
+    - not (win_skip_for_test | bool)
+
   tags:
     - level1-domaincontroller
     - level1-memberserver
@@ -10169,7 +10169,8 @@
   when:
     - win19cis_rule_18_10_89_1_3
     - "'(Skipped)' not in item"
-    - not win_skip_for_test
+    - not (win_skip_for_test | bool)
+
   tags:
     - level1-domaincontroller
     - level1-memberserver
@@ -10220,7 +10221,8 @@
   when:
     - win19cis_rule_18_10_89_2_1
     - "'(Skipped)' not in item"
-    - not win_skip_for_test
+    - not (win_skip_for_test | bool)
+
   tags:
     - level1-domaincontroller
     - level1-memberserver
@@ -10271,7 +10273,8 @@
   when:
     - win19cis_rule_18_10_89_2_2
     - "'(Skipped)' not in item"
-    - not win_skip_for_test
+    - not (win_skip_for_test | bool)
+
   tags:
     - level2-domaincontroller
     - level2-memberserver
@@ -10316,7 +10319,8 @@
   when:
     - win19cis_rule_18_10_89_2_3
     - "'(Skipped)' not in item"
-    - not win_skip_for_test
+    - not (win_skip_for_test | bool)
+
   tags:
     - level1-domaincontroller
     - level1-memberserver
@@ -10409,7 +10413,8 @@
   when:
     - win19cis_rule_18_10_90_1
     - "'(Skipped)' not in item"
-    - not win_skip_for_test
+    - not (win_skip_for_test | bool)
+
   tags:
     - level2-domaincontroller
     - level2-memberserver
