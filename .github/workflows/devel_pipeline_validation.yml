@@ -31,9 +31,12 @@ jobs:
       - uses: actions/first-interaction@main
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
-          pr-message: |-
-            Congrats on opening your first pull request and thank you for taking the time to help improve Ansible-Lockdown!
-            Please join in the conversation happening on the [Discord Server](https://www.lockdownenterprise.com/discord) as well.
+          issue_message: |-
+              Congrats on opening your first issue and thank you for taking the time to help improve Ansible-Lockdown!
+              Please join in the conversation happening on the [Discord Server](https://www.lockdownenterprise.com/discord) as well.
+          pr_message: |-
+              Congrats on opening your first pull request and thank you for taking the time to help improve Ansible-Lockdown!
+              Please join in the conversation happening on the [Discord Server](https://www.lockdownenterprise.com/discord) as well.
 
   build-azure-windows:
     # Use the AWS self-hosted runner
@@ -60,7 +63,7 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it.
       - name: Clone ${{ github.event.repository.name }}
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6.0.2
         with:
           ref: ${{ github.event.pull_request.head.sha }}
 
@@ -76,7 +79,7 @@ jobs:
 
       # Pull In OpenTofu Code For Windows Azure
       - name: Clone IaC Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6.0.2
         with:
           repository: ansible-lockdown/github_windows_IaC
           path: .github/workflows/github_windows_IaC

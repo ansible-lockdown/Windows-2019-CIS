@@ -122,8 +122,8 @@
   notify: Change_Requires_Reboot
   when: win19cis_rule_19_7_8_3
   tags:
-    - level1-domaincontroller
-    - level1-memberserver
+    - level2-domaincontroller
+    - level2-memberserver
     - rule_19.7.8.3
     - patch
     - cloudcontent
@@ -142,8 +142,8 @@
   notify: Change_Requires_Reboot
   when: win19cis_rule_19_7_8_4
   tags:
-    - level1-domaincontroller
-    - level1-memberserver
+    - level2-domaincontroller
+    - level2-memberserver
     - rule_19.7.8.4
     - patch
     - cloudcontent
@@ -204,13 +204,13 @@
     type: dword
   loop: "{{ prelim_hku_loaded_list }}"
 
-- name: "19.7.42.1 | PATCH | Ensure Always install with elevated privileges is set to Disabled"
+- name: "19.7.44.1 | PATCH | Ensure Always install with elevated privileges is set to Disabled"
   notify: Change_Requires_Reboot
-  when: win19cis_rule_19_7_42_1
+  when: win19cis_rule_19_7_44_1
   tags:
     - level1-domaincontroller
     - level1-memberserver
-    - rule_19.7.42.1
+    - rule_19.7.44.1
     - patch
     - permissions
     - NIST800-171_3.1.1
@@ -223,13 +223,13 @@
     type: dword
   loop: "{{ prelim_hku_loaded_list }}"
 
-- name: "19.7.44.2.1 | PATCH | Ensure Prevent Codec Download is set to Enabled"
+- name: "19.7.46.2.1 | PATCH | Ensure Prevent Codec Download is set to Enabled"
   notify: Change_Requires_Reboot
-  when: win19cis_rule_19_7_44_2_1
+  when: win19cis_rule_19_7_46_2_1
   tags:
     - level2-domaincontroller
     - level2-memberserver
-    - rule_19.7.44.2.1
+    - rule_19.7.46.2.1
     - patch
     - codec
     - NIST800-171_3.4.2

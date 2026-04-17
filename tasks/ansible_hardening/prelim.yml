@@ -29,8 +29,9 @@
 # Current list is elastic and will be updated as we test more cloud based services.
 # Current testing is working in Azure using Hyper-V. We are currently using this for reference:
 # https://github.com/ansible/ansible/blob/905131fc76a07cf89dbc8d33e7a4910da3f10a16/lib/ansible/module_utils/facts/virtual/linux.py#L205
-- name: "PRELIM | Set Fact If Cloud-Based System."
+- name: "PRELIM | Set Fact If Cloud-Based System (auto-detect)."
   when:
+    - hosted_virtual_system_override is not defined
     - not ansible_virtualization_type == 'VMware' or
       (ansible_system_vendor == 'Microsoft Corporation' and
       ansible_virtualization_type in ['Hyper-V', 'hvm', 'kvm'])
@@ -38,37 +39,46 @@
   ansible.builtin.set_fact:
     prelim_win19cis_cloud_based_system: true
 
-- name: PRELIM | Obtain Then Load Default And User Hives
+- name: "PRELIM | Set Fact If Cloud-Based System (manual override)."
+  when: hosted_virtual_system_override is defined
+  tags: always
+  ansible.builtin.set_fact:
+    prelim_win19cis_cloud_based_system: "{{ hosted_virtual_system_override }}"
+
+# ╔═══════════════════════════════════════════════════════════════════════════════╗
+# ║              PRELIM | Section 19 HKU Scope (Per CIS Specification)            ║
+# ║                                                                               ║
+# ║  Section 19 targets domain-joined interactive users only. The correct         ║
+# ║  source is HKEY_USERS subkeys already loaded in the registry by Windows       ║
+# ║  at logon — no manual NTUSER.DAT loading is required or recommended.          ║
+# ║                                                                               ║
+# ║  Per CIS, include only subkeys where:                                         ║
+# ║    - SID begins with S-1-5-21-*  (domain interactive users)                   ║
+# ║    - Does NOT end with _Classes                                               ║
+# ║    - Is NOT .DEFAULT, S-1-5-18, S-1-5-19, or S-1-5-20                         ║
+# ║    - Is NOT an NT SERVICE SID (S-1-5-80-*)                                    ║
+# ║                                                                               ║
+# ║  If no users are currently logged on, section 19 is not considered out of     ║
+# ║  compliance per CIS. Tasks will simply loop over an empty list.               ║
+# ╚═══════════════════════════════════════════════════════════════════════════════╝
+- name: "PRELIM | Obtain Current Interactive User Hives"
   when: win19cis_section19
   tags: always
   block:
-    - name: PRELIM | Obtain Then Load Default And User Hives | Load default user hive (Account that all new users get created from profile)
-      ansible.windows.win_shell: REG LOAD HKU\DEFAULT C:\Users\Default\NTUSER.DAT
+    - name: PRELIM | Obtain Current Interactive User Hives | Retrieve live domain user SIDs from HKEY_USERS
+      vars:
+        hku_script: |
+          $users = (Get-ChildItem 'REGISTRY::HKEY_USERS').Name
+          $users | Where-Object {
+            $_ -match 'S-1-5-21-' -and
+            $_ -notlike '*_Classes' -and
+            $_ -notmatch 'S-1-5-18|S-1-5-19|S-1-5-20' -and
+            $_ -notmatch 'S-1-5-80-'
+          } | ForEach-Object { $_ -replace 'HKEY_USERS\\', '' }
+      ansible.windows.win_shell: "{{ hku_script }}"
       changed_when: false
-      failed_when: false
-
-    - name: PRELIM | Obtain Then Load Default And User Hives | Pull all username and SIDs
-      ansible.windows.win_shell: Get-CimInstance -Class Win32_UserAccount -Filter "SID LIKE 'S-1-5-%'" | ForEach-Object { $_.Name + " " + $_.SID }
-      changed_when: false
-      failed_when: false
-      register: prelim_all_users
-
-    - name: PRELIM | Obtain Then Load Default And User Hives | Create Results list fact for username and SIDs
-      ansible.builtin.set_fact:
-        prelim_username_and_sid_results_list: "{{ prelim_all_users.stdout_lines | map('split', ' ') | list }}"
-
-    - name: PRELIM | Obtain Then Load Default And User Hives | Load all user hives from username and SIDs list
-      ansible.windows.win_shell: REG LOAD HKU\{{ item.1 }} C:\Users\{{ item.0 }}\NTUSER.DAT
-      changed_when: false
-      failed_when: false
-      loop: "{{ prelim_username_and_sid_results_list }}"
-
-    - name: PRELIM | Obtain Then Load Default And User Hives | Retrieve current users SIDs from HKEY_USERS
-      ansible.windows.win_shell: (Get-ChildItem "REGISTRY::HKEY_USERS").name | Where-Object {$_ -notlike "*_classes"}
-      changed_when: false
-      failed_when: false
       register: prelim_current_users_loaded_hku
 
-    - name: PRELIM | Obtain Then Load Default And User Hives | Create list fact for current users SIDs from HKEY_USERS
+    - name: PRELIM | Obtain Current Interactive User Hives | Set list fact for live user SIDs
       ansible.builtin.set_fact:
-        prelim_hku_loaded_list: "{{ prelim_current_users_loaded_hku.stdout | regex_replace('HKEY_USERS\\\\', '') | split }}"
+        prelim_hku_loaded_list: "{{ prelim_current_users_loaded_hku.stdout_lines }}"
