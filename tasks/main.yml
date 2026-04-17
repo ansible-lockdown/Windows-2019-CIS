@@ -20,7 +20,7 @@
   ansible.builtin.assert:
     that:
       - ansible_os_family == 'Windows'
-      - ansible_distribution | regex_search('(Microsoft Windows Server 2019)')
+      - ansible_distribution is regex('Microsoft Windows Server 2019')
     success_msg: "{{ ansible_distribution }} {{ ansible_distribution_major_version }} is the detected operating system."
     fail_msg: "This role can only be run against Windows Server 2019 Editions. {{ ansible_distribution }} {{ ansible_distribution_major_version }} is not supported."
 
@@ -61,7 +61,7 @@
   tags:
     - gpo
     - create_domain
-  ansible.builtin.import_tasks:
+  ansible.builtin.include_tasks:
     file: domain_creation/prelim_create_dc_and_promote.yml
 
 - name: "Main | Import Create GPO Tasks"
@@ -71,7 +71,7 @@
   tags:
     - gpo
     - domain
-  ansible.builtin.import_tasks:
+  ansible.builtin.include_tasks:
     file: gpo_creation/main.yml
 
 - name: "Main | Import Remediation Tasks"
@@ -81,7 +81,7 @@
   tags:
     - remediation
     - local
-  ansible.builtin.import_tasks:
+  ansible.builtin.include_tasks:
     file: ansible_hardening/main.yml
 
 - name: "Main | Warnings Section"

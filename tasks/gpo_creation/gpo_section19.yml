@@ -411,9 +411,9 @@
   changed_when: '"Patched" in rule_19_7_26_1_results.stdout'
   register: rule_19_7_26_1_results
 
-- name: "19.7.42.1 | GPO | Ensure Always install with elevated privileges is set to Disabled."
+- name: "19.7.44.1 | GPO | Ensure Always install with elevated privileges is set to Disabled."
   when:
-    - win19cis_rule_19_7_42_1
+    - win19cis_rule_19_7_44_1
     - "'(Skipped)' not in item"
   tags:
     - level1-domaincontroller
@@ -447,17 +447,17 @@
     - "{{ win19cis_l1_user_gpo_name ~ ( '(Skipped)' if not win19cis_l1_user_gpo else '' ) }}"
   loop_control:
     label: "{{ item }}"
-  changed_when: '"Patched" in rule_19_7_42_1_results.stdout'
-  register: rule_19_7_42_1_results
+  changed_when: '"Patched" in rule_19_7_44_1_results.stdout'
+  register: rule_19_7_44_1_results
 
-- name: "19.7.44.2.1 | GPO | Ensure Prevent Codec Download is set to Enabled."
+- name: "19.7.46.2.1 | GPO | Ensure Prevent Codec Download is set to Enabled."
   when:
-    - win19cis_rule_19_7_44_2_1
+    - win19cis_rule_19_7_46_2_1
     - "'(Skipped)' not in item"
   tags:
     - level2-domaincontroller
     - level2-memberserver
-    - rule_19.7.44.2.1
+    - rule_19.7.46.2.1
     - patch
     - codec
     - gpo
@@ -486,5 +486,5 @@
     - "{{ win19cis_l2_user_gpo_name ~ ( '(Skipped)' if not win19cis_l2_user_gpo else '' ) }}"
   loop_control:
     label: "{{ item }}"
-  changed_when: '"Patched" in rule_19_7_44_2_1_results.stdout'
-  register: rule_19_7_44_2_1_results
+  changed_when: '"Patched" in rule_19_7_46_2_1_results.stdout'
+  register: rule_19_7_46_2_1_results
