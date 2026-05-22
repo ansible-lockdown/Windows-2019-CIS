@@ -16,7 +16,7 @@
         prelim_win19cis_is_standalone: true
 
     - name: PRELIM | Set System Facts Based On Gather Facts Module | Set Fact If Domain Controller Role
-      when: ansible_windows_domain_role | regex_search('(domain controller)')
+      when: ansible_windows_domain_role is regex('domain controller')
       ansible.builtin.set_fact:
         prelim_win19cis_is_domain_controller: true
 
