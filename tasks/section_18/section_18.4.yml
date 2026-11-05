@@ -1,0 +1,180 @@
+---
+
+- name: "18.4.1 | PATCH | Ensure Apply UAC restrictions to local accounts on network logons is set to Enabled MS only | Member Server"
+  when:
+    - win19cis_rule_18_4_1
+    - prelim_win19cis_is_domain_member
+  tags:
+    - level1-memberserver
+    - rule_18.4.1
+    - patch
+    - uac
+    - NIST800-171_3.1.1
+    - NIST800-53R5_AC-2_9
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System
+    name: LocalAccountTokenFilterPolicy
+    data: 0
+    type: dword
+
+- name: "18.4.2 | PATCH | Ensure Configure SMB v1 client driver is set to Enabled Disable driver recommended"
+  when: win19cis_rule_18_4_2
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_18.4.2
+    - patch
+    - smb
+    - NIST800-171_3.4.2
+    - NIST800-171_3.4.6
+    - NIST800-171_3.4.7
+    - NIST800-53R5_CM-6
+    - NIST800-53R5_CM-7
+  ansible.windows.win_regedit:
+    path: HKLM:\SYSTEM\CurrentControlSet\Services\mrxsmb10
+    name: Start
+    data: 4
+    type: dword
+
+- name: "18.4.3 | PATCH | Ensure Configure SMB v1 server is set to Disabled"
+  when: win19cis_rule_18_4_3
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_18.4.3
+    - patch
+    - smb
+    - NIST800-171_3.4.2
+    - NIST800-171_3.4.6
+    - NIST800-171_3.4.7
+    - NIST800-53R5_CM-6
+    - NIST800-53R5_CM-7
+  ansible.windows.win_regedit:
+    path: HKLM:\SYSTEM\CurrentControlSet\Services\LanmanServer\Parameters
+    name: SMB1
+    data: 0
+    type: dword
+  notify: Change_Requires_Reboot
+
+# This group policy setting is backed by the following registry location with a REG_DWORD or REG_SZ value of 1.
+- name: "18.4.4 | PATCH | Ensure Enable Certificate Padding is set to Enabled"
+  when: win19cis_rule_18_4_4
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_18.4.4
+    - patch
+    - wintrust
+    - NIST800-171_3.4.8
+    - NIST800-53R5_SC-8
+  block:
+    - name: "18.4.4 | PATCH | Ensure Enable Certificate Padding is set to Enabled | EnableCertPaddingCheck"
+      ansible.windows.win_regedit:
+        path: HKLM:\SOFTWARE\Microsoft\Cryptography\Wintrust\Config
+        name: EnableCertPaddingCheck
+        data: 1
+        type: dword
+
+    - name: "18.4.4 | PATCH | Ensure Enable Certificate Padding is set to Enabled | EnableCertPaddingCheck Wow6432Node"
+      ansible.windows.win_regedit:
+        path: HKLM:\SOFTWARE\Wow6432Node\Microsoft\Cryptography\Wintrust\Config
+        name: EnableCertPaddingCheck
+        data: 1
+        type: dword
+
+- name: "18.4.5 | PATCH | Ensure Enable Structured Exception Handling Overwrite Protection SEHOP is set to Enabled"
+  when: win19cis_rule_18_4_5
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_18.4.5
+    - patch
+    - sehop
+    - NIST800-53R5_SI-16
+  ansible.windows.win_regedit:
+    path: HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\kernel
+    name: DisableExceptionChainValidation
+    data: 0
+    type: dword
+
+- name: "18.4.6 | PATCH | Ensure LSA Protection is set to Enabled"
+  when:
+    - win19cis_rule_18_4_6
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_18.4.6
+    - patch
+    - lsa
+    - NIST800-53R5_SI-7
+  ansible.windows.win_regedit:
+    path: HKLM:\SYSTEM\CurrentControlSet\Control\Lsa
+    name: RunAsPPL
+    data: 1
+    type: dword
+
+- name: "18.4.7 | PATCH | Ensure 'NetBT NodeType configuration' is set to 'Enabled: P-node recommended'"
+  when: win19cis_rule_18_4_7
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_18.4.7
+    - patch
+    - netbt
+    - NIST800-171_3.4.1
+    - NIST800-171_3.4.2
+    - NIST800-171_3.4.6
+    - NIST800-171_3.4.7
+    - NIST800-171_3.13.1
+    - NIST800-171_3.13.2
+    - NIST800-53R5_CM-1
+    - NIST800-53R5_CM-2
+    - NIST800-53R5_AC-2
+    - NIST800-53R5_CM-6
+    - NIST800-53R5_CM-7
+    - NIST800-53R5_CM-7_1
+    - NIST800-53R5_CM-9
+    - NIST800-53R5_SA-3
+    - NIST800-53R5_SA-8
+    - NIST800-53R5_SA-10
+  block:
+    - name: "18.4.7 | PATCH | Ensure 'NetBT NodeType configuration' is set to 'Enabled: P-node recommended' | Set Registry Value"
+      when: win19cis_netbt_nodetype in [1, 2, 4, 8]
+      ansible.windows.win_regedit:
+        path: HKLM:\SYSTEM\CurrentControlSet\Services\NetBT\Parameters
+        value: NodeType
+        data: "{{ win19cis_netbt_nodetype }}"
+        datatype: dword
+
+    - name: "18.4.7 | AUDIT | Ensure 'NetBT NodeType configuration' is set to 'Enabled: P-node recommended' | Warning Message"
+      when: win19cis_netbt_nodetype not in [1, 2, 4, 8]
+      ansible.builtin.debug:
+        msg:
+          - "Warning!! You have an invalid variable set for win19cis_netbt_nodetype. Please read"
+          - "the notes for the variable and make the necessary change to the variable to be in compliance."
+
+    - name: "18.4.7 | AUDIT | Ensure 'NetBT NodeType configuration' is set to 'Enabled: P-node recommended' | Set warning count"
+      when: win19cis_netbt_nodetype not in [1, 2, 4, 8]
+      ansible.builtin.import_tasks:
+        file: warning_facts.yml
+      vars:
+        warn_control_id: '18.4.7'
+
+- name: "18.4.8 | PATCH | Ensure WDigest Authentication is set to Disabled"
+  when: win19cis_rule_18_4_8
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_18.4.8
+    - patch
+    - wdigest
+    - NIST800-171_3.5.2
+    - NIST800-171_3.13.6
+    - NIST800-53R5_IA-5_1
+    - NIST800-53R5_SC-28
+    - NIST800-53R5_SC-28_1
+  ansible.windows.win_regedit:
+    path: HKLM:\SYSTEM\CurrentControlSet\Control\SecurityProviders\Wdigest
+    value: UseLogonCredential
+    data: 0
+    datatype: dword

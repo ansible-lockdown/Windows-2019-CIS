@@ -1,0 +1,9 @@
+---
+
+- name: "SECTION | 1.x | Password Policy"
+  ansible.builtin.import_tasks:
+    file: section_1.1.x.yml
+
+- name: "SECTION | 1.2 | Account Lockout Policy"
+  ansible.builtin.import_tasks:
+    file: section_1.2.x.yml

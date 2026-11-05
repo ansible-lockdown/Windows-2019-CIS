@@ -1,0 +1,292 @@
+---
+
+- name: "18.5.1 | PATCH | Ensure MSS: (AutoAdminLogon) Enable Automatic Logon is set to Disabled"
+  when: win19cis_rule_18_5_1
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_18.5.1
+    - patch
+    - mss
+    - logon
+    - NIST800-171_3.5.2
+    - NIST800-171_3.13.6
+    - NIST800-53R5_IA-5_1
+    - NIST800-53R5_SC-28
+    - NIST800-53R5_SC-28_1
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Microsoft\Windows Nt\CurrentVersion\Winlogon
+    name: AutoAdminLogon
+    data: 0
+    type: string
+
+- name: "18.5.2 | PATCH | Ensure MSS: (DisableIPSourceRouting IPv6) IP source routing protection level is set to Enabled: Highest protection, source routing is completely disabled"
+  when: win19cis_rule_18_5_2
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_18.5.2
+    - patch
+    - mss
+    - iprouting
+    - NIST800-171_3.5.2
+    - NIST800-53R5_CM-6
+  ansible.windows.win_regedit:
+    path: HKLM:\SYSTEM\CurrentControlSet\Services\TCPIP6\Parameters
+    value: DisableIPSourceRouting
+    data: 2
+    datatype: dword
+
+- name: "18.5.3 | PATCH | Ensure MSS: (DisableIPSourceRouting) IP source routing protection level is set to Enabled: Highest protection, source routing is completely disabled"
+  when: win19cis_rule_18_5_3
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_18.5.3
+    - patch
+    - mss
+    - iprouting
+    - NIST800-171_3.13.1
+    - NIST800-53R5_SC-7_12
+  ansible.windows.win_regedit:
+    path: HKLM:\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters
+    value: DisableIPSourceRouting
+    data: 2
+    datatype: dword
+
+- name: "18.5.4 | PATCH | Ensure MSS: (EnableICMPRedirect) Allow ICMP redirects to override OSPF generated routes is set to Disabled"
+  when: win19cis_rule_18_5_4
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_18.5.4
+    - patch
+    - mss
+    - icmps
+    - NIST800-171_3.4.1
+    - NIST800-171_3.4.2
+    - NIST800-171_3.4.6
+    - NIST800-171_3.4.7
+    - NIST800-171_3.13.1
+    - NIST800-171_3.13.2
+    - NIST800-53R5_CM-1
+    - NIST800-53R5_CM-2
+    - NIST800-53R5_AC-2
+    - NIST800-53R5_CM-6
+    - NIST800-53R5_CM-7
+    - NIST800-53R5_CM-7_1
+    - NIST800-53R5_CM-9
+    - NIST800-53R5_SA-3
+    - NIST800-53R5_SA-8
+    - NIST800-53R5_SA-10
+  ansible.windows.win_regedit:
+    path: HKLM:\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters
+    value: EnableICMPRedirect
+    data: 0
+    datatype: dword
+
+- name: "18.5.5 | PATCH | Ensure MSS: (KeepAliveTime) How often keep-alive packets are sent in milliseconds is set to Enabled: 300,000 or 5 minutes"
+  when: win19cis_rule_18_5_5
+  tags:
+    - level2-domaincontroller
+    - level2-memberserver
+    - rule_18.5.5
+    - patch
+    - mss
+    - keepalive
+    - NIST800-171_3.4.1
+    - NIST800-171_3.4.2
+    - NIST800-171_3.4.6
+    - NIST800-171_3.4.7
+    - NIST800-171_3.13.1
+    - NIST800-171_3.13.2
+    - NIST800-53R5_CM-1
+    - NIST800-53R5_CM-2
+    - NIST800-53R5_AC-2
+    - NIST800-53R5_CM-6
+    - NIST800-53R5_CM-7
+    - NIST800-53R5_CM-7_1
+    - NIST800-53R5_CM-9
+    - NIST800-53R5_SA-3
+    - NIST800-53R5_SA-8
+    - NIST800-53R5_SA-10
+  ansible.windows.win_regedit:
+    path: HKLM:\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters
+    value: KeepAliveTime
+    data: 300000
+    datatype: dword
+
+- name: "18.5.6 | PATCH | Ensure MSS: (NoNameReleaseOnDemand) Allow the computer to ignore NetBIOS name release requests except from WINS servers is set to Enabled"
+  when: win19cis_rule_18_5_6
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_18.5.6
+    - patch
+    - mss
+    - noname
+    - NIST800-171_3.4.2
+    - NIST800-53R5_CM-6
+  ansible.windows.win_regedit:
+    path: HKLM:\SYSTEM\CurrentControlSet\Services\Netbt\Parameters
+    name: NoNameReleaseOnDemand
+    data: 1
+    type: dword
+
+- name: "18.5.7 | PATCH | Ensure MSS: (PerformRouterDiscovery) Allow IRDP to detect and configure Default Gateway addresses is set to Disabled"
+  when: win19cis_rule_18_5_7
+  tags:
+    - level2-domaincontroller
+    - level2-memberserver
+    - rule_18.5.7
+    - patch
+    - mss
+    - NIST800-171_3.4.2
+    - NIST800-171_3.4.6
+    - NIST800-171_3.4.7
+    - NIST800-53R5_CM-6
+    - NIST800-53R5_CM-7
+  ansible.windows.win_regedit:
+    path: HKLM:\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters
+    name: PerformRouterDiscovery
+    data: 0
+    type: dword
+
+- name: "18.5.8 | PATCH | Ensure MSS: (SafeDllSearchMode) Enable Safe DLL search mode is set to Enabled"
+  when: win19cis_rule_18_5_8
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_18.5.8
+    - patch
+    - mss
+    - NIST800-53R5_SI-16
+  ansible.windows.win_regedit:
+    path: HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager
+    name: SafeDllSearchMode
+    data: 1
+    type: dword
+
+- name: "18.5.9 | PATCH | Ensure MSS ScreenSaverGracePeriod The time in seconds before the screen saver grace period expires is set to Enabled 5 or fewer seconds"
+  when: win19cis_rule_18_5_9
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_18.5.9
+    - patch
+    - mss
+    - NIST800-171_3.1.1
+    - NIST800-171_3.1.10
+    - NIST800-171_3.1.11
+    - NIST800-53R5_AC-2_5
+    - NIST800-53R5_AC-11
+    - NIST800-53R5_AC-11_1
+    - NIST800-53R5_AC-12
+  block:
+    - name: "18.5.9 | PATCH | Ensure MSS ScreenSaverGracePeriod The time in seconds before the screen saver grace period expires is set to Enabled 5 or fewer seconds | Set ScreenSaverGracePeriod if time is 5 seconds or fewer"
+      when: win19cis_screen_saver_grace_period <= 5
+      ansible.windows.win_regedit:
+        path: HKLM:\SOFTWARE\Microsoft\Windows Nt\CurrentVersion\Winlogon
+        name: ScreenSaverGracePeriod
+        data: "{{ win19cis_screen_saver_grace_period }}"
+        type: string
+
+    - name: "18.5.9 | AUDIT | Ensure MSS ScreenSaverGracePeriod The time in seconds before the screen saver grace period expires is set to Enabled 5 or fewer seconds | Warn if ScreenSaverGracePeriod exceeds 5 seconds"
+      when: win19cis_screen_saver_grace_period > 5
+      ansible.builtin.debug:
+        msg: "Warning!! Invalid time set for win19cis_screen_saver_grace_period. Review the notes for compliance."
+
+    - name: "18.5.9 | AUDIT | Ensure MSS ScreenSaverGracePeriod The time in seconds before the screen saver grace period expires is set to Enabled 5 or fewer seconds | Set warn control ID for non-compliance"
+      when: win19cis_screen_saver_grace_period > 5
+      ansible.builtin.import_tasks:
+        file: warning_facts.yml
+      vars:
+        warn_control_id: '18.5.9'
+
+- name: "18.5.10 | PATCH | Ensure MSS: (TcpMaxDataRetransmissions IPv6) How many times unacknowledged data is retransmitted is set to Enabled: 3"
+  when: win19cis_rule_18_5_10
+  tags:
+    - level2-domaincontroller
+    - level2-memberserver
+    - rule_18.5.10
+    - patch
+    - mss
+    - NIST800-171_3.1.16
+    - NIST800-171_3.1.17
+    - NIST800-171_3.4.1
+    - NIST800-171_3.4.2
+    - NIST800-171_3.4.6
+    - NIST800-171_3.4.7
+    - NIST800-53R5_AC-18
+    - NIST800-53R5_AC-18_1
+    - NIST800-53R5_AC-18_3
+    - NIST800-53R5_CM-2
+    - NIST800-53R5_CM-6
+    - NIST800-53R5_CM-7
+    - NIST800-53R5_CM-7_1
+    - NIST800-53R5_CM-9
+  ansible.windows.win_regedit:
+    path: HKLM:\SYSTEM\CurrentControlSet\Services\TCPIP6\Parameters
+    name: TcpMaxDataRetransmissions
+    data: 3
+    type: dword
+
+- name: "18.5.11 | PATCH | Ensure MSS: (TcpMaxDataRetransmissions) How many times unacknowledged data is retransmitted is set to Enabled: 3"
+  when: win19cis_rule_18_5_11
+  tags:
+    - level2-domaincontroller
+    - level2-memberserver
+    - rule_18.5.11
+    - patch
+    - mss
+    - NIST800-171_3.1.16
+    - NIST800-171_3.1.17
+    - NIST800-171_3.4.1
+    - NIST800-171_3.4.2
+    - NIST800-171_3.4.6
+    - NIST800-171_3.4.7
+    - NIST800-53R5_AC-18
+    - NIST800-53R5_AC-18_1
+    - NIST800-53R5_AC-18_3
+    - NIST800-53R5_CM-2
+    - NIST800-53R5_CM-6
+    - NIST800-53R5_CM-7
+    - NIST800-53R5_CM-7_1
+    - NIST800-53R5_CM-9
+  ansible.windows.win_regedit:
+    path: HKLM:\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters
+    name: TcpMaxDataRetransmissions
+    data: 3
+    type: dword
+
+- name: "18.5.12 | PATCH | Ensure MSS: (WarningLevel) Percentage threshold for the security event log at which the system will generate a warning is set to Enabled: 90% or less"
+  when: win19cis_rule_18_5_12
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_18.5.12
+    - patch
+    - mss
+    - NIST800-53R5_AU-4
+  block:
+    - name: "18.5.12 | PATCH | Ensure MSS: (WarningLevel) Percentage threshold for the security event log at which the system will generate a warning is set to Enabled: 90% or less | Set WarningLevel threshold for security event log if 90 or less"
+      when: win19cis_log_threshold_audit_event <= 90
+      ansible.windows.win_regedit:
+        path: HKLM:\SYSTEM\CurrentControlSet\Services\Eventlog\Security
+        name: WarningLevel
+        data: "{{ win19cis_log_threshold_audit_event }}"
+        type: dword
+
+    - name: "18.5.12 | AUDIT | Ensure MSS: (WarningLevel) Percentage threshold for the security event log at which the system will generate a warning is set to Enabled: 90% or less | Warn if WarningLevel threshold exceeds 90"
+      when: win19cis_log_threshold_audit_event > 90
+      ansible.builtin.debug:
+        msg:
+          - "Warning!! You have an invalid percentage set for win19cis_log_threshold_audit_event."
+          - "Please read the notes for the variable and make the necessary change to achieve compliance."
+
+    - name: "18.5.12 | AUDIT | Ensure MSS: (WarningLevel) Percentage threshold for the security event log at which the system will generate a warning is set to Enabled: 90% or less | Log a warning for non-compliance with control ID 18.5.12"
+      when: win19cis_log_threshold_audit_event > 90
+      ansible.builtin.import_tasks:
+        file: warning_facts.yml
+      vars:
+        warn_control_id: '18.5.12'

@@ -1,0 +1,162 @@
+---
+
+- name: "18.10.93.1.1 | PATCH | Ensure No auto-restart with logged on users for scheduled automatic updates installations is set to Disabled"
+  when: win19cis_rule_18_10_93_1_1
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_18.10.93.1.1
+    - patch
+    - winupdate
+    - NIST800-171_3.11.2
+    - NIST800-171_3.11.3
+    - NIST800-171_3.14.1
+    - NIST800-53R5_RA-5
+    - NIST800-53R5_SI-2
+    - NIST800-53R5_SI-2_2
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\Windowsupdate\Au
+    name: NoAutoRebootWithLoggedOnUsers
+    data: 0
+    type: dword
+
+- name: "18.10.93.2.1 | PATCH | Ensure 'Configure Automatic Updates' is set to Enabled"
+  when: win19cis_rule_18_10_93_2_1
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_18.10.93.2.1
+    - patch
+    - winupdate
+    - NIST800-171_3.11.2
+    - NIST800-171_3.11.3
+    - NIST800-171_3.14.1
+    - NIST800-53R5_RA-5
+    - NIST800-53R5_SI-2
+    - NIST800-53R5_SI-2_2
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\Windowsupdate\Au
+    name: NoAutoUpdate
+    data: 0
+    type: dword
+
+- name: "18.10.93.2.2 | PATCH | Ensure Configure Automatic Updates Scheduled install day is set to 0 - Every day"
+  when: win19cis_rule_18_10_93_2_2
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_18.10.93.2.2
+    - patch
+    - winupdate
+    - NIST800-171_3.11.2
+    - NIST800-171_3.11.3
+    - NIST800-171_3.14.1
+    - NIST800-53R5_RA-5
+    - NIST800-53R5_SI-2
+    - NIST800-53R5_SI-2_2
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\Windowsupdate\Au
+    name: ScheduledInstallDay
+    data: 0
+    type: dword
+
+- name: "18.10.93.4.1 | PATCH | Ensure 'Manage preview builds' is set to 'Disabled'"
+  when: win19cis_rule_18_10_93_4_1
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_18.10.93.4.1
+    - patch
+    - winupdate
+    - NIST800-171_3.4.8
+    - NIST800-53R5_CM-7_5
+    - NIST800-53R5_CM-10
+  block:
+    - name: "18.10.93.4.1 | PATCH | Ensure Manage preview builds is set to Enabled Disable preview builds | ManagePreviewBuilds"
+      ansible.windows.win_regedit:
+        path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate
+        name: ManagePreviewBuilds
+        data: 1
+        type: dword
+
+    - name: "18.10.93.4.1 | PATCH | Ensure Manage preview builds is set to Enabled Disable preview builds | ManagePreviewBuildsPolicyValue"
+      ansible.windows.win_regedit:
+        path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate
+        name: ManagePreviewBuildsPolicyValue
+        data: 1
+        type: dword
+
+- name: "18.10.93.4.2 | PATCH | Ensure 'Select when Preview Builds and Feature Updates are received' is set to 'Enabled: 180 or more days'"
+  when: win19cis_rule_18_10_93_4_2
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_18.10.93.4.2
+    - automated
+    - patch
+    - manage_updates_offered_from_windows_update
+    - preview
+    - NIST800-171_3.11.2
+    - NIST800-171_3.11.3
+    - NIST800-171_3.14.1
+    - NIST800-53R5_RA-5
+    - NIST800-53R5_SI-2
+    - NIST800-53R5_SI-2_2
+  block:
+    - name: "18.10.93.4.2 | PATCH | Ensure 'Select when Preview Builds and Feature Updates are received' is set to 'Enabled: 180 or more days' | DeferFeatureUpdates"
+      ansible.windows.win_regedit:
+        path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate
+        name: DeferFeatureUpdates
+        data: 1
+        type: dword
+
+    - name: "18.10.93.4.2 | PATCH | Ensure 'Select when Preview Builds and Feature Updates are received' is set to 'Enabled: 180 or more days' | DeferFeatureUpdatesPeriodInDays"
+      when: win19cis_defer_feature_updates_period_in_days >= 180
+      ansible.windows.win_regedit:
+        path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate
+        name: DeferFeatureUpdatesPeriodInDays
+        data: "{{ win19cis_defer_feature_updates_period_in_days }}"
+        type: dword
+
+    - name: "18.10.93.4.2 | AUDIT | Ensure 'Select when Preview Builds and Feature Updates are received' is set to 'Enabled: 180 or more days' | Variable Warning"
+      when: win19cis_defer_feature_updates_period_in_days < 180
+      ansible.builtin.debug:
+        msg:
+          - "Warning!! You have an invalid number of days for win19cis_defer_feature_updates_period_in_days. Please read"
+          - "the notes for the variable and make the necessary change to the variable to be in compliance."
+
+    - name: "18.10.93.4.2 | AUDIT | Ensure 'Select when Preview Builds and Feature Updates are received' is set to 'Enabled: 180 or more days' | Log a warning"
+      when: win19cis_defer_feature_updates_period_in_days < 180
+      ansible.builtin.import_tasks:
+        file: warning_facts.yml
+      vars:
+        warn_control_id: '18.10.93.4.2'
+
+- name: "18.10.93.4.3 | PATCH | Ensure Select when Quality Updates are received is set to Enabled 0 days"
+  when: win19cis_rule_18_10_93_4_3
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_18.10.93.4.3
+    - patch
+    - winupdate
+    - NIST800-171_3.11.2
+    - NIST800-171_3.11.3
+    - NIST800-171_3.14.1
+    - NIST800-53R5_RA-5
+    - NIST800-53R5_SI-2
+    - NIST800-53R5_SI-2_2
+  block:
+    - name: "18.10.93.4.3 | PATCH | Ensure Select when Quality Updates are received is set to Enabled 0 days | DeferQualityUpdates"
+      ansible.windows.win_regedit:
+        path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate
+        name: DeferQualityUpdates
+        data: 1
+        type: dword
+
+    - name: "18.10.93.4.3 | PATCH | Ensure Select when Quality Updates are received is set to Enabled 0 days | DeferQualityUpdatesPeriodInDays"
+      ansible.windows.win_regedit:
+        path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate
+        name: DeferQualityUpdatesPeriodInDays
+        data: 0
+        type: dword

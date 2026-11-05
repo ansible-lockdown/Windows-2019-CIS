@@ -1,0 +1,148 @@
+---
+
+- name: "18.10.16.1 | PATCH | Ensure Allow Diagnostic Data is set to Enabled: Diagnostic data off (not recommended) or Enabled: Send required diagnostic data"
+  when: win19cis_rule_18_10_16_1
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_18.10.16.1
+    - automated
+    - patch
+    - diagnostics
+    - NIST800-171_3.14.6
+    - NIST800-171_3.14.7
+    - NIST800-53R5_SI-4
+  block:
+    - name: "18.10.16.1 | PATCH | Ensure Allow Diagnostic Data is set to Enabled: Diagnostic data off (not recommended) or Enabled: Send required diagnostic data | Set Variable"
+      when: win19cis_allow_telemetry == 0 or win19cis_allow_telemetry == 1
+      ansible.windows.win_regedit:
+        path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\DataCollection
+        name: AllowTelemetry
+        data: "{{ win19cis_allow_telemetry }}"
+        type: dword
+
+    - name: "18.10.16.1 | AUDIT | Ensure Allow Diagnostic Data is set to Enabled: Diagnostic data off (not recommended) or Enabled: Send required diagnostic data | Warning Check For Variable Standards"
+      when:
+        - win19cis_allow_telemetry != 0
+        - win19cis_allow_telemetry != 1
+      ansible.builtin.debug:
+        msg:
+          - "Warning!! You have an invalid setting for win19cis_allow_telemetry. Please read"
+          - "the notes for the variable and make the necessary change to the variable to be in compliance."
+
+    - name: "18.10.16.1 | AUDIT | Ensure Allow Diagnostic Data is set to Enabled: Diagnostic data off (not recommended) or Enabled: Send required diagnostic data | Log a warning"
+      when:
+        - win19cis_allow_telemetry != 0
+        - win19cis_allow_telemetry != 1
+      ansible.builtin.import_tasks:
+        file: warning_facts.yml
+      vars:
+        warn_control_id: '18.10.16.1'
+
+- name: "18.10.16.2 | PATCH | Ensure Configure Authenticated Proxy usage for the Connected User Experience and Telemetry service is set to Enabled: Disable Authenticated Proxy usage"
+  when: win19cis_rule_18_10_16_2
+  tags:
+    - level2-domaincontroller
+    - level2-memberserver
+    - rule_18.10.16.2
+    - patch
+    - datacollection
+    - NIST800-171_3.14.6
+    - NIST800-171_3.14.7
+    - NIST800-53R5_SI-4
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\DataCollection
+    name: DisableEnterpriseAuthProxy
+    data: 1
+    type: dword
+
+- name: "18.10.16.3 | PATCH | Ensure Disable OneSettings Downloads is set to Enabled"
+  when: win19cis_rule_18_10_16_3
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_18.10.16.3
+    - patch
+    - onesettings
+    - NIST800-171_3.14.6
+    - NIST800-171_3.14.7
+    - NIST800-53R5_SI-4
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\DataCollection
+    name: DisableOneSettingsDownloads
+    data: 1
+    type: dword
+
+- name: "18.10.16.4 | PATCH | Ensure Do not show feedback notifications is set to Enabled"
+  when: win19cis_rule_18_10_16_4
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_18.10.16.4
+    - patch
+    - datacollection
+    - NIST800-171_3.14.6
+    - NIST800-171_3.14.7
+    - NIST800-53R5_SI-4
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\Datacollection
+    name: DoNotShowFeedbackNotifications
+    data: 1
+    type: dword
+
+- name: "18.10.16.5 | PATCH | Ensure Enable OneSettings Auditing is set to Enabled"
+  when: win19cis_rule_18_10_16_5
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_18.10.16.5
+    - patch
+    - datacollection
+    - NIST800-171_3.3.1
+    - NIST800-171_3.3.2
+    - NIST800-171_3.3.6
+    - NIST800-53R5_AU-3
+    - NIST800-53R5_AU-3_1
+    - NIST800-53R5_AU-7
+    - NIST800-53R5_AU-12
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\DataCollection
+    name: EnableOneSettingsAuditing
+    data: 1
+    type: dword
+
+- name: "18.10.16.6 | PATCH | Ensure Limit Diagnostic Log Collection is set to Enabled"
+  when: win19cis_rule_18_10_16_6
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_18.10.16.6
+    - patch
+    - datacollection
+    - NIST800-171_3.4.2
+    - NIST800-171_3.4.6
+    - NIST800-171_3.4.7
+    - NIST800-53R5_CM-6
+    - NIST800-53R5_CM-7
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\DataCollection
+    name: LimitDiagnosticLogCollection
+    data: 1
+    type: dword
+
+- name: "18.10.16.7 | PATCH | Ensure Limit Dump Collection is set to Enabled"
+  when: win19cis_rule_18_10_16_7
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_18.10.16.7
+    - patch
+    - datacollection
+    - NIST800-171_3.3.1
+    - NIST800-171_3.3.2
+    - NIST800-53R5_AU-2
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\DataCollection
+    name: LimitDumpCollection
+    data: 1
+    type: dword

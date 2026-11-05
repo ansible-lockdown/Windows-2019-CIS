@@ -1,0 +1,49 @@
+---
+
+- name: "18.10.8.1 | PATCH | Ensure Disallow Autoplay for non-volume devices is set to Enabled"
+  when: win19cis_rule_18_10_8_1
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_18.10.8.1
+    - patch
+    - autoplay
+    - NIST800-171_3.8.7
+    - NIST800-53R5_MP-7
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\Explorer
+    name: NoAutoplayfornonVolume
+    data: 1
+    type: dword
+
+- name: "18.10.8.2 | PATCH | Ensure Set the default behavior for AutoRun is set to Enabled Do not execute any autorun commands"
+  when: win19cis_rule_18_10_8_2
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_18.10.8.2
+    - patch
+    - autorun
+    - NIST800-171_3.8.7
+    - NIST800-53R5_MP-7
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer
+    name: NoAutorun
+    data: 1
+    type: dword
+
+- name: "18.10.8.3 | PATCH | Ensure Turn off Autoplay is set to Enabled All drives"
+  when: win19cis_rule_18_10_8_3
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_18.10.8.3
+    - patch
+    - autoplay
+    - NIST800-171_3.8.7
+    - NIST800-53R5_MP-7
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer
+    name: NoDriveTypeAutoRun
+    data: 255
+    type: dword

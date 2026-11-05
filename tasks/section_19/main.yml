@@ -1,0 +1,45 @@
+---
+
+# ╔═══════════════════════════════════════════════════════════════════════════════╗
+# ║              Section 19 HKU Scope (Per CIS Specification)                     ║
+# ║                                                                               ║
+# ║  Section 19 targets domain-joined interactive users only. The correct         ║
+# ║  source is HKEY_USERS subkeys already loaded in the registry by Windows       ║
+# ║  at logon - no manual NTUSER.DAT loading is required or recommended.          ║
+# ║                                                                               ║
+# ║  Per CIS, include only subkeys where:                                         ║
+# ║    - SID begins with S-1-5-21-*  (domain interactive users)                   ║
+# ║    - Does NOT end with _Classes                                               ║
+# ║    - Is NOT .DEFAULT, S-1-5-18, S-1-5-19, or S-1-5-20                         ║
+# ║    - Is NOT an NT SERVICE SID (S-1-5-80-*)                                    ║
+# ║                                                                               ║
+# ║  If no users are currently logged on, section 19 is not considered out of     ║
+# ║  compliance per CIS. Tasks will simply loop over an empty list.               ║
+# ║ Moved from prelim to load at beginning of section 19 to stop potential unload ║
+# ╚═══════════════════════════════════════════════════════════════════════════════╝
+- name: "AUDIT | Obtain Current Interactive User Hives"
+  when: win19cis_section19
+  tags: always
+  block:
+    - name: AUDIT | Obtain Current Interactive User Hives | Retrieve live domain user SIDs from HKEY_USERS
+      ansible.windows.win_shell: "{{ hku_script }}"
+      vars:
+        hku_script: |
+          $users = (Get-ChildItem 'REGISTRY::HKEY_USERS').Name
+          $users | Where-Object {
+            $_ -match 'S-1-5-21-' -and
+            $_ -notlike '*_Classes' -and
+            $_ -notmatch 'S-1-5-18|S-1-5-19|S-1-5-20' -and
+            $_ -notmatch 'S-1-5-80-'
+          } | ForEach-Object { $_ -replace 'HKEY_USERS\\', '' }
+      changed_when: false
+      check_mode: false
+      register: discovered_current_users_loaded_hku
+
+    - name: AUDIT | Obtain Current Interactive User Hives | Set list fact for live user SIDs
+      ansible.builtin.set_fact:
+        discovered_hku_loaded_list: "{{ discovered_current_users_loaded_hku.stdout_lines }}"
+
+- name: "SECTION | 19.x | Administrative Templates"
+  ansible.builtin.import_tasks:
+    file: section_19.x.yml

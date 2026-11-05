@@ -1,0 +1,186 @@
+---
+
+#### Audit Configuration Settings ####
+
+# Allow audit to setup the requirements, including placing the syver binary
+setup_audit: false
+
+# enable audits to run - this runs the audit and gets the latest content
+run_audit: false
+# Run heavy tests - some tests can have more impact on a system
+audit_run_heavy_tests: false
+## Only run Audit do not remediate
+audit_only: false
+
+# Write a compliance facts file to the host, readable back through
+# ansible.windows.setup, recording the benchmark and levels applied.
+create_benchmark_facts: false
+
+#############################
+
+## Ability to collect the audit files and move them to a centralized location
+# This enables the collection of the files from the host
+fetch_audit_output: false
+
+# Method of getting or uploading the summary files
+## Ensure access and permissions are available for these to occur.
+## options are
+# fetch - fetches from the managed node to the ansible controller
+# copy - copies the file to another location on the managed node itself
+audit_output_collection_method: fetch
+
+# Location to put the audit files.
+# NOTE this means two different things depending on the method above:
+#   fetch -> a path on the ANSIBLE CONTROLLER
+#   copy  -> a path on the WINDOWS MANAGED NODE e.g. C:\ProgramData\audit_summaries
+# The default matches the default method of fetch.
+audit_output_destination: /opt/audit_summaries/
+
+# Timeout for the commands that take longer to run, where a timeout is set
+audit_cmd_timeout: 30000
+
+# How to retrieve the audit binary
+# Options are copy or download - detailed settings at the bottom of this file.
+get_audit_binary_method: download
+
+## if get_audit_binary_method - copy the following needs to be updated for your
+## environment. It is expected to be copied from somewhere accessible to the
+## control node.
+audit_bin_copy_location: "{{ role_path }}/syver-windows-amd64.exe"
+
+# Ability to limit the number of concurrent processes used by syver (default 50)
+audit_max_concurrent: 50
+
+# how to get audit files onto host
+# options are copy/git/archive/get_url
+# NOTE archive and get_url expect a .zip on Windows - community.windows.win_unzip
+#      cannot handle .tar.gz on PowerShell 5.1.
+# get_url is the default because it needs nothing installed on the managed node.
+# git works but requires Git for Windows on the host, which is not present on a
+# stock image; the role asserts that up front rather than failing obscurely.
+audit_content: get_url
+
+# Depending on the method of getting the audit content you may need to validate certs
+audit_bin_validate_certs: true
+
+# If using either archive, copy, get_url:
+## copy    -> a directory or .zip on the controller
+## archive -> a .zip on the controller
+## get_url -> a URL returning a .zip
+#
+# The GitHub archive nests its content under <repo>-<branch>/, which the get_url
+# tasks account for. To test local audit changes instead, set audit_content to
+# copy and point this at the sibling checkout:
+#   audit_content: copy
+#   audit_conf_source: "{{ role_path }}/../Windows-2019-CIS-Audit"
+audit_conf_source: "https://github.com/ansible-lockdown/{{ benchmark }}-Audit/archive/refs/heads/{{ audit_git_version }}.zip"
+
+# Destination for the audit content on the managed node.
+# This is the PARENT directory - run_audit.ps1 joins the benchmark directory onto
+# it itself, so this is what gets exported as AUDIT_CONTENT_LOCATION.
+audit_conf_dest: 'C:\ProgramData'
+
+# Where the audit logs are stored on the managed node
+audit_log_dir: 'C:\ProgramData\audit_logs'
+
+### options below this line don't often need changing but can be if your
+### environment requires it ###
+
+# if get_audit_binary_method == download change accordingly.
+# The release asset is named <arch>.exe, so this is everything up to and
+# including the trailing 'syver-windows-'. LE_audit_setup.yml appends the
+# lowercased architecture and '.exe', matching the published asset name:
+#
+#   audit_bin_url: "https://github.com/<org>/syver/releases/download/{{ audit_bin_version.release }}/syver-windows-"
+#   -> https://.../syver-windows-amd64.exe
+#
+# LE_audit_setup.yml asserts this is non-empty when the method is 'download', so
+# an unset value fails with a clear message rather than fetching nothing.
+audit_bin_url: "https://github.com/krameff/syver/releases/download/{{ audit_bin_version.release }}/syver-windows-"
+
+### syver Audit Benchmark file ###
+## managed by the control audit_content
+# git
+audit_file_git: "https://github.com/ansible-lockdown/{{ benchmark }}-Audit.git"
+audit_git_version: "benchmark_{{ benchmark_version }}"
+
+## syver configuration information
+# Where the audit content is stored on the managed node.
+# MUST match what run_audit.ps1 derives for itself, or the script will look
+# somewhere else and report the content missing.
+audit_conf_dir: '{{ audit_conf_dest }}\{{ benchmark }}-Audit'
+
+# The gossfile name inside audit_conf_dir - exported as AUDIT_FILE
+audit_file: goss.yml
+
+# Frozen once per run in pre_remediation_audit.yml. A bare now() re-evaluates on
+# every reference, which would give the run task and the fetch task two
+# different filenames.
+audit_timestamp: "{{ discovered_audit_timestamp | default(now(utc=true, fmt='%Y%m%d%H%M%S'), true) }}"
+
+# If changed these can affect other products
+pre_audit_outfile: '{{ audit_log_dir }}\{{ inventory_hostname_short }}-{{ benchmark }}-{{ benchmark_version }}_pre_scan_{{ audit_timestamp }}.{{ audit_format }}'
+post_audit_outfile: '{{ audit_log_dir }}\{{ inventory_hostname_short }}-{{ benchmark }}-{{ benchmark_version }}_post_scan_{{ audit_timestamp }}.{{ audit_format }}'
+
+## The following should not need changing
+
+### Audit binary settings ###
+# NOTE ansible.windows.win_get_url takes a bare hex digest plus a separate
+# checksum_algorithm, not the 'sha256:...' form the Linux roles use.
+# Both are required for the download method - win_get_url verifies the digest,
+# which is the only thing standing between a compromised mirror and every
+# audited host running an attacker's binary as SYSTEM. The digest below is from
+# the signed syver_0.11.1_SHA256SUMS published with the release.
+# ARM64 is empty on purpose: v0.11.1 ships no Windows ARM64 asset, so a download
+# on such a host fails the checksum lookup rather than fetching an amd64 binary.
+audit_bin_version:
+  release: v0.11.1
+  AMD64_checksum: '9d8b8ba6dd6a7b89b4e344aea23527808b9fc0f507567b64479d4d22be6776c1' # pragma: allowlist secret
+  ARM64_checksum: ''
+audit_bin_path: 'C:\Program Files\syver'
+audit_bin: '{{ audit_bin_path }}\syver.exe'
+audit_format: json
+
+# run_audit.ps1 -Group. group_names is a list, so join it rather than letting
+# Jinja render a Python list literal into a PowerShell [string] parameter.
+audit_group: "{{ group_names | default([]) | join(',') | default('ungrouped', true) }}"
+
+# run_audit.ps1 -SystemType. Its ValidateSet is Workstation|Server.
+audit_system_type: Server
+
+# The rendered vars file the audit is run against. This is the bridge: it is
+# generated from this role's own variables, so the audit tests what the role was
+# actually asked to do rather than what the audit repo defaults to.
+audit_vars_path: '{{ audit_conf_dir }}\vars\{{ inventory_hostname_short }}.yml'
+
+# Where the local facts file is written. Windows has no default fact_path, so
+# the play must pass this path to ansible.windows.setup for the facts to be read
+# back. See the Auditing section of the README.
+win19cis_ansible_facts_path: 'C:\ProgramData\ansible\facts.d'
+
+#### Audit selection ####
+## These select what the AUDIT checks. The role itself selects level by --tags,
+## so setting level_2 false here does not stop the role applying level 2
+## controls - it stops the audit asserting them. The NGWS profile toggle,
+## win19cis_ngws, gates the role as well and is in defaults/main/main.yml.
+win19cis_level_1: true
+win19cis_level_2: true
+
+## Which CIS profile applies. A host is either a domain controller or it is not,
+## so this is one value rather than a pair of booleans that can disagree.
+## run_audit.ps1 derives it from Win32_ComputerSystem.DomainRole and passes it
+## in, so it is detected rather than declared; the bridge template below sets it
+## from the role's own prelim facts. CIS treats any server that is not a DC as a
+## Member Server, standalone included.
+win19cis_system_role: 'memberserver'
+
+## Written by run_audit.ps1 before the audit runs. One collection pass replaces
+## a secedit/auditpol shell-out per control.
+win19cis_policy_snapshot: 'C:\Windows\Temp\win19cis_policy_snapshot.txt'
+win19cis_snapshot_dir: 'C:\Windows\Temp\win19cis_snapshot'
+
+audit_results: |
+  The{% if not audit_only %} pre remediation{% endif %} audit results are: {{ pre_audit_results }}
+  {% if not audit_only %}The post remediation audit results are: {{ post_audit_results }}{% endif %}
+
+  Full breakdown can be found in {{ audit_log_dir }}
