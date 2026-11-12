@@ -1,0 +1,24 @@
+{
+    "lockdown_details": {
+        "Benchmark_release": {{ ('CIS-' ~ benchmark_version) | to_json }},
+        "Benchmark_run_date": {{ ('%Y-%m-%d - %H:%M:%S' | ansible.builtin.strftime) | to_json }},
+        "level_1_hardening_enabled": {{ win19cis_level_1 | to_json }},
+        "level_2_hardening_enabled": {{ win19cis_level_2 | to_json }},
+        "tags_run": {{ ansible_run_tags | to_json }}
+    },
+    "lockdown_audit_details": {
+{% if run_audit %}
+        "audit_run_date": {{ ('%Y-%m-%d - %H:%M:%S' | ansible.builtin.strftime) | to_json }},
+        "audit_file_local_location": {{ audit_log_dir | to_json }},
+{% if not audit_only %}
+        "audit_summary": {{ post_audit_results | default('') | to_json }},
+{% endif %}
+{% if fetch_audit_output %}
+        "audit_files_centralized_location": {{ audit_output_destination | to_json }},
+{% endif %}
+        "reboot_pending": {{ (reboot_host and skip_reboot) | to_json }}
+{% else %}
+        "audit_run_date": null
+{% endif %}
+    }
+}

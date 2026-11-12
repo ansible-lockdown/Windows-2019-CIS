@@ -1,0 +1,73 @@
+---
+
+- name: "18.10.29.2 | PATCH | Ensure Do not apply the Mark of the Web tag to files copied from insecure sources is set to Disabled"
+  when: win19cis_rule_18_10_29_2
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_18.10.29.2
+    - patch
+    - motw
+    - explorer
+    - NIST800-171_3.4.2
+    - NIST800-171_3.4.6
+    - NIST800-53R5_CM-6
+    - NIST800-53R5_SI-3
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\Explorer
+    name: DisableMotWOnInsecurePathCopy
+    data: 0
+    type: dword
+
+- name: "18.10.29.3 | PATCH | Ensure Turn off Data Execution Prevention for Explorer is set to Disabled"
+  when: win19cis_rule_18_10_29_3
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_18.10.29.3
+    - patch
+    - dep
+    - NIST800-53R5_SI-16
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\Explorer
+    name: NoDataExecutionPrevention
+    data: 0
+    type: dword
+
+- name: "18.10.29.4 | PATCH | Ensure Turn off heap termination on corruption is set to Disabled"
+  when: win19cis_rule_18_10_29_4
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_18.10.29.4
+    - patch
+    - heap
+    - NIST800-171_3.4.2
+    - NIST800-171_3.4.6
+    - NIST800-171_3.4.7
+    - NIST800-53R5_CM-6
+    - NIST800-53R5_CM-7
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\Explorer
+    name: NoHeapTerminationOnCorruption
+    data: 0
+    type: dword
+
+- name: "18.10.29.5 | PATCH | Ensure Turn off shell protocol protected mode is set to Disabled"
+  when: win19cis_rule_18_10_29_5
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_18.10.29.5
+    - patch
+    - shell
+    - NIST800-171_3.4.2
+    - NIST800-171_3.4.6
+    - NIST800-171_3.4.7
+    - NIST800-53R5_CM-6
+    - NIST800-53R5_CM-7
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer
+    name: PreXPSP2ShellProtocolBehavior
+    data: 0
+    type: dword

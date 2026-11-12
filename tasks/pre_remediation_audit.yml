@@ -1,0 +1,233 @@
+---
+
+# now() re-evaluates on every reference, which would give the audit run and the
+# fetch two different filenames. Freeze it once.
+- name: "Pre Audit Setup | Freeze a timestamp for the audit output filenames"
+  when: discovered_audit_timestamp is not defined
+  ansible.builtin.set_fact:
+    discovered_audit_timestamp: "{{ now(utc=true, fmt='%Y%m%d%H%M%S') }}"
+
+- name: "Pre Audit Setup | Ensure existence of the audit content and log directories"
+  ansible.windows.win_file:
+    path: "{{ item }}"
+    state: directory
+  loop:
+    - "{{ audit_conf_dest }}"
+    - "{{ audit_log_dir }}"
+
+- name: "Pre Audit Setup | If using git for content set up"
+  when: audit_content == 'git'
+  block:
+    - name: "Pre Audit Setup | Check git is available"
+      ansible.windows.win_command: git --version
+      changed_when: false
+      failed_when: false
+      register: discovered_git_available
+
+    - name: "Pre Audit Setup | Assert git is available"
+      ansible.builtin.assert:
+        that: discovered_git_available.rc == 0
+        fail_msg: >-
+          audit_content is 'git' but git is not on PATH on the managed node.
+          Install Git for Windows or use audit_content 'copy'.
+
+    - name: "Pre Audit Setup | Retrieve audit content files from git"
+      ansible.windows.win_shell: |
+        if (Test-Path -LiteralPath '{{ audit_conf_dir }}\.git') {
+            git -C '{{ audit_conf_dir }}' fetch --all --tags
+            git -C '{{ audit_conf_dir }}' checkout --force '{{ audit_git_version }}'
+        } else {
+            git clone --branch '{{ audit_git_version }}' '{{ audit_file_git }}' '{{ audit_conf_dir }}'
+        }
+      changed_when: true
+
+- name: "Pre Audit Setup | Remove the previous audit content before copying or unarchiving"
+  when: audit_content in ['copy', 'archive']
+  ansible.windows.win_file:
+    path: "{{ audit_conf_dir }}"
+    state: absent
+
+- name: "Pre Audit Setup | Copy audit content files to server"
+  when: audit_content == 'copy'
+  ansible.windows.win_copy:
+    src: "{{ audit_conf_source }}/"
+    dest: '{{ audit_conf_dir }}\'
+
+- name: "Pre Audit Setup | Unarchive audit content files on server"
+  when: audit_content == 'archive'
+  block:
+    - name: "Pre Audit Setup | Copy audit content archive to server"
+      ansible.windows.win_copy:
+        src: "{{ audit_conf_source }}"
+        dest: '{{ audit_conf_dest }}\{{ audit_conf_source | basename }}'
+
+    - name: "Pre Audit Setup | Unarchive audit content files on server"
+      community.windows.win_unzip:
+        src: '{{ audit_conf_dest }}\{{ audit_conf_source | basename }}'
+        dest: "{{ audit_conf_dest }}"
+        delete_archive: true
+
+- name: "Pre Audit Setup | Get audit content from url"
+  when: audit_content == 'get_url'
+  block:
+    - name: "Pre Audit Setup | Download audit content archive"
+      ansible.windows.win_get_url:
+        url: "{{ audit_conf_source }}"
+        dest: '{{ audit_conf_dest }}\{{ benchmark }}-Audit.zip'
+        validate_certs: "{{ audit_bin_validate_certs }}"
+
+    - name: "Pre Audit Setup | Unarchive downloaded audit content to a staging directory"
+      community.windows.win_unzip:
+        src: '{{ audit_conf_dest }}\{{ benchmark }}-Audit.zip'
+        dest: '{{ audit_conf_dest }}\{{ benchmark }}-Audit.staging'
+        delete_archive: true
+
+    # A GitHub archive nests everything under <repo>-<branch>/, so unzipping
+    # straight into audit_conf_dest leaves the content one level too deep and
+    # run_audit.ps1 reports it missing. Stage the extract, then promote whichever
+    # directory actually holds goss.yml to audit_conf_dir. A flat zip that already
+    # holds goss.yml at its root is promoted as-is, so both shapes work.
+    - name: "Pre Audit Setup | Promote the extracted content to the audit content directory"
+      ansible.windows.win_powershell:
+        script: |
+          param($Staging, $Target, $GossFile)
+          $root = $null
+          if (Test-Path -LiteralPath (Join-Path $Staging $GossFile)) {
+              $root = $Staging
+          } else {
+              $candidates = @(Get-ChildItem -LiteralPath $Staging -Directory |
+                  Where-Object { Test-Path -LiteralPath (Join-Path $_.FullName $GossFile) })
+              if ($candidates.Count -eq 1) { $root = $candidates[0].FullName }
+          }
+          if (-not $root) {
+              throw "No directory containing $GossFile was found under $Staging"
+          }
+          if (Test-Path -LiteralPath $Target) {
+              Remove-Item -LiteralPath $Target -Recurse -Force
+          }
+          Move-Item -LiteralPath $root -Destination $Target
+          Remove-Item -LiteralPath $Staging -Recurse -Force -ErrorAction SilentlyContinue
+          $Ansible.Changed = $true
+          "promoted $root to $Target"
+        parameters:
+          Staging: '{{ audit_conf_dest }}\{{ benchmark }}-Audit.staging'
+          Target: "{{ audit_conf_dir }}"
+          GossFile: "{{ audit_file }}"
+
+- name: "Pre Audit Setup | Check the audit prerequisites are in place"
+  when: run_audit or audit_only
+  block:
+    - name: "Pre Audit Setup | Check for syver binary"
+      ansible.windows.win_stat:
+        path: "{{ audit_bin }}"
+      changed_when: false
+      register: prelim_syver_available
+
+    - name: "Pre Audit Setup | If audit ensure syver is available"
+      ansible.builtin.assert:
+        that: prelim_syver_available['stat']['exists']
+        fail_msg: "Audit has been selected: unable to find the syver binary at {{ audit_bin }}"
+
+    - name: "Pre Audit Setup | Check for the audit content"
+      ansible.windows.win_stat:
+        path: '{{ audit_conf_dir }}\{{ audit_file }}'
+      changed_when: false
+      register: prelim_audit_content_available
+
+    - name: "Pre Audit Setup | If audit ensure the content is available"
+      ansible.builtin.assert:
+        that: prelim_audit_content_available['stat']['exists']
+        fail_msg: >-
+          Audit content not found at {{ audit_conf_dir }}\{{ audit_file }}.
+          run_audit.ps1 derives the same path from AUDIT_CONTENT_LOCATION
+          and will not find it either.
+
+    # Execution policy is set by GPO in exactly the kind of estate that runs a
+    # CIS role, and MachinePolicy outranks the Process scope win_shell sets.
+    # Without this the failure is an opaque UnauthorizedAccess mid-run.
+    - name: "Pre Audit Setup | Check the execution policy allows the audit script to run"
+      ansible.windows.win_shell: |
+        $blocking = Get-ExecutionPolicy -List |
+            Where-Object { $_.Scope -in 'MachinePolicy', 'UserPolicy' -and
+                           $_.ExecutionPolicy -in 'AllSigned', 'Restricted' }
+        if ($blocking) { "BLOCKED: $($blocking.Scope) = $($blocking.ExecutionPolicy)" } else { 'OK' }
+      changed_when: false
+      failed_when: discovered_audit_execution_policy.stdout is search('BLOCKED')
+      register: discovered_audit_execution_policy
+
+- name: "Pre Audit Setup | Copy ansible default vars values to test audit"
+  when: run_audit or audit_only
+  tags:
+    - goss_template
+    - run_audit
+  ansible.windows.win_template:
+    src: lockdown_audit.yml.j2
+    dest: "{{ audit_vars_path }}"
+    newline_sequence: "\r\n"
+
+- name: "Pre Audit | Run pre_remediation audit {{ benchmark }}"
+  when: run_audit or audit_only
+  ansible.windows.win_shell: |
+    $auditArgs = @{
+        Format        = '{{ audit_format }}'
+        Group         = '{{ audit_group }}'
+        MaxConcurrent = {{ audit_max_concurrent }}
+        OutFile       = '{{ pre_audit_outfile }}'
+        VarsPath      = '{{ audit_vars_path }}'
+        SystemType    = '{{ audit_system_type }}'
+    }
+    & '{{ audit_conf_dir }}\run_audit.ps1' @auditArgs
+  changed_when: true
+  # run_audit.ps1 does not propagate syver's exit code, and syver exits non-zero
+  # when it finds failures. Failing the play because the audit found something is
+  # wrong; failing silently when the script aborted is also wrong. The banner is
+  # only printed after a complete run.
+  failed_when: "'Audit Completed' not in pre_audit_run.stdout"
+  register: pre_audit_run
+  environment:
+    AUDIT_BIN: "{{ audit_bin }}"
+    AUDIT_CONTENT_LOCATION: "{{ audit_conf_dest }}"
+    AUDIT_FILE: "{{ audit_file }}"
+
+- name: "Pre Audit | Capture audit data if json format"
+  when:
+    - run_audit or audit_only
+    - audit_format == 'json'
+  block:
+    # syver's JSON carries a summary-line on every result as well as on the run
+    # summary, so the run total has to come from .summary, not a regex over the
+    # file. This is the same string the Linux grep produces.
+    - name: "Pre Audit | Capture audit data if json format"
+      ansible.windows.win_shell: |
+        $ErrorActionPreference = 'Stop'
+        $audit = Get-Content -LiteralPath '{{ pre_audit_outfile }}' -Raw | ConvertFrom-Json
+        $audit.summary.'summary-line'
+      changed_when: false
+      failed_when: pre_audit_summary_json.rc != 0 or not (pre_audit_summary_json.stdout | trim)
+      register: pre_audit_summary_json
+
+    - name: "Pre Audit | Set Fact for audit summary"
+      ansible.builtin.set_fact:
+        pre_audit_results: "{{ pre_audit_summary_json.stdout | trim }}"
+
+- name: "Pre Audit | Capture audit data if documentation format"
+  when:
+    - run_audit or audit_only
+    - audit_format == 'documentation'
+  block:
+    - name: "Pre Audit | Capture audit data if documentation format"
+      ansible.windows.win_shell: |
+        $tail = @(Get-Content -LiteralPath '{{ pre_audit_outfile }}' -Tail 2)
+        if ($tail.Count -gt 1) { $tail = $tail[($tail.Count - 1)..0] }
+        ($tail -join ' ').Trim()
+      changed_when: false
+      register: pre_audit_summary_documentation
+
+    - name: "Pre Audit | Set Fact for audit summary"
+      ansible.builtin.set_fact:
+        pre_audit_results: "{{ pre_audit_summary_documentation.stdout | trim }}"
+
+- name: "Audit_Only | Run Audit Only"
+  when: audit_only
+  ansible.builtin.import_tasks:
+    file: audit_only.yml

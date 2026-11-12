@@ -1,0 +1,17 @@
+---
+
+- name: "18.10.6.1 | PATCH | Ensure Allow Microsoft accounts to be optional is set to Enabled"
+  when: win19cis_rule_18_10_6_1
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_18.10.6.1
+    - patch
+    - accounts
+    - NIST800-171_3.3.1
+    - NIST800-53R5_AC-2_1
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System
+    name: MSAOptional
+    data: 1
+    type: dword

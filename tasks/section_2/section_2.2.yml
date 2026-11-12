@@ -1,0 +1,1301 @@
+---
+
+- name: "2.2.1 | PATCH | Ensure Access Credential Manager as a trusted caller is set to No One"
+  when: win19cis_rule_2_2_1
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_2.2.1
+    - patch
+    - userrights
+    - NIST800-171_3.1.1
+    - NIST800-171_3.1.5
+    - NIST800-171_3.3.8
+    - NIST800-171_3.3.9
+    - NIST800-53R5_AC-2
+    - NIST800-53R5_AC-3
+    - NIST800-53R5_AC-6
+    - NIST800-53R5_AC-6_1
+    - NIST800-53R5_AC-6_7
+    - NIST800-53R5_AU-9_4
+  ansible.windows.win_user_right:
+    name: SeTrustedCredManAccessPrivilege
+    users: []
+    action: set
+
+- name: "2.2.2 | PATCH | Ensure Access this computer from the network is set to Administrators, Authenticated Users, & ENTERPRISE DOMAIN CONTROLLERS DC only | Domain Controller"
+  when:
+    - win19cis_rule_2_2_2
+    - prelim_win19cis_is_domain_controller
+  tags:
+    - level1-domaincontroller
+    - rule_2.2.2
+    - patch
+    - userrights
+    - NIST800-171_3.1.1
+    - NIST800-171_3.1.5
+    - NIST800-171_3.3.8
+    - NIST800-171_3.3.9
+    - NIST800-53R5_AC-2
+    - NIST800-53R5_AC-3
+    - NIST800-53R5_AC-6
+    - NIST800-53R5_AC-6_1
+    - NIST800-53R5_AC-6_7
+    - NIST800-53R5_AU-9_4
+  ansible.windows.win_user_right:
+    name: SeNetworkLogonRight
+    users:
+      - Administrators
+      - Authenticated Users
+      - ENTERPRISE DOMAIN CONTROLLERS
+    action: set
+
+- name: "2.2.3 | PATCH | Ensure Access this computer from the network is set to Administrators, Authenticated Users MS only | Member Server"
+  when:
+    - win19cis_rule_2_2_3
+    - not prelim_win19cis_is_domain_controller
+    - not (win_skip_for_test | bool)
+  tags:
+    - level1-memberserver
+    - rule_2.2.3
+    - patch
+    - userrights
+    - NIST800-171_3.1.1
+    - NIST800-171_3.1.5
+    - NIST800-171_3.3.8
+    - NIST800-171_3.3.9
+    - NIST800-53R5_AC-2
+    - NIST800-53R5_AC-3
+    - NIST800-53R5_AC-6
+    - NIST800-53R5_AC-6_1
+    - NIST800-53R5_AC-6_7
+    - NIST800-53R5_AU-9_4
+  ansible.windows.win_user_right:
+    name: SeNetworkLogonRight
+    users:
+      - Administrators
+      - Authenticated Users
+    action: set
+
+- name: "2.2.4 | PATCH | Ensure Act as part of the operating system is set to No One"
+  when: win19cis_rule_2_2_4
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_2.2.4
+    - patch
+    - userrights
+    - NIST800-171_3.1.1
+    - NIST800-171_3.1.5
+    - NIST800-171_3.3.8
+    - NIST800-171_3.3.9
+    - NIST800-53R5_AC-2
+    - NIST800-53R5_AC-3
+    - NIST800-53R5_AC-6
+    - NIST800-53R5_AC-6_1
+    - NIST800-53R5_AC-6_7
+    - NIST800-53R5_AU-9_4
+  ansible.windows.win_user_right:
+    name: SeTcbPrivilege
+    users: []
+    action: set
+
+- name: "2.2.5 | PATCH | Ensure Add workstations to domain is set to Administrators DC only | Domain Controller"
+  when:
+    - win19cis_rule_2_2_5
+    - prelim_win19cis_is_domain_controller
+  tags:
+    - level1-domaincontroller
+    - rule_2.2.5
+    - patch
+    - userrights
+    - NIST800-171_3.1.1
+    - NIST800-171_3.1.5
+    - NIST800-171_3.3.8
+    - NIST800-171_3.3.9
+    - NIST800-53R5_AC-2
+    - NIST800-53R5_AC-3
+    - NIST800-53R5_AC-6
+    - NIST800-53R5_AC-6_1
+    - NIST800-53R5_AC-6_7
+    - NIST800-53R5_AU-9_4
+  ansible.windows.win_user_right:
+    name: SeMachineAccountPrivilege
+    users: Administrators
+    action: set
+
+- name: "2.2.6 | PATCH | Ensure Adjust memory quotas for a process is set to Administrators LOCAL SERVICE NETWORK SERVICE"
+  when: win19cis_rule_2_2_6
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_2.2.6
+    - patch
+    - userrights
+    - NIST800-171_3.1.1
+    - NIST800-171_3.1.5
+    - NIST800-171_3.3.8
+    - NIST800-171_3.3.9
+    - NIST800-53R5_AC-2
+    - NIST800-53R5_AC-3
+    - NIST800-53R5_AC-6
+    - NIST800-53R5_AC-6_1
+    - NIST800-53R5_AC-6_7
+    - NIST800-53R5_AU-9_4
+  ansible.windows.win_user_right:
+    name: SeIncreaseQuotaPrivilege
+    users:
+      - Administrators
+      - LOCAL SERVICE
+      - NETWORK SERVICE
+    action: set
+
+- name: "2.2.7 | PATCH |  Ensure Allow log on locally is set to Administrators, ENTERPRISE DOMAIN CONTROLLERS (DC only)"
+  when:
+    - win19cis_rule_2_2_7
+    - prelim_win19cis_is_domain_controller
+  tags:
+    - level1-domaincontroller
+    - rule_2.2.7
+    - patch
+    - userrights
+    - NIST800-171_3.1.1
+    - NIST800-171_3.1.5
+    - NIST800-171_3.3.8
+    - NIST800-171_3.3.9
+    - NIST800-53R5_AC-2
+    - NIST800-53R5_AC-3
+    - NIST800-53R5_AC-6
+    - NIST800-53R5_AC-6_1
+    - NIST800-53R5_AC-6_7
+    - NIST800-53R5_AU-9_4
+  ansible.windows.win_user_right:
+    name: SeInteractiveLogonRight
+    users:
+      - Administrators
+      - ENTERPRISE DOMAIN CONTROLLERS
+    action: set
+
+- name: "2.2.8 | PATCH |  Ensure Allow log on locally is set to Administrators (MS only)"
+  when:
+    - win19cis_rule_2_2_8
+    - not prelim_win19cis_is_domain_controller
+  tags:
+    - level1-memberserver
+    - rule_2.2.8
+    - patch
+    - userrights
+    - NIST800-171_3.1.1
+    - NIST800-171_3.1.5
+    - NIST800-171_3.3.8
+    - NIST800-171_3.3.9
+    - NIST800-53R5_AC-2
+    - NIST800-53R5_AC-3
+    - NIST800-53R5_AC-6
+    - NIST800-53R5_AC-6_1
+    - NIST800-53R5_AC-6_7
+    - NIST800-53R5_AU-9_4
+  ansible.windows.win_user_right:
+    name: SeInteractiveLogonRight
+    users:
+      - Administrators
+    action: set
+
+- name: "2.2.9 | PATCH | Ensure 'Allow log on through Remote Desktop Services' is set to 'Administrators' (DC only)"
+  when:
+    - win19cis_rule_2_2_9
+    - prelim_win19cis_is_domain_controller
+  tags:
+    - level1-domaincontroller
+    - rule_2.2.9
+    - patch
+    - userrights
+    - remotedesktop
+    - NIST800-171_3.1.1
+    - NIST800-171_3.1.5
+    - NIST800-171_3.3.8
+    - NIST800-171_3.3.9
+    - NIST800-53R5_AC-2
+    - NIST800-53R5_AC-3
+    - NIST800-53R5_AC-6
+    - NIST800-53R5_AC-6_1
+    - NIST800-53R5_AC-6_7
+    - NIST800-53R5_AU-9_4
+  ansible.windows.win_user_right:
+    name: SeRemoteInteractiveLogonRight
+    users:
+      - Administrators
+    action: set
+
+- name: "2.2.10 | PATCH | Ensure 'Allow log on through Remote Desktop Services' is set to 'Administrators, Remote Desktop Users' (MS Only)"
+  when:
+    - win19cis_rule_2_2_10
+    - not prelim_win19cis_is_domain_controller
+  tags:
+    - level1-memberserver
+    - rule_2.2.10
+    - patch
+    - userrights
+    - remotedesktop
+    - NIST800-171_3.1.1
+    - NIST800-171_3.1.5
+    - NIST800-171_3.3.8
+    - NIST800-171_3.3.9
+    - NIST800-53R5_AC-2
+    - NIST800-53R5_AC-3
+    - NIST800-53R5_AC-6
+    - NIST800-53R5_AC-6_1
+    - NIST800-53R5_AC-6_7
+    - NIST800-53R5_AU-9_4
+  ansible.windows.win_user_right:
+    name: SeRemoteInteractiveLogonRight
+    users:
+      - Administrators
+      - Remote Desktop Users
+    action: set
+
+- name: "2.2.11 | PATCH | Ensure 'Back up files and directories' is set to Administrators"
+  when: win19cis_rule_2_2_11
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_2.2.11
+    - patch
+    - userrights
+    - NIST800-171_3.1.1
+    - NIST800-171_3.1.5
+    - NIST800-171_3.3.8
+    - NIST800-171_3.3.9
+    - NIST800-53R5_AC-2
+    - NIST800-53R5_AC-3
+    - NIST800-53R5_AC-6
+    - NIST800-53R5_AC-6_1
+    - NIST800-53R5_AC-6_7
+    - NIST800-53R5_AU-9_4
+  ansible.windows.win_user_right:
+    name: SeBackupPrivilege
+    users:
+      - Administrators
+    action: set
+
+- name: "2.2.12 | PATCH | Ensure Change the system time is set to Administrators LOCAL SERVICE"
+  when: win19cis_rule_2_2_12
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_2.2.12
+    - patch
+    - NIST800-171_3.1.1
+    - NIST800-171_3.1.5
+    - NIST800-171_3.3.8
+    - NIST800-171_3.3.9
+    - NIST800-53R5_AC-2
+    - NIST800-53R5_AC-3
+    - NIST800-53R5_AC-6
+    - NIST800-53R5_AC-6_1
+    - NIST800-53R5_AC-6_7
+    - NIST800-53R5_AU-9_4
+  ansible.windows.win_user_right:
+    name: SeSystemTimePrivilege
+    users:
+      - Administrators
+      - LOCAL SERVICE
+    action: set
+
+- name: "2.2.13 | PATCH | Ensure Change the time zone is set to Administrators LOCAL SERVICE"
+  when: win19cis_rule_2_2_13
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_2.2.13
+    - patch
+    - userrights
+    - NIST800-171_3.1.1
+    - NIST800-171_3.1.5
+    - NIST800-171_3.3.8
+    - NIST800-171_3.3.9
+    - NIST800-53R5_AC-2
+    - NIST800-53R5_AC-3
+    - NIST800-53R5_AC-6
+    - NIST800-53R5_AC-6_1
+    - NIST800-53R5_AC-6_7
+    - NIST800-53R5_AU-9_4
+  ansible.windows.win_user_right:
+    name: SeTimeZonePrivilege
+    users:
+      - Administrators
+      - LOCAL SERVICE
+    action: set
+
+- name: "2.2.14 | PATCH | Ensure Create a pagefile is set to Administrators"
+  when: win19cis_rule_2_2_14
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_2.2.14
+    - patch
+    - userrights
+    - NIST800-171_3.1.1
+    - NIST800-171_3.1.5
+    - NIST800-171_3.3.8
+    - NIST800-171_3.3.9
+    - NIST800-53R5_AC-2
+    - NIST800-53R5_AC-3
+    - NIST800-53R5_AC-6
+    - NIST800-53R5_AC-6_1
+    - NIST800-53R5_AC-6_7
+    - NIST800-53R5_AU-9_4
+  ansible.windows.win_user_right:
+    name: SeCreatePagefilePrivilege
+    users:
+      - Administrators
+    action: set
+
+- name: "2.2.15 | PATCH | Ensure Create a token object is set to No One"
+  when: win19cis_rule_2_2_15
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_2.2.15
+    - patch
+    - userrights
+    - NIST800-171_3.1.1
+    - NIST800-171_3.1.5
+    - NIST800-171_3.3.8
+    - NIST800-171_3.3.9
+    - NIST800-53R5_AC-2
+    - NIST800-53R5_AC-3
+    - NIST800-53R5_AC-6
+    - NIST800-53R5_AC-6_1
+    - NIST800-53R5_AC-6_7
+    - NIST800-53R5_AU-9_4
+  ansible.windows.win_user_right:
+    name: SeCreateTokenPrivilege
+    users: []
+    action: set
+
+- name: "2.2.16 | PATCH | Ensure Create global objects is set to Administrators, LOCAL SERVICE, NETWORK SERVICE, SERVICE"
+  when: win19cis_rule_2_2_16
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_2.2.16
+    - patch
+    - userrights
+    - NIST800-171_3.1.1
+    - NIST800-171_3.1.5
+    - NIST800-171_3.3.8
+    - NIST800-171_3.3.9
+    - NIST800-53R5_AC-2
+    - NIST800-53R5_AC-3
+    - NIST800-53R5_AC-6
+    - NIST800-53R5_AC-6_1
+    - NIST800-53R5_AC-6_7
+    - NIST800-53R5_AU-9_4
+  ansible.windows.win_user_right:
+    name: SeCreateGlobalPrivilege
+    users:
+      - Administrators
+      - LOCAL SERVICE
+      - NETWORK SERVICE
+      - SERVICE
+    action: set
+
+- name: "2.2.17 | PATCH | Ensure Create permanent shared objects is set to No One"
+  when: win19cis_rule_2_2_17
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_2.2.17
+    - patch
+    - userrights
+    - NIST800-171_3.1.1
+    - NIST800-171_3.1.5
+    - NIST800-171_3.3.8
+    - NIST800-171_3.3.9
+    - NIST800-53R5_AC-2
+    - NIST800-53R5_AC-3
+    - NIST800-53R5_AC-6
+    - NIST800-53R5_AC-6_1
+    - NIST800-53R5_AC-6_7
+    - NIST800-53R5_AU-9_4
+  ansible.windows.win_user_right:
+    name: SeCreatePermanentPrivilege
+    users: []
+    action: set
+
+- name: "2.2.18 | PATCH | Ensure Create symbolic links is set to Administrators DC only | Domain Controller"
+  when:
+    - win19cis_rule_2_2_18
+    - prelim_win19cis_is_domain_controller
+  tags:
+    - level1-domaincontroller
+    - rule_2.2.18
+    - patch
+    - userrights
+    - NIST800-171_3.1.1
+    - NIST800-171_3.1.5
+    - NIST800-171_3.3.8
+    - NIST800-171_3.3.9
+    - NIST800-53R5_AC-2
+    - NIST800-53R5_AC-3
+    - NIST800-53R5_AC-6
+    - NIST800-53R5_AC-6_1
+    - NIST800-53R5_AC-6_7
+    - NIST800-53R5_AU-9_4
+  ansible.windows.win_user_right:
+    name: SeCreateSymbolicLinkPrivilege
+    users:
+      - Administrators
+    action: set
+
+- name: "2.2.19 | PATCH | Ensure Create symbolic links is set to Administrators NT VIRTUAL MACHINE\\Virtual Machines MS only | Member Server"
+  when:
+    - win19cis_rule_2_2_19
+    - not prelim_win19cis_is_domain_controller
+  tags:
+    - level1-memberserver
+    - rule_2.2.19
+    - patch
+    - userrights
+    - NIST800-171_3.1.1
+    - NIST800-171_3.1.5
+    - NIST800-171_3.3.8
+    - NIST800-171_3.3.9
+    - NIST800-53R5_AC-2
+    - NIST800-53R5_AC-3
+    - NIST800-53R5_AC-6
+    - NIST800-53R5_AC-6_1
+    - NIST800-53R5_AC-6_7
+    - NIST800-53R5_AU-9_4
+  block:
+    - name: "2.2.19 | PATCH | Ensure Create symbolic links is set to Administrators NT VIRTUAL MACHINE\\Virtual Machines  |  Without Hyper-v | Member Server"
+      when: not win19cis_hyperv_installed
+      ansible.windows.win_user_right:
+        name: SeCreateSymbolicLinkPrivilege
+        users:
+          - Administrators
+        action: set
+
+    - name: "2.2.19 | PATCH | Ensure Create symbolic links is set to Administrators NT VIRTUAL MACHINE\\Virtual Machines MS only | With Hyper-v | Member Server"
+      when: win19cis_hyperv_installed
+      ansible.windows.win_user_right:
+        name: SeCreateSymbolicLinkPrivilege
+        users:
+          - Administrators
+          - NT VIRTUAL MACHINE\Virtual Machines
+        action: set
+
+- name: "2.2.20 | PATCH | Ensure Debug programs is set to Administrators"
+  when: win19cis_rule_2_2_20
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_2.2.20
+    - patch
+    - userrights
+    - NIST800-171_3.1.1
+    - NIST800-171_3.1.5
+    - NIST800-171_3.3.8
+    - NIST800-171_3.3.9
+    - NIST800-53R5_AC-2
+    - NIST800-53R5_AC-3
+    - NIST800-53R5_AC-6
+    - NIST800-53R5_AC-6_1
+    - NIST800-53R5_AC-6_7
+    - NIST800-53R5_AU-9_4
+  ansible.windows.win_user_right:
+    name: SeDebugPrivilege
+    users:
+      - Administrators
+    action: set
+
+- name: "2.2.21 | PATCH | Ensure Deny access to this computer from the network to include Guests DC only | Domain Controller"
+  when:
+    - win19cis_rule_2_2_21
+    - prelim_win19cis_is_domain_controller
+  tags:
+    - level1-domaincontroller
+    - rule_2.2.21
+    - patch
+    - userrights
+    - NIST800-171_3.1.1
+    - NIST800-171_3.1.5
+    - NIST800-171_3.3.8
+    - NIST800-171_3.3.9
+    - NIST800-53R5_AC-2
+    - NIST800-53R5_AC-3
+    - NIST800-53R5_AC-6
+    - NIST800-53R5_AC-6_1
+    - NIST800-53R5_AC-6_7
+    - NIST800-53R5_AU-9_4
+  ansible.windows.win_user_right:
+    name: SeDenyNetworkLogonRight
+    users:
+      - Guests
+    action: add
+
+- name: "2.2.22 | PATCH | Ensure Deny access to this computer from the network to include Guests Local account and member of Administrators group MS only | Member Server"
+  when:
+    - win19cis_rule_2_2_22
+    - prelim_win19cis_is_domain_member
+    - not (win_skip_for_test | bool)
+  tags:
+    - level1-memberserver
+    - rule_2.2.22
+    - patch
+    - userrights
+    - NIST800-171_3.1.1
+    - NIST800-171_3.1.5
+    - NIST800-171_3.3.8
+    - NIST800-171_3.3.9
+    - NIST800-53R5_AC-2
+    - NIST800-53R5_AC-3
+    - NIST800-53R5_AC-6
+    - NIST800-53R5_AC-6_1
+    - NIST800-53R5_AC-6_7
+    - NIST800-53R5_AU-9_4
+  ansible.windows.win_user_right:
+    name: SeDenyNetworkLogonRight
+    users:
+      - Guests
+      - S-1-5-114
+    action: add
+
+- name: "2.2.23 | PATCH | Ensure Deny log on as a batch job to include Guests"
+  when: win19cis_rule_2_2_23
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_2.2.23
+    - patch
+    - userrights
+    - NIST800-171_3.1.1
+    - NIST800-171_3.1.5
+    - NIST800-171_3.3.8
+    - NIST800-171_3.3.9
+    - NIST800-53R5_AC-2
+    - NIST800-53R5_AC-3
+    - NIST800-53R5_AC-6
+    - NIST800-53R5_AC-6_1
+    - NIST800-53R5_AC-6_7
+    - NIST800-53R5_AU-9_4
+  ansible.windows.win_user_right:
+    name: SeDenyBatchLogonRight
+    users:
+      - Guests
+    action: add
+
+- name: "2.2.24 | PATCH | Ensure Deny log on as a service to include Guests"
+  when: win19cis_rule_2_2_24
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_2.2.24
+    - patch
+    - userrights
+    - NIST800-171_3.1.1
+    - NIST800-171_3.1.5
+    - NIST800-171_3.3.8
+    - NIST800-171_3.3.9
+    - NIST800-53R5_AC-2
+    - NIST800-53R5_AC-3
+    - NIST800-53R5_AC-6
+    - NIST800-53R5_AC-6_1
+    - NIST800-53R5_AC-6_7
+    - NIST800-53R5_AU-9_4
+  ansible.windows.win_user_right:
+    name: SeDenyServiceLogonRight
+    users:
+      - Guests
+    action: add
+
+- name: "2.2.25 | PATCH | Ensure Deny log on locally to include Guests"
+  when: win19cis_rule_2_2_25
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_2.2.25
+    - patch
+    - userrights
+    - NIST800-171_3.1.1
+    - NIST800-171_3.1.5
+    - NIST800-171_3.3.8
+    - NIST800-171_3.3.9
+    - NIST800-53R5_AC-2
+    - NIST800-53R5_AC-3
+    - NIST800-53R5_AC-6
+    - NIST800-53R5_AC-6_1
+    - NIST800-53R5_AC-6_7
+    - NIST800-53R5_AU-9_4
+  ansible.windows.win_user_right:
+    name: SeDenyInteractiveLogonRight
+    users:
+      - Guests
+    action: add
+
+- name: "2.2.26 | PATCH | Ensure Deny log on through Remote Desktop Services to include Guests DC only | Domain Controller"
+  when:
+    - win19cis_rule_2_2_26
+    - prelim_win19cis_is_domain_controller
+    - not (win_skip_for_test | bool)
+  tags:
+    - level1-domaincontroller
+    - rule_2.2.26
+    - patch
+    - guest
+    - NIST800-171_3.1.1
+    - NIST800-171_3.1.5
+    - NIST800-171_3.3.8
+    - NIST800-171_3.3.9
+    - NIST800-53R5_AC-2
+    - NIST800-53R5_AC-3
+    - NIST800-53R5_AC-6
+    - NIST800-53R5_AC-6_1
+    - NIST800-53R5_AC-6_7
+    - NIST800-53R5_AU-9_4
+  ansible.windows.win_user_right:
+    name: SeDenyRemoteInteractiveLogonRight
+    users:
+      - Guests
+    action: add
+
+- name: "2.2.27 | PATCH | Ensure Deny log on through Remote Desktop Services is set to Guests Local account MS only | Member Server"
+  when:
+    - win19cis_rule_2_2_27
+    - prelim_win19cis_is_domain_member
+    - not (win_skip_for_test | bool)
+  tags:
+    - level1-memberserver
+    - rule_2.2.27
+    - patch
+    - guest
+    - NIST800-171_3.1.1
+    - NIST800-171_3.1.5
+    - NIST800-171_3.3.8
+    - NIST800-171_3.3.9
+    - NIST800-53R5_AC-2
+    - NIST800-53R5_AC-3
+    - NIST800-53R5_AC-6
+    - NIST800-53R5_AC-6_1
+    - NIST800-53R5_AC-6_7
+    - NIST800-53R5_AU-9_4
+  ansible.windows.win_user_right:
+    name: SeDenyRemoteInteractiveLogonRight
+    users:
+      - Guests
+      - Local Account
+    action: set
+
+- name: "2.2.28 | PATCH | Ensure Enable computer and user accounts to be trusted for delegation is set to Administrators DC only | Domain Controller"
+  when:
+    - win19cis_rule_2_2_28
+    - prelim_win19cis_is_domain_controller
+  tags:
+    - level1-domaincontroller
+    - rule_2.2.28
+    - patch
+    - userrights
+    - administrators
+    - NIST800-171_3.1.1
+    - NIST800-171_3.1.5
+    - NIST800-171_3.3.8
+    - NIST800-171_3.3.9
+    - NIST800-53R5_AC-2
+    - NIST800-53R5_AC-3
+    - NIST800-53R5_AC-6
+    - NIST800-53R5_AC-6_1
+    - NIST800-53R5_AC-6_7
+    - NIST800-53R5_AU-9_4
+  ansible.windows.win_user_right:
+    name: SeEnableDelegationPrivilege
+    users: Administrators
+    action: set
+
+- name: "2.2.29 | PATCH | Ensure Enable computer and user accounts to be trusted for delegation is set to No One MS only | Member Server"
+  when:
+    - win19cis_rule_2_2_29
+    - not prelim_win19cis_is_domain_controller
+  tags:
+    - level1-memberserver
+    - rule_2.2.29
+    - patch
+    - userrights
+    - NIST800-171_3.1.1
+    - NIST800-171_3.1.5
+    - NIST800-171_3.3.8
+    - NIST800-171_3.3.9
+    - NIST800-53R5_AC-2
+    - NIST800-53R5_AC-3
+    - NIST800-53R5_AC-6
+    - NIST800-53R5_AC-6_1
+    - NIST800-53R5_AC-6_7
+    - NIST800-53R5_AU-9_4
+  ansible.windows.win_user_right:
+    name: SeEnableDelegationPrivilege
+    users: []
+    action: set
+
+- name: "2.2.30 | PATCH | Ensure Force shutdown from a remote system is set to Administrators"
+  when: win19cis_rule_2_2_30
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_2.2.30
+    - patch
+    - userrights
+    - administrators
+    - NIST800-171_3.1.1
+    - NIST800-171_3.1.5
+    - NIST800-171_3.3.8
+    - NIST800-171_3.3.9
+    - NIST800-53R5_AC-2
+    - NIST800-53R5_AC-3
+    - NIST800-53R5_AC-6
+    - NIST800-53R5_AC-6_1
+    - NIST800-53R5_AC-6_7
+    - NIST800-53R5_AU-9_4
+  ansible.windows.win_user_right:
+    name: SeRemoteShutdownPrivilege
+    users:
+      - Administrators
+    action: set
+
+- name: "2.2.31 | PATCH | Ensure Generate security audits is set to LOCAL SERVICE, NETWORK SERVICE"
+  when: win19cis_rule_2_2_31
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_2.2.31
+    - patch
+    - userrights
+    - services
+    - NIST800-171_3.1.1
+    - NIST800-171_3.1.5
+    - NIST800-171_3.3.8
+    - NIST800-171_3.3.9
+    - NIST800-53R5_AC-2
+    - NIST800-53R5_AC-3
+    - NIST800-53R5_AC-6
+    - NIST800-53R5_AC-6_1
+    - NIST800-53R5_AC-6_7
+    - NIST800-53R5_AU-9_4
+  block:
+    - name: "2.2.31 | AUDIT | Read current Generate security audits holders"
+      ansible.windows.win_shell: |
+        $ErrorActionPreference = 'Stop'
+        # Cmdlets, operators and $Matches only - no .NET method calls - so this still
+        # runs where PowerShell is in Constrained Language Mode. secedit must write to
+        # a path that does not already exist: exporting USER_RIGHTS over an existing
+        # file drops the [Unicode] header, after which Get-Content reads the UTF-16
+        # export as single-byte characters and no line ever matches. secedit still
+        # exits 0, so the read would silently return nothing.
+        $cfg = Join-Path $env:TEMP "cis_userrights_$PID.inf"
+        Remove-Item -LiteralPath $cfg -Force -ErrorAction SilentlyContinue
+        secedit /export /areas USER_RIGHTS /cfg $cfg /quiet | Out-Null
+        $holders = ''
+        foreach ($line in Get-Content -LiteralPath $cfg) {
+          if ($line -match '^SeAuditPrivilege\s*=\s*(.+)$') { $holders = $Matches[1] }
+        }
+        Remove-Item -LiteralPath $cfg -Force -ErrorAction SilentlyContinue
+        if ($holders) {
+          (($holders -split ',') | ForEach-Object { $_.TrimStart('*').Trim() } | Sort-Object) -join ','
+        } else {
+          ''
+        }
+      changed_when: false
+      check_mode: false
+      register: discovered_2_2_31_current
+
+    - name: "2.2.31 | PATCH | Set Generate security audits to LOCAL SERVICE, NETWORK SERVICE"
+      when: discovered_2_2_31_current.stdout | trim != 'S-1-5-19,S-1-5-20'
+      ansible.windows.win_user_right:
+        name: SeAuditPrivilege
+        users:
+          - LOCAL SERVICE
+          - NETWORK SERVICE
+        action: set
+
+- name: "2.2.32 | PATCH | Ensure Impersonate a client after authentication is set to Administrators, LOCAL SERVICE, NETWORK SERVICE, SERVICE DC only | Domain Controller"
+  when:
+    - win19cis_rule_2_2_32
+    - prelim_win19cis_is_domain_controller
+  tags:
+    - level1-domaincontroller
+    - rule_2.2.32
+    - patch
+    - userrights
+    - services
+    - administrators
+    - NIST800-171_3.1.1
+    - NIST800-171_3.1.5
+    - NIST800-171_3.3.8
+    - NIST800-171_3.3.9
+    - NIST800-53R5_AC-2
+    - NIST800-53R5_AC-3
+    - NIST800-53R5_AC-6
+    - NIST800-53R5_AC-6_1
+    - NIST800-53R5_AC-6_7
+    - NIST800-53R5_AU-9_4
+  ansible.windows.win_user_right:
+    name: SeImpersonatePrivilege
+    users:
+      - Administrators
+      - LOCAL SERVICE
+      - NETWORK SERVICE
+      - SERVICE
+    action: set
+
+- name: "2.2.33 | PATCH | Ensure Impersonate a client after authentication is set to Administrators LOCAL SERVICE, NETWORK SERVICE, SERVICE and when the Web Server IIS Role with Web Services Role Service is installed IIS IUSRS MS only"
+  when:
+    - win19cis_rule_2_2_33
+    - not prelim_win19cis_is_domain_controller
+  tags:
+    - level1-memberserver
+    - rule_2.2.33
+    - patch
+    - userrights
+    - administrators
+    - services
+    - NIST800-171_3.1.1
+    - NIST800-171_3.1.5
+    - NIST800-171_3.3.8
+    - NIST800-171_3.3.9
+    - NIST800-53R5_AC-2
+    - NIST800-53R5_AC-3
+    - NIST800-53R5_AC-6
+    - NIST800-53R5_AC-6_1
+    - NIST800-53R5_AC-6_7
+    - NIST800-53R5_AU-9_4
+  block:
+    - name: "2.2.33 | PATCH | Ensure Impersonate a client after authentication is set to Administrators LOCAL SERVICE, NETWORK SERVICE, SERVICE and when the Web Server IIS Role with Web Services Role Service is installed IIS IUSRS MS only"
+      when: not win19cis_iis_and_web_services_installed
+      ansible.windows.win_user_right:
+        name: SeImpersonatePrivilege
+        users:
+          - Administrators
+          - LOCAL SERVICE
+          - NETWORK SERVICE
+          - SERVICE
+        action: set
+
+    - name: "2.2.33 | PATCH | Ensure Impersonate a client after authentication is set to Administrators LOCAL SERVICE, NETWORK SERVICE, SERVICE and when the Web Server IIS Role with Web Services Role Service is installed IIS IUSRS MS only"
+      when: win19cis_iis_and_web_services_installed
+      ansible.windows.win_user_right:
+        name: SeImpersonatePrivilege
+        users:
+          - Administrators
+          - IIS_IUSRS
+          - LOCAL SERVICE
+          - NETWORK SERVICE
+          - SERVICE
+        action: set
+
+- name: "2.2.34 | PATCH | Ensure Increase scheduling priority is set to Administrators Window Manager\\Window Manager Group"
+  when: win19cis_rule_2_2_34
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_2.2.34
+    - patch
+    - userrights
+    - NIST800-171_3.1.1
+    - NIST800-171_3.1.5
+    - NIST800-171_3.3.8
+    - NIST800-171_3.3.9
+    - NIST800-53R5_AC-2
+    - NIST800-53R5_AC-3
+    - NIST800-53R5_AC-6
+    - NIST800-53R5_AC-6_1
+    - NIST800-53R5_AC-6_7
+    - NIST800-53R5_AU-9_4
+  ansible.windows.win_user_right:
+    name: SeIncreaseBasePriorityPrivilege
+    users: "{{ win19cis_increase_scheduling_priority_users }}"
+    action: set
+
+- name: "2.2.35 | PATCH | Ensure Load and unload device drivers is set to Administrators"
+  when: win19cis_rule_2_2_35
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_2.2.35
+    - patch
+    - userrights
+    - NIST800-171_3.1.1
+    - NIST800-171_3.1.5
+    - NIST800-171_3.3.8
+    - NIST800-171_3.3.9
+    - NIST800-53R5_AC-2
+    - NIST800-53R5_AC-3
+    - NIST800-53R5_AC-6
+    - NIST800-53R5_AC-6_1
+    - NIST800-53R5_AC-6_7
+    - NIST800-53R5_AU-9_4
+  ansible.windows.win_user_right:
+    name: SeLoadDriverPrivilege
+    users:
+      - Administrators
+    action: set
+
+- name: "2.2.36 | PATCH | Ensure Lock pages in memory is set to No One"
+  when: win19cis_rule_2_2_36
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_2.2.36
+    - patch
+    - userrights
+    - NIST800-171_3.1.1
+    - NIST800-171_3.1.5
+    - NIST800-171_3.3.8
+    - NIST800-171_3.3.9
+    - NIST800-53R5_AC-2
+    - NIST800-53R5_AC-3
+    - NIST800-53R5_AC-6
+    - NIST800-53R5_AC-6_1
+    - NIST800-53R5_AC-6_7
+    - NIST800-53R5_AU-9_4
+  ansible.windows.win_user_right:
+    name: SeLockMemoryPrivilege
+    users: []
+    action: set
+
+- name: "2.2.37 | PATCH | Ensure Log on as a batch job is set to Administrators DC Only | Domain Controller"
+  when:
+    - win19cis_rule_2_2_37
+    - prelim_win19cis_is_domain_controller
+  tags:
+    - level2-domaincontroller
+    - rule_2.2.37
+    - patch
+    - userrights
+    - administrators
+    - NIST800-171_3.1.1
+    - NIST800-171_3.1.5
+    - NIST800-171_3.3.8
+    - NIST800-171_3.3.9
+    - NIST800-53R5_AC-2
+    - NIST800-53R5_AC-3
+    - NIST800-53R5_AC-6
+    - NIST800-53R5_AC-6_1
+    - NIST800-53R5_AC-6_7
+    - NIST800-53R5_AU-9_4
+  ansible.windows.win_user_right:
+    name: SeBatchLogonRight
+    users: Administrators
+    action: set
+
+- name: "2.2.38 | PATCH | Ensure 'Manage auditing and security log' is set to 'Administrators' (DC only) | Domain Controller"
+  when:
+    - win19cis_rule_2_2_38
+    - prelim_win19cis_is_domain_controller
+  tags:
+    - level1-domaincontroller
+    - rule_2.2.38
+    - patch
+    - userrights
+    - administrators
+    - NIST800-171_3.1.1
+    - NIST800-171_3.1.5
+    - NIST800-171_3.3.8
+    - NIST800-171_3.3.9
+    - NIST800-53R5_AC-2
+    - NIST800-53R5_AC-3
+    - NIST800-53R5_AC-6
+    - NIST800-53R5_AC-6_1
+    - NIST800-53R5_AC-6_7
+    - NIST800-53R5_AU-9_4
+  block:
+    - name: "2.2.38 | PATCH | Ensure 'Manage auditing and security log' is set to 'Administrators' (DC only) | Domain Controller"
+      when: not win19cis_exchange_server_running
+      ansible.windows.win_user_right:
+        name: SeSecurityPrivilege
+        users:
+          - Administrators
+        action: set
+
+    - name: "2.2.38 | PATCH | Ensure 'Manage auditing and security log' is set to 'Administrators' (DC only) | Set Exchange Server Groups | Domain Controller"
+      when: win19cis_exchange_server_running
+      ansible.windows.win_user_right:
+        name: SeSecurityPrivilege
+        users:
+          - Administrators
+          - Exchange Servers
+        action: set
+
+- name: "2.2.39 | PATCH | Ensure 'Manage auditing and security log' is set to 'Administrators' (MS only) | Member Server"
+  when:
+    - win19cis_rule_2_2_39
+    - not prelim_win19cis_is_domain_controller
+  tags:
+    - level1-memberserver
+    - rule_2.2.39
+    - patch
+    - userrights
+    - administrators
+    - NIST800-171_3.1.1
+    - NIST800-171_3.1.5
+    - NIST800-171_3.3.8
+    - NIST800-171_3.3.9
+    - NIST800-53R5_AC-2
+    - NIST800-53R5_AC-3
+    - NIST800-53R5_AC-6
+    - NIST800-53R5_AC-6_1
+    - NIST800-53R5_AC-6_7
+    - NIST800-53R5_AU-9_4
+  ansible.windows.win_user_right:
+    name: SeSecurityPrivilege
+    users:
+      - Administrators
+    action: set
+
+- name: "2.2.40 | PATCH | Ensure Modify an object label is set to No One"
+  when: win19cis_rule_2_2_40
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_2.2.40
+    - patch
+    - userrights
+    - NIST800-171_3.1.1
+    - NIST800-171_3.1.5
+    - NIST800-171_3.3.8
+    - NIST800-171_3.3.9
+    - NIST800-53R5_AC-2
+    - NIST800-53R5_AC-3
+    - NIST800-53R5_AC-6
+    - NIST800-53R5_AC-6_1
+    - NIST800-53R5_AC-6_7
+    - NIST800-53R5_AU-9_4
+  ansible.windows.win_user_right:
+    name: SeReLabelPrivilege
+    users: []
+    action: set
+
+- name: "2.2.41 | PATCH | Ensure 'Modify firmware environment values' is set to Administrators"
+  when: win19cis_rule_2_2_41
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_2.2.41
+    - patch
+    - userrights
+    - administrators
+    - NIST800-171_3.1.1
+    - NIST800-171_3.1.5
+    - NIST800-171_3.3.8
+    - NIST800-171_3.3.9
+    - NIST800-53R5_AC-2
+    - NIST800-53R5_AC-3
+    - NIST800-53R5_AC-6
+    - NIST800-53R5_AC-6_1
+    - NIST800-53R5_AC-6_7
+    - NIST800-53R5_AU-9_4
+  ansible.windows.win_user_right:
+    name: SeSystemEnvironmentPrivilege
+    users:
+      - Administrators
+    action: set
+
+- name: "2.2.42 | PATCH | Ensure Perform volume maintenance tasks is set to Administrators"
+  when: win19cis_rule_2_2_42
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_2.2.42
+    - patch
+    - userrights
+    - administrators
+    - NIST800-171_3.1.1
+    - NIST800-171_3.1.5
+    - NIST800-171_3.3.8
+    - NIST800-171_3.3.9
+    - NIST800-53R5_AC-2
+    - NIST800-53R5_AC-3
+    - NIST800-53R5_AC-6
+    - NIST800-53R5_AC-6_1
+    - NIST800-53R5_AC-6_7
+    - NIST800-53R5_AU-9_4
+  ansible.windows.win_user_right:
+    name: SeManageVolumePrivilege
+    users:
+      - Administrators
+    action: set
+
+- name: "2.2.43 | PATCH | Ensure Profile single process is set to Administrators"
+  when: win19cis_rule_2_2_43
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_2.2.43
+    - patch
+    - userrights
+    - administrators
+    - NIST800-171_3.1.1
+    - NIST800-171_3.1.5
+    - NIST800-171_3.3.8
+    - NIST800-171_3.3.9
+    - NIST800-53R5_AC-2
+    - NIST800-53R5_AC-3
+    - NIST800-53R5_AC-6
+    - NIST800-53R5_AC-6_1
+    - NIST800-53R5_AC-6_7
+    - NIST800-53R5_AU-9_4
+  ansible.windows.win_user_right:
+    name: SeProfileSingleProcessPrivilege
+    users:
+      - Administrators
+    action: set
+
+- name: "2.2.44 | PATCH | Ensure Profile system performance is set to Administrators NT SERVICE\\WdiServiceHost"
+  when: win19cis_rule_2_2_44
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_2.2.44
+    - patch
+    - userrights
+    - administrator
+    - service
+    - NIST800-171_3.1.1
+    - NIST800-171_3.1.5
+    - NIST800-171_3.3.8
+    - NIST800-171_3.3.9
+    - NIST800-53R5_AC-2
+    - NIST800-53R5_AC-3
+    - NIST800-53R5_AC-6
+    - NIST800-53R5_AC-6_1
+    - NIST800-53R5_AC-6_7
+    - NIST800-53R5_AU-9_4
+  ansible.windows.win_user_right:
+    name: SeSystemProfilePrivilege
+    users:
+      - Administrators
+      - NT SERVICE\WdiServiceHost
+    action: set
+
+- name: "2.2.45 | PATCH | Ensure Replace a process level token is set to LOCAL SERVICE NETWORK SERVICE"
+  when: win19cis_rule_2_2_45
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_2.2.45
+    - patch
+    - userrights
+    - service
+    - NIST800-171_3.1.1
+    - NIST800-171_3.1.5
+    - NIST800-171_3.3.8
+    - NIST800-171_3.3.9
+    - NIST800-53R5_AC-2
+    - NIST800-53R5_AC-3
+    - NIST800-53R5_AC-6
+    - NIST800-53R5_AC-6_1
+    - NIST800-53R5_AC-6_7
+    - NIST800-53R5_AU-9_4
+  ansible.windows.win_user_right:
+    name: SeAssignPrimaryTokenPrivilege
+    users:
+      - LOCAL SERVICE
+      - NETWORK SERVICE
+    action: set
+
+- name: "2.2.46 | PATCH | Ensure 'Restore files and directories' is set to Administrators"
+  when: win19cis_rule_2_2_46
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_2.2.46
+    - patch
+    - userright
+    - administrator
+    - NIST800-171_3.1.1
+    - NIST800-171_3.1.5
+    - NIST800-171_3.3.8
+    - NIST800-171_3.3.9
+    - NIST800-53R5_AC-2
+    - NIST800-53R5_AC-3
+    - NIST800-53R5_AC-6
+    - NIST800-53R5_AC-6_1
+    - NIST800-53R5_AC-6_7
+    - NIST800-53R5_AU-9_4
+  ansible.windows.win_user_right:
+    name: SeRestorePrivilege
+    users:
+      - Administrators
+    action: set
+
+- name: "2.2.47 | PATCH | Ensure Shut down the system is set to Administrators"
+  when: win19cis_rule_2_2_47
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_2.2.47
+    - patch
+    - userright
+    - administrator
+    - NIST800-171_3.1.1
+    - NIST800-171_3.1.5
+    - NIST800-171_3.3.8
+    - NIST800-171_3.3.9
+    - NIST800-53R5_AC-2
+    - NIST800-53R5_AC-3
+    - NIST800-53R5_AC-6
+    - NIST800-53R5_AC-6_1
+    - NIST800-53R5_AC-6_7
+    - NIST800-53R5_AU-9_4
+  ansible.windows.win_user_right:
+    name: SeShutdownPrivilege
+    users:
+      - Administrators
+    action: set
+
+- name: "2.2.48 | PATCH | Ensure Synchronize directory service data is set to No One DC only | Domain Controller"
+  when:
+    - win19cis_rule_2_2_48
+    - prelim_win19cis_is_domain_controller
+  tags:
+    - level1-domaincontroller
+    - rule_2.2.48
+    - patch
+    - userright
+    - NIST800-171_3.1.1
+    - NIST800-171_3.1.5
+    - NIST800-171_3.3.8
+    - NIST800-171_3.3.9
+    - NIST800-53R5_AC-2
+    - NIST800-53R5_AC-3
+    - NIST800-53R5_AC-6
+    - NIST800-53R5_AC-6_1
+    - NIST800-53R5_AC-6_7
+    - NIST800-53R5_AU-9_4
+  ansible.windows.win_user_right:
+    name: SeSyncAgentPrivilege
+    users: []
+    action: set
+
+- name: "2.2.49 | PATCH | Ensure Take ownership of files or other objects is set to Administrators"
+  when: win19cis_rule_2_2_49
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_2.2.49
+    - patch
+    - userright
+    - administrator
+    - NIST800-171_3.1.1
+    - NIST800-171_3.1.5
+    - NIST800-171_3.3.8
+    - NIST800-171_3.3.9
+    - NIST800-53R5_AC-2
+    - NIST800-53R5_AC-3
+    - NIST800-53R5_AC-6
+    - NIST800-53R5_AC-6_1
+    - NIST800-53R5_AC-6_7
+    - NIST800-53R5_AU-9_4
+  ansible.windows.win_user_right:
+    name: SeTakeOwnershipPrivilege
+    users:
+      - Administrators
+    action: set

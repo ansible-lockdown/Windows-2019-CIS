@@ -1,0 +1,252 @@
+---
+
+- name: "2.3.7.1 | PATCH | Ensure Interactive logon Do not require CTRL+ALT+DEL is set to Disabled"
+  when: win19cis_rule_2_3_7_1
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_2.3.7.1
+    - patch
+    - logon
+    - NIST800-171_3.1.8
+    - NIST800-171_3.1.18
+    - NIST800-53R5_AC-7
+    - NIST800-53R5_AC-19
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System
+    name: DisableCAD
+    data: 0
+    type: dword
+
+- name: "2.3.7.2 | PATCH | Ensure Interactive logon Don't display last signed-in is set to Enabled"
+  when: win19cis_rule_2_3_7_2
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_2.3.7.2
+    - patch
+    - logon
+    - NIST800-171_3.1.8
+    - NIST800-171_3.1.18
+    - NIST800-53R5_AC-7
+    - NIST800-53R5_AC-19
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System
+    name: DontDisplayLastUserName
+    data: 1
+    type: dword
+
+- name: "2.3.7.3 | PATCH | Ensure Interactive logon Machine inactivity limit is set to 900 or fewer seconds but not 0"
+  when: win19cis_rule_2_3_7_3
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_2.3.7.3
+    - patch
+    - logon
+    - NIST800-171_3.1.1
+    - NIST800-171_3.1.10
+    - NIST800-171_3.1.11
+    - NIST800-53R5_AC-2_5
+    - NIST800-53R5_AC-11
+    - NIST800-53R5_AC-11_1
+    - NIST800-53R5_AC-12
+  block:
+    - name: "2.3.7.3 | PATCH | Ensure Interactive logon Machine inactivity limit is set to 900 or fewer seconds but not 0 | Apply Settings To Registry"
+      when:
+        - win19cis_inactivity_timeout_seconds <= 900
+        - win19cis_inactivity_timeout_seconds > 0
+      ansible.windows.win_regedit:
+        path: HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System
+        name: InactivityTimeoutSecs
+        data: "{{ win19cis_inactivity_timeout_seconds }}"
+        type: dword
+
+    - name: "2.3.7.3 | AUDIT | Ensure Interactive logon Machine inactivity limit is set to 900 or fewer seconds but not 0 | Warning Check For Variable Standards"
+      when:
+        - win19cis_inactivity_timeout_seconds > 900 or
+          win19cis_inactivity_timeout_seconds == 0
+      ansible.builtin.debug:
+        msg:
+          - "Warning!! You have an invalid number of seconds set for win19cis_inactivity_timeout_seconds. Please read"
+          - "the notes for the variable and make the necessary change to the variable to be in compliance."
+
+    - name: "2.3.7.3 | AUDIT | Ensure Interactive logon Machine inactivity limit is set to 900 or fewer seconds but not 0 | Warn Count"
+      when:
+        - win19cis_inactivity_timeout_seconds > 900 or
+          win19cis_inactivity_timeout_seconds == 0
+      ansible.builtin.import_tasks:
+        file: warning_facts.yml
+      vars:
+        warn_control_id: '2.3.7.3'
+
+- name: "2.3.7.4 | PATCH | Configure Interactive logon Message text for users attempting to log on"
+  when: win19cis_rule_2_3_7_4
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_2.3.7.4
+    - patch
+    - logon
+    - NIST800-171_3.1.9
+    - NIST800-53R5_AC-8
+  community.windows.win_security_policy:
+    section: Registry Values
+    key: MACHINE\Software\Microsoft\Windows\CurrentVersion\Policies\System\LegalNoticeText # pragma: allowlist secret
+    value: >-
+      {{ '7,' ~ (win19cis_legal_notice.splitlines() | map('trim') | reject('equalto', '') | map('replace', ',', '","') | join(',')) }}
+
+- name: "2.3.7.5 | PATCH | Configure Interactive logon Message title for users attempting to log on"
+  when: win19cis_rule_2_3_7_5
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_2.3.7.5
+    - patch
+    - logon
+    - NIST800-171_3.1.9
+    - NIST800-53R5_AC-8
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System
+    name: LegalNoticeCaption
+    data: "{{ win19cis_legal_notice_caption }}"
+    type: string
+
+- name: "2.3.7.6 | PATCH | Ensure Interactive logon Number of previous logons to cache in case domain controller is not available is set to 4 or fewer logons MS only | Member Server"
+  when:
+    - win19cis_rule_2_3_7_6
+    - prelim_win19cis_is_domain_member
+  tags:
+    - level2-memberserver
+    - rule_2.3.7.6
+    - patch
+    - logon
+    - NIST800-171_3.5.2
+    - NIST800-53R5_IA-5_13
+  block:
+    - name: "2.3.7.6 | PATCH | Ensure Interactive logon Number of previous logons to cache in case domain controller is not available is set to 4 or fewer logons MS only | Apply Settings To Registry | Member Server"
+      when: win19cis_cached_logons_count <= 4
+      ansible.windows.win_regedit:
+        path: HKLM:\SOFTWARE\Microsoft\Windows Nt\CurrentVersion\Winlogon
+        name: CachedLogonsCount
+        data: "{{ win19cis_cached_logons_count }}"
+        type: string
+
+    - name: "2.3.7.6 | AUDIT | Ensure Interactive logon Number of previous logons to cache in case domain controller is not available is set to 4 or fewer logons MS only | Warning Check For Variable Standards | Member Server"
+      when: win19cis_cached_logons_count > 4
+      ansible.builtin.debug:
+        msg:
+          - "Warning!! You have an invalid number of logons set for win19cis_cached_logons_count. Please read"
+          - "the notes for the variable and make the necessary change to the variable to be in compliance."
+
+    - name: "2.3.7.6 | AUDIT | Ensure Interactive logon Number of previous logons to cache in case domain controller is not available is set to 4 or fewer logons MS only | Warn Count | Member Server"
+      when: win19cis_cached_logons_count > 4
+      ansible.builtin.import_tasks:
+        file: warning_facts.yml
+      vars:
+        warn_control_id: '2.3.7.6'
+
+- name: "2.3.7.7 | PATCH | Ensure Interactive logon Prompt user to change password before expiration is set to between 5 and 14 days"
+  when: win19cis_rule_2_3_7_7
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_2.3.7.7
+    - patch
+    - logon
+    - NIST800-171_3.5.2
+    - NIST800-53R5_IA-5_1
+  block:
+    - name: "2.3.7.7 | PATCH | Ensure Interactive logon Prompt user to change password before expiration is set to between 5 and 14 days | Apply Settings To Registry"
+      when:
+        - win19cis_password_expiry_warning_days >= 5
+        - win19cis_password_expiry_warning_days <= 14
+      ansible.windows.win_regedit:
+        path: HKLM:\SOFTWARE\Microsoft\Windows Nt\CurrentVersion\Winlogon
+        name: PasswordExpiryWarning
+        data: "{{ win19cis_password_expiry_warning_days }}"
+        type: dword
+
+    - name: "2.3.7.7 | AUDIT | Ensure Interactive logon Prompt user to change password before expiration is set to between 5 and 14 days | Warning Check For Variable Standards"
+      when:
+        - win19cis_password_expiry_warning_days < 5 or
+          win19cis_password_expiry_warning_days > 14
+      ansible.builtin.debug:
+        msg:
+          - "Warning!! You have an invalid number of days set for win19cis_password_expiry_warning_days. Please read"
+          - "the notes for the variable and make the necessary change to the variable to be in compliance."
+
+    - name: "2.3.7.7 | AUDIT | Ensure Interactive logon Prompt user to change password before expiration is set to between 5 and 14 days | Warn Count"
+      when:
+        - win19cis_password_expiry_warning_days < 5 or
+          win19cis_password_expiry_warning_days > 14
+      ansible.builtin.import_tasks:
+        file: warning_facts.yml
+      vars:
+        warn_control_id: '2.3.7.7'
+
+- name: "2.3.7.8 | PATCH | Ensure Interactive logon Require Domain Controller Authentication to unlock workstation is set to Enabled MS only | Member Server"
+  when:
+    - win19cis_rule_2_3_7_8
+    - prelim_win19cis_is_domain_member
+  tags:
+    - level1-memberserver
+    - rule_2.3.7.8
+    - patch
+    - logon
+    - NIST800-171_3.1.1
+    - NIST800-171_3.1.10
+    - NIST800-171_3.1.11
+    - NIST800-53R5_AC-2_5
+    - NIST800-53R5_AC-11
+    - NIST800-53R5_AC-11_1
+    - NIST800-53R5_AC-12
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Microsoft\Windows Nt\CurrentVersion\Winlogon
+    name: ForceUnlockLogon
+    data: 1
+    type: dword
+
+- name: "2.3.7.9 | PATCH | Ensure Interactive logon Smart card removal behavior is set to Lock Workstation or higher"
+  when: win19cis_rule_2_3_7_9
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_2.3.7.9
+    - patch
+    - logon
+    - NIST800-171_3.1.1
+    - NIST800-171_3.1.10
+    - NIST800-171_3.1.11
+    - NIST800-53R5_AC-2_5
+    - NIST800-53R5_AC-11
+    - NIST800-53R5_AC-11_1
+    - NIST800-53R5_AC-12
+  block:
+    - name: "2.3.7.9 | PATCH | Ensure Interactive logon Smart card removal behavior is set to Lock Workstation or higher | Apply Settings To Registry"
+      when:
+        - win19cis_sc_remove_option >= 1
+        - win19cis_sc_remove_option <= 3
+      ansible.windows.win_regedit:
+        path: HKLM:\SOFTWARE\Microsoft\Windows Nt\CurrentVersion\Winlogon
+        name: ScRemoveOption
+        data: "{{ win19cis_sc_remove_option }}"
+        type: string
+
+    - name: "2.3.7.9 | AUDIT | Ensure Interactive logon Smart card removal behavior is set to Lock Workstation or higher | Warning Check For Variable Standards"
+      when:
+        - win19cis_sc_remove_option == 0 or
+          win19cis_sc_remove_option > 3
+      ansible.builtin.debug:
+        msg:
+          - "Warning!! You have an invalid setting for win19cis_sc_remove_option. Please read"
+          - "the notes for the variable and make the necessary change to the variable to be in compliance."
+
+    - name: "2.3.7.9 | AUDIT | Ensure Interactive logon Smart card removal behavior is set to Lock Workstation or higher | Warn Count"
+      when:
+        - win19cis_sc_remove_option == 0 or
+          win19cis_sc_remove_option > 3
+      ansible.builtin.import_tasks:
+        file: warning_facts.yml
+      vars:
+        warn_control_id: '2.3.7.9'

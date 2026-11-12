@@ -1,0 +1,153 @@
+---
+
+- name: "SECTION | 18.1"
+  ansible.builtin.import_tasks:
+    file: section_18.1.yml
+
+- name: "SECTION | 18.4"
+  ansible.builtin.import_tasks:
+    file: section_18.4.yml
+
+- name: "SECTION | 18.5"
+  ansible.builtin.import_tasks:
+    file: section_18.5.yml
+
+- name: "SECTION | 18.6"
+  ansible.builtin.import_tasks:
+    file: section_18.6.yml
+
+- name: "SECTION | 18.7"
+  ansible.builtin.import_tasks:
+    file: section_18.7.yml
+
+- name: "SECTION | 18.8"
+  ansible.builtin.import_tasks:
+    file: section_18.8.yml
+
+- name: "SECTION | 18.9"
+  ansible.builtin.import_tasks:
+    file: section_18.9.yml
+
+- name: "SECTION | 18.10.4"
+  ansible.builtin.import_tasks:
+    file: section_18.10.4.yml
+
+- name: "SECTION | 18.10.6"
+  ansible.builtin.import_tasks:
+    file: section_18.10.6.yml
+
+- name: "SECTION | 18.10.8"
+  ansible.builtin.import_tasks:
+    file: section_18.10.8.yml
+
+- name: "SECTION | 18.10.9"
+  ansible.builtin.import_tasks:
+    file: section_18.10.9.yml
+
+- name: "SECTION | 18.10.11"
+  ansible.builtin.import_tasks:
+    file: section_18.10.11.yml
+
+- name: "SECTION | 18.10.13"
+  ansible.builtin.import_tasks:
+    file: section_18.10.13.yml
+
+- name: "SECTION | 18.10.14"
+  ansible.builtin.import_tasks:
+    file: section_18.10.14.yml
+
+- name: "SECTION | 18.10.15"
+  ansible.builtin.import_tasks:
+    file: section_18.10.15.yml
+
+- name: "SECTION | 18.10.16"
+  ansible.builtin.import_tasks:
+    file: section_18.10.16.yml
+
+- name: "SECTION | 18.10.18"
+  ansible.builtin.import_tasks:
+    file: section_18.10.18.yml
+
+- name: "SECTION | 18.10.26"
+  ansible.builtin.import_tasks:
+    file: section_18.10.26.yml
+
+- name: "SECTION | 18.10.29"
+  ansible.builtin.import_tasks:
+    file: section_18.10.29.yml
+
+- name: "SECTION | 18.10.37"
+  ansible.builtin.import_tasks:
+    file: section_18.10.37.yml
+
+- name: "SECTION | 18.10.41"
+  ansible.builtin.import_tasks:
+    file: section_18.10.41.yml
+
+- name: "SECTION | 18.10.42"
+  ansible.builtin.import_tasks:
+    file: section_18.10.42.yml
+
+- name: "SECTION | 18.10.43"
+  ansible.builtin.import_tasks:
+    file: section_18.10.43.yml
+
+- name: "SECTION | 18.10.51"
+  ansible.builtin.import_tasks:
+    file: section_18.10.51.yml
+
+- name: "SECTION | 18.10.56"
+  ansible.builtin.import_tasks:
+    file: section_18.10.56.yml
+
+- name: "SECTION | 18.10.57"
+  ansible.builtin.import_tasks:
+    file: section_18.10.57.yml
+
+- name: "SECTION | 18.10.58"
+  ansible.builtin.import_tasks:
+    file: section_18.10.58.yml
+
+- name: "SECTION | 18.10.59"
+  ansible.builtin.import_tasks:
+    file: section_18.10.59.yml
+
+- name: "SECTION | 18.10.63"
+  ansible.builtin.import_tasks:
+    file: section_18.10.63.yml
+
+- name: "SECTION | 18.10.76"
+  ansible.builtin.import_tasks:
+    file: section_18.10.76.yml
+
+- name: "SECTION | 18.10.80"
+  ansible.builtin.import_tasks:
+    file: section_18.10.80.yml
+
+- name: "SECTION | 18.10.81"
+  ansible.builtin.import_tasks:
+    file: section_18.10.81.yml
+
+- name: "SECTION | 18.10.82"
+  ansible.builtin.import_tasks:
+    file: section_18.10.82.yml
+
+- name: "SECTION | 18.10.87"
+  ansible.builtin.import_tasks:
+    file: section_18.10.87.yml
+
+- name: "SECTION | 18.10.89"
+  ansible.builtin.import_tasks:
+    file: section_18.10.89.yml
+
+- name: "SECTION | 18.10.90"
+  ansible.builtin.import_tasks:
+    file: section_18.10.90.yml
+
+- name: "SECTION | 18.10.92"
+  ansible.builtin.import_tasks:
+    file: section_18.10.92.yml
+
+- name: "SECTION | 18.10.93"
+  ansible.builtin.import_tasks:
+    file: section_18.10.93.yml

@@ -1,0 +1,123 @@
+---
+
+- name: "2.3.5.1 | PATCH | Ensure Domain controller Allow server operators to schedule tasks is set to Disabled DC only | Domain Controller"
+  when:
+    - win19cis_rule_2_3_5_1
+    - prelim_win19cis_is_domain_controller
+  tags:
+    - level1-domaincontroller
+    - rule_2.3.5.1
+    - patch
+    - scheduledtasks
+    - NIST800-171_3.1.5
+    - NIST800-53R5_AC-6_8
+  ansible.windows.win_regedit:
+    path: HKLM:\SYSTEM\CurrentControlSet\Control\Lsa
+    name: SubmitControl
+    data: 0
+    type: dword
+
+# Per CIS Note: If this policy is set as prescribed, the registry key vulnerablechannelallowlist will not be present in the above registry location.
+- name: "2.3.5.2 | PATCH | Ensure Domain controller Allow vulnerable Netlogon secure channel connections is set to Not Configured DC only | Domain Controller"
+  when:
+    - win19cis_rule_2_3_5_2
+    - prelim_win19cis_is_domain_controller
+  tags:
+    - level1-domaincontroller
+    - rule_2.3.5.2
+    - patch
+    - logon
+    - NIST800-171_3.4.2
+    - NIST800-53R5_CM-6_b
+  ansible.windows.win_regedit:
+    path: HKLM:\SYSTEM\CurrentControlSet\Services\Netlogon\Parameters
+    name: VulnerableChannelAllowList
+    data: 0
+    type: dword
+
+- name: "2.3.5.3 | PATCH | Ensure Domain controller LDAP server channel binding token requirements is set to Always DC only | Domain Controller"
+  when:
+    - win19cis_rule_2_3_5_3
+    - prelim_win19cis_is_domain_controller
+  tags:
+    - level1-domaincontroller
+    - rule_2.3.5.3
+    - patch
+    - ldap
+    - NIST800-171_3.1.13
+    - NIST800-171_3.5.2
+    - NIST800-171_3.13.8
+    - NIST800-53R5_AC-17_2
+    - NIST800-53R5_IA-5
+    - NIST800-53R5_IA-5_1
+    - NIST800-53R5_SC-8
+    - NIST800-53R5_SC-8_1
+  ansible.windows.win_regedit:
+    path: HKLM:\SYSTEM\CurrentControlSet\Services\NTDS\Parameters
+    name: LdapEnforceChannelBinding
+    data: 2
+    type: dword
+
+- name: "2.3.5.4 | PATCH | Ensure Domain controller LDAP server signing requirements is set to Require signing DC only | Domain Controller"
+  when:
+    - win19cis_rule_2_3_5_4
+    - prelim_win19cis_is_domain_controller
+  tags:
+    - level1-domaincontroller
+    - rule_2.3.5.4
+    - patch
+    - ldap
+    - NIST800-171_3.1.13
+    - NIST800-171_3.5.2
+    - NIST800-171_3.13.8
+    - NIST800-53R5_AC-17_2
+    - NIST800-53R5_IA-5
+    - NIST800-53R5_IA-5_1
+    - NIST800-53R5_SC-8
+    - NIST800-53R5_SC-8_1
+  block:
+    - name: "2.3.5.4 | AUDIT | Ensure Domain controller LDAP server signing requirements is set to Require signing DC only | Warning Msg For Domain Policy Owned Setting"
+      ansible.builtin.debug:
+        msg:
+          - "Warning!! This setting is owned by Group Policy on a domain controller. The Default"
+          - "Domain Controllers Policy pins LDAPServerIntegrity to 1, and a domain controller"
+          - "refreshes policy every 5 minutes, so a local registry write is reverted before it"
+          - "takes effect. Set 'Domain controller: LDAP server signing requirements' to 'Require"
+          - "signing' in that policy."
+
+    - name: "2.3.5.4 | AUDIT | Ensure Domain controller LDAP server signing requirements is set to Require signing DC only | Add Warn Count"
+      ansible.builtin.import_tasks:
+        file: warning_facts.yml
+      vars:
+        warn_control_id: '2.3.5.4'
+
+- name: "2.3.5.5 | PATCH | Ensure 'Domain controller Refuse machine account password changes' is set to Disabled DC only | Domain Controller"
+  when:
+    - win19cis_rule_2_3_5_5
+    - prelim_win19cis_is_domain_controller
+  tags:
+    - level1-domaincontroller
+    - rule_2.3.5.5
+    - patch
+    - account
+    - NIST800-171_3.4.1
+    - NIST800-171_3.4.2
+    - NIST800-171_3.4.6
+    - NIST800-171_3.4.7
+    - NIST800-171_3.13.1
+    - NIST800-171_3.13.2
+    - NIST800-53R5_CM-1
+    - NIST800-53R5_CM-2
+    - NIST800-53R5_AC-2
+    - NIST800-53R5_CM-6
+    - NIST800-53R5_CM-7
+    - NIST800-53R5_CM-7_1
+    - NIST800-53R5_CM-9
+    - NIST800-53R5_SA-3
+    - NIST800-53R5_SA-8
+    - NIST800-53R5_SA-10
+  ansible.windows.win_regedit:
+    path: HKLM:\SYSTEM\CurrentControlSet\Services\Netlogon\Parameters
+    name: RefusePasswordChange
+    data: 0
+    type: dword

@@ -1,0 +1,117 @@
+---
+
+- name: "17.6.1 | PATCH | Ensure Audit Detailed File Share is set to include Failure"
+  when: win19cis_rule_17_6_1
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_17.6.1
+    - patch
+    - NIST800-171_3.3.1
+    - NIST800-171_3.3.2
+    - NIST800-171_3.3.6
+    - NIST800-53R5_AU-3
+    - NIST800-53R5_AU-3_1
+    - NIST800-53R5_AU-7
+    - NIST800-53R5_AU-12
+  block:
+    - name: "17.6.1 | AUDIT | Ensure Audit Detailed File Share is set to include Failure | Get current audit events for Detailed File Share"
+      ansible.windows.win_shell: AuditPol /get /subcategory:"{0cce9244-69ae-11d9-bed3-505054503030}" -r | ConvertFrom-Csv | Select-Object -expand "Inclusion Setting"
+      changed_when: false
+      failed_when: false
+      check_mode: false
+      register: discovered_17_6_1_audit
+
+    - name: "17.6.1 | PATCH | Ensure Audit Detailed File Share is set to include Failure | Enable Failure for Detailed File Share"
+      when: "'Failure' not in discovered_17_6_1_audit.stdout"
+      ansible.windows.win_shell: AuditPol /set /subcategory:"{0cce9244-69ae-11d9-bed3-505054503030}" /failure:enable
+
+- name: "17.6.2 | PATCH | Ensure Audit File Share is set to Success and Failure"
+  when: win19cis_rule_17_6_2
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_17.6.2
+    - patch
+    - NIST800-171_3.3.1
+    - NIST800-171_3.3.2
+    - NIST800-171_3.3.6
+    - NIST800-53R5_AU-3
+    - NIST800-53R5_AU-3_1
+    - NIST800-53R5_AU-7
+    - NIST800-53R5_AU-12
+  block:
+    - name: "17.6.2 | AUDIT | Ensure Audit File Share is set to Success and Failure | Get current audit events for File Share"
+      ansible.windows.win_shell: AuditPol /get /subcategory:"{0cce9224-69ae-11d9-bed3-505054503030}" -r | ConvertFrom-Csv | Select-Object -expand "Inclusion Setting"
+      changed_when: false
+      failed_when: false
+      check_mode: false
+      register: discovered_17_6_2_audit
+
+    - name: "17.6.2 | PATCH | Ensure Audit File Share is set to Success and Failure | Enable Success for File Share"
+      when: "'Success' not in discovered_17_6_2_audit.stdout"
+      ansible.windows.win_shell: AuditPol /set /subcategory:"{0cce9224-69ae-11d9-bed3-505054503030}" /success:enable
+
+    - name: "17.6.2 | PATCH | Ensure Audit File Share is set to Success and Failure | Enable Failure for File Share"
+      when: "'Failure' not in discovered_17_6_2_audit.stdout"
+      ansible.windows.win_shell: AuditPol /set /subcategory:"{0cce9224-69ae-11d9-bed3-505054503030}" /failure:enable
+
+- name: "17.6.3 | PATCH | Ensure Audit Other Object Access Events is set to Success and Failure"
+  when: win19cis_rule_17_6_3
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_17.6.3
+    - patch
+    - NIST800-171_3.3.1
+    - NIST800-171_3.3.2
+    - NIST800-171_3.3.6
+    - NIST800-53R5_AU-3
+    - NIST800-53R5_AU-3_1
+    - NIST800-53R5_AU-7
+    - NIST800-53R5_AU-12
+  block:
+    - name: "17.6.3 | AUDIT | Ensure Audit Other Object Access Events is set to Success and Failure | Get current audit setting for 'Other Object Access Events'"
+      ansible.windows.win_shell: AuditPol /get /subcategory:"{0cce9227-69ae-11d9-bed3-505054503030}" -r | ConvertFrom-Csv | Select-Object -expand "Inclusion Setting"
+      changed_when: false
+      failed_when: false
+      check_mode: false
+      register: discovered_17_6_3_audit
+
+    - name: "17.6.3 | PATCH | Ensure Audit Other Object Access Events is set to Success and Failure | Enable Success for 'Other Object Access Events'"
+      when: "'Success' not in discovered_17_6_3_audit.stdout"
+      ansible.windows.win_shell: AuditPol /set /subcategory:"{0cce9227-69ae-11d9-bed3-505054503030}" /success:enable
+
+    - name: "17.6.3 | PATCH | Ensure Audit Other Object Access Events is set to Success and Failure | Enable Failure for 'Other Object Access Events'"
+      when: "'Failure' not in discovered_17_6_3_audit.stdout"
+      ansible.windows.win_shell: AuditPol /set /subcategory:"{0cce9227-69ae-11d9-bed3-505054503030}" /failure:enable
+
+- name: "17.6.4 | PATCH | Ensure Audit Removable Storage is set to Success and Failure"
+  when: win19cis_rule_17_6_4
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_17.6.4
+    - patch
+    - NIST800-171_3.3.1
+    - NIST800-171_3.3.2
+    - NIST800-171_3.3.6
+    - NIST800-53R5_AU-3
+    - NIST800-53R5_AU-3_1
+    - NIST800-53R5_AU-7
+    - NIST800-53R5_AU-12
+  block:
+    - name: "17.6.4 | AUDIT | Ensure Audit Removable Storage is set to Success and Failure | Get current audit events for Removable Storage"
+      ansible.windows.win_shell: AuditPol /get /subcategory:"{0cce9245-69ae-11d9-bed3-505054503030}" -r | ConvertFrom-Csv | Select-Object -expand "Inclusion Setting"
+      changed_when: false
+      failed_when: false
+      check_mode: false
+      register: discovered_17_6_4_audit
+
+    - name: "17.6.4 | PATCH | Ensure Audit Removable Storage is set to Success and Failure | Enable Success for Removable Storage"
+      when: "'Success' not in discovered_17_6_4_audit.stdout"
+      ansible.windows.win_shell: AuditPol /set /subcategory:"{0cce9245-69ae-11d9-bed3-505054503030}" /success:enable
+
+    - name: "17.6.4 | PATCH | Ensure Audit Removable Storage is set to Success and Failure | Enable Failure for Removable Storage"
+      when: "'Failure' not in discovered_17_6_4_audit.stdout"
+      ansible.windows.win_shell: AuditPol /set /subcategory:"{0cce9245-69ae-11d9-bed3-505054503030}" /failure:enable

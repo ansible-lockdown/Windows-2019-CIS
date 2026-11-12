@@ -1,0 +1,17 @@
+---
+
+- name: "18.10.42.1 | PATCH | Ensure Block all consumer Microsoft account user authentication is set to Enabled"
+  when: win19cis_rule_18_10_42_1
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_18.10.42.1
+    - patch
+    - account
+    - NIST800-171_3.1.1
+    - NIST800-53R5_AC-2_1
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\MicrosoftAccount
+    name: DisableUserAuth
+    data: 1
+    type: dword

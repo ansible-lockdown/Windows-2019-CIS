@@ -1,0 +1,532 @@
+---
+
+- name: "18.10.43.4.1 | PATCH | Ensure Enable EDR in block mode is set to Enabled"
+  when: win19cis_rule_18_10_43_4_1
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_18.10.43.4.1
+    - patch
+    - defender
+    - edr
+    - NIST800-171_3.14.1
+    - NIST800-171_3.14.5
+    - NIST800-171_3.14.6
+    - NIST800-53R5_SI-3
+    - NIST800-53R5_SI-4
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender\Features
+    name: PassiveRemediation
+    data: 1
+    type: dword
+
+- name: "18.10.43.5.1 | PATCH | Ensure Configure local setting override for reporting to Microsoft MAPS is set to Disabled"
+  when: win19cis_rule_18_10_43_5_1
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_18.10.43.5.1
+    - patch
+    - maps
+    - NIST800-171_3.4.2
+    - NIST800-171_3.4.6
+    - NIST800-171_3.4.7
+    - NIST800-53R5_CM-6
+    - NIST800-53R5_CM-7
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender\Spynet
+    name: LocalSettingOverrideSpynetReporting
+    data: 0
+    type: dword
+
+- name: "18.10.43.5.2 | PATCH | Ensure Join Microsoft MAPS is set to Disabled"
+  when: win19cis_rule_18_10_43_5_2
+  tags:
+    - level2-domaincontroller
+    - level2-memberserver
+    - rule_18.10.43.5.2
+    - patch
+    - maps
+    - NIST800-171_3.4.2
+    - NIST800-171_3.4.6
+    - NIST800-171_3.4.7
+    - NIST800-53R5_CM-6
+    - NIST800-53R5_CM-7
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender\Spynet
+    name: SpynetReporting
+    data: 0
+    type: dword
+
+- name: "18.10.43.6.1.1 | PATCH | Ensure 'Configure Attack Surface Reduction rules' is set to Enabled"
+  when: win19cis_rule_18_10_43_6_1_1
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_18.10.43.6.1.1
+    - patch
+    - defender
+    - NIST800-53R5_SI-16
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender\Windows Defender Exploit Guard\ASR
+    name: ExploitGuard_ASR_Rules
+    data: 1
+    type: dword
+
+- name: "18.10.43.6.1.2 | PATCH | Ensure Configure Attack Surface Reduction rules Set the state for each ASR rule is configured"
+  when: win19cis_rule_18_10_43_6_1_2
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_18.10.43.6.1.2
+    - patch
+    - defender
+    - NIST800-53R5_SI-16
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender\Windows Defender Exploit Guard\ASR\Rules
+    name: "{{ item }}"
+    data: 1
+    type: string
+  loop:
+    - 26190899-1602-49e8-8b27-eb1d0a1ce869
+    - 3b576869-a4ec-4529-8536-b80a7769e899
+    - 56a863a9-875e-4185-98a7-b882c64b5ce5
+    - 5beb7efe-fd9a-4556-801d-275e5ffc04cc
+    - 75668c1f-73b5-4cf0-bb93-3ecf5cb7cc84
+    - 7674ba52-37eb-4a4f-a9a1-f0f9a1619a2c
+    - 9e6c4e1f-7d60-472f-ba1a-a39ef669e4b2
+    - b2b3f03d-6a65-4f7b-a9c7-1c7ef74a9ba4
+    - be9ba2d9-53ea-4cdc-84e5-9b1eeee46550
+    - d3e037e1-3eb8-44c8-a917-57927947596d
+    - d4f940ab-401b-4efc-aadc-ad5f3c50688a
+    - e6db77e5-3df2-4cf1-b95a-636979351e5b
+
+- name: "18.10.43.6.3.1 | PATCH | Ensure Prevent users and apps from accessing dangerous websites is set to Enabled Block"
+  when: win19cis_rule_18_10_43_6_3_1
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_18.10.43.6.3.1
+    - patch
+    - defender
+    - NIST800-171_3.13.1
+    - NIST800-53R5_SC-7_3
+    - NIST800-53R5_SC-7_4
+    - NIST800-53R5_SI-16
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender\Windows Defender Exploit Guard\Network Protection
+    name: EnableNetworkProtection
+    data: 1
+    type: dword
+
+- name: "18.10.43.7.1 | PATCH | Ensure Enable file hash computation feature is set to Enabled"
+  when: win19cis_rule_18_10_43_7_1
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_18.10.43.7.1
+    - patch
+    - defender
+    - NIST800-171_3.14.2
+    - NIST800-171_3.14.4
+    - NIST800-171_3.14.5
+    - NIST800-53R5_SI-3
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender\MpEngine
+    name: EnableFileHashComputation
+    data: 1
+    type: dword
+
+- name: "18.10.43.8.1 | PATCH | Ensure Convert warn verdict to block is set to Enabled"
+  when: win19cis_rule_18_10_43_8_1
+  tags:
+    - level2-domaincontroller
+    - level2-memberserver
+    - rule_18.10.43.8.1
+    - patch
+    - defender
+    - nis
+    - networkprotection
+    - NIST800-171_3.13.8
+    - NIST800-171_3.14.6
+    - NIST800-171_3.14.7
+    - NIST800-53R5_SI-3
+    - NIST800-53R5_SI-4
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender\NIS
+    name: EnableConvertWarnToBlock
+    data: 1
+    type: dword
+
+- name: "18.10.43.10.1 | PATCH | Ensure Configure real-time protection and Security Intelligence Updates during OOBE is set to Enabled"
+  when: win19cis_rule_18_10_43_10_1
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_18.10.43.10.1
+    - patch
+    - defender
+    - oobe
+    - realtime
+    - NIST800-171_3.14.1
+    - NIST800-171_3.14.5
+    - NIST800-53R5_SI-3
+    - NIST800-53R5_SI-4
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender\Real-Time Protection
+    name: OobeEnableRtpAndSigUpdate
+    data: 1
+    type: dword
+
+- name: "18.10.43.10.2 | PATCH | Ensure Scan all downloaded files and attachments is set to Enabled"
+  when: win19cis_rule_18_10_43_10_2
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_18.10.43.10.2
+    - patch
+    - defender
+    - real_time_protection
+    - NIST800-171_3.14.2
+    - NIST800-171_3.14.4
+    - NIST800-171_3.14.5
+    - NIST800-53R5_SI-3
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender\Real-Time Protection
+    name: DisableIOAVProtection
+    data: 0
+    type: dword
+
+- name: "18.10.43.10.3 | PATCH | Ensure 'Turn off real-time protection' is set to 'Disabled'"
+  when: win19cis_rule_18_10_43_10_3
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_18.10.43.10.3
+    - patch
+    - defender
+    - real_time_protection
+    - NIST800-171_3.14.2
+    - NIST800-171_3.14.4
+    - NIST800-171_3.14.5
+    - NIST800-53R5_SI-3
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender\Real-Time Protection
+    name: DisableRealtimeMonitoring
+    data: 0
+    type: dword
+
+- name: "18.10.43.10.4 | PATCH | Ensure Turn on behavior monitoring is set to Enabled"
+  when: win19cis_rule_18_10_43_10_4
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_18.10.43.10.4
+    - patch
+    - defender
+    - real_time_protection
+    - NIST800-171_3.14.6
+    - NIST800-171_3.14.7
+    - NIST800-53R5_SI-4
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender\Real-Time Protection
+    name: DisableBehaviorMonitoring
+    data: 0
+    type: dword
+
+- name: "18.10.43.10.5 | PATCH | Ensure 'Turn on script scanning' is set to 'Enabled'"
+  when: win19cis_rule_18_10_43_10_5
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_18.10.43.10.5
+    - patch
+    - defender
+    - real_time_protection
+    - NIST800-171_3.14.6
+    - NIST800-171_3.14.7
+    - NIST800-53R5_SI-4
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender\Real-Time Protection
+    name: DisableScriptScanning
+    data: 0
+    type: dword
+
+- name: "18.10.43.11.1.1.1 | PATCH | Ensure Configure Brute-Force Protection aggressiveness is set to Enabled: Medium or higher"
+  when: win19cis_rule_18_10_43_11_1_1_1
+  tags:
+    - level2-domaincontroller
+    - level2-memberserver
+    - rule_18.10.43.11.1.1.1
+    - patch
+    - defender
+    - brute_force
+    - NIST800-171_3.14.1
+    - NIST800-171_3.14.5
+    - NIST800-171_3.14.6
+    - NIST800-53R5_AC-7
+    - NIST800-53R5_SI-4
+  block:
+    - name: "18.10.43.11.1.1.1 | PATCH | Ensure Configure Brute-Force Protection aggressiveness is set to Enabled: Medium or higher | Set Registry"
+      when: win19cis_brute_force_protection_aggressiveness == 1 or win19cis_brute_force_protection_aggressiveness == 2
+      ansible.windows.win_regedit:
+        path: HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender\Remediation\Behavioral Network Blocks\Brute Force Protection
+        name: BruteForceProtectionAggressiveness
+        data: "{{ win19cis_brute_force_protection_aggressiveness }}"
+        type: dword
+
+    - name: "18.10.43.11.1.1.1 | AUDIT | Ensure Configure Brute-Force Protection aggressiveness is set to Medium or higher | Warning Check For Variable Standards"
+      when:
+        - win19cis_brute_force_protection_aggressiveness != 1
+        - win19cis_brute_force_protection_aggressiveness != 2
+      ansible.builtin.debug:
+        msg:
+          - "Warning!! You have an invalid setting for win19cis_brute_force_protection_aggressiveness. Please read"
+          - "the notes for the variable and make the necessary change to the variable to be in compliance."
+
+    - name: "18.10.43.11.1.1.1 | AUDIT | Ensure Configure Brute-Force Protection aggressiveness is set to Medium or higher | Log a warning"
+      when:
+        - win19cis_brute_force_protection_aggressiveness != 1
+        - win19cis_brute_force_protection_aggressiveness != 2
+      ansible.builtin.import_tasks:
+        file: warning_facts.yml
+      vars:
+        warn_control_id: '18.10.43.11.1.1.1'
+
+- name: "18.10.43.11.1.1.2 | PATCH | Ensure Configure Remote Encryption Protection Mode is set to Enabled: Audit or higher"
+  when: win19cis_rule_18_10_43_11_1_1_2
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_18.10.43.11.1.1.2
+    - patch
+    - defender
+    - brute_force
+    - NIST800-171_3.14.1
+    - NIST800-171_3.14.5
+    - NIST800-171_3.14.6
+    - NIST800-53R5_AC-7
+    - NIST800-53R5_SI-4
+  block:
+    - name: "18.10.43.11.1.1.2 | PATCH | Ensure Configure Remote Encryption Protection Mode is set to Enabled: Audit or higher | Set Registry Value"
+      when:
+        - win19cis_remote_encryption_protection_mode == 1 or
+          win19cis_remote_encryption_protection_mode == 2
+      ansible.windows.win_regedit:
+        path: HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender\Remediation\Behavioral Network Blocks\Brute Force Protection
+        name: BruteForceProtectionConfiguredState
+        data: "{{ win19cis_remote_encryption_protection_mode }}"
+        type: dword
+
+    - name: "18.10.43.11.1.1.2 | AUDIT | Ensure Configure Remote Encryption Protection Mode is set to Enabled: Audit or higher | Warning Check For Variable Standards"
+      when:
+        - win19cis_remote_encryption_protection_mode != 1
+        - win19cis_remote_encryption_protection_mode != 2
+      ansible.builtin.debug:
+        msg:
+          - "Warning!! You have an invalid setting for win19cis_remote_encryption_protection_mode. Please review"
+          - "the variable and make the necessary change to bring it into compliance. Acceptable: 1 (Audit), 2 (Block)."
+
+    - name: "18.10.43.11.1.1.2 | AUDIT | Ensure Configure Remote Encryption Protection Mode is set to Enabled: Audit or higher | Warning Logged"
+      when:
+        - win19cis_remote_encryption_protection_mode != 1
+        - win19cis_remote_encryption_protection_mode != 2
+      ansible.builtin.import_tasks:
+        file: warning_facts.yml
+      vars:
+        warn_control_id: '18.10.43.11.1.1.2'
+
+- name: "18.10.43.11.1.2.1 | PATCH | Ensure Configure how aggressively Remote Encryption Protection blocks threats is set to Enabled: Medium or higher"
+  when: win19cis_rule_18_10_43_11_1_2_1
+  tags:
+    - level2-domaincontroller
+    - level2-memberserver
+    - rule_18.10.43.11.1.2.1
+    - patch
+    - defender
+    - brute_force
+    - remote_encryption
+    - NIST800-171_3.14.1
+    - NIST800-171_3.14.5
+    - NIST800-171_3.14.6
+    - NIST800-53R5_AC-7
+    - NIST800-53R5_SI-4
+  block:
+    - name: "18.10.43.11.1.2.1 | PATCH | Ensure Configure how aggressively Remote Encryption Protection blocks threats is set to Enabled: Medium or higher | Set Registry Value"
+      when:
+        - win19cis_remote_encryption_protection_aggressiveness == 1 or
+          win19cis_remote_encryption_protection_aggressiveness == 2
+      ansible.windows.win_regedit:
+        path: HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender\Remediation\Behavioral Network Blocks\Remote Encryption Protection
+        name: RemoteEncryptionProtectionAggressiveness
+        data: "{{ win19cis_remote_encryption_protection_aggressiveness }}"
+        type: dword
+
+    - name: "18.10.43.11.1.2.1 | AUDIT | Ensure Configure how aggressively Remote Encryption Protection blocks threats is set to Enabled: Medium or higher | Warning Message"
+      when:
+        - win19cis_remote_encryption_protection_aggressiveness != 1
+        - win19cis_remote_encryption_protection_aggressiveness != 2
+      ansible.builtin.debug:
+        msg:
+          - "Warning!! You have an invalid setting for win19cis_remote_encryption_protection_aggressiveness. Please read"
+          - "the notes for the variable and make the necessary change to the variable to be in compliance."
+
+    - name: "18.10.43.11.1.2.1 | AUDIT | Ensure Configure how aggressively Remote Encryption Protection blocks threats is set to Enabled: Medium or higher | Warn Count"
+      when:
+        - win19cis_remote_encryption_protection_aggressiveness != 1
+        - win19cis_remote_encryption_protection_aggressiveness != 2
+      ansible.builtin.import_tasks:
+        file: warning_facts.yml
+      vars:
+        warn_control_id: '18.10.43.11.1.2.1'
+
+- name: "18.10.43.12.1 | PATCH | Ensure Configure Watson events is set to Disabled"
+  when: win19cis_rule_18_10_43_12_1
+  tags:
+    - level2-domaincontroller
+    - level2-memberserver
+    - rule_18.10.43.12.1
+    - patch
+    - defender
+    - NIST800-171_3.12.3
+    - NIST800-53R5_CA-7
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender\Reporting
+    name: DisableGenericRePorts
+    data: 1
+    type: dword
+
+- name: "18.10.43.13.1 | PATCH | Ensure Scan excluded files and directories during quick scans is set to Enabled: 1"
+  when: win19cis_rule_18_10_43_13_1
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_18.10.43.13.1
+    - patch
+    - defender
+    - antivirus
+    - scan
+    - NIST800-171_3.14.4
+    - NIST800-171_3.14.6
+    - NIST800-53R5_SI-3
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender\Scan
+    name: QuickScanIncludeExclusions
+    data: 1
+    type: dword
+
+- name: "18.10.43.13.2 | PATCH | Ensure 'Scan packed executables' is set to Enabled"
+  when: win19cis_rule_18_10_43_13_2
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_18.10.43.13.2
+    - patch
+    - defender
+    - NIST800-171_3.8.7
+    - NIST800-171_3.14.2
+    - NIST800-171_3.14.4
+    - NIST800-171_3.14.5
+    - NIST800-53R5_MP-7
+    - NIST800-53R5_SI-3
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender\Scan
+    name: DisablePackedExeScanning
+    data: 0
+    type: dword
+
+- name: "18.10.43.13.3 | PATCH | Ensure Scan removable drives is set to Enabled"
+  when: win19cis_rule_18_10_43_13_3
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_18.10.43.13.3
+    - patch
+    - defender
+    - NIST800-171_3.8.7
+    - NIST800-171_3.14.2
+    - NIST800-171_3.14.4
+    - NIST800-171_3.14.5
+    - NIST800-53R5_MP-7
+    - NIST800-53R5_SI-3
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender\Scan
+    name: DisableRemovableDriveScanning
+    data: 0
+    type: dword
+
+- name: "18.10.43.13.4 | PATCH | Ensure 'Trigger a quick scan after X days without any scans' is set to Enabled: 7"
+  when: win19cis_rule_18_10_43_13_4
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_18.10.43.13.4
+    - patch
+    - defender
+    - antivirus
+    - scan
+    - remediation
+    - NIST800-171_3.14.4
+    - NIST800-171_3.14.6
+    - NIST800-53R5_SI-3
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender\Scan
+    name: DaysUntilAggressiveCatchupQuickScan
+    data: 7
+    type: dword
+
+- name: "18.10.43.13.5 | PATCH | Ensure Turn on e-mail scanning is set to Enabled"
+  when: win19cis_rule_18_10_43_13_5
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_18.10.43.13.5
+    - patch
+    - defender
+    - scan
+    - NIST800-171_3.14.2
+    - NIST800-171_3.14.4
+    - NIST800-171_3.14.5
+    - NIST800-53R5_SI-3
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender\Scan
+    name: DisableEmailScanning
+    data: 0
+    type: dword
+
+- name: "18.10.43.16 | PATCH | Ensure Configure detection for potentially unwanted applications is set to Enabled Block"
+  when: win19cis_rule_18_10_43_16
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_18.10.43.16
+    - patch
+    - defender
+    - NIST800-171_3.14.2
+    - NIST800-171_3.14.4
+    - NIST800-171_3.14.5
+    - NIST800-53R5_SI-3
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender
+    name: PUAProtection
+    data: 1
+    type: dword
+
+- name: "18.10.43.17 | PATCH | Ensure 'Control whether exclusions are visible to local users' is set to 'Enabled'"
+  when: win19cis_rule_18_10_43_17
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_18.10.43.17
+    - patch
+    - defender
+    - exclusions
+    - visibility
+    - NIST800-171_3.4.5
+    - NIST800-171_3.4.6
+    - NIST800-53R5_AC-6
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender
+    name: HideExclusionsFromLocalUsers
+    data: 1
+    type: dword
