@@ -1,0 +1,20 @@
+---
+
+- name: "18.10.11.1 | PATCH | Ensure Allow Use of Camera is set to Disabled"
+  when: win19cis_rule_18_10_11_1
+  tags:
+    - level2-domaincontroller
+    - level2-memberserver
+    - rule_18.10.11.1
+    - patch
+    - camera
+    - NIST800-171_3.4.2
+    - NIST800-171_3.4.6
+    - NIST800-171_3.4.7
+    - NIST800-53R5_CM-6
+    - NIST800-53R5_CM-7
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Camera
+    name: AllowCamera
+    data: 0
+    type: dword

@@ -1,0 +1,189 @@
+---
+
+- name: "18.10.26.1.1 | PATCH | Ensure Application Control Event Log behavior when the log file reaches its maximum size is set to Disabled"
+  when: win19cis_rule_18_10_26_1_1
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_18.10.26.1.1
+    - patch
+    - eventlog
+    - NIST800-53R5_AU-4
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\EventLog\Application
+    name: Retention
+    data: 0
+    type: string
+
+- name: "18.10.26.1.2 | PATCH | Ensure Application Specify the maximum log file size KB is set to Enabled 32768 or greater"
+  when: win19cis_rule_18_10_26_1_2
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_18.10.26.1.2
+    - patch
+    - eventlog
+    - NIST800-53R5_AU-4
+  block:
+    - name: "18.10.26.1.2 | PATCH | Ensure Application Specify the maximum log file size KB is set to Enabled 32768 or greater | Set File Size"
+      when: win19cis_application_max_log_file_size >= 32768
+      ansible.windows.win_regedit:
+        path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\Eventlog\Application
+        name: MaxSize
+        data: "{{ win19cis_application_max_log_file_size }}"
+        type: dword
+
+    - name: "18.10.26.1.2 | AUDIT | Ensure Application Specify the maximum log file size KB is set to Enabled 32768 or greater | Warning Check For Variable Standards"
+      when: win19cis_application_max_log_file_size < 32768
+      ansible.builtin.debug:
+        msg:
+          - "Warning!! You have an invalid file size set for win19cis_application_max_log_file_size. Please read"
+          - "the notes for the variable and make the necessary change to the variable to be in compliance."
+
+    - name: "18.10.26.1.2 | AUDIT | Ensure Application Specify the maximum log file size KB is set to Enabled 32768 or greater | Log a warning"
+      when: win19cis_application_max_log_file_size < 32768
+      ansible.builtin.import_tasks:
+        file: warning_facts.yml
+      vars:
+        warn_control_id: '18.10.26.1.2'
+
+- name: "18.10.26.2.1 | PATCH | Ensure Security Control Event Log behavior when the log file reaches its maximum size is set to Disabled"
+  when: win19cis_rule_18_10_26_2_1
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_18.10.26.2.1
+    - patch
+    - eventlog
+    - NIST800-53R5_AU-4
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\Eventlog\Security
+    name: Retention
+    data: 0
+    type: string
+
+- name: "18.10.26.2.2 | PATCH | Ensure Security Specify the maximum log file size KB is set to Enabled 196608 or greater"
+  when: win19cis_rule_18_10_26_2_2
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_18.10.26.2.2
+    - patch
+    - eventlog
+    - NIST800-53R5_AU-4
+  block:
+    - name: "18.10.26.2.2 | PATCH | Ensure Security Specify the maximum log file size KB is set to Enabled 196608 or greater | Set Variable"
+      when: win19cis_security_max_log_file_size >= 196608
+      ansible.windows.win_regedit:
+        path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\Eventlog\Security
+        name: MaxSize
+        data: "{{ win19cis_security_max_log_file_size }}"
+        type: dword
+
+    - name: "18.10.26.2.2 | AUDIT | Ensure Security Specify the maximum log file size KB is set to Enabled 196608 or greater | Warning Check For Variable Standards"
+      when: win19cis_security_max_log_file_size < 196608
+      ansible.builtin.debug:
+        msg:
+          - "Warning!! You have an invalid file size set for win19cis_security_max_log_file_size. Please read"
+          - "the notes for the variable and make the necessary change to the variable to be in compliance."
+
+    - name: "18.10.26.2.2 | AUDIT | Ensure Security Specify the maximum log file size KB is set to Enabled 196608 or greater | Log a warning"
+      when: win19cis_security_max_log_file_size < 196608
+      ansible.builtin.import_tasks:
+        file: warning_facts.yml
+      vars:
+        warn_control_id: '18.10.26.2.2'
+
+- name: "18.10.26.3.1 | PATCH | Ensure Setup Control Event Log behavior when the log file reaches its maximum size is set to Disabled"
+  when: win19cis_rule_18_10_26_3_1
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_18.10.26.3.1
+    - patch
+    - eventlog
+    - NIST800-53R5_AU-4
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\Eventlog\Setup
+    name: Retention
+    data: 0
+    type: string
+
+- name: "18.10.26.3.2 | PATCH | Ensure Setup Specify the maximum log file size KB is set to Enabled 32768 or greater"
+  when: win19cis_rule_18_10_26_3_2
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_18.10.26.3.2
+    - patch
+    - eventlog
+    - NIST800-53R5_AU-4
+  block:
+    - name: "18.10.26.3.2 | PATCH | Ensure Setup Specify the maximum log file size KB is set to Enabled 32768 or greater | Set Variable"
+      when: win19cis_setup_max_log_file_size >= 32768
+      ansible.windows.win_regedit:
+        path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\Eventlog\Setup
+        name: MaxSize
+        data: "{{ win19cis_setup_max_log_file_size }}"
+        type: dword
+
+    - name: "18.10.26.3.2 | AUDIT | Ensure Setup Specify the maximum log file size KB is set to Enabled 32768 or greater | Warning Check For Variable Standards"
+      when: win19cis_setup_max_log_file_size < 32768
+      ansible.builtin.debug:
+        msg:
+          - "Warning!! You have an invalid file size set for win19cis_setup_max_log_file_size. Please read"
+          - "the notes for the variable and make the necessary change to the variable to be in compliance."
+
+    - name: "18.10.26.3.2 | AUDIT | Ensure Setup Specify the maximum log file size KB is set to Enabled 32768 or greater | Log a warning"
+      when: win19cis_setup_max_log_file_size < 32768
+      ansible.builtin.import_tasks:
+        file: warning_facts.yml
+      vars:
+        warn_control_id: '18.10.26.3.2'
+
+- name: "18.10.26.4.1 | PATCH | Ensure System Control Event Log behavior when the log file reaches its maximum size is set to Disabled"
+  when: win19cis_rule_18_10_26_4_1
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_18.10.26.4.1
+    - patch
+    - eventlog
+    - NIST800-53R5_AU-4
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\Eventlog\System
+    name: Retention
+    data: 0
+    type: string
+
+- name: "18.10.26.4.2 | PATCH | Ensure System Specify the maximum log file size KB is set to Enabled 32768 or greater"
+  when: win19cis_rule_18_10_26_4_2
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_18.10.26.4.2
+    - patch
+    - eventlog
+    - NIST800-53R5_AU-4
+  block:
+    - name: "18.10.26.4.2 | PATCH | Ensure System Specify the maximum log file size KB is set to Enabled 32768 or greater | Set Variable"
+      when: win19cis_system_max_log_file_size >= 32768
+      ansible.windows.win_regedit:
+        path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\Eventlog\System
+        name: MaxSize
+        data: "{{ win19cis_system_max_log_file_size }}"
+        type: dword
+
+    - name: "18.10.26.4.2 | AUDIT | Ensure System Specify the maximum log file size KB is set to Enabled 32768 or greater | Warning Check For Variable Standards"
+      when: win19cis_system_max_log_file_size < 32768
+      ansible.builtin.debug:
+        msg:
+          - "Warning!! You have an invalid file size set for win19cis_system_max_log_file_size. Please read"
+          - "the notes for the variable and make the necessary change to the variable to be in compliance."
+
+    - name: "18.10.26.4.2 | AUDIT | Ensure System Specify the maximum log file size KB is set to Enabled 32768 or greater | Log a warning"
+      when: win19cis_system_max_log_file_size < 32768
+      ansible.builtin.import_tasks:
+        file: warning_facts.yml
+      vars:
+        warn_control_id: '18.10.26.4.2'

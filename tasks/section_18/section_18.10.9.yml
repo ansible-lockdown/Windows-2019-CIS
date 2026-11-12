@@ -1,0 +1,17 @@
+---
+
+- name: "18.10.9.1.1 | PATCH | Ensure Configure enhanced anti-spoofing is set to Enabled"
+  when: win19cis_rule_18_10_9_1_1
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_18.10.9.1.1
+    - patch
+    - antispoofing
+    - NIST800-171_3.4.2
+    - NIST800-53R5_CM-6_b
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Biometrics\Facialfeatures
+    name: EnhancedAntiSpoofing
+    data: 1
+    type: dword

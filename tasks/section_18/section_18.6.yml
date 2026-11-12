@@ -1,0 +1,459 @@
+---
+
+- name: "18.6.4.1 | PATCH | Ensure Configure multicast DNS (mDNS) protocol is set to Disabled"
+  when: win19cis_rule_18_6_4_1
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_18.6.4.1
+    - automated
+    - patch
+    - dns_over_https
+    - NIST800-171_3.1.13
+    - NIST800-171_3.5.2
+    - NIST800-171_3.3.18
+    - NIST800-53R5_AC-17_2
+    - NIST800-53R5_IA-5
+    - NIST800-53R5_IA-5_1
+    - NIST800-53R5_SC-8
+    - NIST800-53R5_SC-8_1
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\DNSClient
+    name: EnableMDNS
+    data: 0
+    type: dword
+
+- name: "18.6.4.2 | PATCH | Ensure 'Configure NetBIOS settings' is set to 'Enabled: Disable NetBIOS name resolution on public networks'"
+  when: win19cis_rule_18_6_4_2
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_18.6.4.2
+    - automated
+    - patch
+    - netbios
+    - NIST800-171_3.4.2
+    - NIST800-171_3.4.6
+    - NIST800-171_3.4.7
+    - NIST800-53R5_CM-6
+    - NIST800-53R5_CM-7
+  block:
+    - name: "18.6.4.2 | PATCH | Ensure 'Configure NetBIOS settings' is set to 'Enabled: Disable NetBIOS name resolution on public networks' | Set Variable"
+      when: win19cis_enable_netbios_policy == 2 or win19cis_enable_netbios_policy == 0
+      ansible.windows.win_regedit:
+        path: HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\DNSClient
+        name: EnableNetbios
+        data: "{{ win19cis_enable_netbios_policy }}"
+        type: dword
+
+    - name: "18.6.4.2 | AUDIT | Ensure 'Configure NetBIOS settings' is set to 'Enabled: Disable NetBIOS name resolution on public networks' | Warning Check For Variable Standards"
+      when:
+        - win19cis_enable_netbios_policy != 2
+        - win19cis_enable_netbios_policy != 0
+      ansible.builtin.debug:
+        msg:
+          - "Warning!! You have an invalid setting for win19cis_enable_netbios_policy. Please read"
+          - "the notes for the variable and make the necessary change to the variable to be in compliance."
+
+    - name: "18.6.4.2 | AUDIT | Ensure 'Configure NetBIOS settings' is set to 'Enabled: Disable NetBIOS name resolution on public networks' | Warn Count"
+      when:
+        - win19cis_enable_netbios_policy != 2
+        - win19cis_enable_netbios_policy != 0
+      ansible.builtin.import_tasks:
+        file: warning_facts.yml
+      vars:
+        warn_control_id: '18.6.4.2'
+
+- name: "18.6.4.3 | PATCH | Ensure 'Turn off default IPv6 DNS Servers' is set to 'Enabled'"
+  when: win19cis_rule_18_6_4_3
+  tags:
+    - level2-domaincontroller
+    - level2-memberserver
+    - rule_18.6.4.3
+    - automated
+    - patch
+    - dns
+    - NIST800-171_3.4.2
+    - NIST800-171_3.4.6
+    - NIST800-171_3.4.7
+    - NIST800-53R5_CM-6
+    - NIST800-53R5_CM-7
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\DNSClient
+    name: DisableIPv6DefaultDnsServers
+    data: 1
+    type: dword
+
+- name: "18.6.4.4 | PATCH | Ensure Turn off multicast name resolution is set to Enabled"
+  when: win19cis_rule_18_6_4_4
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_18.6.4.4
+    - automated
+    - patch
+    - dns
+    - NIST800-171_3.4.2
+    - NIST800-171_3.4.6
+    - NIST800-171_3.4.7
+    - NIST800-53R5_CM-6
+    - NIST800-53R5_CM-7
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\DNSClient
+    name: EnableMulticast
+    data: 0
+    type: dword
+
+- name: "18.6.5.1 | PATCH | Ensure Enable Font Providers is set to Disabled"
+  when: win19cis_rule_18_6_5_1
+  tags:
+    - level2-domaincontroller
+    - level2-memberserver
+    - rule_18.6.5.1
+    - patch
+    - dns
+    - NIST800-171_3.4.6
+    - NIST800-171_3.4.7
+    - NIST800-53R5_CM-7_b
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\System
+    name: EnableFontProviders
+    data: 0
+    type: dword
+
+- name: "18.6.8.1 | PATCH | Ensure Enable insecure guest logons is set to Disabled"
+  when: win19cis_rule_18_6_8_1
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_18.6.8.1
+    - patch
+    - fonts
+    - NIST800-171_3.4.6
+    - NIST800-171_3.4.7
+    - NIST800-53R5_SI-4
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\LanmanWorkstation
+    name: AllowInsecureGuestAuth
+    data: 0
+    type: dword
+
+- name: "18.6.9.1 | PATCH | Ensure Turn on Mapper I/O LLTDIO driver is set to Disabled"
+  when: win19cis_rule_18_6_9_1
+  tags:
+    - level2-domaincontroller
+    - level2-memberserver
+    - rule_18.6.9.1
+    - patch
+    - mapper
+    - drivers
+    - NIST800-171_3.4.2
+    - NIST800-53R5_CM-6
+  block:
+    - name: "18.6.9.1 | PATCH | Ensure Turn on Mapper IO LLTDIO driver is set to Disabled | AllowLLTDIOOnDomain"
+      ansible.windows.win_regedit:
+        path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\LLTD
+        name: AllowLLTDIOOnDomain
+        data: 0
+        type: dword
+
+    - name: "18.6.9.1 | PATCH | Ensure Turn on Mapper IO LLTDIO driver is set to Disabled | AllowLLTDIOOnPublicNet"
+      ansible.windows.win_regedit:
+        path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\LLTD
+        name: AllowLLTDIOOnPublicNet
+        data: 0
+        type: dword
+
+    - name: "18.6.9.1 | PATCH | Ensure Turn on Mapper IO LLTDIO driver is set to Disabled | EnableLLTDIO"
+      ansible.windows.win_regedit:
+        path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\LLTD
+        name: EnableLLTDIO
+        data: 0
+        type: dword
+
+    - name: "18.6.9.1 | PATCH | Ensure Turn on Mapper IO LLTDIO driver is set to Disabled | ProhibitLLTDIOOnPrivateNet"
+      ansible.windows.win_regedit:
+        path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\LLTD
+        name: ProhibitLLTDIOOnPrivateNet
+        data: 0
+        type: dword
+
+- name: "18.6.9.2 | PATCH | Ensure Turn on Responder RSPNDR driver is set to Disabled"
+  when: win19cis_rule_18_6_9_2
+  tags:
+    - level2-domaincontroller
+    - level2-memberserver
+    - rule_18.6.9.2
+    - patch
+    - rspndr
+    - driver
+    - NIST800-171_3.4.2
+    - NIST800-53R5_CM-6
+  block:
+    - name: "18.6.9.2 | PATCH | Ensure Turn on Responder RSPNDR driver is set to Disabled | AllowRspndrOnDomain"
+      ansible.windows.win_regedit:
+        path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\LLTD
+        name: AllowRspndrOnDomain
+        data: 0
+        type: dword
+
+    - name: "18.6.9.2 | PATCH | Ensure Turn on Responder RSPNDR driver is set to Disabled | AllowRspndrOnPublicNet"
+      ansible.windows.win_regedit:
+        path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\LLTD
+        name: AllowRspndrOnPublicNet
+        data: 0
+        type: dword
+
+    - name: "18.6.9.2 | PATCH | Ensure Turn on Responder RSPNDR driver is set to Disabled | EnableRspndr"
+      ansible.windows.win_regedit:
+        path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\LLTD
+        name: EnableRspndr
+        data: 0
+        type: dword
+
+    - name: "18.6.9.2 | PATCH | Ensure Turn on Responder RSPNDR driver is set to Disabled | ProhibitRspndrOnPrivateNet"
+      ansible.windows.win_regedit:
+        path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\LLTD
+        name: ProhibitRspndrOnPrivateNet
+        data: 0
+        type: dword
+
+- name: "18.6.10.2 | PATCH | Ensure Turn off Microsoft Peer-to-Peer Networking Services is set to Enabled"
+  when: win19cis_rule_18_6_10_2
+  tags:
+    - level2-domaincontroller
+    - level2-memberserver
+    - rule_18.6.10.2
+    - patch
+    - p2p
+    - NIST800-171_3.4.2
+    - NIST800-171_3.4.6
+    - NIST800-171_3.4.7
+    - NIST800-53R5_CM-6
+    - NIST800-53R5_CM-7
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Peernet
+    name: Disabled
+    data: 1
+    type: dword
+
+- name: "18.6.11.2 | PATCH | Ensure Prohibit installation and configuration of Network Bridge on your DNS domain network is set to Enabled"
+  when: win19cis_rule_18_6_11_2
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_18.6.11.2
+    - patch
+    - networkconnections
+    - NIST800-171_3.1.16
+    - NIST800-171_3.1.17
+    - NIST800-171_3.4.1
+    - NIST800-171_3.4.2
+    - NIST800-171_3.4.6
+    - NIST800-171_3.4.7
+    - NIST800-53R5_AC-18
+    - NIST800-53R5_AC-18_1
+    - NIST800-53R5_AC-18_3
+    - NIST800-53R5_CM-2
+    - NIST800-53R5_CM-6
+    - NIST800-53R5_CM-7
+    - NIST800-53R5_CM-7_1
+    - NIST800-53R5_CM-9
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\Network Connections
+    name: NC_AllowNetBridge_NLA
+    data: 0
+    type: dword
+
+- name: "18.6.11.3 | PATCH | Ensure Prohibit use of Internet Connection Sharing on your DNS domain network is set to Enabled"
+  when: win19cis_rule_18_6_11_3
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_18.6.11.3
+    - patch
+    - networkconnections
+    - NIST800-171_3.4.2
+    - NIST800-171_3.4.6
+    - NIST800-171_3.4.7
+    - NIST800-53R5_CM-6
+    - NIST800-53R5_CM-7
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\Network Connections
+    name: NC_ShowSharedAccessUI
+    data: 0
+    type: dword
+
+- name: "18.6.11.4 | PATCH | Ensure Require domain users to elevate when setting a networks location is set to Enabled"
+  when: win19cis_rule_18_6_11_4
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_18.6.11.4
+    - patch
+    - networkconnections
+    - NIST800-171_3.1.7
+    - NIST800-53R5_AC-6_10
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\Network Connections
+    name: NC_StdDomainUserSetLocation
+    data: 1
+    type: dword
+
+- name: "18.6.14.1 | PATCH | Ensure 'Hardened UNC Paths' is set to 'Enabled, with Require Mutual Authentication, Require Integrity, and Require Privacy set for all NETLOGON and SYSVOL shares"
+  when: win19cis_rule_18_6_14_1
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_18.6.14.1
+    - patch
+    - paths
+    - unc
+    - NIST800-53R5_IA-3_1
+  block:
+    - name: "18.6.14.1 | PATCH | Ensure 'Hardened UNC Paths' is set to 'Enabled, with Require Mutual Authentication, Require Integrity, and Require Privacy set for all NETLOGON and SYSVOL shares"
+      ansible.windows.win_regedit:
+        path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\Networkprovider\Hardenedpaths
+        name: "\\\\*\\NETLOGON"
+        data: "RequireMutualAuthentication=1, RequireIntegrity=1, RequirePrivacy=1"
+        type: string
+
+    - name: "18.6.14.1 | PATCH | Ensure 'Hardened UNC Paths' is set to 'Enabled, with Require Mutual Authentication, Require Integrity, and Require Privacy set for all NETLOGON and SYSVOL shares"
+      ansible.windows.win_regedit:
+        path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\Networkprovider\Hardenedpaths
+        name: "\\\\*\\SYSVOL"
+        data: "RequireMutualAuthentication=1, RequireIntegrity=1, RequirePrivacy=1"
+        type: string
+
+- name: "18.6.19.2.1 | PATCH | Disable IPv6 Ensure TCPIP6 Parameter DisabledComponents is set to 0xff 255"
+  when: win19cis_rule_18_6_19_2_1
+  tags:
+    - level2-domaincontroller
+    - level2-memberserver
+    - rule_18.6.19.2.1
+    - patch
+    - ipv6
+    - NIST800-171_3.4.2
+    - NIST800-171_3.4.6
+    - NIST800-171_3.4.7
+    - NIST800-53R5_CM-6
+    - NIST800-53R5_CM-7
+  ansible.windows.win_regedit:
+    path: HKLM:\SYSTEM\CurrentControlSet\Services\TCPIP6\Parameters
+    name: DisabledComponents
+    data: 255
+    type: dword
+
+- name: "18.6.20.1 | PATCH | Ensure Configuration of wireless settings using Windows Connect Now is set to Disabled"
+  when: win19cis_rule_18_6_20_1
+  tags:
+    - level2-domaincontroller
+    - level2-memberserver
+    - rule_18.6.20.1
+    - patch
+    - wireless
+    - NIST800-171_3.4.2
+    - NIST800-171_3.4.6
+    - NIST800-171_3.4.7
+    - NIST800-53R5_CM-6
+    - NIST800-53R5_CM-7
+  block:
+    - name: "18.6.20.1 | PATCH | Ensure Configuration of wireless settings using Windows Connect Now is set to Disabled | EnableRegistrars"
+      ansible.windows.win_regedit:
+        path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\Wcn\Registrars
+        name: EnableRegistrars
+        data: 0
+        type: dword
+
+    - name: "18.6.20.1 | PATCH | Ensure Configuration of wireless settings using Windows Connect Now is set to Disabled | DisableUPnPRegistrar"
+      ansible.windows.win_regedit:
+        path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\Wcn\Registrars
+        name: DisableUPnPRegistrar
+        data: 0
+        type: dword
+
+    - name: "18.6.20.1 | PATCH | Ensure Configuration of wireless settings using Windows Connect Now is set to Disabled | DisableInBand802DOT11Registrar"
+      ansible.windows.win_regedit:
+        path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\Wcn\Registrars
+        name: DisableInBand802DOT11Registrar
+        data: 0
+        type: dword
+
+    - name: "18.6.20.1 | PATCH | Ensure Configuration of wireless settings using Windows Connect Now is set to Disabled | DisableFlashConfigRegistrar"
+      ansible.windows.win_regedit:
+        path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\Wcn\Registrars
+        name: DisableFlashConfigRegistrar
+        data: 0
+        type: dword
+
+    - name: "18.6.20.1 | PATCH | Ensure Configuration of wireless settings using Windows Connect Now is set to Disabled | DisableWPDRegistrar"
+      ansible.windows.win_regedit:
+        path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\Wcn\Registrars
+        name: DisableWPDRegistrar
+        data: 0
+        type: dword
+
+- name: "18.6.20.2 | PATCH | Ensure Prohibit access of the Windows Connect Now wizards is set to Enabled"
+  when: win19cis_rule_18_6_20_2
+  tags:
+    - level2-domaincontroller
+    - level2-memberserver
+    - rule_18.6.20.2
+    - patch
+    - connectnow
+    - NIST800-171_3.4.2
+    - NIST800-171_3.4.6
+    - NIST800-171_3.4.7
+    - NIST800-53R5_CM-6
+    - NIST800-53R5_CM-7
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\Wcn\Ui
+    name: DisableWcnUi
+    data: 1
+    type: dword
+
+- name: "18.6.21.1 | PATCH | Ensure 'Minimize the number of simultaneous connections to the Internet or a Windows Domain' is set to 'Enabled: 3 = Prevent Wi-Fi when on Ethernet'"
+  when: win19cis_rule_18_6_21_1
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_18.6.21.1
+    - patch
+    - NIST800-171_3.4.1
+    - NIST800-171_3.4.2
+    - NIST800-171_3.4.6
+    - NIST800-171_3.4.7
+    - NIST800-171_3.13.1
+    - NIST800-171_3.13.2
+    - NIST800-53R5_CM-1
+    - NIST800-53R5_CM-2
+    - NIST800-53R5_AC-2
+    - NIST800-53R5_CM-6
+    - NIST800-53R5_CM-7
+    - NIST800-53R5_CM-7_1
+    - NIST800-53R5_CM-9
+    - NIST800-53R5_SA-3
+    - NIST800-53R5_SA-8
+    - NIST800-53R5_SA-10
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\Wcmsvc\Grouppolicy
+    name: fMinimizeConnections
+    data: 3
+    type: dword
+
+- name: "18.6.21.2 | PATCH | Ensure Prohibit connection to non-domain networks when connected to domain authenticated network is set to Enabled MS only | Member Server"
+  when:
+    - win19cis_rule_18_6_21_2
+    - prelim_win19cis_is_domain_member
+  tags:
+    - level2-memberserver
+    - rule_18.6.21.2
+    - patch
+    - NIST800-171_3.13.1
+    - NIST800-171_3.13.5
+    - NIST800-53R5_SC-7
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\Wcmsvc\Grouppolicy
+    name: fBlockNonDomain
+    data: 1
+    type: dword

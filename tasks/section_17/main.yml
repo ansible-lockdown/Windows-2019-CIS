@@ -1,0 +1,37 @@
+---
+
+- name: "SECTION | 17.1 | Audit Account Logon"
+  ansible.builtin.import_tasks:
+    file: section_17.1.yml
+
+- name: "SECTION | 17.2 | Audit Account Management"
+  ansible.builtin.import_tasks:
+    file: section_17.2.yml
+
+- name: "SECTION | 17.3 | Audit Detailed Tracking"
+  ansible.builtin.import_tasks:
+    file: section_17.3.yml
+
+- name: "SECTION | 17.4 | Audit DS Access"
+  ansible.builtin.import_tasks:
+    file: section_17.4.yml
+
+- name: "SECTION | 17.5 | Audit Logon/Logoff"
+  ansible.builtin.import_tasks:
+    file: section_17.5.yml
+
+- name: "SECTION | 17.6 | Audit Object Access"
+  ansible.builtin.import_tasks:
+    file: section_17.6.yml
+
+- name: "SECTION | 17.7 | Audit Policy Change"
+  ansible.builtin.import_tasks:
+    file: section_17.7.yml
+
+- name: "SECTION | 17.8 | Audit Privilege Use"
+  ansible.builtin.import_tasks:
+    file: section_17.8.yml
+
+- name: "SECTION | 17.9 | Audit System"
+  ansible.builtin.import_tasks:
+    file: section_17.9.yml

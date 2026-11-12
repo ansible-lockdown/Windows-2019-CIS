@@ -1,0 +1,60 @@
+---
+
+- name: "18.10.59.2 | PATCH | Ensure Allow Cloud Search is set to Enabled Disable Cloud Search"
+  when: win19cis_rule_18_10_59_2
+  tags:
+    - level2-domaincontroller
+    - level2-memberserver
+    - rule_18.10.59.2
+    - patch
+    - search
+    - cloud
+    - NIST800-171_3.4.2
+    - NIST800-171_3.4.6
+    - NIST800-171_3.4.7
+    - NIST800-53R5_CM-6
+    - NIST800-53R5_CM-7
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\Windows Search
+    name: AllowCloudSearch
+    data: 0
+    type: dword
+
+- name: "18.10.59.3 | PATCH | Ensure 'Allow indexing of encrypted files' is set to Disabled"
+  when: win19cis_rule_18_10_59_3
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_18.10.59.3
+    - patch
+    - search
+    - encrypted
+    - NIST800-171_3.4.2
+    - NIST800-171_3.4.6
+    - NIST800-171_3.4.7
+    - NIST800-53R5_CM-6
+    - NIST800-53R5_CM-7
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\Windows Search
+    name: AllowIndexingEncryptedStoresOrItems
+    data: 0
+    type: dword
+
+- name: "18.10.59.4 | PATCH | Ensure Allow search highlights is set to Disabled"
+  when: win19cis_rule_18_10_59_4
+  tags:
+    - level2-domaincontroller
+    - level2-memberserver
+    - rule_18.10.59.4
+    - patch
+    - search
+    - NIST800-171_3.4.2
+    - NIST800-171_3.4.6
+    - NIST800-171_3.4.7
+    - NIST800-53R5_CM-6
+    - NIST800-53R5_CM-7
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\Windows Search
+    name: EnableDynamicContentInWSB
+    data: 0
+    type: dword

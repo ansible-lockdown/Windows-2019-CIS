@@ -1,0 +1,57 @@
+---
+
+- name: "SECTION | 2.2 | User Rights Assignment"
+  ansible.builtin.import_tasks:
+    file: section_2.2.yml
+
+- name: "SECTION | 2.3.1 | Accounts"
+  ansible.builtin.import_tasks:
+    file: section_2.3.1.yml
+
+- name: "SECTION | 2.3.2 | Audit"
+  ansible.builtin.import_tasks:
+    file: section_2.3.2.yml
+
+- name: "SECTION | 2.3.4 | Devices"
+  ansible.builtin.import_tasks:
+    file: section_2.3.4.yml
+
+- name: "SECTION | 2.3.5 | Domain Controller"
+  ansible.builtin.import_tasks:
+    file: section_2.3.5.yml
+
+- name: "SECTION | 2.3.6 | Domain Member"
+  ansible.builtin.import_tasks:
+    file: section_2.3.6.yml
+
+- name: "SECTION | 2.3.7 | Interactive Logon"
+  ansible.builtin.import_tasks:
+    file: section_2.3.7.yml
+
+- name: "SECTION | 2.3.8 | Microsoft Network Client"
+  ansible.builtin.import_tasks:
+    file: section_2.3.8.yml
+
+- name: "SECTION | 2.3.9 | Microsoft Network Server"
+  ansible.builtin.import_tasks:
+    file: section_2.3.9.yml
+
+- name: "SECTION | 2.3.10 | Network Access"
+  ansible.builtin.import_tasks:
+    file: section_2.3.10.yml
+
+- name: "SECTION | 2.3.11 | Network Security"
+  ansible.builtin.import_tasks:
+    file: section_2.3.11.yml
+
+- name: "SECTION | 2.3.13 | Shutdown"
+  ansible.builtin.import_tasks:
+    file: section_2.3.13.yml
+
+- name: "SECTION | 2.3.15 | System Objects"
+  ansible.builtin.import_tasks:
+    file: section_2.3.15.yml
+
+- name: "SECTION | 2.3.17 | User Account Control"
+  ansible.builtin.import_tasks:
+    file: section_2.3.17.yml

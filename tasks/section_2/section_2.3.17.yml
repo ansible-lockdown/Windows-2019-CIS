@@ -1,0 +1,151 @@
+---
+
+- name: "2.3.17.1 | PATCH | Ensure User Account Control Admin Approval Mode for the Built-in Administrator account is set to Enabled"
+  when: win19cis_rule_2_3_17_1
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_2.3.17.1
+    - patch
+    - uac
+    - NIST800-171_3.1.1
+    - NIST800-53R5_AC-2_9
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System
+    name: FilterAdministratorToken
+    data: 1
+    type: dword
+
+- name: "2.3.17.2 | PATCH | Ensure User Account Control Behavior of the elevation prompt for administrators in Admin Approval Mode' is set to 'Prompt for consent on the secure desktop or higher"
+  when: win19cis_rule_2_3_17_2
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_2.3.17.2
+    - patch
+    - uac
+    - NIST800-171_3.1.5
+    - NIST800-53R5_AC-6_1
+  block:
+    - name: "2.3.17.2 | PATCH | Ensure User Account Control Behavior of the elevation prompt for administrators in Admin Approval Mode' is set to 'Prompt for consent on the secure desktop or higher | Apply Setting"
+      when:
+        - win19cis_consent_prompt_behavior_admin == 1 or
+          win19cis_consent_prompt_behavior_admin == 2
+      ansible.windows.win_regedit:
+        path: HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System
+        name: ConsentPromptBehaviorAdmin
+        data: "{{ win19cis_consent_prompt_behavior_admin }}"
+        type: dword
+
+    - name: "2.3.17.2 | AUDIT | Ensure User Account Control Behavior of the elevation prompt for administrators in Admin Approval Mode' is set to 'Prompt for consent on the secure desktop or higher | Warning Check For Variable"
+      when:
+        - win19cis_consent_prompt_behavior_admin == 0 or
+          win19cis_consent_prompt_behavior_admin > 2
+      ansible.builtin.debug:
+        msg:
+          - "Warning!! You have an invalid variable set for win19cis_consent_prompt_behavior_admin. Please read"
+          - "the notes for the variable and make the necessary change to the variable to be in compliance."
+
+    - name: "2.3.17.2 | AUDIT | Ensure User Account Control Behavior of the elevation prompt for administrators in Admin Approval Mode' is set to 'Prompt for consent on the secure desktop or higher | Warn Count"
+      when:
+        - win19cis_consent_prompt_behavior_admin == 0 or
+          win19cis_consent_prompt_behavior_admin > 2
+      ansible.builtin.import_tasks:
+        file: warning_facts.yml
+      vars:
+        warn_control_id: '2.3.17.2'
+
+- name: "2.3.17.3 | PATCH | Ensure User Account Control Behavior of the elevation prompt for standard users is set to Automatically deny elevation requests"
+  when: win19cis_rule_2_3_17_3
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_2.3.17.3
+    - patch
+    - uac
+    - NIST800-171_3.1.7
+    - NIST800-53R5_AC-6_10
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System
+    name: ConsentPromptBehaviorUser
+    data: 0
+    type: dword
+
+- name: "2.3.17.4 | PATCH | Ensure User Account Control Detect application installations and prompt for elevation is set to Enabled"
+  when: win19cis_rule_2_3_17_4
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_2.3.17.4
+    - patch
+    - uac
+    - NIST800-171_3.1.5
+    - NIST800-53R5_AC-6_8
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System
+    name: EnableInstallerDetection
+    data: 1
+    type: dword
+
+- name: "2.3.17.5 | PATCH | Ensure User Account Control Only elevate UIAccess applications that are installed in secure locations is set to Enabled"
+  when: win19cis_rule_2_3_17_5
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_2.3.17.5
+    - patch
+    - uac
+    - NIST800-171_3.1.5
+    - NIST800-53R5_AC-6_8
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System
+    name: EnableSecureUIAPaths
+    data: 1
+    type: dword
+
+- name: "2.3.17.6 | PATCH | Ensure User Account Control Run all administrators in Admin Approval Mode is set to Enabled"
+  when: win19cis_rule_2_3_17_6
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_2.3.17.6
+    - patch
+    - uac
+    - NIST800-171_3.1.5
+    - NIST800-53R5_AC-6_1
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System
+    name: EnableLUA
+    data: 1
+    type: dword
+
+- name: "2.3.17.7 | PATCH | Ensure User Account Control Switch to the secure desktop when prompting for elevation is set to Enabled"
+  when: win19cis_rule_2_3_17_7
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_2.3.17.7
+    - patch
+    - uac
+    - NIST800-171_3.1.5
+    - NIST800-53R5_AC-6_1
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System
+    name: PromptOnSecureDesktop
+    data: 1
+    type: dword
+
+- name: "2.3.17.8 | PATCH | Ensure User Account Control Virtualize file and registry write failures to per-user locations is set to Enabled"
+  when: win19cis_rule_2_3_17_8
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_2.3.17.8
+    - patch
+    - uac
+    - NIST800-53R5_SC-29_1
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System
+    name: EnableVirtualization
+    data: 1
+    type: dword

@@ -1,0 +1,1339 @@
+---
+
+- name: "18.9.3.1 | PATCH | Ensure Include command line in process creation events is set to Enabled"
+  when: win19cis_rule_18_9_3_1
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_18.9.3.1
+    - patch
+    - NIST800-171_3.3.1
+    - NIST800-171_3.3.2
+    - NIST800-53R5_AU-2
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\Audit
+    name: ProcessCreationIncludeCmdLine_Enabled
+    data: 1
+    type: dword
+
+- name: "18.9.4.1 | PATCH | Ensure Encryption Oracle Remediation is set to Enabled Force Updated Clients"
+  when: win19cis_rule_18_9_4_1
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_18.9.4.1
+    - patch
+    - encryption_oracle
+    - NIST800-53R5_SI-16
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\CredSSP\Parameters
+    name: AllowEncryptionOracle
+    data: 0
+    type: dword
+
+- name: "18.9.4.2 | PATCH | Ensure Remote host allows delegation of non-exportable credentials is set to Enabled"
+  when: win19cis_rule_18_9_4_2
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_18.9.4.2
+    - patch
+    - credentialsdelegation
+    - NIST800-171_3.5.2
+    - NIST800-53R5_IA-5
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\CredentialsDelegation
+    name: AllowProtectedCreds
+    data: 1
+    type: dword
+
+- name: "18.9.5.1 | PATCH | NG Ensure Turn On Virtualization Based Security is set to Enabled"
+  when:
+    - win19cis_rule_18_9_5_1
+    - win19cis_ngws
+  tags:
+    - ngws-domaincontroller
+    - ngws-memberserver
+    - rule_18.9.5.1
+    - patch
+    - vbs
+    - NIST800-53R5_SI-16
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\DeviceGuard
+    name: EnableVirtualizationBasedSecurity
+    data: 1
+    type: dword
+
+- name: "18.9.5.2 | PATCH | NG Ensure 'Turn On Virtualization Based Security: Select Platform Security Level' is set to 'Secure Boot' or higher"
+  when:
+    - win19cis_rule_18_9_5_2
+    - win19cis_ngws
+  tags:
+    - ngws-domaincontroller
+    - ngws-memberserver
+    - rule_18.9.5.2
+    - patch
+    - vbs
+    - NIST800-53R5_SI-16
+  block:
+    - name: "18.9.5.2 | PATCH | NG Ensure 'Turn On Virtualization Based Security: Select Platform Security Level' is set to 'Secure Boot' or higher | Set Variable"
+      when: win19cis_virtualization_based_security_level == 1 or win19cis_virtualization_based_security_level == 3
+      ansible.windows.win_regedit:
+        path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\DeviceGuard
+        name: RequirePlatformSecurityFeatures
+        data: "{{ win19cis_virtualization_based_security_level }}"
+        type: dword
+
+    - name: "18.9.5.2 | PATCH | NG Ensure 'Turn On Virtualization Based Security: Select Platform Security Level' is set to 'Secure Boot' or higher | Warning Check For Variable Standards"
+      when:
+        - win19cis_virtualization_based_security_level != 1
+        - win19cis_virtualization_based_security_level != 3
+      ansible.builtin.debug:
+        msg:
+          - "Warning!! You have an invalid setting for win19cis_virtualization_based_security_level. Please read"
+          - "the notes for the variable and make the necessary change to the variable to be in compliance."
+
+    - name: "18.9.5.2 | PATCH | NG Ensure 'Turn On Virtualization Based Security: Select Platform Security Level' is set to 'Secure Boot' or higher | Warn Count"
+      when:
+        - win19cis_virtualization_based_security_level != 1
+        - win19cis_virtualization_based_security_level != 3
+      ansible.builtin.import_tasks:
+        file: warning_facts.yml
+      vars:
+        warn_control_id: '18.9.5.2'
+
+- name: "18.9.5.3 | PATCH | NG Ensure Turn On Virtualization Based Security Virtualization Based Protection of Code Integrity is set to Enabled with UEFI lock"
+  when:
+    - win19cis_rule_18_9_5_3
+    - win19cis_ngws
+  tags:
+    - ngws-domaincontroller
+    - ngws-memberserver
+    - rule_18.9.5.3
+    - patch
+    - vbs
+    - NIST800-53R5_SI-16
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\DeviceGuard
+    name: HypervisorEnforcedCodeIntegrity
+    data: 1
+    type: dword
+
+- name: "18.9.5.4 | PATCH | NG Ensure Turn On Virtualization Based Security Require UEFI Memory Attributes Table is set to True checked"
+  when:
+    - win19cis_rule_18_9_5_4
+    - win19cis_ngws
+  tags:
+    - ngws-domaincontroller
+    - ngws-memberserver
+    - rule_18.9.5.4
+    - patch
+    - vbs
+    - NIST800-53R5_SI-16
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\DeviceGuard
+    name: HVCIMATRequired
+    data: 1
+    type: dword
+
+- name: "18.9.5.5 | PATCH | NG Ensure Turn On Virtualization Based Security Credential Guard Configuration is set to Enabled with UEFI lock MS Only | Member Server"
+  when:
+    - win19cis_rule_18_9_5_5
+    - not prelim_win19cis_is_domain_controller
+    - win19cis_ngws
+  tags:
+    - ngws-memberserver
+    - rule_18.9.5.5
+    - patch
+    - vbs
+    - NIST800-53R5_SI-16
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\DeviceGuard
+    name: LsaCfgFlags
+    data: 1
+    type: dword
+
+- name: "18.9.5.6 | PATCH | NG Ensure Turn On Virtualization Based Security Credential Guard Configuration is set to Disabled DC Only | Domain Controller"
+  when:
+    - win19cis_rule_18_9_5_6
+    - prelim_win19cis_is_domain_controller
+    - win19cis_ngws
+  tags:
+    - ngws-domaincontroller
+    - rule_18.9.5.6
+    - patch
+    - vbs
+    - NIST800-53R5_SI-16
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\DeviceGuard
+    name: LsaCfgFlags
+    data: 0
+    type: dword
+
+- name: "18.9.5.7 | PATCH | NG Ensure Turn On Virtualization Based Security Secure Launch Configuration is set to Enabled"
+  when:
+    - win19cis_rule_18_9_5_7
+    - win19cis_ngws
+  tags:
+    - ngws-domaincontroller
+    - ngws-memberserver
+    - rule_18.9.5.7
+    - patch
+    - vbs
+    - NIST800-53R5_SI-16
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\DeviceGuard
+    name: ConfigureSystemGuardLaunch
+    data: 1
+    type: dword
+
+- name: "18.9.7.2 | PATCH | Ensure Prevent device metadata retrieval from the Internet is set to Enabled"
+  when: win19cis_rule_18_9_7_2
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_18.9.7.2
+    - patch
+    - metadata
+    - NIST800-171_3.4.8
+    - NIST800-53R5_CM-7_5
+    - NIST800-53R5_CM-10
+    - NIST800-53R5_SI-16
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\Device Metadata
+    name: PreventDeviceMetadataFromNetwork
+    data: 1
+    type: dword
+
+- name: "18.9.13.1 | PATCH | Ensure 'Boot-Start Driver Initialization Policy' is set to 'Enabled: Good, unknown and bad but critical'"
+  when: win19cis_rule_18_9_13_1
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_18.9.13.1
+    - patch
+    - drivers
+    - NIST800-53R5_SI-16
+  ansible.windows.win_regedit:
+    path: HKLM:\SYSTEM\CurrentControlSet\Policies\Earlylaunch
+    name: DriverLoadPolicy
+    data: 3
+    type: dword
+
+- name: "18.9.19.2 | PATCH | Ensure 'Configure registry policy processing: Do not apply during periodic background processing' is set to 'Enabled: FALSE'"
+  when: win19cis_rule_18_9_19_2
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_18.9.19.2
+    - patch
+    - NIST800-171_3.4.1
+    - NIST800-171_3.4.2
+    - NIST800-171_3.4.6
+    - NIST800-171_3.4.7
+    - NIST800-171_3.13.1
+    - NIST800-171_3.13.2
+    - NIST800-53R5_CM-1
+    - NIST800-53R5_CM-2
+    - NIST800-53R5_AC-2
+    - NIST800-53R5_CM-6
+    - NIST800-53R5_CM-7
+    - NIST800-53R5_CM-7_1
+    - NIST800-53R5_CM-9
+    - NIST800-53R5_SA-3
+    - NIST800-53R5_SA-8
+    - NIST800-53R5_SA-10
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\Group Policy\{35378Eac-683F-11D2-A89A-00C04Fbbcfa2}
+    name: NoBackgroundPolicy
+    data: 0
+    type: dword
+
+- name: "18.9.19.3 | PATCH | Ensure Configure registry policy processing Process even if the Group Policy objects have not changed is set to Enabled TRUE"
+  when: win19cis_rule_18_9_19_3
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_18.9.19.3
+    - patch
+    - NIST800-171_3.4.1
+    - NIST800-171_3.4.2
+    - NIST800-171_3.4.6
+    - NIST800-171_3.4.7
+    - NIST800-171_3.13.1
+    - NIST800-171_3.13.2
+    - NIST800-53R5_CM-1
+    - NIST800-53R5_CM-2
+    - NIST800-53R5_AC-2
+    - NIST800-53R5_CM-6
+    - NIST800-53R5_CM-7
+    - NIST800-53R5_CM-7_1
+    - NIST800-53R5_CM-9
+    - NIST800-53R5_SA-3
+    - NIST800-53R5_SA-8
+    - NIST800-53R5_SA-10
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\Group Policy\{35378Eac-683F-11D2-A89A-00C04Fbbcfa2}
+    name: NoGPOListChanges
+    data: 0
+    type: dword
+
+- name: "18.9.19.4 | PATCH | Ensure Configure security policy processing: Do not apply during periodic background processing is set to Enabled: FALSE"
+  when: win19cis_rule_18_9_19_4
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_18.9.19.4
+    - patch
+    - NIST800-171_3.4.1
+    - NIST800-171_3.4.2
+    - NIST800-171_3.4.6
+    - NIST800-171_3.4.7
+    - NIST800-171_3.13.1
+    - NIST800-171_3.13.2
+    - NIST800-53R5_CM-1
+    - NIST800-53R5_CM-2
+    - NIST800-53R5_AC-2
+    - NIST800-53R5_CM-6
+    - NIST800-53R5_CM-7
+    - NIST800-53R5_CM-7_1
+    - NIST800-53R5_CM-9
+    - NIST800-53R5_SA-3
+    - NIST800-53R5_SA-8
+    - NIST800-53R5_SA-10
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\Group Policy\{827D319E-6EAC-11D2-A4EA-00C04F79F83A}
+    name: NoBackgroundPolicy
+    data: 0
+    type: dword
+
+- name: "18.9.19.5 | PATCH | Ensure Configure security policy processing: Process even if the Group Policy objects have not changed is set to Enabled: TRUE"
+  when: win19cis_rule_18_9_19_5
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_18.9.19.5
+    - patch
+    - NIST800-171_3.4.1
+    - NIST800-171_3.4.2
+    - NIST800-171_3.4.6
+    - NIST800-171_3.4.7
+    - NIST800-171_3.13.1
+    - NIST800-171_3.13.2
+    - NIST800-53R5_CM-1
+    - NIST800-53R5_CM-2
+    - NIST800-53R5_AC-2
+    - NIST800-53R5_CM-6
+    - NIST800-53R5_CM-7
+    - NIST800-53R5_CM-7_1
+    - NIST800-53R5_CM-9
+    - NIST800-53R5_SA-3
+    - NIST800-53R5_SA-8
+    - NIST800-53R5_SA-10
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\Group Policy\{827D319E-6EAC-11D2-A4EA-00C04F79F83A}
+    name: NoGPOListChanges
+    data: 0
+    type: dword
+
+- name: "18.9.19.6 | PATCH | Ensure Continue experiences on this device is set to Disabled"
+  when: win19cis_rule_18_9_19_6
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_18.9.19.6
+    - patch
+    - NIST800-171_3.4.2
+    - NIST800-171_3.4.6
+    - NIST800-171_3.4.7
+    - NIST800-53R5_CM-6
+    - NIST800-53R5_CM-7
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\System
+    name: EnableCdp
+    data: 0
+    type: dword
+
+- name: "18.9.19.7 | PATCH | Ensure Turn off background refresh of Group Policy is set to Disabled"
+  when: win19cis_rule_18_9_19_7
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_18.9.19.7
+    - patch
+    - NIST800-171_3.4.1
+    - NIST800-171_3.4.2
+    - NIST800-171_3.4.6
+    - NIST800-171_3.4.7
+    - NIST800-171_3.13.1
+    - NIST800-171_3.13.2
+    - NIST800-53R5_CM-1
+    - NIST800-53R5_CM-2
+    - NIST800-53R5_AC-2
+    - NIST800-53R5_CM-6
+    - NIST800-53R5_CM-7
+    - NIST800-53R5_CM-7_1
+    - NIST800-53R5_CM-9
+    - NIST800-53R5_SA-3
+    - NIST800-53R5_SA-8
+    - NIST800-53R5_SA-10
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System
+    name: DisableBkGndGroupPolicy
+    state: absent
+
+- name: "18.9.20.1.1 | PATCH | Ensure Turn off downloading of print drivers over HTTP is set to Enabled"
+  when: win19cis_rule_18_9_20_1_1
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_18.9.20.1.1
+    - patch
+    - drivers
+    - printers
+    - NIST800-171_3.4.8
+    - NIST800-53R5_CM-7_5
+    - NIST800-53R5_CM-10
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Windows Nt\Printers
+    name: DisableWebPnPDownload
+    data: 1
+    type: dword
+
+- name: "18.9.20.1.2 | PATCH | Ensure Turn off handwriting personalization data sharing is set to Enabled"
+  when: win19cis_rule_18_9_20_1_2
+  tags:
+    - level2-domaincontroller
+    - level2-memberserver
+    - rule_18.9.20.1.2
+    - patch
+    - handwriting
+    - NIST800-171_3.4.6
+    - NIST800-171_3.4.7
+    - NIST800-53R5_SI-4
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\Tabletpc
+    name: PreventHandwritingDataSharing
+    data: 1
+    type: dword
+
+- name: "18.9.20.1.3 | PATCH | Ensure Turn off handwriting recognition error reporting is set to Enabled"
+  when: win19cis_rule_18_9_20_1_3
+  tags:
+    - level2-domaincontroller
+    - level2-memberserver
+    - rule_18.9.20.1.3
+    - patch
+    - handwriting
+    - NIST800-171_3.4.2
+    - NIST800-171_3.4.6
+    - NIST800-171_3.4.7
+    - NIST800-53R5_CM-6
+    - NIST800-53R5_CM-7
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\Handwritingerrorreports
+    name: PreventHandwritingErrorReports
+    data: 1
+    type: dword
+
+- name: "18.9.20.1.4 | PATCH | Ensure Turn off Internet Connection Wizard if URL connection is referring to Microsoft.com is set to Enabled"
+  when: win19cis_rule_18_9_20_1_4
+  tags:
+    - level2-domaincontroller
+    - level2-memberserver
+    - rule_18.9.20.1.4
+    - patch
+    - wizard
+    - internetconnectionwizard
+    - NIST800-171_3.4.2
+    - NIST800-171_3.4.6
+    - NIST800-171_3.4.7
+    - NIST800-53R5_CM-6
+    - NIST800-53R5_CM-7
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\Internet Connection Wizard
+    name: ExitOnMSICW
+    data: 1
+    type: dword
+
+- name: "18.9.20.1.5 | PATCH | Ensure Turn off Internet download for Web publishing and online ordering wizards is set to Enabled"
+  when: win19cis_rule_18_9_20_1_5
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_18.9.20.1.5
+    - patch
+    - wizard
+    - internetdownloadwizard
+    - NIST800-171_3.4.2
+    - NIST800-171_3.4.6
+    - NIST800-171_3.4.7
+    - NIST800-53R5_CM-6
+    - NIST800-53R5_CM-7
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer
+    name: NoWebServices
+    data: 1
+    type: dword
+
+- name: "18.9.20.1.6 | PATCH | Ensure Turn off printing over HTTP is set to Enabled"
+  when: win19cis_rule_18_9_20_1_6
+  tags:
+    - level2-domaincontroller
+    - level2-memberserver
+    - rule_18.9.20.1.6
+    - patch
+    - printers
+    - NIST800-171_3.4.2
+    - NIST800-171_3.4.6
+    - NIST800-171_3.4.7
+    - NIST800-53R5_CM-6
+    - NIST800-53R5_CM-7
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Windows Nt\Printers
+    name: DisableHTTPPrinting
+    data: 1
+    type: dword
+
+- name: "18.9.20.1.7 | PATCH | Ensure Turn off Registration if URL connection is referring to Microsoft.com is set to Enabled"
+  when: win19cis_rule_18_9_20_1_7
+  tags:
+    - level2-domaincontroller
+    - level2-memberserver
+    - rule_18.9.20.1.7
+    - patch
+    - wizard
+    - registration
+    - NIST800-171_3.4.2
+    - NIST800-171_3.4.6
+    - NIST800-171_3.4.7
+    - NIST800-53R5_CM-6
+    - NIST800-53R5_CM-7
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\Registration Wizard Control
+    name: NoRegistration
+    data: 1
+    type: dword
+
+- name: "18.9.20.1.8 | PATCH | Ensure 'Turn off Search Companion content file updates' is set to Enabled"
+  when: win19cis_rule_18_9_20_1_8
+  tags:
+    - level2-domaincontroller
+    - level2-memberserver
+    - rule_18.9.20.1.8
+    - patch
+    - search
+    - NIST800-171_3.4.2
+    - NIST800-171_3.4.6
+    - NIST800-171_3.4.7
+    - NIST800-53R5_CM-6
+    - NIST800-53R5_CM-7
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Searchcompanion
+    name: DisableContentFileUpdates
+    data: 1
+    type: dword
+
+- name: "18.9.20.1.9 | PATCH | Ensure Turn off the Order Prints picture task is set to Enabled"
+  when: win19cis_rule_18_9_20_1_9
+  tags:
+    - level2-domaincontroller
+    - level2-memberserver
+    - rule_18.9.20.1.9
+    - patch
+    - printers
+    - NIST800-171_3.4.2
+    - NIST800-171_3.4.6
+    - NIST800-171_3.4.7
+    - NIST800-53R5_CM-6
+    - NIST800-53R5_CM-7
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer
+    name: NoOnlinePrintsWizard
+    data: 1
+    type: dword
+
+- name: "18.9.20.1.10 | PATCH | Ensure Turn off the Publish to Web task for files and folders is set to Enabled"
+  when: win19cis_rule_18_9_20_1_10
+  tags:
+    - level2-domaincontroller
+    - level2-memberserver
+    - rule_18.9.20.1.10
+    - patch
+    - wizard
+    - NIST800-171_3.4.2
+    - NIST800-171_3.4.6
+    - NIST800-171_3.4.7
+    - NIST800-53R5_CM-6
+    - NIST800-53R5_CM-7
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer
+    name: NoPublishingWizard
+    data: 1
+    type: dword
+
+- name: "18.9.20.1.11 | PATCH | Ensure Turn off the Windows Messenger Customer Experience Improvement Program is set to Enabled"
+  when: win19cis_rule_18_9_20_1_11
+  tags:
+    - level2-domaincontroller
+    - level2-memberserver
+    - rule_18.9.20.1.11
+    - patch
+    - wmcei
+    - NIST800-171_3.4.2
+    - NIST800-171_3.4.6
+    - NIST800-171_3.4.7
+    - NIST800-53R5_CM-6
+    - NIST800-53R5_CM-7
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Messenger\Client
+    name: CEIP
+    data: 2
+    type: dword
+
+- name: "18.9.20.1.12 | PATCH | Ensure Turn off Windows Customer Experience Improvement Program is set to Enabled"
+  when: win19cis_rule_18_9_20_1_12
+  tags:
+    - level2-domaincontroller
+    - level2-memberserver
+    - rule_18.9.20.1.12
+    - patch
+    - wmcei
+    - NIST800-171_3.4.2
+    - NIST800-171_3.4.6
+    - NIST800-171_3.4.7
+    - NIST800-53R5_CM-6
+    - NIST800-53R5_CM-7
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Sqmclient\Windows
+    name: CEIPEnable
+    data: 0
+    type: dword
+
+- name: "18.9.20.1.13 | PATCH | Ensure Turn off Windows Error Reporting is set to Enabled"
+  when: win19cis_rule_18_9_20_1_13
+  tags:
+    - level2-domaincontroller
+    - level2-memberserver
+    - rule_18.9.20.1.13
+    - patch
+    - errorreporting
+    - NIST800-171_3.4.2
+    - NIST800-171_3.4.6
+    - NIST800-171_3.4.7
+    - NIST800-53R5_CM-6
+    - NIST800-53R5_CM-7
+  block:
+    - name: "18.9.20.1.13 | PATCH | Ensure Turn off Windows Error Reporting is set to Enabled | Windows Error Reporting"
+      ansible.windows.win_regedit:
+        path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\Windows Error Reporting
+        name: Disabled
+        data: 1
+        type: dword
+
+    - name: "18.9.20.1.13 | PATCH | Ensure Turn off Windows Error Reporting is set to Enabled | ErrorReporting"
+      ansible.windows.win_regedit:
+        path: HKLM:\SOFTWARE\Policies\Microsoft\PCHealth\ErrorReporting
+        name: DoReport
+        data: 0
+        type: dword
+
+- name: "18.9.23.1 | PATCH | Ensure Support device authentication using certificate is set to Enabled Automatic"
+  when: win19cis_rule_18_9_23_1
+  tags:
+    - level2-domaincontroller
+    - level2-memberserver
+    - rule_18.9.23.1
+    - patch
+    - certificates
+    - NIST800-53R5_IA-3_1
+  block:
+    - name: "18.9.23.1 | PATCH | Support device authentication using certificate | DevicePKInitBehavior"
+      ansible.windows.win_regedit:
+        path: HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\kerberos\parameters
+        name: DevicePKInitBehavior
+        data: 0
+        type: dword
+
+    - name: "18.9.23.1 | PATCH | Support device authentication using certificate | DevicePKInitEnabled"
+      ansible.windows.win_regedit:
+        path: HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\kerberos\parameters
+        name: DevicePKInitEnabled
+        data: 1
+        type: dword
+
+- name: "18.9.24.1 | PATCH | Ensure Enumeration policy for external devices incompatible with Kernel DMA Protection is set to Enabled Block All"
+  when: win19cis_rule_18_9_24_1
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_18.9.24.1
+    - patch
+    - dma
+    - NIST800-171_3.4.1
+    - NIST800-53R5_CM-8
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\Kernel DMA Protection
+    name: DeviceEnumerationPolicy
+    data: 0
+    type: dword
+
+- name: "18.9.25.1 | PATCH | Ensure Configure password backup directory is set to Enabled: Active Directory or Enabled: Azure Active Directory"
+  when:
+    - win19cis_rule_18_9_25_1
+    - prelim_win19cis_is_domain_member
+  tags:
+    - level1-memberserver
+    - rule_18.9.25.1
+    - patch
+    - laps
+    - NIST800-171_3.8.9
+    - NIST800-53R5_CP-9
+  block:
+    - name: "18.9.25.1 | PATCH | Ensure Configure password backup directory is set to Enabled: Active Directory or Enabled: Azure Active Directory | Set Variable"
+      when: win19cis_laps_backupdirectory_value == 1 or win19cis_laps_backupdirectory_value == 2
+      ansible.windows.win_regedit:
+        path: HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\LAPS
+        name: BackupDirectory
+        data: "{{ win19cis_laps_backupdirectory_value }}"
+        type: dword
+
+    - name: "18.9.25.1 | AUDIT | Ensure Configure password backup directory is set to Enabled: Active Directory or Enabled: Azure Active Directory | Warning Check For Variable Standards"
+      when:
+        - win19cis_laps_backupdirectory_value != 1
+        - win19cis_laps_backupdirectory_value != 2
+      ansible.builtin.debug:
+        msg:
+          - "Warning!! You have an invalid setting for win19cis_laps_backupdirectory_value. Please read"
+          - "the notes for the variable and make the necessary change to the variable to be in compliance."
+
+    - name: "18.9.25.1 | AUDIT | Ensure Configure password backup directory is set to Enabled: Active Directory or Enabled: Azure Active Directory | Warn Count"
+      when:
+        - win19cis_laps_backupdirectory_value != 1
+        - win19cis_laps_backupdirectory_value != 2
+      ansible.builtin.import_tasks:
+        file: warning_facts.yml
+      vars:
+        warn_control_id: '18.9.25.1'
+
+- name: "18.9.25.2 | PATCH | Ensure Do not allow password expiration time longer than required by policy is set to Enabled"
+  when:
+    - win19cis_rule_18_9_25_2
+    - prelim_win19cis_is_domain_member
+  tags:
+    - level1-memberserver
+    - rule_18.9.25.2
+    - patch
+    - laps
+    - NIST800-171_3.5.2
+    - NIST800-53R5_IA-5_1_d
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\LAPS
+    name: PasswordExpirationProtectionEnabled
+    data: 1
+    type: dword
+
+- name: "18.9.25.3 | PATCH | Ensure Enable password encryption is set to Enabled"
+  when:
+    - win19cis_rule_18_9_25_3
+    - prelim_win19cis_is_domain_member
+  tags:
+    - level1-memberserver
+    - rule_18.9.25.3
+    - patch
+    - laps
+    - NIST800-171_3.1.13
+    - NIST800-171_3.5.2
+    - NIST800-171_3.13.8
+    - NIST800-53R5_AC-17_2
+    - NIST800-53R5_IA-5
+    - NIST800-53R5_IA-5_1
+    - NIST800-53R5_SC-8
+    - NIST800-53R5_SC-8_1
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\LAPS
+    name: ADPasswordEncryptionEnabled
+    data: 1
+    type: dword
+
+- name: "18.9.25.4 | PATCH | Ensure Password Settings: Password Complexity is set to 'Enabled: Large letters + small letters + numbers + special characters'"
+  when:
+    - win19cis_rule_18_9_25_4
+    - prelim_win19cis_is_domain_member
+  tags:
+    - level1-memberserver
+    - rule_18.9.25.4
+    - patch
+    - laps
+    - NIST800-171_3.5.2
+    - NIST800-53R5_IA-5_1
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\LAPS
+    name: PasswordComplexity
+    data: 4
+    type: dword
+
+- name: "18.9.25.5 | PATCH | Ensure Password Settings: Password Length is set to Enabled: 15 or more"
+  when:
+    - win19cis_rule_18_9_25_5
+    - prelim_win19cis_is_domain_member
+  tags:
+    - level1-memberserver
+    - rule_18.9.25.5
+    - patch
+    - laps
+    - NIST800-171_3.5.2
+    - NIST800-53R5_IA-5_1
+  block:
+    - name: "18.9.25.5 | PATCH | Ensure Password Settings: Password Length is set to Enabled: 15 or more | Set Variable"
+      when: win19cis_laps_passwordlength_value >= 15 # pragma: allowlist secret
+      ansible.windows.win_regedit:
+        path: HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\LAPS
+        name: PasswordLength
+        data: "{{ win19cis_laps_passwordlength_value }}"
+        type: dword
+
+    - name: "18.9.25.5 | AUDIT | Ensure Password Settings: Password Length is set to Enabled: 15 or more | Warning Check For Variable Standards"
+      when: win19cis_laps_passwordlength_value < 15
+      ansible.builtin.debug:
+        msg:
+          - "Warning!! You have an invalid LAPS password length for win19cis_laps_passwordlength_value. Please read"
+          - "the notes for the variable and make the necessary change to the variable to be in compliance."
+
+    - name: "18.9.25.5 | AUDIT | Ensure Password Settings: Password Length is set to Enabled: 15 or more | Warn Count"
+      when: win19cis_laps_passwordlength_value < 15
+      ansible.builtin.import_tasks:
+        file: warning_facts.yml
+      vars:
+        warn_control_id: '18.9.25.5'
+
+- name: "18.9.25.6 | PATCH | Ensure Password Settings: Password Age (Days) is set to Enabled: 30 or fewer"
+  when:
+    - win19cis_rule_18_9_25_6
+    - prelim_win19cis_is_domain_member
+  tags:
+    - level1-memberserver
+    - rule_18.9.25.6
+    - patch
+    - laps
+    - NIST800-171_3.5.2
+    - NIST800-53R5_IA-5_1
+  block:
+    - name: "18.9.25.6 | PATCH | Ensure Password Settings: Password Age (Days) is set to Enabled: 30 or fewer | Set Variable"
+      when: win19cis_laps_passwordagedays_value <= 30
+      ansible.windows.win_regedit:
+        path: HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\LAPS
+        name: PasswordAgeDays
+        data: "{{ win19cis_laps_passwordagedays_value }}"
+        type: dword
+
+    - name: "18.9.25.6 | AUDIT | Ensure Password Settings: Password Age (Days) is set to Enabled: 30 or fewer | Warning Check For Variable Standards"
+      when: win19cis_laps_passwordagedays_value > 30
+      ansible.builtin.debug:
+        msg:
+          - "Warning!! You have an invalid LAPS Password Age (Days) for win19cis_laps_passwordagedays_value. Please read"
+          - "the notes for the variable and make the necessary change to the variable to be in compliance."
+
+    - name: "18.9.25.6 | AUDIT | Ensure Password Settings: Password Age (Days) is set to Enabled: 30 or fewer | Warn Count"
+      when: win19cis_laps_passwordagedays_value > 30
+      ansible.builtin.import_tasks:
+        file: warning_facts.yml
+      vars:
+        warn_control_id: '18.9.25.6'
+
+- name: "18.9.25.7 | PATCH | Ensure Post-authentication actions: Grace period (hours) is set to Enabled: 8 or fewer hours, but not 0"
+  when:
+    - win19cis_rule_18_9_25_7
+    - prelim_win19cis_is_domain_member
+  tags:
+    - level1-memberserver
+    - rule_18.9.25.7
+    - patch
+    - laps
+    - NIST800-171_3.5.2
+    - NIST800-53R5_IA-5_1
+  block:
+    - name: "18.9.25.7 | PATCH | Ensure Post-authentication actions: Grace period (hours) is set to Enabled: 8 or fewer hours, but not 0 | Set Variable"
+      when:
+        - win19cis_laps_postauthenticationresetdelay_value <= 8
+        - win19cis_laps_postauthenticationresetdelay_value > 0
+      ansible.windows.win_regedit:
+        path: HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\LAPS
+        name: PostAuthenticationResetDelay
+        data: "{{ win19cis_laps_postauthenticationresetdelay_value }}"
+        type: dword
+
+    - name: "18.9.25.7 | AUDIT | Ensure Post-authentication actions: Grace period (hours) is set to Enabled: 8 or fewer hours, but not 0 | Warning Check For Variable Standards"
+      when:
+        - win19cis_laps_postauthenticationresetdelay_value > 8 or
+          win19cis_laps_postauthenticationresetdelay_value == 0
+      ansible.builtin.debug:
+        msg:
+          - "Warning!! You have an invalid Post Authentication Reset Delay value (hours) for win19cis_laps_postauthenticationresetdelay_value."
+          - "Please read the notes for the variable and make the necessary change to the variable to be in compliance."
+
+    - name: "18.9.25.7 | AUDIT | Ensure Post-authentication actions: Grace period (hours) is set to Enabled: 8 or fewer hours, but not 0 | Log a warning"
+      when:
+        - win19cis_laps_postauthenticationresetdelay_value > 8 or
+          win19cis_laps_postauthenticationresetdelay_value == 0
+      ansible.builtin.import_tasks:
+        file: warning_facts.yml
+      vars:
+        warn_control_id: '18.9.25.7'
+
+- name: "18.9.25.8 | PATCH | Ensure Post-authentication actions: Actions is set to Enabled: Reset the password and logoff the managed account or higher"
+  when:
+    - win19cis_rule_18_9_25_8
+    - prelim_win19cis_is_domain_member
+  tags:
+    - level1-memberserver
+    - rule_18.9.25.8
+    - patch
+    - laps
+    - NIST800-171_3.5.2
+    - NIST800-53R5_IA-5_1
+  block:
+    - name: "18.9.25.8 | PATCH | Ensure Post-authentication actions: Actions is set to Enabled: Reset the password and logoff the managed account or higher | Set Variable"
+      when:
+        - win19cis_laps_postauthenticationactions_value == 3 or win19cis_laps_postauthenticationactions_value == 5
+      ansible.windows.win_regedit:
+        path: HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\LAPS
+        name: PostAuthenticationActions
+        data: "{{ win19cis_laps_postauthenticationactions_value }}"
+        type: dword
+
+    - name: "18.9.25.8 | AUDIT | Ensure Post-authentication actions: Actions is set to Enabled: Reset the password and logoff the managed account or higher | Warning Check For Variable Standards"
+      when:
+        - win19cis_laps_postauthenticationactions_value != 3
+        - win19cis_laps_postauthenticationactions_value != 5
+      ansible.builtin.debug:
+        msg:
+          - "Warning!! You have an invalid setting for win19cis_laps_postauthenticationactions_value. Please read"
+          - "the notes for the variable and make the necessary change to the variable to be in compliance."
+
+    - name: "18.9.25.8 | AUDIT | Ensure Post-authentication actions: Actions is set to Enabled: Reset the password and logoff the managed account or higher | Log a warning"
+      when:
+        - win19cis_laps_postauthenticationactions_value != 3
+        - win19cis_laps_postauthenticationactions_value != 5
+      ansible.builtin.import_tasks:
+        file: warning_facts.yml
+      vars:
+        warn_control_id: '18.9.25.8'
+
+- name: "18.9.27.1 | PATCH | Ensure Disallow copying of user input methods to the system account for sign-in is set to Enabled"
+  when: win19cis_rule_18_9_27_1
+  tags:
+    - level2-domaincontroller
+    - level2-memberserver
+    - rule_18.9.27.1
+    - patch
+    - NIST800-171_3.4.2
+    - NIST800-53R5_CM-6_b
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Control Panel\International
+    name: BlockUserInputMethodsForSignIn
+    data: 1
+    type: dword
+
+- name: "18.9.28.1 | PATCH | Ensure Block user from showing account details on sign-in is set to Enabled"
+  when: win19cis_rule_18_9_28_1
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_18.9.28.1
+    - patch
+    - accounts
+    - NIST800-171_3.4.1
+    - NIST800-171_3.4.2
+    - NIST800-171_3.4.6
+    - NIST800-171_3.4.7
+    - NIST800-171_3.13.1
+    - NIST800-171_3.13.2
+    - NIST800-53R5_CM-1
+    - NIST800-53R5_CM-2
+    - NIST800-53R5_AC-2
+    - NIST800-53R5_CM-6
+    - NIST800-53R5_CM-7
+    - NIST800-53R5_CM-7_1
+    - NIST800-53R5_CM-9
+    - NIST800-53R5_SA-3
+    - NIST800-53R5_SA-8
+    - NIST800-53R5_SA-10
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\System
+    name: BlockUserFromShowingAccountDetailsOnSignin
+    data: 1
+    type: dword
+
+- name: "18.9.28.2 | PATCH | Ensure Do not display network selection UI is set to Enabled"
+  when: win19cis_rule_18_9_28_2
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_18.9.28.2
+    - patch
+    - NIST800-171_3.1.7
+    - NIST800-53R5_AC-6_10
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\System
+    name: DontDisplayNetworkSelectionUI
+    data: 1
+    type: dword
+
+- name: "18.9.28.3 | PATCH | Ensure Do not enumerate connected users on domain-joined computers is set to Enabled"
+  when: win19cis_rule_18_9_28_3
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_18.9.28.3
+    - patch
+    - enumerate
+    - NIST800-171_3.1.7
+    - NIST800-53R5_AC-6_10
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\System
+    name: DontEnumerateConnectedUsers
+    data: 1
+    type: dword
+
+- name: "18.9.28.4 | PATCH | Ensure Enumerate local users on domain-joined computers is set to Disabled MS only | Member Server"
+  when:
+    - win19cis_rule_18_9_28_4
+    - prelim_win19cis_is_domain_member
+  tags:
+    - level1-memberserver
+    - rule_18.9.28.4
+    - patch
+    - enumerate
+    - NIST800-171_3.1.7
+    - NIST800-53R5_AC-6_10
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\System
+    name: EnumerateLocalUsers
+    data: 0
+    type: dword
+
+- name: "18.9.28.5 | PATCH | Ensure Turn off app notifications on the lock screen is set to Enabled"
+  when: win19cis_rule_18_9_28_5
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_18.9.28.5
+    - patch
+    - notifications
+    - NIST800-171_3.4.2
+    - NIST800-171_3.4.6
+    - NIST800-171_3.4.7
+    - NIST800-53R5_CM-6
+    - NIST800-53R5_CM-7
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\System
+    name: DisableLockScreenAppNotifications
+    data: 1
+    type: dword
+
+- name: "18.9.28.6 | PATCH | Ensure Turn off picture password sign-in is set to Enabled"
+  when: win19cis_rule_18_9_28_6
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_18.9.28.6
+    - patch
+    - logon
+    - NIST800-171_3.4.2
+    - NIST800-171_3.4.6
+    - NIST800-171_3.4.7
+    - NIST800-53R5_CM-6
+    - NIST800-53R5_CM-7
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\System
+    name: BlockDomainPicturePassword
+    data: 1
+    type: dword
+
+- name: "18.9.28.7 | PATCH | Ensure Turn on convenience PIN sign-in is set to Disabled"
+  when: win19cis_rule_18_9_28_7
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_18.9.28.7
+    - patch
+    - pin
+    - NIST800-171_3.4.2
+    - NIST800-171_3.4.6
+    - NIST800-171_3.4.7
+    - NIST800-53R5_CM-6
+    - NIST800-53R5_CM-7
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\System
+    name: AllowDomainPINLogon
+    data: 0
+    type: dword
+
+- name: "18.9.31.1 | PATCH | Ensure Allow Clipboard synchronization across devices is set to Disabled"
+  when: win19cis_rule_18_9_31_1
+  tags:
+    - level2-domaincontroller
+    - level2-memberserver
+    - rule_18.9.31.1
+    - patch
+    - clipboard
+    - NIST800-171_3.4.2
+    - NIST800-171_3.4.6
+    - NIST800-171_3.4.7
+    - NIST800-53R5_CM-6
+    - NIST800-53R5_CM-7
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\System
+    name: AllowCrossDeviceClipboard
+    data: 0
+    type: dword
+
+- name: "18.9.31.2 | PATCH | Ensure Allow upload of User Activities is set to Disabled"
+  when: win19cis_rule_18_9_31_2
+  tags:
+    - level2-domaincontroller
+    - level2-memberserver
+    - rule_18.9.31.2
+    - patch
+    - NIST800-171_3.14.6
+    - NIST800-171_3.14.7
+    - NIST800-53R5_SI-4
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\System
+    name: UploadUserActivities
+    data: 0
+    type: dword
+
+- name: "18.9.33.6.1 | PATCH | Ensure Allow network connectivity during connected-standby on battery is set to Disabled"
+  when: win19cis_rule_18_9_33_6_1
+  tags:
+    - level2-domaincontroller
+    - level2-memberserver
+    - rule_18.9.33.6.1
+    - patch
+    - power
+    - NIST800-171_3.14.6
+    - NIST800-171_3.14.7
+    - NIST800-53R5_SI-4
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Power\PowerSettings\f15576e8-98b7-4186-b944-eafa664402d9
+    name: DCSettingIndex
+    data: 0
+    type: dword
+
+- name: "18.9.33.6.2 | PATCH | Ensure Allow network connectivity during connected-standby plugged in is set to Disabled"
+  when: win19cis_rule_18_9_33_6_2
+  tags:
+    - level2-domaincontroller
+    - level2-memberserver
+    - rule_18.9.33.6.2
+    - patch
+    - power
+    - NIST800-171_3.14.6
+    - NIST800-171_3.14.7
+    - NIST800-53R5_SI-4
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Power\PowerSettings\f15576e8-98b7-4186-b944-eafa664402d9
+    name: ACSettingIndex
+    data: 0
+    type: dword
+
+- name: "18.9.33.6.3 | PATCH | Ensure Require a password when a computer wakes on battery is set to Enabled"
+  when: win19cis_rule_18_9_33_6_3
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_18.9.33.6.3
+    - patch
+    - power
+    - logon
+    - NIST800-171_3.1.10
+    - NIST800-53R5_AC-11
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Power\PowerSettings\0e796bdb-100d-47d6-a2d5-f7d2daa51f51
+    name: DCSettingIndex
+    data: 1
+    type: dword
+
+- name: "18.9.33.6.4 | PATCH | Ensure Require a password when a computer wakes plugged in is set to Enabled"
+  when: win19cis_rule_18_9_33_6_4
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_18.9.33.6.4
+    - patch
+    - logon
+    - NIST800-171_3.1.10
+    - NIST800-53R5_AC-11
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Power\PowerSettings\0e796bdb-100d-47d6-a2d5-f7d2daa51f51
+    name: ACSettingIndex
+    data: 1
+    type: dword
+
+- name: "18.9.35.1 | PATCH | Ensure Configure Offer Remote Assistance is set to Disabled"
+  when: win19cis_rule_18_9_35_1
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_18.9.35.1
+    - patch
+    - cora
+    - NIST800-171_3.4.2
+    - NIST800-171_3.4.6
+    - NIST800-171_3.4.7
+    - NIST800-53R5_CM-6
+    - NIST800-53R5_CM-7
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Windows Nt\Terminal Services
+    name: fAllowUnsolicited
+    data: 0
+    type: dword
+
+- name: "18.9.35.2 | PATCH | Ensure Configure Solicited Remote Assistance is set to Disabled"
+  when: win19cis_rule_18_9_35_2
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_18.9.35.2
+    - patch
+    - csra
+    - NIST800-171_3.4.2
+    - NIST800-171_3.4.6
+    - NIST800-171_3.4.7
+    - NIST800-53R5_CM-6
+    - NIST800-53R5_CM-7
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Windows Nt\Terminal Services
+    name: fAllowToGetHelp
+    data: 0
+    type: dword
+
+- name: "18.9.36.1 | PATCH | Ensure Enable RPC Endpoint Mapper Client Authentication is set to Enabled MS only | Member Server"
+  when:
+    - win19cis_rule_18_9_36_1
+    - not prelim_win19cis_is_domain_controller
+  tags:
+    - level1-memberserver
+    - rule_18.9.36.1
+    - patch
+    - rpc
+    - NIST800-171_3.14.6
+    - NIST800-171_3.14.7
+    - NIST800-53R5_SI-4
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Windows Nt\Rpc
+    name: EnableAuthEpResolution
+    data: 1
+    type: dword
+
+- name: "18.9.36.2 | PATCH | Ensure Restrict Unauthenticated RPC clients is set to Enabled Authenticated MS only | Member Server"
+  when:
+    - win19cis_rule_18_9_36_2
+    - not prelim_win19cis_is_domain_controller
+  tags:
+    - level2-memberserver
+    - rule_18.9.36.2
+    - patch
+    - rpc
+    - NIST800-171_3.14.6
+    - NIST800-171_3.14.7
+    - NIST800-53R5_SI-4
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Windows Nt\Rpc
+    name: RestrictRemoteClients
+    data: 1
+    type: dword
+
+- name: "18.9.47.5.1 | PATCH | Ensure Microsoft Support Diagnostic Tool Turn on MSDT interactive communication with support provider is set to Disabled"
+  when: win19cis_rule_18_9_47_5_1
+  tags:
+    - level2-domaincontroller
+    - level2-memberserver
+    - rule_18.9.47.5.1
+    - patch
+    - msdt
+    - NIST800-171_3.4.2
+    - NIST800-171_3.4.6
+    - NIST800-171_3.4.7
+    - NIST800-53R5_CM-6
+    - NIST800-53R5_CM-7
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\Scripteddiagnosticsprovider\Policy
+    name: DisableQueryRemoteServer
+    data: 0
+    type: dword
+
+- name: "18.9.47.11.1 | PATCH | Ensure Enable/Disable PerfTrack is set to Disabled"
+  when: win19cis_rule_18_9_47_11_1
+  tags:
+    - level2-domaincontroller
+    - level2-memberserver
+    - rule_18.9.47.11.1
+    - patch
+    - pertrack
+    - NIST800-171_3.4.2
+    - NIST800-171_3.4.6
+    - NIST800-171_3.4.7
+    - NIST800-53R5_CM-6
+    - NIST800-53R5_CM-7
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\Wdi\{9C5A40Da-B965-4Fc3-8781-88Dd50A6299D}
+    name: ScenarioExecutionEnabled
+    data: 0
+    type: dword
+
+- name: "18.9.49.1 | PATCH | Ensure Turn off the advertising ID is set to Enabled"
+  when: win19cis_rule_18_9_49_1
+  tags:
+    - level2-domaincontroller
+    - level2-memberserver
+    - rule_18.9.49.1
+    - patch
+    - advertising
+    - NIST800-171_3.14.6
+    - NIST800-171_3.14.7
+    - NIST800-53R5_SI-4
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\Advertisinginfo
+    name: DisabledByGroupPolicy
+    data: 1
+    type: dword
+
+- name: "18.9.51.1.1 | PATCH | Ensure Enable Windows NTP Client is set to Enabled"
+  when: win19cis_rule_18_9_51_1_1
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_18.9.51.1.1
+    - patch
+    - ntp
+    - NIST800-171_3.3.6
+    - NIST800-171_3.3.7
+    - NIST800-53R5_AU-7
+    - NIST800-53R5_AU-8
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\W32Time\Timeproviders\Ntpclient
+    name: Enabled
+    data: 1
+    type: dword
+
+- name: "18.9.51.1.2 | PATCH | Ensure Enable Windows NTP Server is set to Disabled MS only | Member Server"
+  when:
+    - win19cis_rule_18_9_51_1_2
+    - not prelim_win19cis_is_domain_controller
+  tags:
+    - level1-memberserver
+    - rule_18.9.51.1.2
+    - patch
+    - ntp
+    - NIST800-171_3.3.6
+    - NIST800-171_3.3.7
+    - NIST800-53R5_AU-7
+    - NIST800-53R5_AU-8
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\W32Time\Timeproviders\Ntpserver
+    name: Enabled
+    data: 0
+    type: dword

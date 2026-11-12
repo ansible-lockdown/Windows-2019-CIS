@@ -49,7 +49,7 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it.
       - name: Clone ${{ github.event.repository.name }}
-        uses: actions/checkout@v6.0.2
+        uses: actions/checkout@v7.0.0
         with:
           ref: ${{ github.event.pull_request.head.sha }}
 
@@ -65,7 +65,7 @@ jobs:
 
       # Pull In OpenTofu Code For Windows Azure
       - name: Clone IaC Repository
-        uses: actions/checkout@v6.0.2
+        uses: actions/checkout@v7.0.0
         with:
           repository: ansible-lockdown/github_windows_IaC
           path: .github/workflows/github_windows_IaC
@@ -108,7 +108,7 @@ jobs:
           TF_VAR_benchmark_type: ${{ vars.BENCHMARK_TYPE }}
 
       # Execute The Actions And Build Azure Server
-      - name: Tofo Apply
+      - name: Tofu Apply
         id: apply
         env:
           # Imported from github variables this is used to load the relevant OS.tfvars file
