@@ -1,0 +1,161 @@
+---
+
+- name: "18.10.89.1.1 | PATCH | Ensure Allow Basic authentication is set to Disabled"
+  when:
+    - win19cis_rule_18_10_89_1_1
+    - not (win_skip_for_test | bool)
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_18.10.89.1.1
+    - patch
+    - winrm
+    - NIST800-171_3.1.13
+    - NIST800-171_3.5.2
+    - NIST800-171_3.13.8
+    - NIST800-53R5_AC-17_2
+    - NIST800-53R5_IA-5
+    - NIST800-53R5_IA-5_1
+    - NIST800-53R5_SC-8
+    - NIST800-53R5_SC-9_1
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\Winrm\Client
+    name: AllowBasic
+    data: 0
+    type: dword
+
+- name: "18.10.89.1.2 | PATCH | Ensure Allow unencrypted traffic is set to Disabled"
+  when:
+    - win19cis_rule_18_10_89_1_2
+    - not (win_skip_for_test | bool)
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_18.10.89.1.2
+    - patch
+    - winrm
+    - NIST800-171_3.1.13
+    - NIST800-171_3.5.2
+    - NIST800-171_3.13.8
+    - NIST800-53R5_AC-17_2
+    - NIST800-53R5_IA-5
+    - NIST800-53R5_IA-5_1
+    - NIST800-53R5_SC-8
+    - NIST800-53R5_SC-9_1
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\Winrm\Client
+    name: AllowUnencryptedTraffic
+    data: 0
+    type: dword
+
+- name: "18.10.89.1.3 | PATCH | Ensure Disallow Digest authentication is set to Enabled"
+  when:
+    - win19cis_rule_18_10_89_1_3
+    - not (win_skip_for_test | bool)
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_18.10.89.1.3
+    - patch
+    - winrm
+    - NIST800-171_3.1.13
+    - NIST800-171_3.5.2
+    - NIST800-171_3.13.8
+    - NIST800-53R5_AC-17_2
+    - NIST800-53R5_IA-5
+    - NIST800-53R5_IA-5_1
+    - NIST800-53R5_SC-8
+    - NIST800-53R5_SC-9_1
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\Winrm\Client
+    name: AllowDigest
+    data: 0
+    type: dword
+
+- name: "18.10.89.2.1 | PATCH | Ensure Allow Basic authentication is set to Disabled"
+  when:
+    - win19cis_rule_18_10_89_2_1
+    - not (win_skip_for_test | bool)
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_18.10.89.2.1
+    - patch
+    - winrm
+    - NIST800-171_3.1.13
+    - NIST800-171_3.5.2
+    - NIST800-171_3.13.8
+    - NIST800-53R5_AC-17_2
+    - NIST800-53R5_IA-5
+    - NIST800-53R5_IA-5_1
+    - NIST800-53R5_SC-8
+    - NIST800-53R5_SC-9_1
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\Winrm\Service
+    name: AllowBasic
+    data: 0
+    type: dword
+
+# This control will have to be set to Enabled (1) to allow for continued remote management via Ansible following machine restart
+- name: "18.10.89.2.2 | PATCH | Ensure Allow remote server management through WinRM is set to Disabled"
+  when:
+    - win19cis_rule_18_10_89_2_2
+    - not (win_skip_for_test | bool)
+  tags:
+    - level2-domaincontroller
+    - level2-memberserver
+    - rule_18.10.89.2.2
+    - patch
+    - winrm
+    - NIST800-171_3.4.2
+    - NIST800-171_3.4.6
+    - NIST800-171_3.4.7
+    - NIST800-53R5_CM-6
+    - NIST800-53R5_CM-7
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\Winrm\Service
+    name: AllowAutoConfig
+    data: 0
+    type: dword
+
+- name: "18.10.89.2.3 | PATCH | Ensure Allow unencrypted traffic is set to Disabled"
+  when:
+    - win19cis_rule_18_10_89_2_3
+    - not (win_skip_for_test | bool)
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_18.10.89.2.3
+    - patch
+    - winrm
+    - encryption
+    - NIST800-171_3.1.13
+    - NIST800-171_3.5.2
+    - NIST800-171_3.13.8
+    - NIST800-53R5_AC-17_2
+    - NIST800-53R5_IA-5
+    - NIST800-53R5_IA-5_1
+    - NIST800-53R5_SC-8
+    - NIST800-53R5_SC-9_1
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\Winrm\Service
+    name: AllowUnencryptedTraffic
+    data: 0
+    type: dword
+
+- name: "18.10.89.2.4 | PATCH | Ensure Disallow WinRM from storing RunAs credentials is set to Enabled"
+  when: win19cis_rule_18_10_89_2_4
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_18.10.89.2.4
+    - patch
+    - winrm
+    - NIST800-171_3.13.2
+    - NIST800-171_3.13.5
+    - NIST800-53R5_SC-7_21
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\Winrm\Service
+    name: DisableRunAs
+    data: 1
+    type: dword

@@ -1,0 +1,61 @@
+---
+
+- name: "Post Audit | Run the post remediation audit for {{ benchmark }}"
+  ansible.windows.win_shell: |
+    $auditArgs = @{
+        Format        = '{{ audit_format }}'
+        Group         = '{{ audit_group }}'
+        MaxConcurrent = {{ audit_max_concurrent }}
+        OutFile       = '{{ post_audit_outfile }}'
+        VarsPath      = '{{ audit_vars_path }}'
+        SystemType    = '{{ audit_system_type }}'
+    }
+    & '{{ audit_conf_dir }}\run_audit.ps1' @auditArgs
+  changed_when: true
+  failed_when: "'Audit Completed' not in post_audit_run.stdout"
+  register: post_audit_run
+  environment:
+    AUDIT_BIN: "{{ audit_bin }}"
+    AUDIT_CONTENT_LOCATION: "{{ audit_conf_dest }}"
+    AUDIT_FILE: "{{ audit_file }}"
+
+- name: "Post Audit | Capture audit data if json format"
+  when: audit_format == 'json'
+  block:
+    - name: "Post Audit | Capture audit data if json format"
+      ansible.windows.win_shell: |
+        $ErrorActionPreference = 'Stop'
+        $audit = Get-Content -LiteralPath '{{ post_audit_outfile }}' -Raw | ConvertFrom-Json
+        $audit.summary.'summary-line'
+      changed_when: false
+      failed_when: post_audit_summary_json.rc != 0 or not (post_audit_summary_json.stdout | trim)
+      register: post_audit_summary_json
+
+    - name: "Post Audit | Set Fact for audit summary"
+      ansible.builtin.set_fact:
+        post_audit_results: "{{ post_audit_summary_json.stdout | trim }}"
+
+- name: "Post Audit | Capture audit data if documentation format"
+  when: audit_format == 'documentation'
+  block:
+    - name: "Post Audit | Capture audit data if documentation format"
+      ansible.windows.win_shell: |
+        $tail = @(Get-Content -LiteralPath '{{ post_audit_outfile }}' -Tail 2)
+        if ($tail.Count -gt 1) { $tail = $tail[($tail.Count - 1)..0] }
+        ($tail -join ' ').Trim()
+      changed_when: false
+      register: post_audit_summary_documentation
+
+    - name: "Post Audit | Set Fact for audit summary"
+      ansible.builtin.set_fact:
+        post_audit_results: "{{ post_audit_summary_documentation.stdout | trim }}"
+
+- name: "Post Audit | Warn that a skipped reboot affects the results"
+  when:
+    - reboot_host
+    - skip_reboot
+  ansible.builtin.debug:
+    msg:
+      - "Warning!! A reboot was required but skipped, so some controls are applied"
+      - "but not yet in effect. Post-remediation audit failures may be pending"
+      - "rather than genuine - re-run the audit after a reboot to confirm."

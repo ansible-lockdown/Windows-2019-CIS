@@ -1,0 +1,25 @@
+---
+
+- name: "2.3.4.1 | PATCH | Ensure Devices Prevent users from installing printer drivers is set to Enabled"
+  when: win19cis_rule_2_3_4_1
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_2.3.4.1
+    - patch
+    - devices
+    - NIST800-171_3.3.1
+    - NIST800-171_3.1.5
+    - NIST800-171_3.3.8
+    - NIST800-171_3.3.9
+    - NIST800-53R5_AC-2
+    - NIST800-53R5_AC-3
+    - NIST800-53R5_AC-6
+    - NIST800-53R5_AC-6_1
+    - NIST800-53R5_AC-6_7
+    - NIST800-53R5_AC-9_4
+  ansible.windows.win_regedit:
+    path: HKLM:\SYSTEM\CurrentControlSet\Control\Print\Providers\Lanman Print Services\Servers
+    name: AddPrinterDrivers
+    data: 1
+    type: dword

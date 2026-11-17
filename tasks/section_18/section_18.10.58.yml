@@ -1,0 +1,39 @@
+---
+
+- name: "18.10.58.1 | PATCH | Ensure Prevent downloading of enclosures is set to Enabled"
+  when: win19cis_rule_18_10_58_1
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_18.10.58.1
+    - patch
+    - enclosure
+    - NIST800-171_3.4.9
+    - NIST800-171_3.13.13
+    - NIST800-53R5_CM-10
+    - NIST800-53R5_CM-11
+    - NIST800-53R5_SC-18
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Internet Explorer\Feeds
+    name: DisableEnclosureDownload
+    data: 1
+    type: dword
+
+- name: "18.10.58.2 | PATCH | Ensure 'Turn on Basic feed authentication over HTTP' is set to 'Disabled'"
+  when: win19cis_rule_18_10_58_2
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_18.10.58.2
+    - patch
+    - rss
+    - feeds
+    - internet_explorer
+    - authentication
+    - NIST800-171_3.1.13
+    - NIST800-53R5_AC-17
+  ansible.windows.win_regedit:
+    path: HKLM:\Software\Policies\Microsoft\Internet Explorer\Feeds
+    name: AllowBasicAuthInClear
+    data: 0
+    type: dword

@@ -1,9 +1,181 @@
-# Changelog
+# ChangeLog
+
+## CIS Benchmark v4.0.0
+## October 2026 Updates
+
+  - fix: 1.2.4 checked against the live lockout duration when 1.2.1 is off
+  - fix: 1.2.1 lowers the reset counter when the lockout duration is Never
+  - fix: 2.3.5.4 warns on a domain controller instead of writing a value the Default Domain Controllers Policy reverts
+  - fix: audit bridge no longer emits the 2.2.34 and 2.3.10.9 switches, which no audit spec reads
+  - style: section_19 task key order
+  - style: 1.2.4 warning count sub-task name has a single separator
+  - docs: defaults comments name win19cis_bad_login_lockout_count and point to section_1.2.x.yml for the lockout order
+  - docs: README no longer names a GPO role that does not exist
+  - docs: README pre-commit badge removed, its endpoint returns 404
+  - docs: README gives the audit content default, the Windows-2019-CIS-Audit benchmark branch archive
+
+## CIS Benchmark v4.0.0
+## September 2026 Updates - audit content
+
+  - fix: prelim and 2.3.5.4 warnings point to the Default Domain Policy and Default Domain Controllers Policy, not a GPO role that is not published for 2019
+  - style: 2.3.10.9 WINS sub-task named with its control title
+  - style: task names follow the benchmark titles for 1.2.3, 2.2.38, 2.3.9.5, 2.3.10.6 - 2.3.10.9, 5.1, 5.2 and 18.10.82.1
+  - fix: 18.4.4 writes EnableCertPaddingCheck to the Wow6432Node location as well
+  - docs: README, ChangeLog, defaults comments and workflow step typos and grammar
+  - docs: win_skip_for_test notes give the current 2.2.3 and 2.2.22 gates
+  - fix: 1.1.3 warning names win19cis_minimum_password_age, was win19cis_maximum_password_age
+  - style: typos and punctuation in warning messages and task names
+  - docs: README GPO migration table lists the GPO naming variables
+  - README local testing version typo fixed
+  - fix: 18.10.82.1 rule tag corrected, was rule_18.10.81.1, and its registry path in the case Windows-2025-CIS uses
+  - fix: 18.9.19.7 removes DisableBkGndGroupPolicy from Policies\System
+  - fix: 16 MS only controls applied on standalone servers
+  - fix: 5.2 Print Spooler applied on standalone servers
+  - fix: 2.3.6.x Domain member controls applied on domain controllers, as CIS scopes them
+  - style: task vars placed straight after the module in 51 tasks
+  - fix: post.yml warn_control_id scoped to the warning count task, not the whole block
+  - fix: NGWS controls gated on win19cis_ngws, default false
+  - fix: win19cis_ngws moved to defaults/main/main.yml
+  - docs: README - stand-alone servers and NGWS profile sections, target type counts
+  - docs: README - level1-domainmember dropped from the tag list
+  - style: trailing full stops removed from 115 task names
+  - fix: invented level1-domainmember tag removed from 2.3.6.x
+  - style: handler tags before the module
+  - style: loop_control labels removed from fetch_audit_output.yml
+  - fix: unused community.general collection dependency removed
+  - style: blank line after the document start in .pre-commit-config.yaml
+  - README tag example uses 18.4.3, was rule_18.3.3
+  - 39 registers renamed to the discovered_ prefix
+  - duplicate spooler_service_info register split per control
+  - fixed to new vars for section 5
+  - Added the audit wiring: setup, pre and post remediation audits, compliance facts and output fetch, all off by default
+    - Needs Windows-2019-CIS-Audit content for benchmark v4.0.0, which is not yet published
+  - docs: README table of the controls the domain overrides, and how the role and audit report them
+  - Moved the contents of tasks/ansible_hardening up into tasks/
+  - Merged tasks/ansible_hardening/main.yml into tasks/main.yml
+  - Updated the prelim include path
+  - Grouped section tasks as tasks/section_N/, each with a main.yml
+  - Section 1 skipped on domain joined hosts, with a warning
+    - The Default Domain Policy overwrites local [System Access] at every refresh
+    - 1.2.3 applies on a standalone server only
+  - 2.3.11.6 skipped on domain joined hosts, with a warning
+    - ForceLogoffWhenHourExpire is a [System Access] value the Default Domain Policy sets to 0
+  - README domain members section covers 2.3.11.6
+  - 2.3.7.4 legal notice written through the security database
+    - Was cut to its first line whenever a later win_security_policy task re-imported
+    - Blank lines dropped, commas kept
+  - 1.2.1 lockout duration applies on a stock host
+    - The reset counter is reconciled in section 1, after 1.2.2 enables lockout
+    - Windows auto-populates duration and reset to 30 once 1.2.2 runs, which rejected the 1.2.1 import
+  - A tagged run reaches the controls it names
+    - Remediation and prelim tasks were included, and tags do not pass through include_tasks, so --tags ran no control
+    - They are imported now, and the reconcile carries the rule_1.2.1 tags, so only a run that asks for 1.2.1 can move it
+  - secedit reads work under Constrained Language Mode
+    - Cmdlets, operators and $Matches only
+    - secedit now exports to a path that does not already exist, which keeps the [Unicode] header
+  - Standalone detection covers a stand-alone workstation, not only a stand-alone server
+  - Domain scope warning names the Default Domain Policy and the Windows-2019-CIS-GPO role
+    - States that a domain controller has no local remediation path for section 1
+  - README: what the role enforces on a standalone, member server and domain controller
+  - README: why a control's CIS profile tags and its when can disagree, using 1.2.3
+  - README: migration path for the GPO variables removed from this role
+  - moved reading user hive from prelim to section_19/main.yml to minimise potential unload hive issue
+  - NIST800-53 task tags removed, NIST800-53R5 and NIST800-171 kept
+  - README tagging example shows NIST800-53R5 only
+  - Clear up confusion in GPO wording (this is currently WIP)
+
+## September 2026 Updates - GPO creation removed
+
+  - Removed the GPO creation path (tasks/gpo_creation)
+  - Removed the test domain creation (tasks/domain_creation)
+  - Removed the GPO templates (templates/cis_templates, templates/windows_templates)
+  - Removed the GPO pipeline workflows and badges
+  - Removed win19cis_ansible_remediation and win19cis_create_gpos toggles
+  - Removed the GPO, domain creation, DSRM and GPO backup defaults
+  - Removed the GPO name vars
+  - Removed the gpo galaxy tag
+  - Removed the GPO sections from the README
+  - GPO creation now lives in Windows-2019-CIS-GPO
+QA pass fixes from Windows-2025-CIS, where they hold for CIS Microsoft Windows Server 2019 Benchmark v4.0.0.
+
+  - docs: README explains why section 1 cannot hold on a domain member, with the measured before and after values
+  - Corrected task titles that named a different control.
+  - Corrected rule_ tags
+  - Removed 11 stray gpo tags from the hardening path, where --tags gpo selected direct registry
+    writes in sections 1 and 18.
+  - Normalised 31 malformed NIST tags.
+  - Corrected the credentialsdelecation tag to credentialsdelegation.
+  - Corrected the 1.1.2 and 1.1.3 conditionals
+  - Removed the cloud-based task ordering split for the account lockout controls.
+    - Deleted tasks/ansible_hardening/section01_cloud_lockout_order.yml, which duplicated
+      1.2.1 to 1.2.4 purely to run them in a different order.
+    - Removed hosted_virtual_system_override and prelim_win19cis_cloud_based_system. The
+      auto-detection used ansible_virtualization_type and ansible_system_vendor and its own
+      documentation listed VMware vSphere, AWS GovCloud and standalone VMware as known failures.
+    - Root cause: Windows requires LockoutDuration to be no less than ResetLockoutCount, and
+      win_security_policy re-imports the whole secedit ini on every call, so whichever of 1.2.1 or
+      1.2.4 is written first fails with "The parameter is incorrect" when the existing values
+      conflict. This is ansible/ansible#62594. It depends on the starting state of the image, not
+      on whether the host is cloud based.
+    - Section 1 now reads the current LockoutDuration and ResetLockoutCount after 1.2.2 and lowers
+      the reset counter only when it would block 1.2.1. Windows maintains duration >= reset, so that
+      makes the fixed order 1.2.2, 1.2.1, 1.2.4, 1.2.3 valid from any starting state.
+  - Migrated the remaining bare fact references to ansible_facts bracket notation.
+    - ansible_distribution, ansible_distribution_major_version and ansible_os_family in tasks/main.yml.
+    - ansible_windows_domain_role in the prelim.
+  - Removed the duplicate windows2019 galaxy tag from meta/main.yml.
+  - Removed export_badges_public.yml and update_galaxy.yml, update_galaxy.yml carried no repository_visibility guard.
+  - Updated actions/checkout to v7.0.0 across the workflows.
+  - Updated welcome message and version for workflows
+  - Replaced CONTRIBUTING.rst with CONTRIBUTING.md, headed Contributing to Ansible-Lockdown Projects.
+  - Updated the README social badge from Twitter to X.
+  - Updated .gitignore
+  - Added .pre-commit-config.yaml and updated .ansible-lint and .yamllint
+    - .ansible-lint set parseable, which stopped ansible-lint loading its configuration at all
+  - Moved min_ansible_ver to vars/main from defaults
+  - Updated LICENSE year to 2026 and company to MindPoint Group - A Quantum Sky Company.
+  - Updated run banner and meta/main.yml with the current company name.
+  - Updated meta/main.yml author to Ansible-Lockdown Team and min_ansible_version to 2.16.1.
+  - Updated 2.3.10.9 to use ansible.windows.win_feature_info. Replacing the deprecated community.windows redirect
+  - Updated task names to match the CIS control wording.
+  - 2.2.31 Generate security audits made idempotent.
+    - Reads current holders and only reapplies win_user_right when they differ.
+  - 2.3.11.6 Force logoff when logon hours expire now uses the mechanism that implements it.
+    - Both paths wrote LanManServer\Parameters EnableForcedLogOff, which is control 2.3.9.4's
+      value. CIS names no registry location for 2.3.11.6 because it is a secedit [System Access]
+      setting.
+    - Now uses win_security_policy, matching sections 1 and 2.2.
+  - Added check_mode: false to the read-only tasks that register a variable.
+    - The interactive user hives, the 1.2.1 reconcile read, 2.2.31, the two 2.3.10.9 feature checks,
+      and both section 5 spooler checks.
+    - Without it a --check run skipped the read, and the next task dereferenced .stdout on a
+      skipped result. The play aborted in the prelim on every host.
+  - Removed the domain member gate from 2.2.11, which contradicted the benchmark and the role itself.
+  - Changed Exchange, IIS and Hyper-V dynamic discovery
+  - 2.2.3 and 2.2.22 are skipped while win_skip_for_test is true, its default. See defaults/main/main.yml.
+  - 2.3.5.4 warns that the Default Domain Controllers Policy reverts it on a domain controller
+  - 2.3.6.1 - 2.3.6.6 and 5.2 are skipped on every domain controller, not only the primary
+  - 2.3.10.8 and 2.3.10.9 path values written in the benchmark's case
+  - 2.3.17.2 warns on an invalid consent prompt value instead of writing it
+  - 17.2.4 addresses its audit subcategory by GUID, not by its localised name
+  - 18.4.4 writes EnableCertPaddingCheck under the native path only
+    - Removed the Wow6432Node task, which never ran: its condition compared ansible_facts['architecture']
+      with x86_64 and AMD64, and Windows reports that fact as 64-bit
+  - 18.9.25.2 writes the Windows LAPS value name PasswordExpirationProtectionEnabled
+    - Was the legacy LAPS name PwdExpirationProtectionEnabled, which Windows LAPS does not read
+  - Removed the duplicate 18.10.43.11.1.1.2 task, which ran the control twice
+  - Registry paths and value names use the case Windows-2025-CIS uses, such as CurrentControlSet and AllowLLTDIOOnDomain
+
+## Release 4.2
+
+July 2026
+  - 2.2.22 has been updated to reflect the correct values in remediation and the GPO creation (Guests and S-1-5-114) Thanks -Evil-
 
 ## Release 4.1.0
 
 April 2026
-  - Updated the cloud based system check for manual overrides. New variable now in the defualt main. Please read the comments for the new variable. 
+
+  - Updated the cloud based system check for manual overrides. New variable now in the default main. Please read the comments for the new variable. 
   - Updated 18.10.57.3.10.1 variable accept anything between 1 and 900000 in Hardening & GPO.
   - Updated Section 2 GPO for win_skip_for_test controls. Read comments in default/main.
   - Issues Addressed:
@@ -135,7 +307,7 @@ May 2025 Update
   - Updated 18.10.92.4.1 ManagePreviewBuildsPolicyValue to 1. - Thanks @mfortin
   - Updated Pipelines Branches Trigger
   - Updated Readme with New Badges
-  - Fixed Tags  from _ to . in he control numbers to align with other controls.
+  - Fixed Tags from _ to . in the control numbers to align with other controls.
 
 ## Release 3.1.0
 

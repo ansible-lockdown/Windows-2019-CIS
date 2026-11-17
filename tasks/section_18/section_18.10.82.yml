@@ -1,0 +1,17 @@
+---
+
+- name: "18.10.82.1 | PATCH | Ensure Sign-in and lock last interactive user automatically after a restart is set to Disabled"
+  when: win19cis_rule_18_10_82_1
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_18.10.82.1
+    - patch
+    - logon
+    - NIST800-171_3.1.10
+    - NIST800-53R5_AC-11
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System
+    name: DisableAutomaticRestartSignOn
+    data: 1
+    type: dword

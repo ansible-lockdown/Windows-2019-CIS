@@ -1,0 +1,230 @@
+---
+
+- name: "18.7.1 | PATCH | Ensure Allow Print Spooler to accept client connections is set to Disabled"
+  when: win19cis_rule_18_7_1
+  tags:
+    - level1-domaincontroller
+    - level2-memberserver
+    - rule_18.7.1
+    - patch
+    - printers
+    - NIST800-171_3.4.1
+    - NIST800-171_3.4.2
+    - NIST800-171_3.4.6
+    - NIST800-171_3.4.7
+    - NIST800-171_3.13.1
+    - NIST800-171_3.13.2
+    - NIST800-53R5_CM-1
+    - NIST800-53R5_CM-2
+    - NIST800-53R5_AC-2
+    - NIST800-53R5_CM-6
+    - NIST800-53R5_CM-7
+    - NIST800-53R5_CM-7_1
+    - NIST800-53R5_CM-9
+    - NIST800-53R5_SA-3
+    - NIST800-53R5_SA-8
+    - NIST800-53R5_SA-10
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\Printers
+    name: RegisterSpoolerRemoteRpcEndPoint
+    data: 2
+    type: dword
+
+- name: "18.7.2 | PATCH | Ensure 'Configure Redirection Guard' is set to 'Enabled: Redirection Guard Enabled'"
+  when: win19cis_rule_18_7_2
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_18.7.2
+    - patch
+    - printers
+    - NIST800-53R5_SI-16
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\Printers
+    name: RedirectionguardPolicy
+    data: 1
+    type: dword
+
+- name: "18.7.3 | PATCH | Ensure 'Configure RPC connection settings: Protocol to use for outgoing RPC connections' is set to 'Enabled: RPC over TCP'"
+  when: win19cis_rule_18_7_3
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_18.7.3
+    - patch
+    - printers
+    - NIST800-171_3.4.2
+    - NIST800-53R5_CM-6_b
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\Printers\RPC
+    name: RpcUseNamedPipeProtocol
+    data: 0
+    type: dword
+
+- name: "18.7.4 | PATCH | Ensure Configure RPC connection settings Use authentication for outgoing RPC connections is set to Enabled: Default"
+  when: win19cis_rule_18_7_4
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_18.7.4
+    - patch
+    - printers
+    - NIST800-171_3.4.2
+    - NIST800-53R5_CM-6_b
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\Printers\RPC
+    name: RpcAuthentication
+    data: 0
+    type: dword
+
+- name: "18.7.5 | PATCH | Ensure 'Configure RPC listener settings: Protocols to allow for incoming RPC connections' is set to 'Enabled: RPC over TCP'"
+  when: win19cis_rule_18_7_5
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_18.7.5
+    - patch
+    - printers
+    - NIST800-171_3.4.2
+    - NIST800-53R5_CM-6_b
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\Printers\RPC
+    name: RpcProtocols
+    data: 5
+    type: dword
+
+- name: "18.7.6 | PATCH | Ensure Configure RPC listener settings Authentication protocol to use for incoming RPC connections is set to Enabled Negotiate or higher"
+  when: win19cis_rule_18_7_6
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_18.7.6
+    - patch
+    - printers
+    - NIST800-53R5_IA-3_1
+  block:
+    - name: "18.7.6 | PATCH | Ensure 'Configure RPC listener settings: Authentication protocol to use for incoming RPC connections:' is set to 'Enabled: Negotiate' or higher | Set Variable"
+      when: win19cis_force_kerberos_for_rpc == 0 or win19cis_force_kerberos_for_rpc == 1
+      ansible.windows.win_regedit:
+        path: HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\Printers\RPC
+        name: ForceKerberosForRpc
+        data: "{{ win19cis_force_kerberos_for_rpc }}"
+        type: dword
+
+    - name: "18.7.6 | AUDIT | Ensure 'Configure RPC listener settings: Authentication protocol to use for incoming RPC connections:' is set to 'Enabled: Negotiate' or higher | Warning Check For Variable Standards"
+      when:
+        - win19cis_force_kerberos_for_rpc != 0
+        - win19cis_force_kerberos_for_rpc != 1
+      ansible.builtin.debug:
+        msg:
+          - "Warning!! You have an invalid setting for win19cis_force_kerberos_for_rpc. Please read"
+          - "the notes for the variable and make the necessary change to the variable to be in compliance."
+
+    - name: "18.7.6 | AUDIT | Ensure 'Configure RPC listener settings: Authentication protocol to use for incoming RPC connections:' is set to 'Enabled: Negotiate' or higher | Warn Count"
+      when:
+        - win19cis_force_kerberos_for_rpc != 0
+        - win19cis_force_kerberos_for_rpc != 1
+      ansible.builtin.import_tasks:
+        file: warning_facts.yml
+      vars:
+        warn_control_id: '18.7.6'
+
+- name: "18.7.7 | PATCH | Ensure Configure RPC over TCP port is set to Enabled: 0"
+  when: win19cis_rule_18_7_7
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_18.7.7
+    - patch
+    - printers
+    - NIST800-171_3.4.2
+    - NIST800-53R5_CM-6_b
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\Printers\RPC
+    name: RpcTcpPort
+    data: 0
+    type: dword
+
+- name: "18.7.8 | PATCH | Ensure 'Configure RPC packet level privacy setting for incoming connections' is set to 'Enabled'"
+  when: win19cis_rule_18_7_8
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_18.7.8
+    - patch
+    - printers
+    - drivers
+    - NIST800-171_3.14.6
+    - NIST800-171_3.14.7
+    - NIST800-53R5_SI-4
+  ansible.windows.win_regedit:
+    path: HKLM:\SYSTEM\CurrentControlSet\Control\Print
+    name: RpcAuthnLevelPrivacyEnabled
+    data: 1
+    type: dword
+
+- name: "18.7.9 | PATCH | Ensure Limits print driver installation to Administrators is set to Enabled"
+  when: win19cis_rule_18_7_9
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_18.7.9
+    - patch
+    - printers
+    - drivers
+    - NIST800-171_3.14.6
+    - NIST800-171_3.14.7
+    - NIST800-53R5_SI-4
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\Printers\PointAndPrint
+    name: RestrictDriverInstallationToAdministrators
+    data: 1
+    type: dword
+
+- name: "18.7.10 | PATCH | Ensure 'Manage processing of Queue-specific files' is set to Enabled: Limit Queue-specific files to Color profiles"
+  when: win19cis_rule_18_7_10
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_18.7.10
+    - patch
+    - printers
+    - drivers
+    - NIST800-53R5_SI-16
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\Printers
+    name: CopyFilesPolicy
+    data: 1
+    type: dword
+
+- name: "18.7.11 | PATCH | Ensure Point and Print Restrictions When installing drivers for a new connection is set to Enabled Show warning and elevation prompt"
+  when: win19cis_rule_18_7_11
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_18.7.11
+    - patch
+    - printers
+    - NIST800-171_3.1.5
+    - NIST800-53R5_AC-6_8
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\Printers\PointAndPrint
+    name: NoWarningNoElevationOnInstall
+    data: 0
+    type: dword
+
+- name: "18.7.12 | PATCH | Ensure Point and Print Restrictions: When updating drivers for an existing connection is set to Enabled: Show warning and elevation prompt"
+  when: win19cis_rule_18_7_12
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_18.7.12
+    - patch
+    - printers
+    - NIST800-171_3.4.2
+    - NIST800-53R5_CM-6_b
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\Printers\PointAndPrint
+    name: UpdatePromptSettings
+    data: 0
+    type: dword

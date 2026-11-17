@@ -1,0 +1,45 @@
+---
+
+- name: "2.3.15.1 | PATCH | Ensure System objects Require case insensitivity for non-Windows subsystems is set to Enabled"
+  when: win19cis_rule_2_3_15_1
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_2.3.15.1
+    - patch
+    - NIST800-171_3.4.2
+    - NIST800-53R5_CM-6_b
+  ansible.windows.win_regedit:
+    path: HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Kernel
+    name: ObCaseInsensitive
+    data: 1
+    type: dword
+
+- name: "2.3.15.2 | PATCH | Ensure System objects Strengthen default permissions of internal system objects e.g. Symbolic Links is set to Enabled"
+  when: win19cis_rule_2_3_15_2
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_2.3.15.2
+    - patch
+    - NIST800-171_3.4.1
+    - NIST800-171_3.4.2
+    - NIST800-171_3.4.6
+    - NIST800-171_3.4.7
+    - NIST800-171_3.13.1
+    - NIST800-171_3.13.2
+    - NIST800-53R5_CM-1
+    - NIST800-53R5_CM-2
+    - NIST800-53R5_AC-2
+    - NIST800-53R5_CM-6
+    - NIST800-53R5_CM-7
+    - NIST800-53R5_CM-7_1
+    - NIST800-53R5_CM-9
+    - NIST800-53R5_SA-3
+    - NIST800-53R5_SA-8
+    - NIST800-53R5_SA-10
+  ansible.windows.win_regedit:
+    path: HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager
+    name: ProtectionMode
+    data: 1
+    type: dword

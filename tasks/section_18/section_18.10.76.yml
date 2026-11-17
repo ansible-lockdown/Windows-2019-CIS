@@ -1,0 +1,25 @@
+---
+
+- name: "18.10.76.2.1 | PATCH | Ensure Configure Windows Defender SmartScreen is set to Enabled Warn and prevent bypass"
+  when: win19cis_rule_18_10_76_2_1
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_18.10.76.2.1
+    - patch
+    - defender
+    - NIST800-53R5_SI-16
+  block:
+    - name: "18.10.76.2.1 | PATCH | Ensure Configure Windows Defender SmartScreen is set to Enabled Warn and prevent bypass | EnableSmartScreen"
+      ansible.windows.win_regedit:
+        path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\System
+        name: EnableSmartScreen
+        data: 1
+        type: dword
+
+    - name: "18.10.76.2.1 | PATCH | Ensure Configure Windows Defender SmartScreen is set to Enabled Warn and prevent bypass | ShellSmartScreenLevel"
+      ansible.windows.win_regedit:
+        path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\System
+        name: ShellSmartScreenLevel
+        data: Block
+        type: string

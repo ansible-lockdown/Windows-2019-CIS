@@ -1,0 +1,36 @@
+---
+
+- name: "18.10.13.1 | PATCH | Ensure Turn off cloud consumer account state content is set to Enabled"
+  when: win19cis_rule_18_10_13_1
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_18.10.13.1
+    - patch
+    - cloud
+    - NIST800-171_3.1.1
+    - NIST800-53R5_AC-2_1
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\CloudContent
+    name: DisableConsumerAccountStateContent
+    data: 1
+    type: dword
+
+- name: "18.10.13.2 | PATCH | Ensure Turn off Microsoft consumer experiences is set to Enabled"
+  when: win19cis_rule_18_10_13_2
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_18.10.13.2
+    - patch
+    - cloud
+    - NIST800-171_3.4.2
+    - NIST800-171_3.4.6
+    - NIST800-171_3.4.7
+    - NIST800-53R5_CM-6
+    - NIST800-53R5_CM-7
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\Cloudcontent
+    name: DisableWindowsConsumerFeatures
+    data: 1
+    type: dword

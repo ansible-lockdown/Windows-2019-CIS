@@ -1,0 +1,257 @@
+---
+
+- name: "2.3.10.1 | PATCH | Ensure Network access Allow anonymous SID/Name translation is set to Disabled"
+  when: win19cis_rule_2_3_10_1
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_2.3.10.1
+    - patch
+    - securitypolicy
+    - NIST800-171_3.1.7
+    - NIST800-171_3.5.3
+    - NIST800-53R5_AC-6_10
+    - NIST800-53R5_IA-2_2
+  community.windows.win_security_policy:
+    section: System Access
+    key: LSAAnonymousNameLookup
+    value: 0
+
+- name: "2.3.10.2 | PATCH | Ensure Network access Do not allow anonymous enumeration of SAM accounts is set to Enabled MS only | Member Server"
+  when:
+    - win19cis_rule_2_3_10_2
+    - not prelim_win19cis_is_domain_controller
+  tags:
+    - level1-memberserver
+    - rule_2.3.10.2
+    - patch
+    - sam
+    - NIST800-171_3.1.7
+    - NIST800-53R5_AC-6_10
+  ansible.windows.win_regedit:
+    path: HKLM:\SYSTEM\CurrentControlSet\Control\Lsa
+    name: RestrictAnonymousSAM
+    data: 1
+    type: dword
+
+- name: "2.3.10.3 | PATCH | Ensure Network access Do not allow anonymous enumeration of SAM accounts and shares is set to Enabled MS only | Member Server"
+  when:
+    - win19cis_rule_2_3_10_3
+    - not prelim_win19cis_is_domain_controller
+  tags:
+    - level1-memberserver
+    - rule_2.3.10.3
+    - patch
+    - sam
+    - NIST800-171_3.1.7
+    - NIST800-53R5_AC-6_10
+  ansible.windows.win_regedit:
+    path: HKLM:\SYSTEM\CurrentControlSet\Control\Lsa
+    name: RestrictAnonymous
+    data: 1
+    type: dword
+
+- name: "2.3.10.4 | PATCH | Ensure Network access Do not allow storage of passwords and credentials for network authentication is set to Enabled"
+  when: win19cis_rule_2_3_10_4
+  tags:
+    - level2-domaincontroller
+    - level2-memberserver
+    - rule_2.3.10.4
+    - patch
+    - accounts
+    - NIST800-171_3.5.10
+    - NIST800-53R5_IA-5_1_c
+  ansible.windows.win_regedit:
+    path: HKLM:\SYSTEM\CurrentControlSet\Control\Lsa
+    name: DisableDomainCreds
+    data: 1
+    type: dword
+
+- name: "2.3.10.5 | PATCH | Ensure Network access Let Everyone permissions apply to anonymous users is set to Disabled"
+  when: win19cis_rule_2_3_10_5
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_2.3.10.5
+    - patch
+    - accounts
+    - NIST800-171_3.1.7
+    - NIST800-53R5_AC-6_10
+  ansible.windows.win_regedit:
+    path: HKLM:\SYSTEM\CurrentControlSet\Control\Lsa
+    name: EveryoneIncludesAnonymous
+    data: 0
+    type: dword
+
+- name: "2.3.10.6 | PATCH | Ensure Network access Named Pipes that can be accessed anonymously is configured DC only | Domain Controller"
+  when:
+    - win19cis_rule_2_3_10_6
+    - prelim_win19cis_is_domain_controller
+  tags:
+    - level1-domaincontroller
+    - rule_2.3.10.6
+    - patch
+    - namedpipes
+    - NIST800-171_3.5.3
+    - NIST800-53R5_IA-2_2
+  ansible.windows.win_regedit:
+    path: HKLM:\SYSTEM\CurrentControlSet\Services\LanManServer\Parameters
+    name: NullSessionPipes
+    data: ['LSARPC', 'NETLOGON', 'SAMR']
+    type: multistring
+
+- name: "2.3.10.7 | PATCH | Ensure Network access Named Pipes that can be accessed anonymously is configured MS only | Member Server"
+  when:
+    - win19cis_rule_2_3_10_7
+    - not prelim_win19cis_is_domain_controller
+  tags:
+    - level1-memberserver
+    - rule_2.3.10.7
+    - patch
+    - namedpipes
+    - NIST800-171_3.5.3
+    - NIST800-53R5_IA-2_2
+  ansible.windows.win_regedit:
+    path: HKLM:\SYSTEM\CurrentControlSet\Services\LanManServer\Parameters
+    name: NullSessionPipes
+    data: ""
+    type: multistring
+
+- name: "2.3.10.8 | PATCH | Ensure Network access Remotely accessible registry paths is configured"
+  when: win19cis_rule_2_3_10_8
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_2.3.10.8
+    - patch
+    - NIST800-171_3.1.5
+    - NIST800-53R5_AC-6_7_b
+  ansible.windows.win_regedit:
+    path: HKLM:\SYSTEM\CurrentControlSet\Control\Securepipeservers\Winreg\AllowedExactpaths
+    name: "Machine"
+    data: [
+      'System\CurrentControlSet\Control\ProductOptions',
+      'System\CurrentControlSet\Control\Server Applications',
+      'Software\Microsoft\Windows NT\CurrentVersion'
+    ]
+    type: multistring
+
+- name: "2.3.10.9 | PATCH | Ensure Network access Remotely accessible registry paths and sub-paths is configured"
+  when: win19cis_rule_2_3_10_9
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_2.3.10.9
+    - patch
+    - NIST800-171_3.1.5
+    - NIST800-53R5_AC-6_7_b
+  block:
+    - name: "2.3.10.9 | PATCH | Ensure Network access Remotely accessible registry paths and sub-paths is configured | Set Fact"
+      ansible.builtin.set_fact:
+        discovered_remote_registry_paths: [
+          'System\CurrentControlSet\Control\Print\Printers',
+          'System\CurrentControlSet\Services\Eventlog',
+          'Software\Microsoft\OLAP Server',
+          'Software\Microsoft\Windows NT\CurrentVersion\Print',
+          'Software\Microsoft\Windows NT\CurrentVersion\Windows',
+          'System\CurrentControlSet\Control\ContentIndex',
+          'System\CurrentControlSet\Control\Terminal Server',
+          'System\CurrentControlSet\Control\Terminal Server\UserConfig',
+          'System\CurrentControlSet\Control\Terminal Server\DefaultUserConfiguration',
+          'Software\Microsoft\Windows NT\CurrentVersion\Perflib',
+          'System\CurrentControlSet\Services\SysmonLog'
+        ]
+
+    - name: "2.3.10.9 | AUDIT | Ensure Network access Remotely accessible registry paths and sub-paths is configured | Check if AD Certificate Services feature is installed"
+      ansible.windows.win_feature_info:
+        name: AD-Certificate
+      check_mode: false
+      register: discovered_2_3_10_9_adcs_feature
+
+    - name: "2.3.10.9 | AUDIT | Ensure Network access Remotely accessible registry paths and sub-paths is configured | Add CertSvc to paths"
+      when: discovered_2_3_10_9_adcs_feature.features[0].installed
+      ansible.builtin.set_fact:
+        discovered_remote_registry_paths: "{{ discovered_remote_registry_paths + ['System\\CurrentControlSet\\Services\\CertSvc'] }}"
+
+    - name: "2.3.10.9 | AUDIT | Ensure Network access Remotely accessible registry paths and sub-paths is configured | Check if WINS feature is installed"
+      ansible.windows.win_feature_info:
+        name: WINS
+      check_mode: false
+      register: discovered_2_3_10_9_wins_feature
+
+    - name: "2.3.10.9 | AUDIT | Ensure Network access Remotely accessible registry paths and sub-paths is configured | Add WINS to paths"
+      when: discovered_2_3_10_9_wins_feature.features[0].installed
+      ansible.builtin.set_fact:
+        discovered_remote_registry_paths: "{{ discovered_remote_registry_paths + ['System\\CurrentControlSet\\Services\\WINS'] }}"
+
+    - name: "2.3.10.9 | PATCH | Ensure Network access Remotely accessible registry paths and sub-paths is configured | Apply Settings"
+      ansible.windows.win_regedit:
+        path: HKLM:\SYSTEM\CurrentControlSet\Control\Securepipeservers\Winreg\Allowedpaths
+        name: "Machine"
+        data: "{{ discovered_remote_registry_paths }}"
+        type: multistring
+
+- name: "2.3.10.10 | PATCH | Ensure Network access Restrict anonymous access to Named Pipes and Shares is set to Enabled"
+  when: win19cis_rule_2_3_10_10
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_2.3.10.10
+    - patch
+    - namedpipes
+    - NIST800-171_3.1.7
+    - NIST800-53R5_AC-6_10
+  ansible.windows.win_regedit:
+    path: HKLM:\SYSTEM\CurrentControlSet\Services\Lanmanserver\Parameters
+    name: RestrictNullSessAccess
+    data: 1
+    type: dword
+
+- name: "2.3.10.11 | PATCH | Ensure Network access Restrict clients allowed to make remote calls to SAM is set to Administrators Remote Access Allow MS only | Member Server"
+  when:
+    - win19cis_rule_2_3_10_11
+    - not prelim_win19cis_is_domain_controller
+  tags:
+    - level1-memberserver
+    - rule_2.3.10.11
+    - patch
+    - sam
+    - NIST800-171_3.1.5
+    - NIST800-53R5_AC-6_3
+  ansible.windows.win_regedit:
+    path: HKLM:\SYSTEM\CurrentControlSet\Control\Lsa
+    name: RestrictRemoteSAM
+    data: "O:BAG:BAD:(A;;RC;;;BA)"
+    type: string
+
+- name: "2.3.10.12 | PATCH | Ensure Network access Shares that can be accessed anonymously is set to None"
+  when: win19cis_rule_2_3_10_12
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_2.3.10.12
+    - patch
+    - shares
+    - NIST800-171_3.1.1
+    - NIST800-53R5_AC-3
+  ansible.windows.win_regedit:
+    path: HKLM:\SYSTEM\CurrentControlSet\Services\Lanmanserver\Parameters
+    name: NullSessionShares
+    data: ""
+    type: multistring
+
+- name: "2.3.10.13 | PATCH | Ensure Network access Sharing and security model for local accounts is set to Classic - local users authenticate as themselves"
+  when: win19cis_rule_2_3_10_13
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_2.3.10.13
+    - patch
+    - guest
+    - NIST800-171_3.4.2
+    - NIST800-53R5_CM-6_b
+  ansible.windows.win_regedit:
+    path: HKLM:\SYSTEM\CurrentControlSet\Control\Lsa
+    name: ForceGuest
+    data: 0
+    type: dword

@@ -1,28 +1,59 @@
+# Secrets and keys
+*.vault
+*vault_pass*
+.vault_pass
+*.key
+*.pem
+*.p12
+*.pfx
+*.keystore
+*.jks
+*.credentials
 .env
-*.log
-*.retry
-.vagrant
-tests/*redhat-subscription
-tests/Dockerfile
-*.iso
-*.box
-packer_cache
+rh-creds.env
+travis.env
+
+# QA and temporary artifacts
+AL_QA_Report*.md
+qa_report.md
+*qa_report*
+prompt.md
+plan.md
+history.md
+*history.md
+*plan.md
+test_inv
+*.pdf
 delete*
 ignore*
-# VSCode
-.vscode
-vagrant
 
-# Byte-compiled / optimized / DLL files
+# Ansible / Lockdown
+.ansible/
+.github/
+.github/.ansible/.lock
+benchparse/
+*xccdf.xml
+*.retry
+*.log
+
+# Vagrant / Packer
+.vagrant
+vagrant
+packer_cache
+*.iso
+*.box
+tests/*redhat-subscription
+tests/Dockerfile
+
+# Python
 __pycache__/
 *.py[cod]
 *$py.class
 
-# DS_Store
+# Editors and OS
+.vscode
 .DS_Store
 ._*
-
-# Linux Editors
 *~
 \#*\#
 /.emacs.desktop
@@ -33,16 +64,3 @@ tramp
 .\#*
 *.swp
 *.swo
-rh-creds.env
-travis.env
-
-# Lockdown-specific
-benchparse/
-*xccdf.xml
-*.retry
-
-# GitHub Action/Workflow files
-.github/
-.github/.ansible/.lock
-.ansible/
-.DS_Store

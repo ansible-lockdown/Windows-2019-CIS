@@ -1,21 +1,19 @@
 ---
 
 galaxy_info:
-  author: "MindPoint Group"
+  author: "Ansible-Lockdown Team"
   description: "Ansible Role to Apply The Windows Server 2019 CIS Benchmark"
-  company: "MindPoint Group"
+  company: "MindPoint Group - A Quantum Sky Company"
   license: MIT
   role_name: windows_2019_cis
   namespace: mindpointgroup
-  min_ansible_version: "2.16"
+  min_ansible_version: "2.16.1"
   platforms:
     - name: Windows
       versions:
         - "2019"
   galaxy_tags:
-    - accesscontrol
     - activedirectory
-    - auditpolicy
     - automation
     - azure
     - benchmark
@@ -24,15 +22,10 @@ galaxy_info:
     - ciscompliance
     - cloudhardening
     - compliance
-    - compliancehardening
     - complianceascode
     - configurationmanagement
-    - dc
     - domaincontroller
     - domainmember
-    - encryption
-    - eventlogging
-    - gpo
     - grouppolicy
     - hardening
     - infrastructureascode
@@ -40,27 +33,20 @@ galaxy_info:
     - microsoft
     - monitoring
     - memberserver
-    - ms
     - oshardening
-    - patchmanagement
     - patching
     - policymanagement
     - privilegedaccess
     - remediation
     - rolebasedaccess
     - security
-    - system
-    - systemintegrity
-    - vulnerabilitymanagement
     - windows
     - windows2019
     - win2019
-    - windows2019
     - windowssecurity
     - windowsserver
     - windowsserver2019
 collections:
   - ansible.windows
   - community.windows
-  - community.general
 dependencies: []

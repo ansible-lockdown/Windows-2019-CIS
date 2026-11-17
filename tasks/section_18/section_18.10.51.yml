@@ -1,0 +1,20 @@
+---
+
+- name: "18.10.51.1 | PATCH | Ensure Prevent the usage of OneDrive for file storage is set to Enabled"
+  when: win19cis_rule_18_10_51_1
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_18.10.51.1
+    - patch
+    - onedrive
+    - NIST800-171_3.4.2
+    - NIST800-171_3.4.6
+    - NIST800-171_3.4.7
+    - NIST800-53R5_CM-6
+    - NIST800-53R5_CM-7
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\Onedrive
+    name: DisableFileSyncNGSC
+    data: 1
+    type: dword

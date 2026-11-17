@@ -23,14 +23,18 @@ on:  # yamllint disable-line rule:truthy
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 # This section contains all the jobs below that are running in the workflow.
 jobs:
-  # This will create messages for the first time contributors and direct them to the Discord server
+   # This will create messages for first time contributors and direct them to the Discord server
   welcome:
-    # The type of runner that the job will run on.
     runs-on: ubuntu-latest
+
+    permissions:
+      issues: write
+      pull-requests: write
+
     steps:
       - uses: actions/first-interaction@main
         with:
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
           issue_message: |-
               Congrats on opening your first issue and thank you for taking the time to help improve Ansible-Lockdown!
               Please join in the conversation happening on the [Discord Server](https://www.lockdownenterprise.com/discord) as well.
@@ -63,7 +67,7 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it.
       - name: Clone ${{ github.event.repository.name }}
-        uses: actions/checkout@v6.0.2
+        uses: actions/checkout@v7.0.0
         with:
           ref: ${{ github.event.pull_request.head.sha }}
 
@@ -79,7 +83,7 @@ jobs:
 
       # Pull In OpenTofu Code For Windows Azure
       - name: Clone IaC Repository
-        uses: actions/checkout@v6.0.2
+        uses: actions/checkout@v7.0.0
         with:
           repository: ansible-lockdown/github_windows_IaC
           path: .github/workflows/github_windows_IaC
@@ -122,7 +126,7 @@ jobs:
           TF_VAR_benchmark_type: ${{ vars.BENCHMARK_TYPE }}
 
       # Execute The Actions And Build Azure Server
-      - name: Tofo Apply
+      - name: Tofu Apply
         id: apply
         env:
           # Imported from github variables this is used to load the relevant OS.tfvars file

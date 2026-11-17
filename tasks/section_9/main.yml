@@ -1,0 +1,5 @@
+---
+
+- name: "SECTION | 9.x | Windows Defender Firewall with Advanced Security (formerly Windows Firewall with Advanced Security)"
+  ansible.builtin.import_tasks:
+    file: section_9.x.yml

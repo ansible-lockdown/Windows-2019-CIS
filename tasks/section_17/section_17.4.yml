@@ -1,0 +1,55 @@
+---
+
+- name: "17.4.1 | PATCH | Ensure Audit Directory Service Access is set to include Failure DC only | Domain Controller"
+  when:
+    - win19cis_rule_17_4_1
+    - prelim_win19cis_is_domain_controller
+  tags:
+    - level1-domaincontroller
+    - rule_17.4.1
+    - patch
+    - NIST800-171_3.3.1
+    - NIST800-171_3.3.2
+    - NIST800-171_3.3.6
+    - NIST800-53R5_AU-3
+    - NIST800-53R5_AU-3_1
+    - NIST800-53R5_AU-7
+    - NIST800-53R5_AU-12
+  block:
+    - name: "17.4.1 | AUDIT | Ensure Audit Directory Service Access is set to include Failure DC only | Get current audit events for Directory Service Access | Domain Controller"
+      ansible.windows.win_shell: AuditPol /get /subcategory:"{0cce923b-69ae-11d9-bed3-505054503030}" -r | ConvertFrom-Csv | Select-Object -expand "Inclusion Setting"
+      changed_when: false
+      failed_when: false
+      check_mode: false
+      register: discovered_17_4_1_audit
+
+    - name: "17.4.1 | PATCH | Ensure Audit Directory Service Access is set to include Failure DC only | Enable Failure for Directory Service Access | Domain Controller"
+      when: "'Failure' not in discovered_17_4_1_audit.stdout"
+      ansible.windows.win_shell: AuditPol /set /subcategory:"{0cce923b-69ae-11d9-bed3-505054503030}" /failure:enable
+
+- name: "17.4.2 | PATCH | Ensure 'Audit Directory Service Changes' is set to include Success DC only | Domain Controller"
+  when:
+    - win19cis_rule_17_4_2
+    - prelim_win19cis_is_domain_controller
+  tags:
+    - level1-domaincontroller
+    - rule_17.4.2
+    - patch
+    - NIST800-171_3.3.1
+    - NIST800-171_3.3.2
+    - NIST800-171_3.3.6
+    - NIST800-53R5_AU-3
+    - NIST800-53R5_AU-3_1
+    - NIST800-53R5_AU-7
+    - NIST800-53R5_AU-12
+  block:
+    - name: "17.4.2 | AUDIT | Ensure 'Audit Directory Service Changes' is set to include Success DC only | Get current audit events for Directory Service Changes | Domain Controller"
+      ansible.windows.win_shell: AuditPol /get /subcategory:"{0cce923c-69ae-11d9-bed3-505054503030}" -r | ConvertFrom-Csv | Select-Object -expand "Inclusion Setting"
+      changed_when: false
+      failed_when: false
+      check_mode: false
+      register: discovered_17_4_2_audit
+
+    - name: "17.4.2 | PATCH | Ensure 'Audit Directory Service Changes' is set to include Success DC only | Enable Success for Directory Service Changes | Domain Controller"
+      when: "'Success' not in discovered_17_4_2_audit.stdout"
+      ansible.windows.win_shell: AuditPol /set /subcategory:"{0cce923c-69ae-11d9-bed3-505054503030}" /success:enable

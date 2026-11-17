@@ -1,92 +1,161 @@
 ---
 
 - name: Main | Display Banner
-  tags:
-    - always
+  tags: always
   ansible.builtin.debug:
     msg: "{{ lockdown_banner.split('\n') }}"
 
 - name: Main | Gather Distribution Info
-  when:
-    - ansible_distribution is not defined
-  tags:
-    - always
+  when: ansible_facts['distribution'] is not defined
+  tags: always
   ansible.builtin.setup:
     gather_subset: distribution,!all,!min
 
 - name: Main | Check OS Version And Family
-  tags:
-    - always
+  tags: always
   ansible.builtin.assert:
     that:
-      - ansible_os_family == 'Windows'
-      - ansible_distribution is regex('Microsoft Windows Server 2019')
-    success_msg: "{{ ansible_distribution }} {{ ansible_distribution_major_version }} is the detected operating system."
-    fail_msg: "This role can only be run against Windows Server 2019 Editions. {{ ansible_distribution }} {{ ansible_distribution_major_version }} is not supported."
-
-- name: Main | Assert Valid Configuration
-  tags:
-    - always
-  ansible.builtin.assert:
-    that:
-      - not (win19cis_ansible_remediation | default(false) and win19cis_create_gpos | default(false))
-    success_msg: "The configuration is valid. win19cis_ansible_remediation and win19cis_create_gpos are not enabled simultaneously."
-    fail_msg: "Invalid configuration: Both win19cis_ansible_remediation and win19cis_create_gpos are set to true, which is not allowed."
+      - ansible_facts['os_family'] == 'Windows'
+      - ansible_facts['distribution'] is regex('Microsoft Windows Server 2019')
+    success_msg: "{{ ansible_facts['distribution'] }} {{ ansible_facts['distribution_major_version'] }} is the detected operating system."
+    fail_msg: "This role can only be run against Windows Server 2019 Editions. {{ ansible_facts['distribution'] }} {{ ansible_facts['distribution_major_version'] }} is not supported."
 
 - name: Main | Check Ansible Version
-  tags:
-    - always
+  tags: always
   ansible.builtin.assert:
     that: ansible_version.full is version_compare(min_ansible_version, '>=')
     msg: You must use Ansible {{ min_ansible_version }} or greater
 
 - name: Main | Get Windows Installation Type
-  tags:
-    - always
+  tags: always
   ansible.windows.win_reg_stat:
     path: HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion
     name: InstallationType
   register: prelim_get_windows_installation_type
 
 - name: Main | Set Windows Installation Type
-  tags:
-    - always
+  tags: always
   ansible.builtin.set_fact:
     prelim_windows_installation_type: "{{ prelim_get_windows_installation_type.value | default('') }}"
 
-- name: "Main | Build Out Domain For Testing"
-  when:
-    - win19cis_create_domain
-    - win19cis_create_gpos
-  tags:
-    - gpo
-    - create_domain
-  ansible.builtin.include_tasks:
-    file: domain_creation/prelim_create_dc_and_promote.yml
-
-- name: "Main | Import Create GPO Tasks"
-  when:
-    - not win19cis_ansible_remediation
-    - win19cis_create_gpos
-  tags:
-    - gpo
-    - domain
-  ansible.builtin.include_tasks:
-    file: gpo_creation/main.yml
-
-- name: "Main | Import Remediation Tasks"
-  when:
-    - win19cis_ansible_remediation
-    - not win19cis_create_gpos
-  tags:
-    - remediation
-    - local
-  ansible.builtin.include_tasks:
-    file: ansible_hardening/main.yml
-
-- name: "Main | Warnings Section"
+- name: "Main | Import The Preliminary Tasks"
   tags:
     - always
+    - prelim_tasks
+  ansible.builtin.import_tasks:
+    file: prelim.yml
+
+- name: "Main | Setup Audit"
+  when:
+    - setup_audit
+    - not ansible_check_mode
+  tags:
+    - setup_audit
+  ansible.builtin.import_tasks:
+    file: LE_audit_setup.yml
+
+- name: "Main | Run pre remediation audit"
+  when:
+    - run_audit
+    - not ansible_check_mode
+  tags:
+    - run_audit
+  ansible.builtin.import_tasks:
+    file: pre_remediation_audit.yml
+
+- name: "Main | Execute The Section 1 Tasks"
+  when: win19cis_section01
+  ansible.builtin.import_tasks:
+    file: section_1/main.yml
+
+- name: "Main | Execute The Section 2 Tasks"
+  when: win19cis_section02
+  ansible.builtin.import_tasks:
+    file: section_2/main.yml
+
+- name: "Main | Execute The Section 5 Tasks"
+  when: win19cis_section05
+  ansible.builtin.import_tasks:
+    file: section_5/main.yml
+
+- name: "Main | Execute The Section 9 Tasks"
+  when: win19cis_section09
+  ansible.builtin.import_tasks:
+    file: section_9/main.yml
+
+- name: "Main | Execute The Section 17 Tasks"
+  when: win19cis_section17
+  ansible.builtin.import_tasks:
+    file: section_17/main.yml
+
+- name: "Main | Execute The Section 18 Tasks"
+  when: win19cis_section18
+  ansible.builtin.import_tasks:
+    file: section_18/main.yml
+
+- name: "Main | Execute The Section 19 Tasks"
+  when: win19cis_section19
+  ansible.builtin.import_tasks:
+    file: section_19/main.yml
+
+- name: "Main | Run Post Tasks"
+  tags: always
+  ansible.builtin.import_tasks:
+    file: post.yml
+
+- name: "Main | Run post remediation audit"
+  when:
+    - run_audit
+    - not audit_only
+    - not ansible_check_mode
+  tags:
+    - run_audit
+  ansible.builtin.import_tasks:
+    file: post_remediation_audit.yml
+
+- name: "Main | Record the benchmark and levels applied"
+  when:
+    - create_benchmark_facts
+    - run_audit
+    - not ansible_check_mode
+  tags:
+    - always
+    - benchmark
+  block:
+    - name: "Main | Create the ansible facts directory"
+      ansible.windows.win_file:
+        path: "{{ win19cis_ansible_facts_path }}"
+        state: directory
+
+    # JSON, not the INI the Linux roles write - ansible.windows.setup reads
+    # local facts only as .ps1 or .json, so an INI file would never be read.
+    - name: "Main | Create the compliance facts file"
+      ansible.windows.win_template:
+        src: compliance_facts.json.j2
+        dest: '{{ win19cis_ansible_facts_path }}\compliance_facts.json'
+        newline_sequence: "\r\n"
+
+- name: "Main | Fetch audit files"
+  when:
+    - fetch_audit_output
+    - run_audit
+    - not ansible_check_mode
+  tags:
+    - always
+  ansible.builtin.import_tasks:
+    file: fetch_audit_output.yml
+
+- name: "Main | Show Audit Summary"
+  when:
+    - run_audit
+    - not ansible_check_mode
+  tags:
+    - run_audit
+  ansible.builtin.debug:
+    msg: "{{ audit_results.split('\n') }}"
+
+- name: "Main | Warnings Section"
+  tags: always
   block:
     - name: "Main | If Warnings Found Output Count And Control IDs Affected"
       when: warn_count != 0

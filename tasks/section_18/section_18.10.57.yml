@@ -1,0 +1,301 @@
+---
+
+- name: "18.10.57.2.2 | PATCH | Ensure Do not allow passwords to be saved is set to Enabled"
+  when: win19cis_rule_18_10_57_2_2
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_18.10.57.2.2
+    - patch
+    - terminalservices
+    - NIST800-171_3.4.2
+    - NIST800-171_3.4.6
+    - NIST800-171_3.4.7
+    - NIST800-53R5_CM-6
+    - NIST800-53R5_CM-7
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Windows Nt\Terminal Services
+    name: DisablePasswordSaving
+    data: 1
+    type: dword
+
+- name: "18.10.57.3.2.1 | PATCH | Ensure Restrict Remote Desktop Services users to a single Remote Desktop Services session is set to Enabled"
+  when: win19cis_rule_18_10_57_3_2_1
+  tags:
+    - level2-domaincontroller
+    - level2-memberserver
+    - rule_18.10.57.3.2.1
+    - patch
+    - terminalservices
+    - NIST800-171_3.4.2
+    - NIST800-171_3.4.6
+    - NIST800-171_3.4.7
+    - NIST800-53R5_CM-6
+    - NIST800-53R5_CM-7
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Windows Nt\Terminal Services
+    name: fSingleSessionPerUser
+    data: 1
+    type: dword
+
+- name: "18.10.57.3.3.1 | PATCH | Ensure Do not allow COM port redirection is set to Enabled"
+  when: win19cis_rule_18_10_57_3_3_1
+  tags:
+    - level2-domaincontroller
+    - level2-memberserver
+    - rule_18.10.57.3.3.1
+    - patch
+    - terminalservices
+    - NIST800-171_3.4.2
+    - NIST800-171_3.4.6
+    - NIST800-171_3.4.7
+    - NIST800-53R5_CM-6
+    - NIST800-53R5_CM-7
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Windows Nt\Terminal Services
+    name: fDisableCcm
+    data: 1
+    type: dword
+
+- name: "18.10.57.3.3.2 | PATCH | Ensure Do not allow drive redirection is set to Enabled"
+  when: win19cis_rule_18_10_57_3_3_2
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_18.10.57.3.3.2
+    - patch
+    - terminalservices
+    - NIST800-171_3.4.2
+    - NIST800-171_3.4.6
+    - NIST800-171_3.4.7
+    - NIST800-53R5_CM-6
+    - NIST800-53R5_CM-7
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Windows Nt\Terminal Services
+    name: fDisableCdm
+    data: 1
+    type: dword
+
+- name: "18.10.57.3.3.3 | PATCH | Ensure Do not allow LPT port redirection is set to Enabled"
+  when: win19cis_rule_18_10_57_3_3_3
+  tags:
+    - level2-domaincontroller
+    - level2-memberserver
+    - rule_18.10.57.3.3.3
+    - patch
+    - terminalservices
+    - NIST800-171_3.4.2
+    - NIST800-171_3.4.6
+    - NIST800-171_3.4.7
+    - NIST800-53R5_CM-6
+    - NIST800-53R5_CM-7
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Windows Nt\Terminal Services
+    name: fDisableLPT
+    data: 1
+    type: dword
+
+- name: "18.10.57.3.3.4 | PATCH | Ensure Do not allow supported Plug and Play device redirection is set to Enabled"
+  when: win19cis_rule_18_10_57_3_3_4
+  tags:
+    - level2-domaincontroller
+    - level2-memberserver
+    - rule_18.10.57.3.3.4
+    - patch
+    - terminalservices
+    - NIST800-171_3.4.6
+    - NIST800-171_3.4.7
+    - NIST800-53R5_CM-7_b
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Windows Nt\Terminal Services
+    name: fDisablePNPRedir
+    data: 1
+    type: dword
+
+- name: "18.10.57.3.9.1 | PATCH | Ensure Always prompt for password upon connection is set to Enabled"
+  when: win19cis_rule_18_10_57_3_9_1
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_18.10.57.3.9.1
+    - patch
+    - terminalservices
+    - NIST800-171_3.1.1
+    - NIST800-171_3.1.2
+    - NIST800-171_3.5.1
+    - NIST800-53R5_AC-17_6
+    - NIST800-53R5_IA-2
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Windows Nt\Terminal Services
+    name: fPromptForPassword
+    data: 1
+    type: dword
+
+- name: "18.10.57.3.9.2 | PATCH | Ensure Require secure RPC communication is set to Enabled"
+  when: win19cis_rule_18_10_57_3_9_2
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_18.10.57.3.9.2
+    - patch
+    - terminalservices
+    - NIST800-171_3.3.1
+    - NIST800-53R5_SC-7_8
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Windows Nt\Terminal Services
+    name: fEncryptRPCTraffic
+    data: 1
+    type: dword
+
+- name: "18.10.57.3.9.3 | PATCH | Ensure Require use of specific security layer for remote RDP connections is set to Enabled SSL"
+  when: win19cis_rule_18_10_57_3_9_3
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_18.10.57.3.9.3
+    - patch
+    - terminalservices
+    - NIST800-171_3.1.13
+    - NIST800-171_3.5.2
+    - NIST800-171_3.13.8
+    - NIST800-53R5_AC-17_2
+    - NIST800-53R5_IA-5
+    - NIST800-53R5_IA-5_1
+    - NIST800-53R5_SC-8
+    - NIST800-53R5_SC-8_1
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Windows Nt\Terminal Services
+    name: SecurityLayer
+    data: 2
+    type: dword
+
+- name: "18.10.57.3.9.4 | PATCH | Ensure Require user authentication for remote connections by using Network Level Authentication is set to Enabled"
+  when: win19cis_rule_18_10_57_3_9_4
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_18.10.57.3.9.4
+    - patch
+    - terminalservices
+    - NIST800-171_3.1.13
+    - NIST800-171_3.5.2
+    - NIST800-171_3.13.8
+    - NIST800-53R5_AC-17_2
+    - NIST800-53R5_IA-5
+    - NIST800-53R5_IA-5_1
+    - NIST800-53R5_SC-8
+    - NIST800-53R5_SC-8_1
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Windows Nt\Terminal Services
+    name: UserAuthentication
+    data: 1
+    type: dword
+
+- name: "18.10.57.3.9.5 | PATCH | Ensure Set client connection encryption level is set to Enabled High Level"
+  when: win19cis_rule_18_10_57_3_9_5
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_18.10.57.3.9.5
+    - patch
+    - terminalservices
+    - NIST800-171_3.1.13
+    - NIST800-171_3.5.2
+    - NIST800-171_3.13.8
+    - NIST800-53R5_AC-17_2
+    - NIST800-53R5_IA-5
+    - NIST800-53R5_IA-5_1
+    - NIST800-53R5_SC-8
+    - NIST800-53R5_SC-8_1
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Windows Nt\Terminal Services
+    name: MinEncryptionLevel
+    data: 3
+    type: dword
+
+- name: "18.10.57.3.10.1 | PATCH | Ensure 'Set time limit for active but idle Remote Desktop Services sessions' is set to 'Enabled: 15 minutes or less, but not Never (0)"
+  when: win19cis_rule_18_10_57_3_10_1
+  tags:
+    - level2-domaincontroller
+    - level2-memberserver
+    - rule_18.10.57.3.10.1
+    - patch
+    - terminalservices
+    - NIST800-171_3.1.10
+    - NIST800-53R5_AC-11
+  block:
+    - name: "18.10.57.3.10.1 | PATCH | Ensure 'Set time limit for active but idle Remote Desktop Services sessions' is set to 'Enabled: 15 minutes or less, but not Never (0) | Set Variable"
+      when:
+        - win19cis_idle_rdp_session_disconnect_time > 0
+        - win19cis_idle_rdp_session_disconnect_time <= 900000
+      ansible.windows.win_regedit:
+        path: HKLM:\SOFTWARE\Policies\Microsoft\Windows Nt\Terminal Services
+        name: MaxIdleTime
+        data: "{{ win19cis_idle_rdp_session_disconnect_time }}"
+        type: dword
+
+    - name: "18.10.57.3.10.1 | AUDIT | Ensure 'Set time limit for active but idle Remote Desktop Services sessions' is set to 'Enabled: 15 minutes or less, but not Never (0) | Warning Check For Variable Standards"
+      when:
+        - win19cis_idle_rdp_session_disconnect_time == 0 or
+          win19cis_idle_rdp_session_disconnect_time > 900000
+      ansible.builtin.debug:
+        msg:
+          - "Warning!! You have an invalid time set for win19cis_idle_rdp_session_disconnect_time. Please read"
+          - "the notes for the variable and make the necessary change to the variable to be in compliance."
+
+    - name: "18.10.57.3.10.1 | AUDIT | Ensure 'Set time limit for active but idle Remote Desktop Services sessions' is set to 'Enabled: 15 minutes or less, but not Never (0) | Log a warning"
+      when:
+        - win19cis_idle_rdp_session_disconnect_time == 0 or
+          win19cis_idle_rdp_session_disconnect_time > 900000
+      ansible.builtin.import_tasks:
+        file: warning_facts.yml
+      vars:
+        warn_control_id: '18.10.57.3.10.1'
+
+- name: "18.10.57.3.10.2 | PATCH | Ensure Set time limit for disconnected sessions is set to Enabled 1 minute"
+  when: win19cis_rule_18_10_57_3_10_2
+  tags:
+    - level2-domaincontroller
+    - level2-memberserver
+    - rule_18.10.57.3.10.2
+    - patch
+    - terminalservices
+    - NIST800-171_3.1.10
+    - NIST800-53R5_AC-11
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Windows Nt\Terminal Services
+    name: MaxDisconnectionTime
+    data: 60000
+    type: dword
+
+- name: "18.10.57.3.11.1 | PATCH | Ensure Do not delete temp folders upon exit is set to Disabled"
+  when: win19cis_rule_18_10_57_3_11_1
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_18.10.57.3.11.1
+    - patch
+    - terminalservices
+    - NIST800-53R5_AU-11
+    - NIST800-53R5_SI-12
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Windows Nt\Terminal Services
+    name: DeleteTempDirsOnExit
+    data: 1
+    type: dword
+
+- name: "18.10.57.3.11.2 | PATCH | Ensure Do not use temporary folders per session is set to Disabled"
+  when: win19cis_rule_18_10_57_3_11_2
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_18.10.57.3.11.2
+    - patch
+    - terminalservices
+    - NIST800-53R5_AU-11
+    - NIST800-53R5_SI-12
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Windows Nt\Terminal Services
+    name: PerSessionTempDir
+    data: 1
+    type: dword

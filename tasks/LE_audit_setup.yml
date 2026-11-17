@@ -1,0 +1,52 @@
+---
+
+- name: "Pre Audit Setup | Ensure the audit binary directory exists"
+  ansible.windows.win_file:
+    path: "{{ audit_bin_path }}"
+    state: directory
+
+- name: "Pre Audit Setup | Download audit binary"
+  when: get_audit_binary_method == 'download'
+  block:
+    - name: "Pre Audit Setup | Assert a download location has been configured"
+      ansible.builtin.assert:
+        that: audit_bin_url | length > 0
+        fail_msg: >-
+          get_audit_binary_method is 'download' but audit_bin_url is empty.
+          There is no published Windows syver release asset, so set
+          audit_bin_url and audit_bin_version checksums, or use
+          get_audit_binary_method 'copy'.
+
+    - name: "Pre Audit Setup | Detect processor architecture"
+      ansible.windows.win_shell: |
+        if ($env:PROCESSOR_ARCHITEW6432) { $env:PROCESSOR_ARCHITEW6432 } else { $env:PROCESSOR_ARCHITECTURE }
+      changed_when: false
+      register: discovered_audit_pkg_arch
+
+    - name: "Pre Audit Setup | Set audit package name"
+      ansible.builtin.set_fact:
+        audit_pkg_arch_name: "{{ discovered_audit_pkg_arch.stdout | trim }}"
+
+    - name: "Pre Audit Setup | Assert a supported architecture was detected"
+      ansible.builtin.assert:
+        that: audit_pkg_arch_name in ['AMD64', 'ARM64']
+        fail_msg: "Unsupported processor architecture '{{ audit_pkg_arch_name }}' - no syver build to select."
+
+    # win_get_url takes a bare hex digest plus a separate algorithm, not the
+    # 'sha256:...' form the Linux roles use.
+    - name: "Pre Audit Setup | Download audit binary"
+      ansible.windows.win_get_url:
+        url: "{{ audit_bin_url }}{{ audit_pkg_arch_name | lower }}.exe"
+        dest: "{{ audit_bin }}"
+        checksum: "{{ audit_bin_version[audit_pkg_arch_name + '_checksum'] }}"
+        checksum_algorithm: sha256
+        validate_certs: "{{ audit_bin_validate_certs }}"
+        url_username: "{{ audit_bin_url_username | default(omit) }}"
+        url_password: "{{ audit_bin_url_password | default(omit) }}"
+      no_log: true
+
+- name: "Pre Audit Setup | Copy audit binary"
+  when: get_audit_binary_method == 'copy'
+  ansible.windows.win_copy:
+    src: "{{ audit_bin_copy_location }}"
+    dest: "{{ audit_bin }}"

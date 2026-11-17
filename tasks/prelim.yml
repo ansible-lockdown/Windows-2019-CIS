@@ -1,0 +1,108 @@
+---
+
+# Notes: Values Output by ansible_windows_domain_role
+# Standalone workstation - The machine is not part of a domain and operates as a standalone workstation.
+# Standalone server - The machine is not part of a domain and operates as a standalone server.
+# Member workstation - The machine is a workstation joined to a domain.
+# Member server - The machine is a server joined to a domain.
+# Backup domain controller - The machine is a backup domain controller in a domain environment (Active Directory).
+# Primary domain controller - The machine is the primary domain controller in a domain environment (Active Directory).
+- name: "PRELIM | Set System Facts Based On Gather Facts Module"
+  tags: always
+  block:
+    - name: PRELIM | Set System Facts Based On Gather Facts Module | Set Fact If System Is Standalone
+      when: "'Stand-alone' in ansible_facts['windows_domain_role']"
+      ansible.builtin.set_fact:
+        prelim_win19cis_is_standalone: true
+
+    - name: PRELIM | Set System Facts Based On Gather Facts Module | Set Fact If Domain Controller Role
+      when: "'domain controller' in ansible_facts['windows_domain_role']"
+      ansible.builtin.set_fact:
+        prelim_win19cis_is_domain_controller: true
+
+    - name: PRELIM | Set System Facts Based On Gather Facts Module | Set Fact If Domain Member Server
+      when: ansible_facts['windows_domain_role'] == 'Member server'
+      ansible.builtin.set_fact:
+        prelim_win19cis_is_domain_member: true
+
+- name: "PRELIM | Account Policy Scope"
+  tags: always
+  block:
+    - name: PRELIM | Account Policy Scope | Set fact when account policy is domain scoped
+      when: not prelim_win19cis_is_standalone
+      ansible.builtin.set_fact:
+        prelim_win19cis_account_policy_is_domain_scoped: true
+
+    - name: PRELIM | Account Policy Scope | Warn that section 1 is set at the domain
+      when:
+        - win19cis_section01
+        - prelim_win19cis_account_policy_is_domain_scoped
+      ansible.builtin.debug:
+        msg:
+          - "Warning!! This host is domain joined, so Account Policy (CIS section 1) is set by"
+          - "the domain, not locally. The Default Domain Policy overwrites local [System Access]"
+          - "at every policy refresh, and once LockoutBadCount is 0 Windows removes"
+          - "LockoutDuration and ResetLockoutCount from local policy entirely - which made"
+          - "1.2.1 abort the play. The ten secedit backed controls in section 1 are therefore"
+          - "skipped on this host."
+          - "This host has no local remediation path for them - that is a Windows constraint,"
+          - "not a gap in the role. Apply them in the Default Domain Policy."
+          - "On a domain controller this is the only route: a DC has no local account"
+          - "database for domain accounts, so a secedit write here would change nothing."
+
+    - name: PRELIM | Account Policy Scope | Set warning count
+      when:
+        - win19cis_section01
+        - prelim_win19cis_account_policy_is_domain_scoped
+      ansible.builtin.import_tasks:
+        file: warning_facts.yml
+      vars:
+        warn_control_id: 'Section 1 - domain scoped'
+
+    - name: PRELIM | Account Policy Scope | Warn that 2.3.11.6 is set at the domain
+      when:
+        - win19cis_section02
+        - win19cis_rule_2_3_11_6
+        - prelim_win19cis_account_policy_is_domain_scoped
+      ansible.builtin.debug:
+        msg:
+          - "Warning!! This host is domain joined. 2.3.11.6 ForceLogoffWhenHourExpire is a"
+          - "[System Access] value, and the Default Domain Policy sets it to 0 and overwrites the"
+          - "local value at every policy refresh, so a local write reverts and reports changed on"
+          - "every run. 2.3.11.6 is therefore skipped on this host. Set it in the Default Domain Policy."
+
+    - name: PRELIM | Account Policy Scope | Set 2.3.11.6 warning count
+      when:
+        - win19cis_section02
+        - win19cis_rule_2_3_11_6
+        - prelim_win19cis_account_policy_is_domain_scoped
+      ansible.builtin.import_tasks:
+        file: warning_facts.yml
+      vars:
+        warn_control_id: '2.3.11.6 - domain scoped'
+
+- name: "PRELIM | Optional Feature Discovery"
+  block:
+    - name: "PRELIM | Optional Feature Discovery | Is Hyper-V Installed"
+      when: win19cis_rule_2_2_19
+      ansible.windows.win_feature_info:
+        name: Hyper-V
+      register: prelim_win19cis_hyperv_feature
+
+    - name: "PRELIM | Optional Feature Discovery | Is The Web Server IIS Role Installed"
+      when: win19cis_rule_2_2_33
+      ansible.windows.win_feature_info:
+        name: Web-Server
+      register: prelim_win19cis_webserver_feature
+
+    - name: "PRELIM | Optional Feature Discovery | Is Exchange Server Installed"
+      when: win19cis_rule_2_2_38
+      ansible.windows.win_service_info:
+        name: MSExchangeServiceHost
+      register: prelim_win19cis_exchange_service
+
+    - name: "PRELIM | Optional Feature Discovery | Set The Feature Facts"
+      ansible.builtin.set_fact:
+        win19cis_hyperv_installed: "{{ prelim_win19cis_hyperv_feature.features | default([]) | selectattr('installed') | list | length > 0 }}"
+        win19cis_iis_and_web_services_installed: "{{ prelim_win19cis_webserver_feature.features | default([]) | selectattr('installed') | list | length > 0 }}"
+        win19cis_exchange_server_running: "{{ prelim_win19cis_exchange_service.exists | default(false) }}"

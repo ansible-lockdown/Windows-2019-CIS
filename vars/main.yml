@@ -1,16 +1,17 @@
 ---
 
-# vars file for .
+# vars file for Windows-2019-CIS
+
+# min_ansible_version is the base version of Ansible to use. This ensures compatibility and avoids execution
+# errors due to missing features or incompatible syntax in earlier versions of Ansible.
+min_ansible_version: "2.16.1"
 
 # Used to control warning summary
 warn_control_list: ""
 warn_count: 0
 
-# This sets the variable that is created for the banner.
+# lockdown_banner sets the variable that is created for the banner.
 lockdown_banner: "{{ lookup('file', './templates/banner.txt') }}"
-
-# This will be changed to true if discovered.
-prelim_win19cis_cloud_based_system: false
 
 # These are default values that will be changed when the prelim
 # runs and finds the correct setting.
@@ -18,32 +19,18 @@ prelim_win19cis_is_standalone: false
 prelim_win19cis_is_domain_controller: false
 prelim_win19cis_is_domain_member: false
 
+# Account Policy (CIS section 1) is domain scoped on any domain joined host: the
+# Default Domain Policy overwrites local [System Access] at every refresh, so the
+# ten secedit backed controls in section 1 cannot hold locally there. Seeded false
+# so a standalone host still applies them; the prelim sets it true when joined.
+prelim_win19cis_account_policy_is_domain_scoped: false
+
+# Read from secedit in section_1/section_1.2.x.yml, after 1.2.2 has enabled lockout. Windows
+# rejects a LockoutDuration lower than the current ResetLockoutCount, so 1.2.1 needs the pair
+# as it stands at that point, not as it stood before the role touched it.
+discovered_win19cis_current_lockout_duration: 0
+discovered_win19cis_current_lockout_reset: 0
+
 # Default setting, this should not be changed
 # and is overridden if a task that changed sets the value if required.
 reboot_host: false
-
-# This section will change based on OS and Version of CIS that is being used.
-win19cis_gpo_hardening_version: "v3.0.1"
-win19cis_gpo_hardening_os: "Win2019"
-
-# This section will configure the names of the GPOs that are created to a variable for easier reading in the when
-# statements for each task for GPO creation.
-# THE DEFAULT SETTINGS BELOW SHOULD NOT BE CHANGED.
-win19cis_default_domain_policy_gpo_name: "CIS {{ win19cis_gpo_hardening_version }} {{ win19cis_gpo_hardening_os }} Default Domain Policy"
-
-win19cis_l1_dc_gpo_name: "CIS {{ win19cis_gpo_hardening_version }} {{ win19cis_gpo_hardening_os }} L1 DC"
-win19cis_l1_ms_gpo_name: "CIS {{ win19cis_gpo_hardening_version }} {{ win19cis_gpo_hardening_os }} L1 MS"
-
-win19cis_l2_dc_gpo_name: "CIS {{ win19cis_gpo_hardening_version }} {{ win19cis_gpo_hardening_os }} L2 DC"
-win19cis_l2_ms_gpo_name: "CIS {{ win19cis_gpo_hardening_version }} {{ win19cis_gpo_hardening_os }} L2 MS"
-
-win19cis_l1_dm_gpo_name: "CIS {{ win19cis_gpo_hardening_version }} {{ win19cis_gpo_hardening_os }} L1 DM"
-
-win19cis_services_dc_gpo_name: "CIS {{ win19cis_gpo_hardening_version }} {{ win19cis_gpo_hardening_os }} Services DC"
-win19cis_services_ms_gpo_name: "CIS {{ win19cis_gpo_hardening_version }} {{ win19cis_gpo_hardening_os }} Services MS"
-
-win19cis_ngws_dc_gpo_name: "CIS {{ win19cis_gpo_hardening_version }} {{ win19cis_gpo_hardening_os }} NGWS DC"
-win19cis_ngws_ms_gpo_name: "CIS {{ win19cis_gpo_hardening_version }} {{ win19cis_gpo_hardening_os }} NGWS MS"
-
-win19cis_l1_user_gpo_name: "CIS {{ win19cis_gpo_hardening_version }} {{ win19cis_gpo_hardening_os }} L1 User"
-win19cis_l2_user_gpo_name: "CIS {{ win19cis_gpo_hardening_version }} {{ win19cis_gpo_hardening_os }} L2 User"

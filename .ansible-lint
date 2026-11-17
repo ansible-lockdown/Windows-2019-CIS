@@ -1,9 +1,9 @@
 ---
 
-parseable: true
 quiet: true
 skip_list:
   - 'package-latest'
   - 'risky-shell-pipe'
+  - yaml[line-length]
 use_default_rules: true
 verbosity: 0

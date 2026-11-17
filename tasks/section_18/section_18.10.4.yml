@@ -1,0 +1,17 @@
+---
+
+- name: "18.10.4.1 | PATCH | Ensure Allow a Windows app to share application data between users is set to Disabled"
+  when: win19cis_rule_18_10_4_1
+  tags:
+    - level2-domaincontroller
+    - level2-memberserver
+    - rule_18.10.4.1
+    - patch
+    - data
+    - NIST800-171_3.3.1
+    - NIST800-53R5_AC-3
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\CurrentVersion\Appmodel\Statemanager
+    name: AllowSharedLocalAppData
+    data: 0
+    type: dword

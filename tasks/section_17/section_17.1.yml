@@ -1,0 +1,93 @@
+---
+
+- name: "17.1.1 | PATCH | Ensure Audit Credential Validation is set to Success and Failure"
+  when: win19cis_rule_17_1_1
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_17.1.1
+    - patch
+    - NIST800-171_3.3.1
+    - NIST800-171_3.3.2
+    - NIST800-171_3.3.6
+    - NIST800-53R5_AU-3
+    - NIST800-53R5_AU-3_1
+    - NIST800-53R5_AU-7
+    - NIST800-53R5_AU-12
+  block:
+    - name: "17.1.1 | AUDIT | Ensure Audit Credential Validation is set to Success and Failure | Get current audit events for Credential Validation"
+      ansible.windows.win_shell: AuditPol /get /subcategory:"{0cce923f-69ae-11d9-bed3-505054503030}" -r | ConvertFrom-Csv | Select-Object -ExpandProperty "Inclusion Setting"
+      changed_when: false
+      failed_when: false
+      check_mode: false
+      register: discovered_17_1_1_audit
+
+    - name: "17.1.1 | PATCH | Ensure Audit Credential Validation is set to Success and Failure | Enable Success for Credential Validation"
+      when: "'Success' not in discovered_17_1_1_audit.stdout"
+      ansible.windows.win_shell: AuditPol /set /subcategory:"{0cce923f-69ae-11d9-bed3-505054503030}" /success:enable
+
+    - name: "17.1.1 | PATCH | Ensure Audit Credential Validation is set to Success and Failure | Enable Failure for Credential Validation"
+      when: "'Failure' not in discovered_17_1_1_audit.stdout"
+      ansible.windows.win_shell: AuditPol /set /subcategory:"{0cce923f-69ae-11d9-bed3-505054503030}" /failure:enable
+
+- name: "17.1.2 | PATCH | Ensure 'Audit Kerberos Authentication Service' is set to 'Success and Failure' DC Only | Domain Controller"
+  when:
+    - win19cis_rule_17_1_2
+    - prelim_win19cis_is_domain_controller
+  tags:
+    - level1-domaincontroller
+    - rule_17.1.2
+    - patch
+    - NIST800-171_3.3.1
+    - NIST800-171_3.3.2
+    - NIST800-171_3.3.6
+    - NIST800-53R5_AU-3
+    - NIST800-53R5_AU-3_1
+    - NIST800-53R5_AU-7
+    - NIST800-53R5_AU-12
+  block:
+    - name: "17.1.2 | AUDIT | Ensure 'Audit Kerberos Authentication Service' is set to 'Success and Failure' DC Only | Get current audit events for Kerberos Authentication Service | Domain Controller"
+      ansible.windows.win_shell: AuditPol /get /subcategory:"{0cce9242-69ae-11d9-bed3-505054503030}" -r | ConvertFrom-Csv | Select-Object -expand "Inclusion Setting"
+      changed_when: false
+      failed_when: false
+      check_mode: false
+      register: discovered_17_1_2_audit
+
+    - name: "17.1.2 | PATCH | Ensure 'Audit Kerberos Authentication Service' is set to 'Success and Failure' DC Only | Enable Success for Kerberos Authentication Service | Domain Controller"
+      when: "'Success' not in discovered_17_1_2_audit.stdout"
+      ansible.windows.win_shell: AuditPol /set /subcategory:"{0cce9242-69ae-11d9-bed3-505054503030}" /success:enable
+
+    - name: "17.1.2 | PATCH | Ensure 'Audit Kerberos Authentication Service' is set to 'Success and Failure' DC Only | Enable Failure for Kerberos Authentication Service | Domain Controller"
+      when: "'Failure' not in discovered_17_1_2_audit.stdout"
+      ansible.windows.win_shell: AuditPol /set /subcategory:"{0cce9242-69ae-11d9-bed3-505054503030}" /failure:enable
+
+- name: "17.1.3 | PATCH | Ensure 'Audit Kerberos Service Ticket Operations' is set to 'Success and Failure' DC Only"
+  when:
+    - win19cis_rule_17_1_3
+    - prelim_win19cis_is_domain_controller
+  tags:
+    - level1-domaincontroller
+    - rule_17.1.3
+    - patch
+    - NIST800-171_3.3.1
+    - NIST800-171_3.3.2
+    - NIST800-171_3.3.6
+    - NIST800-53R5_AU-3
+    - NIST800-53R5_AU-3_1
+    - NIST800-53R5_AU-7
+    - NIST800-53R5_AU-12
+  block:
+    - name: "17.1.3 | AUDIT | Ensure 'Audit Kerberos Service Ticket Operations' is set to 'Success and Failure' DC Only | Get current audit events for Kerberos Service Ticket Operations | Domain Controller"
+      ansible.windows.win_shell: AuditPol /get /subcategory:"{0cce9240-69ae-11d9-bed3-505054503030}" -r | ConvertFrom-Csv | Select-Object -expand "Inclusion Setting"
+      changed_when: false
+      failed_when: false
+      check_mode: false
+      register: discovered_17_1_3_audit
+
+    - name: "17.1.3 | PATCH | Ensure 'Audit Kerberos Service Ticket Operations' is set to 'Success and Failure' DC Only | Enable Success for Kerberos Service Ticket Operations | Domain Controller"
+      when: "'Success' not in discovered_17_1_3_audit.stdout"
+      ansible.windows.win_shell: AuditPol /set /subcategory:"{0cce9240-69ae-11d9-bed3-505054503030}" /success:enable
+
+    - name: "17.1.3 | PATCH | Ensure 'Audit Kerberos Service Ticket Operations' is set to 'Success and Failure' DC Only | Enable Failure for Kerberos Service Ticket Operations | Domain Controller"
+      when: "'Failure' not in discovered_17_1_3_audit.stdout"
+      ansible.windows.win_shell: AuditPol /set /subcategory:"{0cce9240-69ae-11d9-bed3-505054503030}" /failure:enable

@@ -1,0 +1,18 @@
+---
+
+- name: "2.3.13.1 | PATCH | Ensure Shutdown Allow system to be shut down without having to log on is set to Disabled"
+  when: win19cis_rule_2_3_13_1
+  tags:
+    - level1-domaincontroller
+    - level1-memberserver
+    - rule_2.3.13.1
+    - patch
+    - system
+    - shutdown
+    - NIST800-171_3.1.7
+    - NIST800-53R5_AC-6_10
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System
+    name: ShutdownWithoutLogon
+    data: 0
+    type: dword
